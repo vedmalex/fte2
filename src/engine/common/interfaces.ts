@@ -37,13 +37,13 @@ export type TemplateConfig = {
   source?: string,
   name: string,
   absPath: string,
-  parent: string;
-  blocks: BlocksHash;
-  aliases: HashTypeGeneric<string>;
-  alias: string;
-  dependency: HashTypeGeneric<boolean>;
-  srcCode: string;
-  script: BlockRunFunction;
-  factory: TemplateFactoryBase;
-  compile: () => void;
+  parent?: string;
+  blocks?: BlocksHash;
+  aliases?: HashTypeGeneric<string>;
+  alias?: string;
+  dependency?: HashTypeGeneric<boolean>;
+  srcCode?: string;
+  script?: BlockRunFunction;
+  factory?: TemplateFactoryBase;
+  compile?: () => void;
 }

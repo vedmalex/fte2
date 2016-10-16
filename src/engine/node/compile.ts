@@ -57,7 +57,6 @@ function prepareCode(src, optimize) {
   }
 }
 
-
 export function compileLight(content: string, optimize?: boolean) {
   let compiled = raw.parse(content);
   return prepareCode(F.run(compiled, 'raw.njs'), optimize);
