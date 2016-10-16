@@ -1,4 +1,4 @@
-# fTE.js - featured Template Engine for node.js
+# fTE2 - fast temlate engine that reborn
 
 It inspired by [nJSt](https://github.com/unclechu/node-njst) and [ect](https://github.com/baryshev/ect)
 
