@@ -1,0 +1,23 @@
+{
+  "name": "fte2",
+  "version": "1.0.0",
+  "description": "fast template engine that is reborn",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "tslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vedmalex/fte2.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vedmalex/fte2/issues"
+  },
+  "homepage": "https://github.com/vedmalex/fte2#readme",
+  "devDependencies": {
+    "@types/node": "^6.0.45",
+    "tslint": "^3.15.1"
+  }
+}
