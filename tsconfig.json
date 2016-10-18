@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "lib": [
+      "es2017"
+    ],
+    "newLine": "LF",
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "pretty": true
+  },
+  "compileOnSave": true
+}
