@@ -7,7 +7,7 @@
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc",
     "templates": "node dist/compile_templates.js",
-    "grammar": "pegjs ./grammar/raw.pegjs ./grammar/raw.pegjs.js",
+    "grammar": "pegjs --output ./grammar/raw.pegjs.js ./grammar/raw.pegjs",
     "genit": "npm run grmmar && npm run templates"
   },
   "repository": {
