@@ -15,7 +15,6 @@ function prepareCode(src, optimize) {
   try {
     ast = esprima.parse(src, {
       sourceType: 'module',
-      ecmaVersion: 6,
       comment: true,
     });
   } catch (err) {
@@ -76,7 +75,6 @@ export function validate(content) {
   try {
     ast = esprima.parse(src, {
       sourceType: 'module',
-      ecmaVersion: 6,
       comment: true,
     });
   } catch (err) {

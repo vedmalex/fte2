@@ -4,13 +4,12 @@ import * as  esprima from 'esprima';
 import * as  esmangle from 'esmangle';
 import * as  escodegen from 'escodegen';
 
-export function safeEval(src) {
+export function safeEval(src: string) {
   let hasError = false;
   let ast;
   try {
     ast = esprima.parse(src, {
       sourceType: 'module',
-      ecmaVersion: 6,
       comment: true,
     });
   } catch (err) {
