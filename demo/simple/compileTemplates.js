@@ -1,14 +1,14 @@
 var fs = require('fs-extra');
 var path = require('path');
-var compileFull = require('./../').compileFull;
-var compileLight = require('./../').compileLight;
+var compileFull = require('../../dist/node').compileFull;
+var compileLight = require('../../dist/node').compileLight;
 
 function load(fileName, folder, compile, optimize) {
   fs.ensureDirSync(folder);
   var fn = path.resolve(fileName);
   if (fs.existsSync(fn)) {
     var content = fs.readFileSync(fn);
-    var result = compile(content, optimize);
+    var result = compile(content.toString(), optimize);
     fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), result);
   }
 }
@@ -18,7 +18,7 @@ var stat;
 if (files.length > 0) {
   var rec, stat, ext;
   for (var i = 0, len = files.length; i < len; i++) {
-    rec = path.join('raw',files[i]);
+    rec = path.join('raw', files[i]);
     stat = fs.statSync(rec);
     if (stat.isFile()) {
       ext = path.extname(rec);
