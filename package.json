@@ -2,7 +2,7 @@
   "name": "fte2",
   "version": "1.0.0",
   "description": "fast template engine that is reborn",
-  "main": "dist/index.js",
+  "main": "dist/node/index.js",
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc",

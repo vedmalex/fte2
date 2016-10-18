@@ -11,7 +11,7 @@ var app = express();
 
 // view engine setup
 
-var fte = require('../../dist/engine/node').Factory;
+var fte = require('fte2').Factory;
 var index = new fte({
   root: path.join(__dirname, 'views'),
   watch: true,
