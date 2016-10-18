@@ -5,11 +5,9 @@ import * as path from 'path';
 import * as esprima from 'esprima';
 import * as esmangle from 'esmangle';
 import * as escodegen from 'escodegen';
-import * as Gte from './factory';
+import { TemplateFactory } from './factory';
 
-let F = new Gte.TemplateFactory({
-  root: path.join(__dirname, '..', 'templates'),
-});
+const templateRoot = path.join(__dirname, './../../templates');
 
 function prepareCode(src, optimize) {
   let errorMessage = '';
@@ -21,6 +19,9 @@ function prepareCode(src, optimize) {
       comment: true,
     });
   } catch (err) {
+    let F = new TemplateFactory({
+      root: templateRoot,
+    });
     errorMessage = F.run({
       error: err,
       compiledFile: src,
@@ -57,12 +58,18 @@ function prepareCode(src, optimize) {
   }
 }
 
-export function compileLight(content: string, optimize?: boolean) {
-  let compiled = raw.parse(content);
+export function compileLight(content: Buffer | string, optimize?: boolean) {
+  let compiled = raw.parse(content.toString());
+  let F = new TemplateFactory({
+    root: templateRoot,
+  });
   return prepareCode(F.run(compiled, 'raw.njs'), optimize);
 }
 
 export function validate(content) {
+  let F = new TemplateFactory({
+    root: templateRoot,
+  });
   let src = F.run(raw.parse(content.toString()), 'compiled.njs');
   let hasError = false;
   let ast;
@@ -83,7 +90,10 @@ export function validate(content) {
   }
 }
 
-export function compileFull(content, optimize) {
+export function compileFull(content: Buffer | string, optimize) {
   let compiled = raw.parse(content.toString());
+  let F = new TemplateFactory({
+    root: templateRoot,
+  });
   return prepareCode(F.run(compiled, 'compiled.njs'), optimize);
 }

@@ -1,12 +1,9 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { compileFull /*, compileLight*/ } from './';
-// import {compileLight}  from  './';
+import { compileFull /*, compileLight*/ } from './node/compile';
 
 let src = 'templates';
-
 // сделать gulp
-
 function load(fileName, folder, compile, optimize) {
   fs.ensureDirSync(folder);
   let fn = path.resolve(fileName);

@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as glob from 'glob';
-import { Template } from './template.js';
+import { Template } from './template';
 import { TemplateFactoryBase } from './../common/factory';
 import { safeEval } from './helpers';
 import { HashType } from './../common/interfaces';
