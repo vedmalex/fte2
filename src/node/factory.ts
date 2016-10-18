@@ -18,7 +18,7 @@ export class TemplateFactory extends TemplateFactoryBase {
         // 	result = require(fn + '.js');
         // } else {
         let storedScript = fs.readFileSync(fn + '.js');
-        result = safeEval(storedScript);
+        result = safeEval(storedScript.toString());
         // }
         if (result instanceof Function) {
           result = { script: result, compile: new Function() };
