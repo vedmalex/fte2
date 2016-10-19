@@ -47,7 +47,7 @@
     }
   }
 -#>
-{ 
+{
 <#- if(alias){
 #> alias: #{alias},
 <#- }-#>
@@ -101,12 +101,12 @@
 <#- if(alias){#>
     this.alias = #{alias};
 <#- }-#>
-<#-  if(reqList.length > 0) { -#> 
+<#-  if(reqList.length > 0) { -#>
     this.aliases={};
 <# var rq;
   for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i]; 
--#> 
+    rq = reqList[i];
+-#>
     this.aliases["#{rq.alias}"] = "#{rq.name}";
     this.factory.ensure("#{rq.name}");
 <#
@@ -124,8 +124,8 @@
   <# }-#>
 <#- if(reqList.length > 0) {
   for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i]; 
--#> 
+    rq = reqList[i];
+-#>
     "#{rq.name}": 1,
 <#
   }

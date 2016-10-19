@@ -15,6 +15,16 @@ if(!noIndent){
   needToIndent = !noIndent;
 }
 -#>
+<#
+var escapeBlocks = false;
+  for (var i = 0, len = blockList.length; i < len; i++) {
+    if(blockList[i].type === 'uexpression'){
+      escapeBlocks = true;
+      break;
+    }
+  }
+-#>
+<#if(escapeBlocks) { -#>
 var escapeExp = /[&<>"]/,
     escapeAmpExp = /&/g,
     escapeLtExp = /</g,
@@ -36,6 +46,7 @@ function escapeIt (text) {
   .replace(escapeGtExp, '&gt;')
   .replace(escapeQuotExp, '&quot;');
 };
+<#}-#>
 <#if(needToIndent){ -#>
 function applyIndent(_str, _indent) {
   var str = String(_str);
