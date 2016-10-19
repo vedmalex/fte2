@@ -43,7 +43,7 @@
 
 - `#{}` - expression block
 
-- `!{}` - escaped expression block
+- `!{}` - html(!!!) escaped expression block: replaces & < > " => `&amp;` `&lt;` `&gt;` `&quote;`
 
 - `<#@ #>` directive block, by default it ommits all spaces and new lines, as if it is never exists.
 
