@@ -1,17 +1,17 @@
-# fTE2 - fast temlate engine that reborn
+# fte.js - fast template engine that is reborn
 
-It inspired by [nJSt](https://github.com/unclechu/node-njst) and [ect](https://github.com/baryshev/ect)
+!!! Why only generate Web-pages??? [re-]Generate the code!!!
 
-it is build using [pegjs](https://github.com/pegjs/pegjs)
+## write [code] -> [build your] template -> [then code]generate
 
 ## Features
 
-  - inheritance
+  - template inheritance
   - codeblocks with parameters and directives
   - partials
-  - partial aliases
+  - partial with aliases
   - directives
-  - progressing template caching
+  - progressive template caching
   - smart block indentation
   - multiple root folders
   - pure javascript code
@@ -23,6 +23,13 @@ it is build using [pegjs](https://github.com/pegjs/pegjs)
   - simple code generation for template engine - it is genereate itself using fTE.js
   - syntax highlight for sublime-text
   - factory-level aliases global aliases
+
+  - configurable escaped blocks
+
+## Furure
+
+ - browser support
+ - template packaging using webpack/gulp ... whatever
 
 ## Syntax
 
@@ -150,6 +157,7 @@ var result = tempaltes.run({hello:'World'}, 'tempalteName');
 `Factory` - template Factory iteself
 
 `compileLight` - generate template as closure function.
+
 `compileFull` - generate template as module.
 
 method signature `(content:string[, optimize:bool])`
@@ -233,3 +241,8 @@ container.html
 ## Progresinve template caching
 
 by setup `watch:true` in configuration of fte factory, you can achieve progressive tamplate caching. Factory will watch for changing files and it any changes appering in the already loaded files it will reset cache options for it. So in the next time, when changed template will be used it will load new version of template and recomplile it. The main feature is that if the template has any dependency then if one of its dependency is changed this template will also removed from cache.
+
+## Inspiration
+
+It inspired by [nJSt](https://github.com/unclechu/node-njst) and [ect](https://github.com/baryshev/ect)
+it is build using [pegjs](https://github.com/pegjs/pegjs)
