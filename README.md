@@ -242,6 +242,50 @@ container.html
 
 by setup `watch:true` in configuration of fte factory, you can achieve progressive tamplate caching. Factory will watch for changing files and it any changes appering in the already loaded files it will reset cache options for it. So in the next time, when changed template will be used it will load new version of template and recomplile it. The main feature is that if the template has any dependency then if one of its dependency is changed this template will also removed from cache.
 
+## Speed Test
+
+I've posted result here.
+the only difference in speed is the escape function.
+[template-benchamrk](https://github.com/vedmalex/template-benchmark)
+
+64-bit Ubuntu 16.04 LTS
+Intel core i7-3632QM CPU @ 2.20GHz x 8, SSD 250G
+Nodejs v6.21
+
+> Rendering 100000 templates:
+
+```
+EJS
+  Escaped   : 6623ms
+  Unescaped : 2289ms
+  Total     : 8912ms
+
+Eco
+  Escaped   : 4313ms
+  Unescaped : 764ms
+  Total     : 5077ms
+
+Handlebars.js
+  Escaped   : 5187ms
+  Unescaped : 2530ms
+  Total     : 7717ms
+
+Jade without `with`
+  Escaped   : 6087ms
+  Unescaped : 1826ms
+  Total     : 7913ms
+
+CoffeeKup
+  Escaped   : 2555ms
+  Unescaped : 6623ms
+  Total     : 9178ms
+
+Jade
+  Escaped   : 14454ms
+  Unescaped : 9594ms
+  Total     : 24048ms
+```
+
 ## Inspiration
 
 It inspired by [nJSt](https://github.com/unclechu/node-njst) and [ect](https://github.com/baryshev/ect)
