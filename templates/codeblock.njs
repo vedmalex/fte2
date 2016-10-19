@@ -105,11 +105,11 @@ for (var i = 0, len = blockList.length; i < len; i++) {
   switch(block.type){
     case 'text':
 #> out +=<#if (block.indent && !noIndent) { -#>
-!{'`'}#{applyIndent(content, block.indent)}!{'`'};
+#{JSON.stringify(applyIndent(content, block.indent))};
  <#- } else if(indent) { -#>
-!{'`'}#{indent}#{content}!{'`'};
+#{indent} + #{JSON.stringify(content)};
 <#- } else { -#>
-!{'`'}#{content}!{'`'};
+#{JSON.stringify(content)};
 <#- }-#>
 <#
     break;
