@@ -255,6 +255,41 @@ Nodejs v6.21
 > Rendering 100000 templates:
 
 ```
+Gaikan
+  Escaped   : 1651ms
+  Unescaped : 52ms
+  Total     : 1703ms
+
+ECT
+  Escaped   : 1473ms
+  Unescaped : 100ms
+  Total     : 1573ms
+
+fTE.js
+  Escaped   : 1451ms
+  Unescaped : 80ms
+  Total     : 1531ms
+
+doT
+  Escaped   : 2078ms
+  Unescaped : 49ms
+  Total     : 2127ms
+
+Dust
+  Escaped   : 1950ms
+  Unescaped : 416ms
+  Total     : 2366ms
+
+Hogan.js
+  Escaped   : 1918ms
+  Unescaped : 324ms
+  Total     : 2242ms
+
+Fest
+  Escaped   : 1825ms
+  Unescaped : 235ms
+  Total     : 2060ms
+
 EJS
   Escaped   : 6623ms
   Unescaped : 2289ms
