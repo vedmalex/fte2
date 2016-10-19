@@ -3,7 +3,7 @@ import * as raw from '../../grammar/raw.pegjs.js';
 // import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as esprima from 'esprima';
-import * as esmangle from 'esmangle';
+import * as esmangle from 'esmangle2';
 import * as escodegen from 'escodegen';
 import { TemplateFactory } from './factory';
 
