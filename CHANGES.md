@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.4.8
+
+- fix grammar issue.
+
 ## 0.4.6
 
 - full refactor to typescript
