@@ -142,7 +142,7 @@ quotedString "single quoted name"=
 dQuotedString "double quoted name"=
 '"' name:(!'"'.)* '"' {return f(name)}
 
-cStart =  ((eol _)? "<#-") / "<#"
+cStart =  (((eol _)? "<#-") / "<#"!"{")
 
 cEnd = ("-#>" (_ eol)?) / "#>"
 

@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
@@ -11,9 +11,9 @@
     "genit": "npm run grmmar && npm run templates"
   },
   "typescript": {
-    "definition": "dist/node/index.d.ts"
+    "definition": "dist"
   },
-  "typings": "dist/node/index.d.ts",
+  "typings": "dist",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vedmalex/fte2.git"
