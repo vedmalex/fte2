@@ -76,7 +76,7 @@ Syntax
 
 - `noIndent` -- not use indentaion functinality speedup a little bit
 
-- `requireAs ('templateName', 'alias')` -- require template wit alias name. to use with `#{partial(context,'name')}`.
+- `requireAs ('templateName', 'alias')` -- require template with alias name. to use with `#{partial(context,'name')}`.
 
 - `context 'name` | `context('name')` -- set up default context name for generated code.
 
