@@ -1,4 +1,4 @@
-import { TemplateBase } from '../common/template/';
+import { TemplateBase } from '../common/template';
 
 export class TemplateBrowser extends TemplateBase {
   public compile() {
