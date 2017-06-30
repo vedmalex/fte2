@@ -25,7 +25,8 @@
       "name": "Attach",
       "type": "node",
       "request": "attach",
-      "port": 5858,
+      "protocol": "inspector",
+      "port": 9229,
       "address": "localhost",
       "restart": false,
       "sourceMaps": false,
@@ -34,11 +35,12 @@
       "remoteRoot": null
     },
     {
-      "name": "Attach to ppocess",
+      "name": "Attach to process",
       "type": "node",
       "request": "attach",
+      "protocol": "inspector",
       "processId": "${command.PickProcess}",
-      "port": 5858,
+      "port": 9229,
       "sourceMaps": false,
       "outFiles": []
     }
