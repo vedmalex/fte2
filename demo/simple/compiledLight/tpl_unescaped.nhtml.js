@@ -1,31 +1,10 @@
 (function(){
-  return {   script: function (data, _content, partial){
+  return {  script: function (data, _content, partial){
      function content(blockName, ctx) {
        if(ctx === undefined || ctx === null) ctx = data;
        return _content(blockName, ctx, content, partial);
      }
-     var out = '';    var escapeExp = /[&<>"]/,
-         escapeAmpExp = /&/g,
-         escapeLtExp = /</g,
-         escapeGtExp = />/g,
-         escapeQuotExp = /"/g;
-     
-     function escapeIt (text) {
-       if (text == null) {
-         return '';
-       }
-     
-       var result = text.toString();
-       if (!escapeExp.test(result)) {
-         return result;
-       }
-     
-       return result.replace(escapeAmpExp, '&amp;')
-       .replace(escapeLtExp, '&lt;')
-       .replace(escapeGtExp, '&gt;')
-       .replace(escapeQuotExp, '&quot;');
-     };
-     
+     var out = '';    
      /*2:1*/
       out +="<html>\n\t<head>\n\t\t<title>";
      /*4:10*/

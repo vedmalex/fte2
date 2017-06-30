@@ -1,4 +1,4 @@
-module.exports = {   script: function (context, _content, partial){
+module.exports = {  script: function (context, _content, partial){
      function content(blockName, ctx) {
        if(ctx === undefined || ctx === null) ctx = context;
        return _content(blockName, ctx, content, partial);

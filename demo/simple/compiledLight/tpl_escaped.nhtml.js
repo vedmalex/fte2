@@ -1,5 +1,5 @@
 (function(){
-  return {   script: function (data, _content, partial){
+  return {  script: function (data, _content, partial){
      function content(blockName, ctx) {
        if(ctx === undefined || ctx === null) ctx = data;
        return _content(blockName, ctx, content, partial);
