@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.5.0
+
+- introduce block to file feature. For usage see demo folder.
+
 ## 0.4.8
 
 - fix grammar issue.

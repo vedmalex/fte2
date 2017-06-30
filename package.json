@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "0.4.8",
+  "version": "0.5.0",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {

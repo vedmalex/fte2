@@ -90,6 +90,12 @@ export class TemplateFactory extends TemplateFactoryBase {
     return bc.run(context, bc.content, bc.partial);
   };
 
+  public blocksToFiles(context: HashType, name: string, absPath?: boolean): { file: string, content: string }[] {
+    let templ = this.ensure(name, absPath);
+    let bc = this.blockContent(templ);
+    return Object.keys(templ.blocks).map(curr => ({ file: curr, content: bc.content(curr, context, bc.content, bc.partial) }));
+  };
+
   public express() {
     let self = this;
     return function (fileName, context, callback) {
