@@ -50,7 +50,7 @@ module.exports = {
     var contextName = 'context';
     var noIndent = false;
     var alias = '';
-    var asyncType = '';
+    var useChunks = '';
     var item, directives = context.directives, extend = '';
     for (var i = 0, len = directives.length; i < len; i++) {
       item = directives[i];
@@ -69,8 +69,8 @@ module.exports = {
       if (item.content === 'alias') {
         alias = JSON.stringify(item.name.trim())
       }
-      if (item.content === 'async') {
-        asyncType = processAsync(item)
+      if (item.content === 'chunks') {
+        useChunks = processAsync(item)
       }
     }
     out += '{';
@@ -83,13 +83,25 @@ module.exports = {
     out += contextName;
     out += ', _content, partial){\n    function content(blockName, ctx) {\n      if(ctx === undefined || ctx === null) ctx =';
     out += applyIndent(contextName, ' ');
-    out += ';\n      return _content(blockName, ctx, content, partial);\n    }\n    var out = \'\';';
+    out += ';\n      return _content(blockName, ctx, content, partial);\n    }\n    ';
+    if (useChunks) {
+      out += '\n    let current = \'';
+      out += useChunks;
+      out += '\';\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = \'\';\n      }\n    }\n\n    function chunkStart(name) {\n      chunkEnd();\n      chunkEnsure(current);\n      result[current] += out;\n      chunkEnsure(name);\n      result[name] = out = \'\';\n      outStack.push(name);\n      current = name;\n    }\n\n    function chunkEnd() {\n      chunkEnsure(current);\n      result[current] += out;\n      if (outStack.length > 1) {\n        current = outStack.pop();\n      } else {\n        current = outStack[0];\n      }\n      out = \'\'\n    }\n\n    '
+    }
+    out += '\n    var out = \'\';';
     var blocks = {
       blocks: context.main,
       noIndent: noIndent
     };
     out += applyIndent(partial(blocks, 'codeblock'), '    ');
-    out += '\n    return out;\n  },\n';
+    out += '\n    ';
+    if (useChunks) {
+      out += '\n      chunkEnd();\n      out = result;\n      out = Object.keys(result).filter(i => i !== \'';
+      out += useChunks;
+      out += '\').map(curr => ({ name: curr, content: result[curr] }))\n    '
+    }
+    out += '\n      return out;\n  },\n';
     var cb = context.block;
     if (cb) {
       out += '  blocks : {\n';

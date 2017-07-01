@@ -22,7 +22,7 @@
   var contextName = 'context';
   var noIndent = false;
   var alias = '';
-  var asyncType = '';
+  var useChunks = '';
   var item, directives = context.directives, extend = '';
   for (var i = 0, len = directives.length; i < len; i++) {
 
@@ -42,8 +42,8 @@
     if(item.content === 'alias'){
       alias = JSON.stringify(item.name.trim());
     }
-    if(item.content === 'async'){
-      asyncType = processAsync(item);
+    if(item.content === 'chunks'){
+      useChunks = processAsync(item);
     }
   }
 -#>
@@ -56,10 +56,51 @@
       if(ctx === undefined || ctx === null) ctx = #{contextName};
       return _content(blockName, ctx, content, partial);
     }
+    <#if(useChunks){#>
+    let current = '#{useChunks}';
+    let outStack = [current];
+    let result;
+
+    function chunkEnsure(name) {
+      if (!result) {
+        result = {};
+      }
+      if (!result.hasOwnProperty(name)) {
+        result[name] = '';
+      }
+    }
+
+    function chunkStart(name) {
+      chunkEnd();
+      chunkEnsure(current);
+      result[current] += out;
+      chunkEnsure(name);
+      result[name] = out = '';
+      outStack.push(name);
+      current = name;
+    }
+
+    function chunkEnd() {
+      chunkEnsure(current);
+      result[current] += out;
+      if (outStack.length > 1) {
+        current = outStack.pop();
+      } else {
+        current = outStack[0];
+      }
+      out = ''
+    }
+
+    <#}#>
     var out = '';
     <#- var blocks = {blocks:context.main, noIndent:noIndent} -#>
     #{partial(blocks,'codeblock')}
-    return out;
+    <#if(useChunks){#>
+      chunkEnd();
+      out = result;
+      out = Object.keys(result).filter(i => i !== '#{useChunks}').map(curr => ({ name: curr, content: result[curr] }))
+    <#}#>
+      return out;
   },
 <#
     var cb = context.block;

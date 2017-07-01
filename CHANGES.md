@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.6.0
+
+- introduce chunks. now we have dynamic chunks output? that can be used to produce chunked output? that can be saved in separate files
+
 ## 0.5.0
 
 - introduce block to file feature. For usage see demo folder.
