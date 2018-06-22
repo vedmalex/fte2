@@ -11,7 +11,9 @@ export class TemplateFactory extends TemplateFactoryBase {
     let root;
     for (let i = 0, len = this.root.length; i < len; i++) {
       root = this.root[i];
-      let fn = absPath ? path.resolve(fileName) : path.resolve(path.join(root, fileName));
+      let fn = absPath
+        ? path.resolve(fileName)
+        : path.resolve(path.join(root, fileName));
       if (fs.existsSync(fn + '.js')) {
         let result;
         // if (this.debug) {
@@ -49,24 +51,27 @@ export class TemplateFactory extends TemplateFactoryBase {
         }
       }
     }
-    throw new Error('template ' + fileName + ' not found (absPath= ' + absPath + ')');
-  };
+    debugger;
+    throw new Error(`template ${fileName} + not found (absPath= ${absPath} )`);
+  }
 
   public preload() {
     let files = [];
     for (let i = 0, rLen = this.root.length; i < rLen; i++) {
       for (let j = 0, eLen = this.ext.length; j < eLen; j++) {
-        files = files.concat(glob.sync('*.' + this.ext[j], {
-          root: this.root[i],
-          cwd: this.root[i],
-          matchBase: true,
-        }));
+        files = files.concat(
+          glob.sync('*.' + this.ext[j], {
+            root: this.root[i],
+            cwd: this.root[i],
+            matchBase: true,
+          }),
+        );
       }
     }
     for (let i = 0, len = files.length; i < len; i++) {
       this.load(files[i]);
     }
-  };
+  }
 
   // создает шаблон из текста
   public create(source: string, name?: string) {
@@ -82,23 +87,30 @@ export class TemplateFactory extends TemplateFactoryBase {
     tpl.compile();
     this.register(tpl);
     return name;
-  };
+  }
 
   public run(context: HashType, name: string, absPath?: boolean): string {
     let templ = this.ensure(name, absPath);
     let bc = this.blockContent(templ);
     return bc.run(context, bc.content, bc.partial);
-  };
+  }
 
-  public blocksToFiles(context: HashType, name: string, absPath?: boolean): { file: string, content: string }[] {
+  public blocksToFiles(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+  ): { file: string; content: string }[] {
     let templ = this.ensure(name, absPath);
     let bc = this.blockContent(templ);
-    return Object.keys(templ.blocks).map(curr => ({ file: curr, content: bc.content(curr, context, bc.content, bc.partial) }));
-  };
+    return Object.keys(templ.blocks).map(curr => ({
+      file: curr,
+      content: bc.content(curr, context, bc.content, bc.partial),
+    }));
+  }
 
   public express() {
     let self = this;
-    return function (fileName, context, callback) {
+    return function(fileName, context, callback) {
       let templ = self.ensure(fileName, true);
       let bc = self.blockContent(templ);
       let result, err;
@@ -110,20 +122,22 @@ export class TemplateFactory extends TemplateFactoryBase {
         callback(err, result);
       }
     };
-  };
+  }
 
   public clearCache(fn, list) {
     for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
       delete this.cache[list[keys[i]].name];
       delete this.cache[list[keys[i]].absPath];
     }
-  };
+  }
 
   public checkChanges(template, fileName: string, absPath: boolean) {
     let root;
     for (let i = 0, len = this.root.length; i < len; i++) {
       root = this.root[i];
-      let fn = absPath ? path.resolve(fileName) : path.resolve(path.join(root, fileName));
+      let fn = absPath
+        ? path.resolve(fileName)
+        : path.resolve(path.join(root, fileName));
       let fw = undefined;
       if (fs.existsSync(fn + '.js')) {
         fw = fn + '.js';

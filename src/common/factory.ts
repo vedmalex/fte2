@@ -1,4 +1,4 @@
-declare var process: { browser: boolean, cwd: () => string };
+declare var process: { browser: boolean; cwd: () => string };
 
 import { TemplateBase } from './template';
 import {
@@ -27,9 +27,15 @@ export abstract class TemplateFactoryBase {
     }
     if (!process.browser) {
       // this only need in serverside code with server load code
-      this.root = config ? (config.root ? (Array.isArray(config.root) ? config.root : [config.root]) : [process.cwd()]) : [process.cwd()];
+      this.root = config
+        ? config.root
+          ? Array.isArray(config.root)
+            ? config.root
+            : [config.root]
+          : [process.cwd()]
+        : [process.cwd()];
       this.debug = (config && config.debug) || false;
-      this.watch = (config && config.watch);
+      this.watch = config && config.watch;
 
       if (config && config.ext) {
         if (Array.isArray(config.ext)) {
@@ -63,7 +69,8 @@ export abstract class TemplateFactoryBase {
         this.checkChanges(template, fileName, absPath);
         let depList = Object.keys(template.dependency);
         for (let i = 0, len = depList.length; i < len; i++) {
-          let templates = this.watchTree[this.cache[depList[i]].absPath].templates;
+          let templates = this.watchTree[this.cache[depList[i]].absPath]
+            .templates;
           templates[template.absPath] = template;
         }
       }
@@ -82,9 +89,16 @@ export abstract class TemplateFactoryBase {
           return self.run(obj, name);
         }
       },
-      content: (name: string, context: HashType, content: ContentFunction, partial: PartialFunction) => {
+      content: (
+        name: string,
+        context: HashType,
+        content: ContentFunction,
+        partial: PartialFunction,
+      ) => {
         if (name) {
-          return tpl.blocks[name](context, content, partial);
+          return tpl.blocks.hasOwnProperty(name)
+            ? tpl.blocks[name](context, content, partial)
+            : '';
         } else {
           let fn = scripts.pop();
           if (typeof fn === 'function') {
@@ -97,7 +111,8 @@ export abstract class TemplateFactoryBase {
       run: (
         $context: HashType,
         $content: ContentFunction,
-        $partial: PartialFunction): string => {
+        $partial: PartialFunction,
+      ): string => {
         function go(context, content, partial): string {
           let $this = this as TemplateBase;
           if ($this.parent) {
@@ -129,7 +144,7 @@ export abstract class TemplateFactoryBase {
   public run(ctx: HashType, name: string, absPath?: boolean): string {
     throw new Error('abstract method call');
   }
-};
+}
 
 // надо удалить так же все wather Зависимости обновляемого шаблона,
 // в случае его удаления из кэша, и так же не испльзовать массиа, а
