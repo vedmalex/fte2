@@ -106,7 +106,6 @@ export abstract class TemplateFactoryBase {
         }
       },
       partial(obj: HashType, name: string): string {
-        // debugger;
         if (tpl.aliases.hasOwnProperty(name)) {
           return self.runPartial(obj, tpl.aliases[name], true, this.slots);
         } else {

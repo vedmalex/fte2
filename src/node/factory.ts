@@ -103,7 +103,6 @@ export class TemplateFactory extends TemplateFactoryBase {
     const result = bc.run(context, bc.content, bc.partial, bc.slot);
     if (Object.keys(bc.slots).length > 0) {
       if (Array.isArray(result)) {
-        debugger;
         return result.map(r => {
           let tpl = this.standalone(r.content);
           const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot);
@@ -128,9 +127,6 @@ export class TemplateFactory extends TemplateFactoryBase {
     slots?: SlotsHash,
   ): string {
     let templ = this.ensure(name, absPath);
-    if (name.match(/forms-form-simple/)) {
-      debugger;
-    }
     let bc = this.blockContent(templ, slots);
     return bc.run(context, bc.content, bc.partial, bc.slot);
   }
@@ -150,7 +146,7 @@ export class TemplateFactory extends TemplateFactoryBase {
 
   public express() {
     let self = this;
-    return function (fileName, context, callback) {
+    return function(fileName, context, callback) {
       let templ = self.ensure(fileName, true);
       let bc = self.blockContent(templ);
       let result, err;
