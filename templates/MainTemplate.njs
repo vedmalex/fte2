@@ -13,6 +13,10 @@
     return item.name.split(',')[0].trim();
   }
 
+  function processAlias(item){
+    return item.name.split(',').map(a => a.trim());
+  }
+
   function processnoIndent(item){
     return !!item;
   }
@@ -40,7 +44,7 @@
       noIndent = processnoIndent(item)
     }
     if(item.content === 'alias'){
-      alias = JSON.stringify(item.name.trim());
+      alias = processAlias(item);
     }
     if(item.content === 'chunks'){
       useChunks = processAsync(item);
@@ -49,12 +53,12 @@
 -#>
 {
 <#- if(alias){
-#> alias: #{alias},
+#> alias: #{JSON.stringify(alias)},
 <#- }-#>
-  script: function (#{contextName}, _content, partial){
+  script: function (#{contextName}, _content, partial, slot){
     function content(blockName, ctx) {
       if(ctx === undefined || ctx === null) ctx = #{contextName};
-      return _content(blockName, ctx, content, partial);
+      return _content(blockName, ctx, content, partial, slot);
     }
     <#if(useChunks){#>
     let current = '#{useChunks}';
@@ -103,7 +107,7 @@
       return out;
   },
 <#
-    var cb = context.block;
+    var cb = context.blocks;
     if(cb) {-#>
   blocks : {
 <#    for(var cbn in cb){ -#>
@@ -125,10 +129,46 @@
       }
     }
 -#>
-    "#{cbn}": function(#{blockConetxtName},  _content, partial){
+    "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
       function content(blockName, ctx) {
         if(ctx === undefined || ctx === null) ctx = #{contextName};
-        return _content(blockName, ctx, content, partial);
+        return _content(blockName, ctx, content, partial, slot);
+      }
+      var out = '';
+      <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
+      #{partial(blocks, 'codeblock')}
+      return out;
+    },
+<#      }-#>
+  },
+<#-  } -#>
+<#
+    var cb = context.slots;
+    if(cb) {-#>
+  slots : {
+<#    for(var cbn in cb){ -#>
+<#- var blockConetxtName = contextName;
+    var bdirvs = cb[cbn].directives;
+    var item = bdirvs[i];
+    var blkNoIndent = false;
+    var blAsyncType = '';
+    for(var i = 0, len = bdirvs.length; i < len; i++){
+      item = bdirvs[i];
+      if(item.content === 'context'){
+        blockConetxtName = processContextName(item)
+      }
+      if(item.content === 'noIndent'){
+        blkNoIndent = processnoIndent(item)
+      }
+      if(item.content === 'async'){
+        blAsyncType = processAsync(item);
+      }
+    }
+-#>
+    "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
+      function content(blockName, ctx) {
+        if(ctx === undefined || ctx === null) ctx = #{contextName};
+        return _content(blockName, ctx, content, partial, slot);
       }
       var out = '';
       <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
@@ -140,7 +180,7 @@
 <#-  } -#>
   compile: function() {
 <#- if(alias){#>
-    this.alias = #{alias};
+    this.alias = #{JSON.stringify(alias)};
 <#- }-#>
 <#-  if(reqList.length > 0) { -#>
     this.aliases={};

@@ -1,9 +1,9 @@
 module.exports = {
-  script: function (renderOptions, _content, partial) {
+  script: function (renderOptions, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
         ctx = renderOptions;
-      return _content(blockName, ctx, content, partial)
+      return _content(blockName, ctx, content, partial, slot)
     }
     var out = '';
     var blockList = renderOptions.blocks;

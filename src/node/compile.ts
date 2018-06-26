@@ -21,16 +21,21 @@ function prepareCode(src, optimize) {
     let F = new TemplateFactory({
       root: templateRoot,
     });
-    errorMessage = F.run({
-      error: err,
-      compiledFile: src,
-    }, 'compilationError.njs');
+    errorMessage = F.run(
+      {
+        error: err,
+        compiledFile: src,
+      },
+      'compilationError.njs',
+    ) as string;
   } finally {
     if (!errorMessage) {
       if (optimize) {
         let optimized = esmangle.optimize(ast, [
-          [esmangle.pass.Registry.pass['remove-empty-statement']
-            , esmangle.pass.Registry.pass['remove-unreachable-branch']],
+          [
+            esmangle.pass.Registry.pass['remove-empty-statement'],
+            esmangle.pass.Registry.pass['remove-unreachable-branch'],
+          ],
         ]);
         let output = escodegen.generate(optimized, {
           format: {
@@ -45,8 +50,7 @@ function prepareCode(src, optimize) {
             semicolons: false,
             parentheses: false,
           },
-        }
-        );
+        });
         return output;
       } else {
         return src;
@@ -69,7 +73,7 @@ export function validate(content) {
   let F = new TemplateFactory({
     root: templateRoot,
   });
-  let src = F.run(raw.parse(content.toString()), 'compiled.njs');
+  let src = F.run(raw.parse(content.toString()), 'compiled.njs') as string;
   let hasError = false;
   let ast;
   try {

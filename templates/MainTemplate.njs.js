@@ -1,9 +1,9 @@
 module.exports = {
-  script: function (context, _content, partial) {
+  script: function (context, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
         ctx = context;
-      return _content(blockName, ctx, content, partial)
+      return _content(blockName, ctx, content, partial, slot)
     }
     var out = '';
     function applyIndent(_str, _indent) {
@@ -42,6 +42,9 @@ module.exports = {
     function processAsync(item) {
       return item.name.split(',')[0].trim()
     }
+    function processAlias(item) {
+      return item.name.split(',').map(a => a.trim())
+    }
     function processnoIndent(item) {
       return !!item
     }
@@ -67,7 +70,7 @@ module.exports = {
         noIndent = processnoIndent(item)
       }
       if (item.content === 'alias') {
-        alias = JSON.stringify(item.name.trim())
+        alias = processAlias(item)
       }
       if (item.content === 'chunks') {
         useChunks = processAsync(item)
@@ -76,14 +79,14 @@ module.exports = {
     out += '{';
     if (alias) {
       out += ' alias:';
-      out += applyIndent(alias, ' ');
+      out += applyIndent(JSON.stringify(alias), ' ');
       out += ','
     }
     out += '  script: function (';
     out += contextName;
-    out += ', _content, partial){\n    function content(blockName, ctx) {\n      if(ctx === undefined || ctx === null) ctx =';
+    out += ', _content, partial, slot){\n    function content(blockName, ctx) {\n      if(ctx === undefined || ctx === null) ctx =';
     out += applyIndent(contextName, ' ');
-    out += ';\n      return _content(blockName, ctx, content, partial);\n    }\n    ';
+    out += ';\n      return _content(blockName, ctx, content, partial, slot);\n    }\n    ';
     if (useChunks) {
       out += '\n    let current = \'';
       out += useChunks;
@@ -102,7 +105,7 @@ module.exports = {
       out += '\').map(curr => ({ name: curr, content: result[curr] }))\n    '
     }
     out += '\n      return out;\n  },\n';
-    var cb = context.block;
+    var cb = context.blocks;
     if (cb) {
       out += '  blocks : {\n';
       for (var cbn in cb) {
@@ -127,9 +130,46 @@ module.exports = {
         out += cbn;
         out += '": function(';
         out += blockConetxtName;
-        out += ',  _content, partial){\n      function content(blockName, ctx) {\n        if(ctx === undefined || ctx === null) ctx =';
+        out += ',  _content, partial, slot){\n      function content(blockName, ctx) {\n        if(ctx === undefined || ctx === null) ctx =';
         out += applyIndent(contextName, ' ');
-        out += ';\n        return _content(blockName, ctx, content, partial);\n      }\n      var out = \'\';';
+        out += ';\n        return _content(blockName, ctx, content, partial, slot);\n      }\n      var out = \'\';';
+        var blocks = {
+          blocks: cb[cbn].main,
+          noIndent: blkNoIndent
+        };
+        out += applyIndent(partial(blocks, 'codeblock'), '      ');
+        out += '\n      return out;\n    },\n'
+      }
+      out += '  },'
+    }
+    var cb = context.slots;
+    if (cb) {
+      out += '  slots : {\n';
+      for (var cbn in cb) {
+        var blockConetxtName = contextName;
+        var bdirvs = cb[cbn].directives;
+        var item = bdirvs[i];
+        var blkNoIndent = false;
+        var blAsyncType = '';
+        for (var i = 0, len = bdirvs.length; i < len; i++) {
+          item = bdirvs[i];
+          if (item.content === 'context') {
+            blockConetxtName = processContextName(item)
+          }
+          if (item.content === 'noIndent') {
+            blkNoIndent = processnoIndent(item)
+          }
+          if (item.content === 'async') {
+            blAsyncType = processAsync(item)
+          }
+        }
+        out += '    "';
+        out += cbn;
+        out += '": function(';
+        out += blockConetxtName;
+        out += ',  _content, partial, slot){\n      function content(blockName, ctx) {\n        if(ctx === undefined || ctx === null) ctx =';
+        out += applyIndent(contextName, ' ');
+        out += ';\n        return _content(blockName, ctx, content, partial, slot);\n      }\n      var out = \'\';';
         var blocks = {
           blocks: cb[cbn].main,
           noIndent: blkNoIndent
@@ -142,7 +182,7 @@ module.exports = {
     out += '  compile: function() {';
     if (alias) {
       out += '\n    this.alias =';
-      out += applyIndent(alias, ' ');
+      out += applyIndent(JSON.stringify(alias), ' ');
       out += ';'
     }
     if (reqList.length > 0) {

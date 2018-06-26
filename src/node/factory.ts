@@ -4,7 +4,8 @@ import * as glob from 'glob';
 import { Template } from './template';
 import { TemplateFactoryBase } from './../common/factory';
 import { safeEval } from './helpers';
-import { HashType } from './../common/interfaces';
+import { HashType, SlotsHash } from './../common/interfaces';
+import { Factory } from '../browser';
 
 export class TemplateFactory extends TemplateFactoryBase {
   public load(fileName: string, absPath?: boolean) {
@@ -51,7 +52,6 @@ export class TemplateFactory extends TemplateFactoryBase {
         }
       }
     }
-    debugger;
     throw new Error(`template ${fileName} + not found (absPath= ${absPath} )`);
   }
 
@@ -78,21 +78,61 @@ export class TemplateFactory extends TemplateFactoryBase {
     if (!name) {
       name = 'freegenerated' + Math.random().toString() + '.js';
     }
-    let tpl = new Template({
-      source: source,
-      name: name,
-      absPath: name,
-      factory: this,
-    });
-    tpl.compile();
+    const tpl = this.standalone(source);
+    tpl.name = name;
+    tpl.absPath = name;
     this.register(tpl);
     return name;
   }
 
-  public run(context: HashType, name: string, absPath?: boolean): string {
+  public standalone(source: string) {
+    let tpl = new Template({
+      source: source,
+      factory: this,
+    });
+    return tpl.compile();
+  }
+
+  public run(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+  ): string | object[] {
     let templ = this.ensure(name, absPath);
-    let bc = this.blockContent(templ);
-    return bc.run(context, bc.content, bc.partial);
+    let bc = this.blockContent(templ, {});
+    const result = bc.run(context, bc.content, bc.partial, bc.slot);
+    if (Object.keys(bc.slots).length > 0) {
+      if (Array.isArray(result)) {
+        debugger;
+        return result.map(r => {
+          let tpl = this.standalone(r.content);
+          const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot);
+          return {
+            name: r.name,
+            content,
+          };
+        });
+      } else {
+        const res = this.standalone(result);
+        return res.script(bc.slots, bc.content, bc.partial, bc.slot);
+      }
+    } else {
+      return result;
+    }
+  }
+
+  public runPartial(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+    slots?: SlotsHash,
+  ): string {
+    let templ = this.ensure(name, absPath);
+    if (name.match(/forms-form-simple/)) {
+      debugger;
+    }
+    let bc = this.blockContent(templ, slots);
+    return bc.run(context, bc.content, bc.partial, bc.slot);
   }
 
   public blocksToFiles(
@@ -104,18 +144,18 @@ export class TemplateFactory extends TemplateFactoryBase {
     let bc = this.blockContent(templ);
     return Object.keys(templ.blocks).map(curr => ({
       file: curr,
-      content: bc.content(curr, context, bc.content, bc.partial),
+      content: bc.content(curr, context, bc.content, bc.partial, bc.slot),
     }));
   }
 
   public express() {
     let self = this;
-    return function(fileName, context, callback) {
+    return function (fileName, context, callback) {
       let templ = self.ensure(fileName, true);
       let bc = self.blockContent(templ);
       let result, err;
       try {
-        result = bc.run(context, bc.content, bc.partial);
+        result = bc.run(context, bc.content, bc.partial, bc.slot);
       } catch (e) {
         err = e;
       } finally {

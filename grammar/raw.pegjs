@@ -31,8 +31,13 @@ function parseIt(input) {
         break;
       case "block":
         var lr = parseIt(block.content);
-        if(!result.block) result.block = {};
-        result.block[block.name] = lr;
+        if(block.name.type === 'block') {
+          if(!result.blocks) result.blocks = {};
+          result.blocks[block.name.name] = lr;
+        } else if(block.name.type === 'slot') {
+          if(!result.slots) result.slots = {};
+          result.slots[block.name.name] = lr;
+        }
         break;
     }
   }
@@ -124,7 +129,7 @@ uexpression "escaped expression" = indent:_ ueStart content:(!( eEnd / eStart ) 
 codeBlock "code block" = indent:(eol? _) cbStart content:(!(cbEnd / (blockStartDif / blockEndEdn)) .)* cbEnd
 { return new node(f(content), "codeblock", undefined, f(indent));}
 
-directive "directive" = _ dStart _ content:directives _ "("? _? name:( stringType _? ","? _? )* ")"? _? cbEnd (_ eol)?
+directive "directive" = _ dStart _ content:directives __eol? "("? __eol? name:( stringType __eol? ","? __eol? )* ")"? __eol? cbEnd ( __eol)?
 { return new node(content, "directive", f(name)); }
 
 notText = directive / cbStart / cbEnd / expression / uexpression / blockEnd / blockStart
@@ -150,7 +155,7 @@ dStart "directive start" = _ "<#@"
 
 blockStart = cStart name:blockStartDif cEnd {return name}
 
-blockStartDif = _ "block" _ name: stringType " : "{return name;}
+blockStartDif = _ type:("block" / "slot") _ name: stringType " : "{return {type, name};}
 
 blockEnd = cStart blockEndEdn
 
@@ -171,7 +176,7 @@ directives = valiableName
 valiableName = name:([a-z0-9_]i)* {return f(name)}
 
 _ = WhiteSpace*
-__eol = _ eol
+__eol = _ eol / (_ / eol)
 eol__ = eol _
 
 eol "end of line" = "\n" / "\r\n" / "\r" / "\u2028" // line separator

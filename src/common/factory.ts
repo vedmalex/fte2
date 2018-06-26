@@ -7,7 +7,10 @@ import {
   HashTypeGeneric,
   PartialFunction,
   ContentFunction,
+  SlotsHash,
+  SlotFunction,
 } from './../common/interfaces';
+import { compileLight } from '../node';
 
 /**
  * template factory -- it instatntiate the templates
@@ -54,8 +57,10 @@ export abstract class TemplateFactoryBase {
   public register(tpl: TemplateBase, fileName?: string) {
     if (!(tpl.name in this.cache)) {
       this.cache[tpl.name] = tpl;
-      if (tpl.alias && tpl.alias !== tpl.name) {
-        this.cache[tpl.alias] = tpl;
+      if (tpl.alias && Array.isArray(tpl.alias)) {
+        tpl.alias.filter(a => a !== tpl.name).forEach(a => {
+          this.cache[a] = tpl;
+        });
       }
       this.cache[tpl.absPath] = tpl;
     }
@@ -78,26 +83,46 @@ export abstract class TemplateFactoryBase {
     }
     return this.cache[fileName];
   }
-  public blockContent(tpl: TemplateBase): BlockContent {
+  public blockContent(tpl: TemplateBase, slots?: SlotsHash): BlockContent {
     let scripts = [];
     let self = this;
-    return {
-      partial: (obj: HashType, name: string): string => {
-        if (tpl.aliases.hasOwnProperty(name)) {
-          return self.run(obj, tpl.aliases[name], true);
-        } else {
-          return self.run(obj, name);
+    const bc: BlockContent = {
+      slots: slots ? slots : {},
+      slot(name: string, content: string | string[]): void | string {
+        if (name) {
+          if (!this.slots.hasOwnProperty(name)) {
+            this.slots[name] = [];
+          }
+          if (content) {
+            if (Array.isArray(content)) {
+              content.forEach(c => this.slot(name, c));
+            } else {
+              if (this.slots[name].indexOf(content) === -1)
+                this.slots[name].push(content);
+            }
+          } else {
+            return `#{partial(context['${name}'] || [], '${name}')}`;
+          }
         }
       },
-      content: (
+      partial(obj: HashType, name: string): string {
+        // debugger;
+        if (tpl.aliases.hasOwnProperty(name)) {
+          return self.runPartial(obj, tpl.aliases[name], true, this.slots);
+        } else {
+          return self.runPartial(obj, name, false, this.slots);
+        }
+      },
+      content(
         name: string,
         context: HashType,
         content: ContentFunction,
         partial: PartialFunction,
-      ) => {
+        slot: SlotFunction,
+      ) {
         if (name) {
           return tpl.blocks.hasOwnProperty(name)
-            ? tpl.blocks[name](context, content, partial)
+            ? tpl.blocks[name](context, content, partial, slot)
             : '';
         } else {
           let fn = scripts.pop();
@@ -108,25 +133,30 @@ export abstract class TemplateFactoryBase {
           }
         }
       },
-      run: (
+      run(
         $context: HashType,
         $content: ContentFunction,
         $partial: PartialFunction,
-      ): string => {
-        function go(context, content, partial): string {
+      ): string {
+        function go(context, content, partial, slot): string {
           let $this = this as TemplateBase;
           if ($this.parent) {
             let parent = self.ensure($this.parent);
             // tpl.mergeParent(parent); moved to compile.
             scripts.push($this.script);
-            return go.call(parent, context, content, partial);
+            return go.call(parent, context, content, partial, slot);
           } else {
-            return $this.script(context, content, partial);
+            return $this.script(context, content, partial, slot);
           }
         }
-        return go.call(tpl, $context, $content, $partial);
+        return go.call(tpl, $context, $content, $partial, this.slot);
       },
     };
+    bc.content = bc.content.bind(bc);
+    bc.partial = bc.partial.bind(bc);
+    bc.run = bc.run.bind(bc);
+    bc.slot = bc.slot.bind(bc);
+    return bc;
   }
 
   public preload(fileName?: string) {
@@ -141,7 +171,20 @@ export abstract class TemplateFactoryBase {
     throw new Error('abstract method call');
   }
 
-  public run(ctx: HashType, name: string, absPath?: boolean): string {
+  public run(
+    ctx: HashType,
+    name: string,
+    absPath?: boolean,
+  ): string | object[] {
+    throw new Error('abstract method call');
+  }
+
+  public runPartial(
+    ctx: HashType,
+    name: string,
+    absPath?: boolean,
+    slots?: SlotsHash,
+  ): string {
     throw new Error('abstract method call');
   }
 }

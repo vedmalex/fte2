@@ -4,12 +4,11 @@ import { HashTypeGeneric, HashType } from './../common/interfaces';
 import { TemplateConfig } from './../common/interfaces';
 
 /**
- * We must ensure that template is registered with its compiled tempaltes
+ * We must ensure that template is registered with its compiled templates
  */
 declare var global: { fte: HashTypeGeneric<TemplateConfig> };
 
 export class TemplateFactoryBrowser extends TemplateFactoryBase {
-
   public resolveTemplateConfig(fileName: string): TemplateConfig {
     let result = global.fte[fileName];
     result.factory = this;
@@ -25,9 +24,23 @@ export class TemplateFactoryBrowser extends TemplateFactoryBase {
     return templ;
   }
 
-  public run(context: HashType, name: string, absPath?: boolean): string {
+  public run(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+  ): string | object[] {
     let templ = this.ensure(name);
     let bc = this.blockContent(templ);
-    return bc.run(context, bc.content, bc.partial);
+    return bc.run(context, bc.content, bc.partial, bc.slot);
+  }
+
+  public runPartial(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+  ): string {
+    let templ = this.ensure(name);
+    let bc = this.blockContent(templ);
+    return bc.run(context, bc.content, bc.partial, bc.slot);
   }
 }
