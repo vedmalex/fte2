@@ -52,7 +52,7 @@ export class TemplateFactory extends TemplateFactoryBase {
         }
       }
     }
-    throw new Error(`template ${fileName} + not found (absPath= ${absPath} )`);
+    throw new Error(`template ${fileName} not found (absPath= ${absPath} )`);
   }
 
   public preload() {
