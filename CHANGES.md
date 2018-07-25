@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# 0.7.1
+
+- chunks from partials
+
+# 0.7.0
+
+- introduce slots
+- multiple relaxed aliases for template
+
 ## 0.6.0
 
 - introduce chunks. now we have dynamic chunks output? that can be used to produce chunked output? that can be saved in separate files

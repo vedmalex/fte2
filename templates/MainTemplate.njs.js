@@ -88,9 +88,9 @@ module.exports = {
     out += applyIndent(contextName, ' ');
     out += ';\n      return _content(blockName, ctx, content, partial, slot);\n    }\n    ';
     if (useChunks) {
-      out += '\n    let current = \'';
+      out += '\n    const _partial = partial\n    partial = function(obj, template) {\n      const result = _partial(obj, template);\n      if(Array.isArray(result)){\n        result.forEach(r => {\n          chunkEnsure(r.name, r.content);\n        })\n        return \'\';\n      } else {\n        return result;\n      }\n    }\n    let current = \'';
       out += useChunks;
-      out += '\';\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = \'\';\n      }\n    }\n\n    function chunkStart(name) {\n      chunkEnd();\n      chunkEnsure(current);\n      result[current] += out;\n      chunkEnsure(name);\n      result[name] = out = \'\';\n      outStack.push(name);\n      current = name;\n    }\n\n    function chunkEnd() {\n      chunkEnsure(current);\n      result[current] += out;\n      if (outStack.length > 1) {\n        current = outStack.pop();\n      } else {\n        current = outStack[0];\n      }\n      out = \'\'\n    }\n\n    '
+      out += '\';\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name, content) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = content ? content :\'\';\n      }\n    }\n\n    function chunkStart(name) {\n      chunkEnd();\n      chunkEnsure(current);\n      result[current] += out;\n      chunkEnsure(name);\n      result[name] = out = \'\';\n      outStack.push(name);\n      current = name;\n    }\n\n    function chunkEnd() {\n      chunkEnsure(current);\n      result[current] += out;\n      if (outStack.length > 1) {\n        current = outStack.pop();\n      } else {\n        current = outStack[0];\n      }\n      out = \'\'\n    }\n\n    '
     }
     out += '\n    var out = \'\';';
     var blocks = {

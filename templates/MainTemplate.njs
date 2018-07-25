@@ -61,16 +61,28 @@
       return _content(blockName, ctx, content, partial, slot);
     }
     <#if(useChunks){#>
+    const _partial = partial
+    partial = function(obj, template) {
+      const result = _partial(obj, template);
+      if(Array.isArray(result)){
+        result.forEach(r => {
+          chunkEnsure(r.name, r.content);
+        })
+        return '';
+      } else {
+        return result;
+      }
+    }
     let current = '#{useChunks}';
     let outStack = [current];
     let result;
 
-    function chunkEnsure(name) {
+    function chunkEnsure(name, content) {
       if (!result) {
         result = {};
       }
       if (!result.hasOwnProperty(name)) {
-        result[name] = '';
+        result[name] = content ? content :'';
       }
     }
 
