@@ -1,4 +1,5 @@
 module.exports = {
+  alias: ['es6module.njs'],
   script: function (context, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
@@ -27,12 +28,13 @@ module.exports = {
         return str
       }
     }
-    out += '\nexport default';
+    out += 'export default';
     out += applyIndent(partial(context, 'core'), ' ');
     out += ';';
     return out
   },
   compile: function () {
+    this.alias = ['es6module.njs'];
     this.aliases = {};
     this.aliases['core'] = 'MainTemplate.njs';
     this.factory.ensure('MainTemplate.njs')

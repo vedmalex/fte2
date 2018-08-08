@@ -1,3 +1,4 @@
+<#@ alias 'codeblock.njs' #>
 <#@ context 'renderOptions' #>
 <#@ noIndent #>
 <#

@@ -1,4 +1,5 @@
 module.exports = {
+  alias: ['MainTemplate.njs'],
   script: function (context, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
@@ -221,6 +222,7 @@ module.exports = {
     return out
   },
   compile: function () {
+    this.alias = ['MainTemplate.njs'];
     this.aliases = {};
     this.aliases['codeblock'] = 'codeblock.njs';
     this.factory.ensure('codeblock.njs')

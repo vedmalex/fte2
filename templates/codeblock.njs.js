@@ -1,4 +1,5 @@
 module.exports = {
+  alias: ['codeblock.njs'],
   script: function (renderOptions, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
@@ -135,6 +136,7 @@ module.exports = {
     return out
   },
   compile: function () {
+    this.alias = ['codeblock.njs']
   },
   dependency: {}
 }

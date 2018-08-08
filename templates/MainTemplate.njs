@@ -1,3 +1,4 @@
+<#@ alias 'MainTemplate.njs' #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
 <#-
   function processRequire(item){

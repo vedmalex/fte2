@@ -1,4 +1,5 @@
 module.exports = {
+  alias: ['compilationError.njs'],
   script: function (context, _content, partial, slot) {
     function content(blockName, ctx) {
       if (ctx === undefined || ctx === null)
@@ -13,6 +14,7 @@ module.exports = {
     return out
   },
   compile: function () {
+    this.alias = ['compilationError.njs']
   },
   dependency: {}
 }
