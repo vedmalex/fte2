@@ -2268,7 +2268,7 @@ function peg$parse(input, options) {
   }
 
 
-  //http://pegjs.majda.cz/online
+  //https://pegjs.org/online
   //http://peg.arcanis.fr/
 
   var eol = ['\n','\r\n','\r','\u2028','\u2029'];

@@ -145,7 +145,15 @@ export abstract class TemplateFactoryBase {
             scripts.push($this.script);
             return go.call(parent, context, content, partial, slot);
           } else {
-            return $this.script(context, content, partial, slot);
+            try {
+              return $this.script(context, content, partial, slot);
+            } catch (e) {
+              throw new Error(
+                `template ${$this.name} failed to execute with error 
+                  '${e.message}
+                  ${e.stack}'`,
+              );
+            }
           }
         }
         return go.call(tpl, $context, $content, $partial, this.slot);

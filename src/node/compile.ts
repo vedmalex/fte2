@@ -62,11 +62,17 @@ function prepareCode(src, optimize) {
 }
 
 export function compileLight(content: Buffer | string, optimize?: boolean) {
-  let compiled = raw.parse(content.toString());
-  let F = new TemplateFactory({
-    root: templateRoot,
-  });
-  return prepareCode(F.run(compiled, 'raw.njs'), optimize);
+  try {
+    let compiled = raw.parse(content.toString());
+    let F = new TemplateFactory({
+      root: templateRoot,
+    });
+    return prepareCode(F.run(compiled, 'raw.njs'), optimize);
+  } catch (e) {
+    console.log(content, e.location.start.line)
+    debugger;
+    throw e;
+  }
 }
 
 export function validate(content) {
