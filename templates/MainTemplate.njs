@@ -28,6 +28,7 @@
   var noIndent = false;
   var alias = '';
   var useChunks = '';
+  var useHash = '';
   var item, directives = context.directives, extend = '';
   for (var i = 0, len = directives.length; i < len; i++) {
 
@@ -49,6 +50,9 @@
     }
     if(item.content === 'chunks'){
       useChunks = processAsync(item);
+    }
+    if(item.content === 'useHash'){
+      useHash = !!item;
     }
   }
 -#>
@@ -115,7 +119,11 @@
     <#if(useChunks){#>
       chunkEnd();
       out = result;
-      out = Object.keys(result).filter(i => i !== '#{useChunks}').map(curr => ({ name: curr, content: result[curr] }))
+      <#if(!useHash){#>
+        out = Object.keys(result).filter(i => i !== '#{useChunks}').map(curr => ({ name: curr, content: result[curr] }))
+      <#} else {#>
+        delete out['#{useChunks}'];
+      <#}#>
     <#}#>
       return out;
   },

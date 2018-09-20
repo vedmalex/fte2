@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 0.8.0
+
+- return chunks as hash
+
 # 0.7.1
 
 - chunks from partials

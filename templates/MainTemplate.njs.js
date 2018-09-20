@@ -55,6 +55,7 @@ module.exports = {
     var noIndent = false;
     var alias = '';
     var useChunks = '';
+    var useHash = '';
     var item, directives = context.directives, extend = '';
     for (var i = 0, len = directives.length; i < len; i++) {
       item = directives[i];
@@ -75,6 +76,9 @@ module.exports = {
       }
       if (item.content === 'chunks') {
         useChunks = processAsync(item)
+      }
+      if (item.content === 'useHash') {
+        useHash = !!item
       }
     }
     out += '{';
@@ -101,9 +105,17 @@ module.exports = {
     out += applyIndent(partial(blocks, 'codeblock'), '    ');
     out += '\n    ';
     if (useChunks) {
-      out += '\n      chunkEnd();\n      out = result;\n      out = Object.keys(result).filter(i => i !== \'';
-      out += useChunks;
-      out += '\').map(curr => ({ name: curr, content: result[curr] }))\n    '
+      out += '\n      chunkEnd();\n      out = result;\n      ';
+      if (!useHash) {
+        out += '\n        out = Object.keys(result).filter(i => i !== \'';
+        out += useChunks;
+        out += '\').map(curr => ({ name: curr, content: result[curr] }))\n      '
+      } else {
+        out += '\n        delete out[\'';
+        out += useChunks;
+        out += '\'];\n      '
+      }
+      out += '\n    '
     }
     out += '\n      return out;\n  },\n';
     var cb = context.blocks;
