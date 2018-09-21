@@ -120,7 +120,7 @@ export abstract class TemplateFactoryBase {
         slot: SlotFunction,
       ) {
         if (name) {
-          return tpl.blocks.hasOwnProperty(name)
+          return tpl.blocks && tpl.blocks.hasOwnProperty(name)
             ? tpl.blocks[name](context, content, partial, slot)
             : '';
         } else {
