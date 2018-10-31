@@ -5,7 +5,6 @@ import { Template } from './template';
 import { TemplateFactoryBase } from './../common/factory';
 import { safeEval } from './helpers';
 import { HashType, SlotsHash } from './../common/interfaces';
-import { Factory } from '../browser';
 
 export class TemplateFactory extends TemplateFactoryBase {
   public load(fileName: string, absPath?: boolean) {
