@@ -1,11 +1,12 @@
 {
   "name": "fte.js",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc",
+    "prepublish": "tsc",
     "templates": "node dist/compile_templates.js",
     "grammar": "pegjs --output ./grammar/raw.pegjs.js ./grammar/raw.pegjs",
     "genit": "npm run grammar && npm run templates",

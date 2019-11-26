@@ -9,7 +9,6 @@ module.exports = { alias: ["codeblock.njs"], script: function (renderOptions, _c
         var blockList = renderOptions.blocks;
         var noIndent = renderOptions.noIndent;
         var needToIndent = false;
-        !!;
         if (!noIndent) {
             for (var i = 0, len = blockList.length; i < len; i++) {
                 if (blockList[i].indent) {
@@ -21,7 +20,7 @@ module.exports = { alias: ["codeblock.njs"], script: function (renderOptions, _c
         else {
             needToIndent = !noIndent;
         }
-        /*20:1*/
+        /*19:1*/
         var escapeBlocks = false;
         for (var i = 0, len = blockList.length; i < len; i++) {
             if (blockList[i].type === 'uexpression') {
@@ -29,19 +28,19 @@ module.exports = { alias: ["codeblock.njs"], script: function (renderOptions, _c
                 break;
             }
         }
-        /*29:1*/
+        /*28:1*/
         if (escapeBlocks) {
-            /*30:1*/
+            /*29:1*/
             out += "var escapeExp = /[&<>\"]/,\n    escapeAmpExp = /&/g,\n    escapeLtExp = /</g,\n    escapeGtExp = />/g,\n    escapeQuotExp = /\"/g;\n\nfunction escapeIt (text) {\n  if (text == null) {\n    return '';\n  }\n\n  var result = text.toString();\n  if (!escapeExp.test(result)) {\n    return result;\n  }\n\n  return result.replace(escapeAmpExp, '&amp;')\n  .replace(escapeLtExp, '&lt;')\n  .replace(escapeGtExp, '&gt;')\n  .replace(escapeQuotExp, '&quot;');\n};\n";
-            /*51:1*/
+            /*50:1*/
         }
-        /*52:1*/
+        /*51:1*/
         if (needToIndent) {
-            /*53:1*/
+            /*52:1*/
             out += "function applyIndent(_str, _indent) {\n  var str = String(_str);\n  var indent = '';\n  if (typeof _indent == 'number' && _indent > 0) {\n    var res = '';\n    for (var i = 0; i < _indent; i++) {\n      res += ' ';\n    }\n    indent = res;\n  }\n  if (typeof _indent == 'string' && _indent.length > 0) {\n    indent = _indent;\n  }\n  if (indent && str) {\n    return str.split('\\n').map(function (s) {\n        return indent + s;\n    }).join('\\n');\n  } else {\n    return str;\n  }\n}\n";
-            /*74:1*/
+            /*73:1*/
         }
-        /*75:1*/
+        /*74:1*/
         function applyIndent(_str, _indent) {
             var str = String(_str);
             var indent = '';
@@ -72,150 +71,150 @@ module.exports = { alias: ["codeblock.njs"], script: function (renderOptions, _c
             if (block.indent) {
                 indent = JSON.stringify(block.indent);
             }
-            /*104:4*/
+            /*103:4*/
             out += "\n/*";
-            /*105:3*/
+            /*104:3*/
             out += block.line;
-            /*105:16*/
+            /*104:16*/
             out += ":";
-            /*105:17*/
+            /*104:17*/
             out += block.column;
-            /*105:32*/
+            /*104:32*/
             out += "*/\n";
-            /*106:1*/
+            /*105:1*/
             switch (block.type) {
                 case 'text':
-                    /*109:3*/
+                    /*108:3*/
                     out += " out +=";
-                    /*109:10*/
+                    /*108:10*/
                     if (block.indent && !noIndent) {
-                        /*110:1*/
+                        /*109:1*/
                         out += JSON.stringify(applyIndent(content, block.indent));
-                        /*110:54*/
+                        /*109:54*/
                         out += ";";
-                        /*110:55*/
+                        /*109:55*/
                     }
                     else if (indent) {
-                        /*112:1*/
+                        /*111:1*/
                         out += indent;
-                        /*112:10*/
+                        /*111:10*/
                         out += " +";
-                        /*112:12*/
+                        /*111:12*/
                         out += " " + JSON.stringify(content);
-                        /*112:39*/
+                        /*111:39*/
                         out += ";";
-                        /*112:40*/
+                        /*111:40*/
                     }
                     else {
-                        /*114:1*/
+                        /*113:1*/
                         out += JSON.stringify(content);
-                        /*114:27*/
+                        /*113:27*/
                         out += ";";
-                        /*114:28*/
+                        /*113:28*/
                     }
-                    /*116:1*/
+                    /*115:1*/
                     break;
                 case 'uexpression':
-                    /*119:3*/
+                    /*118:3*/
                     out += " out +=";
-                    /*119:10*/
+                    /*118:10*/
                     if (indent && !noIndent) {
-                        /*120:1*/
+                        /*119:1*/
                         out += "applyIndent(escapeIt(";
-                        /*120:22*/
+                        /*119:22*/
                         out += content;
-                        /*120:32*/
+                        /*119:32*/
                         out += "),";
-                        /*120:34*/
+                        /*119:34*/
                         out += " " + indent;
-                        /*120:44*/
+                        /*119:44*/
                         out += ");";
-                        /*120:46*/
+                        /*119:46*/
                     }
                     else if (indent) {
-                        /*122:1*/
+                        /*121:1*/
                         out += indent;
-                        /*122:10*/
+                        /*121:10*/
                         out += " + escapeIt(";
-                        /*122:22*/
+                        /*121:22*/
                         out += content;
-                        /*122:32*/
+                        /*121:32*/
                         out += ");";
-                        /*122:34*/
+                        /*121:34*/
                     }
                     else {
-                        /*124:1*/
+                        /*123:1*/
                         out += "escapeIt(";
-                        /*124:10*/
+                        /*123:10*/
                         out += content;
-                        /*124:20*/
+                        /*123:20*/
                         out += ");";
-                        /*124:22*/
+                        /*123:22*/
                     }
-                    /*126:1*/
+                    /*125:1*/
                     break;
                 case 'expression':
-                    /*129:3*/
+                    /*128:3*/
                     out += " out +=";
-                    /*129:10*/
+                    /*128:10*/
                     if (indent && !noIndent) {
-                        /*130:1*/
+                        /*129:1*/
                         out += "applyIndent(";
-                        /*130:13*/
+                        /*129:13*/
                         out += content;
-                        /*130:23*/
+                        /*129:23*/
                         out += ",";
-                        /*130:24*/
+                        /*129:24*/
                         out += " " + indent;
-                        /*130:34*/
+                        /*129:34*/
                         out += ");";
-                        /*130:36*/
+                        /*129:36*/
                     }
                     else if (indent) {
-                        /*132:1*/
+                        /*131:1*/
                         out += indent;
-                        /*132:10*/
+                        /*131:10*/
                         out += " +";
-                        /*132:12*/
+                        /*131:12*/
                         out += " " + content;
-                        /*132:23*/
+                        /*131:23*/
                         out += ";";
-                        /*132:24*/
+                        /*131:24*/
                     }
                     else {
-                        /*134:1*/
+                        /*133:1*/
                         out += content;
-                        /*134:11*/
+                        /*133:11*/
                         out += ";\n";
-                        /*135:1*/
+                        /*134:1*/
                     }
-                    /*136:1*/
+                    /*135:1*/
                     break;
                 case 'codeblock':
-                    /*139:3*/
+                    /*138:3*/
                     out += " ";
-                    /*139:4*/
+                    /*138:4*/
                     if (blockIndent) {
-                        /*140:1*/
+                        /*139:1*/
                         out += applyIndent(content, block.indent);
-                        /*140:38*/
+                        /*139:38*/
                     }
                     else if (block.indent) {
-                        /*142:1*/
+                        /*141:1*/
                         out += block.indent;
-                        /*142:16*/
+                        /*141:16*/
                         out += content;
-                        /*142:26*/
+                        /*141:26*/
                     }
                     else {
-                        /*144:1*/
+                        /*143:1*/
                         out += content;
-                        /*144:11*/
+                        /*143:11*/
                     }
-                    /*146:1*/
+                    /*145:1*/
                     break;
             }
-            /*150:1*/
+            /*149:1*/
         }
         return out;
     },
