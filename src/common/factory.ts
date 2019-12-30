@@ -58,9 +58,11 @@ export abstract class TemplateFactoryBase {
     if (!(tpl.name in this.cache)) {
       this.cache[tpl.name] = tpl;
       if (tpl.alias && Array.isArray(tpl.alias)) {
-        tpl.alias.filter(a => a !== tpl.name).forEach(a => {
-          this.cache[a] = tpl;
-        });
+        tpl.alias
+          .filter(a => a !== tpl.name)
+          .forEach(a => {
+            this.cache[a] = tpl;
+          });
       }
       this.cache[tpl.absPath] = tpl;
     }
