@@ -1,5 +1,5 @@
 # fte.js - fast template engine that is reborn
-
+[ɛtiː ʤeɪ-ɛs]
 !!! Why only generate Web-pages??? [re-]Generate the code!!!
 
 ## write [code] -> [build your] template -> [then code]generate
