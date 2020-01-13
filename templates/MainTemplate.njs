@@ -89,12 +89,12 @@
     let outStack = [current];
     let result;
 
-    function chunkEnsure(name) {
+    function chunkEnsure(name, content) {
       if (!result) {
         result = {};
       }
       if (!result.hasOwnProperty(name)) {
-        result[name] = '';
+        result[name] = content ? content : '';
       }
     }
     function chunkStart(name) {

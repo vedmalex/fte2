@@ -7,15 +7,7 @@ var raw = new Factory({
 });
 
 debugger;
-s = raw.run(
-  {
-    content: 'TEXT',
-    title: 'Some Title',
-    header: 'this is the header',
-    greetings: 'Santa',
-  },
-  'file.njs',
-);
+s = raw.run({}, 'index.njs');
 s.forEach(f => {
   debugger;
   fs.writeFileSync(f.name, f.content);

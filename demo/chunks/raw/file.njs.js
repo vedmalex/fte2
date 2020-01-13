@@ -16,12 +16,12 @@ module.exports = { script: function (context, _content, partial, slot) {
         var current = main;
         var outStack = [current];
         var result;
-        function chunkEnsure(name) {
+        function chunkEnsure(name, content) {
             if (!result) {
                 result = {};
             }
             if (!result.hasOwnProperty(name)) {
-                result[name] = '';
+                result[name] = content ? content : '';
             }
         }
         function chunkStart(name) {

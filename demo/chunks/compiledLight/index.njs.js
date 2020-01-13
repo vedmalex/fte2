@@ -13,7 +13,7 @@
                     return result;
                 }
             };
-            var main = 'main.file.txt';
+            var main = 'index.txt';
             var current = main;
             var outStack = [current];
             var result;
@@ -41,33 +41,11 @@
             /*3:1*/
             out += "\n";
             /*4:1*/
-            chunkStart("filename1.txt");
-            /*4:34*/
-            out += "\nfile1\n\n";
-            /*7:1*/
-            chunkStart("filename2.txt");
-            /*7:33*/
-            out += "\nfile2\n\n";
-            /*10:1*/
-            chunkStart("filename3.txt");
-            /*10:34*/
-            out += "\nfile3\n\n";
-            /*13:1*/
-            chunkEnd();
-            /*13:17*/
-            out += "\n!!!\n";
-            /*15:1*/
-            chunkStart("filename4.txt");
-            /*15:34*/
-            out += "\nfile4\n\n";
-            /*18:1*/
-            chunkStart("filename5.txt");
-            /*18:34*/
-            out += "\nfile5\n\n";
-            /*21:1*/
-            chunkStart("filename6.txt");
-            /*21:34*/
-            out += "\nfile6\n";
+            chunkStart("dir.txt");
+            /*4:28*/
+            out += "\n";
+            /*5:1*/
+            out += partial(null, 'file.njs');
             chunkEnd();
             out = Object.keys(result)
                 .map(function (curr) { return ({ name: curr, content: result[curr] }); });

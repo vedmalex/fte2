@@ -112,7 +112,7 @@ module.exports = { alias: ["MainTemplate.njs"], script: function (context, _cont
             /*87:19*/
             out += useChunks;
             /*87:31*/
-            out += "';\n    var current = main;\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = '';\n      }\n    }\n    function chunkStart(name) {\n      chunkEnsure(name);\n      chunkEnd();\n      current = name;\n      out = '';\n    }\n    function chunkEnd() {\n      result[current] += out;\n      out = '';\n      current = outStack.pop() || main;\n    }\n\n    ";
+            out += "';\n    var current = main;\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name, content) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = content ? content : '';\n      }\n    }\n    function chunkStart(name) {\n      chunkEnsure(name);\n      chunkEnd();\n      current = name;\n      out = '';\n    }\n    function chunkEnd() {\n      result[current] += out;\n      out = '';\n      current = outStack.pop() || main;\n    }\n\n    ";
             /*112:5*/
         }
         /*112:10*/
