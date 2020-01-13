@@ -1,8 +1,5 @@
 import * as fs from 'fs-extra';
 import { compileLight as compileTemplate } from './compile';
-import * as esprima from 'esprima';
-import * as esmangle from 'esmangle2';
-import * as escodegen from 'escodegen';
 
 import * as ts from 'typescript';
 

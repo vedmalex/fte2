@@ -1,48 +1,30 @@
 {
+  // Используйте IntelliSense, чтобы узнать о возможных атрибутах.
+  // Наведите указатель мыши, чтобы просмотреть описания существующих атрибутов.
+  // Для получения дополнительной информации посетите: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run",
+      "type": "node",
+      "request": "attach",
+      "name": "Attach",
+      "port": 9229,
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/dist/index.js",
-      "stopOnEntry": false,
-      "args": [],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": null,
-      "runtimeExecutable": null,
-      "runtimeArgs": [
-        "--nolazy"
+      "name": "Запустить программу",
+      "skipFiles": [
+        "<node_internals>/**"
       ],
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "console": "internalConsole",
-      "sourceMaps": false,
-      "outFiles": []
-    },
-    {
-      "name": "Attach",
-      "type": "node",
-      "request": "attach",
-      "protocol": "inspector",
-      "port": 9229,
-      "address": "localhost",
-      "restart": false,
-      "sourceMaps": false,
-      "outFiles": [],
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": null
-    },
-    {
-      "name": "Attach to process",
-      "type": "node",
-      "request": "attach",
-      "protocol": "inspector",
-      "processId": "${command.PickProcess}",
-      "port": 9229,
-      "sourceMaps": false,
-      "outFiles": []
+      "program": "${workspaceFolder}/dist/node/index.js",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
     }
   ]
 }

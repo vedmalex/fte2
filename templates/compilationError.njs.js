@@ -1,9 +1,4 @@
 module.exports = { alias: ["compilationError.njs"], script: function (context, _content, partial, slot) {
-        function content(blockName, ctx) {
-            if (ctx === undefined || ctx === null)
-                ctx = context;
-            return _content(blockName, ctx, content, partial, slot);
-        }
         var out = '';
         /*2:1*/
         out += context.error.message;

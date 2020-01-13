@@ -14,16 +14,20 @@ export class TemplateFactory extends TemplateFactoryBase {
       let fn = absPath
         ? path.resolve(fileName)
         : path.resolve(path.join(root, fileName));
-      if (fs.existsSync(fn + '.js')) {
+      let compiledJS = fn + '.js';
+      if (fs.existsSync(compiledJS)) {
         let result;
         // if (this.debug) {
-        // 	result = require(fn + '.js');
+        // 	result = require(compiledJS);
         // } else {
-        let storedScript = fs.readFileSync(fn + '.js');
+        let storedScript = fs.readFileSync(compiledJS);
         result = safeEval(storedScript.toString());
         // }
         if (result instanceof Function) {
-          result = { script: result, compile: new Function() };
+          result = {
+            script: result,
+            compile: new Function(),
+          };
         }
         result.absPath = fn;
         result.name = fileName;

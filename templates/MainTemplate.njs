@@ -28,6 +28,7 @@
   var noIndent = false;
   var alias = '';
   var useChunks = '';
+  var inludeMainchunkInOutput = false;
   var useHash = '';
   var item, directives = context.directives, extend = '';
   for (var i = 0, len = directives.length; i < len; i++) {
@@ -51,6 +52,9 @@
     if(item.content === 'chunks'){
       useChunks = processAsync(item);
     }
+    if(item.content === 'includeMainChunk'){
+      inludeMainchunkInOutput = processnoIndent(item);
+    }
     if(item.content === 'useHash'){
       useHash = !!item;
     }
@@ -61,10 +65,12 @@
 #> alias: #{JSON.stringify(alias)},
 <#- }-#>
   script: function (#{contextName}, _content, partial, slot){
+    <#- if(context.blocks || context.slots) {-#>
     function content(blockName, ctx) {
       if(ctx === undefined || ctx === null) ctx = #{contextName};
       return _content(blockName, ctx, content, partial, slot);
     }
+    <#-}-#>
     <#if(useChunks){#>
     const _partial = partial
     partial = function(obj, template) {
@@ -78,57 +84,57 @@
         return result;
       }
     }
-    let current = '#{useChunks}';
+    const main = '#{useChunks}';
+    var current = main;
     let outStack = [current];
     let result;
 
-    function chunkEnsure(name, content) {
+    function chunkEnsure(name) {
       if (!result) {
         result = {};
       }
       if (!result.hasOwnProperty(name)) {
-        result[name] = content ? content :'';
+        result[name] = '';
       }
     }
-
     function chunkStart(name) {
-      chunkEnd();
-      chunkEnsure(current);
-      result[current] += out;
       chunkEnsure(name);
-      result[name] = out = '';
-      outStack.push(name);
+      chunkEnd();
       current = name;
+      out = '';
     }
-
     function chunkEnd() {
-      chunkEnsure(current);
       result[current] += out;
-      if (outStack.length > 1) {
-        current = outStack.pop();
-      } else {
-        current = outStack[0];
-      }
-      out = ''
+      out = '';
+      current = outStack.pop() || main;
     }
 
     <#}#>
     var out = '';
+    <#if(useChunks){#>
+      chunkStart(main);
+    <#}#>
     <#- var blocks = {blocks:context.main, noIndent:noIndent} -#>
     #{partial(blocks,'codeblock')}
     <#if(useChunks){#>
       chunkEnd();
-      out = result;
       <#if(!useHash){#>
-        out = Object.keys(result).filter(i => i !== '#{useChunks}').map(curr => ({ name: curr, content: result[curr] }))
+        out = Object.keys(result)
+        <#if(!inludeMainchunkInOutput){#>
+        .filter(i => i !== '#{useChunks}')
+        <#}#>
+        .map(curr => ({ name: curr, content: result[curr] }))
       <#} else {#>
+        out = result;
+        <#if(!inludeMainchunkInOutput){#>
         delete out['#{useChunks}'];
+        <#}#>
       <#}#>
     <#}#>
       return out;
   },
 <#
-    var cb = context.blocks;
+  var cb = context.blocks;
     if(cb) {-#>
   blocks : {
 <#    for(var cbn in cb){ -#>
@@ -165,7 +171,7 @@
 <#-  } -#>
 <#
     var cb = context.slots;
-    if(cb) {-#>
+if(cb) {-#>
   slots : {
 <#    for(var cbn in cb){ -#>
 <#- var blockConetxtName = contextName;
