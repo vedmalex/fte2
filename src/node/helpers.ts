@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import { compileLight as compileTemplate } from './compile';
 
 import * as ts from 'typescript';
-
 export function safeEval(src: string) {
   const result = ts.transpileModule(src, {
     compilerOptions: {
