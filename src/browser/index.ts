@@ -1,4 +1,4 @@
-import { TemplateFactoryBrowser as Factory } from './factory';
-import { TemplateBrowser as Template } from './template';
+import { TemplateFactoryBrowser as Factory } from './factory'
+import { TemplateBrowser as Template } from './template'
 
-export { Factory, Template };
+export { Factory, Template }

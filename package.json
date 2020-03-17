@@ -1,13 +1,13 @@
 {
   "name": "fte.js",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc --build tsconfig.json",
     "compile:clean": "tsc --build tsconfig.json --clean",
-    "prepublish": "tsc",
+    "prepublish": "tsc --build tsconfig.json",
     "templates": "node dist/compile_templates.js",
     "grammar": "pegjs --output ./grammar/raw.pegjs.js ./grammar/raw.pegjs",
     "genit": "npm run grammar && npm run templates",
@@ -28,17 +28,15 @@
   },
   "homepage": "https://github.com/vedmalex/fte2#readme",
   "devDependencies": {
-    "@types/escodegen": "0.0.6",
-    "@types/esprima": "^2.1.33",
-    "@types/fs-extra": "0.0.33",
-    "@types/glob": "^5.0.30",
-    "@types/node": "^6.0.45",
-    "tslint": "^5.11.0"
+    "@types/fs-extra": "8.1.0",
+    "@types/glob": "^7.1.1",
+    "@types/node": "^13.9.1"
   },
   "dependencies": {
-    "typescript": "^3.7.2",
-    "fs-extra": "^0.30.0",
-    "glob": "^7.0.3",
-    "pegjs": "^0.10.0"
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.6",
+    "pegjs": "^0.10.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
   }
 }

@@ -1,6 +1,9 @@
 <#@ alias 'codeblock.njs' #>
 <#@ context 'renderOptions' #>
 <#@ noIndent #>
+try {
+var line;
+var column;
 <#
 var blockList = renderOptions.blocks;
 var noIndent = renderOptions.noIndent;
@@ -101,7 +104,12 @@ for (var i = 0, len = blockList.length; i < len; i++) {
   if(block.indent){
     indent = JSON.stringify(block.indent);
 }#>
+
 /*#{block.line}:#{block.column}*/
+
+line = #{block.line}
+column = #{block.column}
+
 <#
   switch(block.type){
     case 'text':
@@ -147,3 +155,10 @@ applyIndent(#{content}, #{indent});
   }
 -#>
 <#}-#>
+} catch (e) {
+  throw new Error(`
+  error at ${line}:${column}
+  message: ${e.message}
+  stack: ${e.stack}
+`)
+}

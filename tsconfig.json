@@ -1,31 +1,39 @@
 {
   "compilerOptions": {
+    "composite": true,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es6",
-    "lib": [
-      "es2017"
-    ],
-    "newLine": "LF",
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
-    "rootDir": "src",
-    "outDir": "dist",
-    "allowSyntheticDefaultImports": true,
+    "declarationMap": true,
     "removeComments": true,
-    "pretty": true,
     "strict": false,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": false,
     "noUnusedLocals": false,
-    "resolveJsonModule": true
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "es2018",
+      "esnext.asynciterable"
+    ],
+    "types": [
+      "node"
+    ],
+    "baseUrl": "./",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2018",
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "demo"
+  "include": [
+    "src/**/*"
   ],
-  "compileOnSave": true
+  "exclude": [
+    "**/__tests__",
+    "**/__mocks__"
+  ]
 }
