@@ -1,14 +1,17 @@
 {
   "name": "fte.js",
-  "version": "0.8.1",
+  "version": "1.0.0-beta.5",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
-    "compile": "tsc",
+    "compile": "tsc --build tsconfig.json",
+    "compile:clean": "tsc --build tsconfig.json --clean",
+    "prepublish": "tsc",
     "templates": "node dist/compile_templates.js",
     "grammar": "pegjs --output ./grammar/raw.pegjs.js ./grammar/raw.pegjs",
-    "genit": "npm run grammar && npm run templates"
+    "genit": "npm run grammar && npm run templates",
+    "watch": "tsc --build tsconfig.json --watch"
   },
   "typescript": {
     "definition": "dist"
@@ -30,14 +33,10 @@
     "@types/fs-extra": "0.0.33",
     "@types/glob": "^5.0.30",
     "@types/node": "^6.0.45",
-    "typescript": "^3.0.3",
     "tslint": "^5.11.0"
   },
   "dependencies": {
-    "escodegen": "^1.8.0",
-    "esmangle2": "^1.0.10",
-    "esprima": "^3.1.0",
-    "esvalid": "^1.1.0",
+    "typescript": "^3.7.2",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
     "pegjs": "^0.10.0"

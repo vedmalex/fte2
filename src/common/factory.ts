@@ -10,10 +10,9 @@ import {
   SlotsHash,
   SlotFunction,
 } from './../common/interfaces';
-import { compileLight } from '../node';
 
 /**
- * template factory -- it instatntiate the templates
+ * template factory -- it instantiate the templates
  */
 export abstract class TemplateFactoryBase {
   public ext = [];
@@ -29,7 +28,7 @@ export abstract class TemplateFactoryBase {
       throw new Error('constructor is not a function');
     }
     if (!process.browser) {
-      // this only need in serverside code with server load code
+      // this only need in server-side code with server load code
       this.root = config
         ? config.root
           ? Array.isArray(config.root)
@@ -58,9 +57,11 @@ export abstract class TemplateFactoryBase {
     if (!(tpl.name in this.cache)) {
       this.cache[tpl.name] = tpl;
       if (tpl.alias && Array.isArray(tpl.alias)) {
-        tpl.alias.filter(a => a !== tpl.name).forEach(a => {
-          this.cache[a] = tpl;
-        });
+        tpl.alias
+          .filter(a => a !== tpl.name)
+          .forEach(a => {
+            this.cache[a] = tpl;
+          });
       }
       this.cache[tpl.absPath] = tpl;
     }
@@ -97,8 +98,9 @@ export abstract class TemplateFactoryBase {
             if (Array.isArray(content)) {
               content.forEach(c => this.slot(name, c));
             } else {
-              if (this.slots[name].indexOf(content) === -1)
+              if (this.slots[name].indexOf(content) === -1) {
                 this.slots[name].push(content);
+              }
             }
           } else {
             return `#{partial(context['${name}'] || [], '${name}')}`;
@@ -196,5 +198,5 @@ export abstract class TemplateFactoryBase {
   }
 }
 
-// надо удалить так же все wather Зависимости обновляемого шаблона,
-// в случае его удаления из кэша, и так же не испльзовать массиа, а
+// надо удалить так же все watcher Зависимости обновляемого шаблона,
+// в случае его удаления из кэша, и так же не использовать массив, а

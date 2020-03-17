@@ -9,12 +9,18 @@
     "newLine": "LF",
     "sourceMap": true,
     "declaration": true,
-    "noImplicitAny": false,
     "rootDir": "src",
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
-    "pretty": true
+    "pretty": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",

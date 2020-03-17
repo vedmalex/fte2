@@ -1,4 +1,5 @@
-<#@ chunks '--main--' #>
+<#@ chunks 'main.file.txt' #>
+<#@ includeMainChunk #>
 
 <# chunkStart("filename1.txt") #>
 file1
@@ -9,6 +10,8 @@ file2
 <# chunkStart("filename3.txt") #>
 file3
 
+<# chunkEnd() #>
+!!!
 <# chunkStart("filename4.txt") #>
 file4
 
