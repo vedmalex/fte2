@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "1.0.0-rc.3",
+  "version": "2.0.0",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
@@ -30,14 +30,16 @@
   "devDependencies": {
     "@types/fs-extra": "8.1.0",
     "@types/glob": "^7.1.1",
-    "@types/node": "^13.9.1"
+    "@types/node": "^13.9.1",
+    "nearley": "^2.19.7",
+    "pegjs": "^0.10.0"
   },
   "dependencies": {
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
-    "pegjs": "^0.10.0",
+    "moo": "^0.5.1",
     "prettier": "^1.19.1",
-    "typescript": "^3.8.3"
+    "typescript": "^4.0.5"
   },
   "gitHead": "ef0fa33d54101ca9c7c7a450fc6b7fc802a2c327"
 }
