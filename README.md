@@ -41,9 +41,9 @@
 
 - `-#>` - remove all spaces to right including the one `\n`
 
-- `#{}` - expression block
+- `#{} or {{}}`  - expression block that returns string
 
-- `!{}` - html(!!!) escaped expression block: replaces & < > " => `&amp;` `&lt;` `&gt;` `&quote;`
+- `!{} or {{& }}` - html(!!!) escaped expression block: replaces & < > " => `&amp;` `&lt;` `&gt;` `&quote;`
 
 - `<#@ #>` directive block, by default it ommits all spaces and new lines, as if it is never exists.
 
