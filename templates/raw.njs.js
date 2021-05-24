@@ -1,6 +1,6 @@
 module.exports = {
   alias: ['raw.njs'],
-  script: function(context, _content, partial, slot) {
+  script: function (context, _content, partial, slot) {
     var out = ''
     try {
       var line
@@ -21,7 +21,7 @@ module.exports = {
         if (indent && str) {
           return str
             .split('\n')
-            .map(function(s) {
+            .map(function (s) {
               return indent + s
             })
             .join('\n')
@@ -56,7 +56,7 @@ module.exports = {
     }
     return out
   },
-  compile: function() {
+  compile: function () {
     this.alias = ['raw.njs']
     this.aliases = {}
     this.aliases['core'] = 'MainTemplate.njs'

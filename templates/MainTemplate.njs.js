@@ -1,6 +1,6 @@
 module.exports = {
   alias: ['MainTemplate.njs'],
-  script: function(context, _content, partial, slot) {
+  script: function (context, _content, partial, slot) {
     var out = ''
     try {
       var line
@@ -21,7 +21,7 @@ module.exports = {
         if (indent && str) {
           return str
             .split('\n')
-            .map(function(s) {
+            .map(function (s) {
               return indent + s
             })
             .join('\n')
@@ -33,7 +33,7 @@ module.exports = {
       line = 3
       column = 1
       function processRequire(item) {
-        var requires = item.name.split(',').map(function(i) {
+        var requires = item.name.split(',').map(function (i) {
           return i.trim()
         })
         return { name: requires[0], alias: requires[1] }
@@ -45,7 +45,7 @@ module.exports = {
         return item.name.split(',')[0].trim()
       }
       function processAlias(item) {
-        return item.name.split(',').map(function(a) {
+        return item.name.split(',').map(function (a) {
           return a.trim()
         })
       }
@@ -618,7 +618,7 @@ module.exports = {
     }
     return out
   },
-  compile: function() {
+  compile: function () {
     this.alias = ['MainTemplate.njs']
     this.aliases = {}
     this.aliases['codeblock'] = 'codeblock.njs'

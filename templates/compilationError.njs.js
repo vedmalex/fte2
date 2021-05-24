@@ -1,6 +1,6 @@
 module.exports = {
   alias: ['compilationError.njs'],
-  script: function(context, _content, partial, slot) {
+  script: function (context, _content, partial, slot) {
     var out = ''
     try {
       var line
@@ -36,7 +36,7 @@ module.exports = {
     }
     return out
   },
-  compile: function() {
+  compile: function () {
     this.alias = ['compilationError.njs']
   },
   dependency: {},
