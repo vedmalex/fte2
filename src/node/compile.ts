@@ -1,4 +1,4 @@
-import * as raw from '../../grammar/raw.pegjs.js'
+import * as raw from '../../grammar/raw.peggy.js'
 import * as ts from 'typescript'
 // import * as fs from 'fs-extra';
 import * as path from 'path'
