@@ -189,6 +189,7 @@ export class TemplateFactory extends TemplateFactoryBase {
           templates[template.absPath] = template
           templates[template.name] = template
           this.watchTree[fw] = {
+            // TODO: use chokidar !!! for fs.watch
             watcher: fs.watch(fw, { persistent: false }, (event, filename) => {
               if (event === 'change') {
                 const list = this.watchTree[fw].templates
