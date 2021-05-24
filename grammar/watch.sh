@@ -1,1 +1,0 @@
-concurrently -n compile,rail,parser 'nodemon --watch raw.ne --exec "nearleyc raw.ne -o raw.ne.js"' 'nodemon --watch raw.ne --exec "nearley-railroad raw.ne > raw.html"' 'nodemon --watch sample.tpl --exec "nearley-test raw.ne.js < sample.tpl"'

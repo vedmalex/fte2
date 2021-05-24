@@ -9,7 +9,7 @@
     "compile:clean": "tsc --build tsconfig.json --clean",
     "prepublish": "tsc --build tsconfig.json",
     "templates": "node dist/compile_templates.js",
-    "grammar": "pegjs --output ./grammar/raw.pegjs.js ./grammar/raw.pegjs",
+    "grammar": "peggy --output ./grammar/raw.peggy.js ./grammar/raw.peggy",
     "genit": "npm run grammar && npm run templates",
     "watch": "tsc --build tsconfig.json --watch"
   },
@@ -31,8 +31,10 @@
     "@types/fs-extra": "8.1.0",
     "@types/glob": "^7.1.1",
     "@types/node": "^13.9.1",
+    "concurrently": "^6.1.0",
     "nearley": "^2.19.7",
-    "pegjs": "^0.10.0"
+    "nodemon": "^2.0.7",
+    "peggy": "^1.1.0"
   },
   "dependencies": {
     "fs-extra": "^8.1.0",
