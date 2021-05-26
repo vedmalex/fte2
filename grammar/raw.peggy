@@ -142,10 +142,10 @@ block = name:blockStart content: blockContent blockEnd
 stringType = name:(quotedString / dQuotedString){return name;}
 
 quotedString "single quoted name"=
-"'" name:(!"'".)* "'" {return f(name)}
+"'" name:(!"'".)* "'" { return f(name) }
 
 dQuotedString "double quoted name"=
-'"' name:(!'"'.)* '"' {return f(name)}
+'"' name:(!'"'.)* '"' { return f(name) }
 
 cStart =  (((eol _)? "<#-") / "<#"!"{")
 
