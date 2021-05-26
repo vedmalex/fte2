@@ -22,17 +22,11 @@ module.exports = {
       column = 24
       out += ';'
     } catch (e) {
-      throw new Error(
-        '\n       error at ' +
-          line +
-          ':' +
-          column +
-          '\n       message: ' +
-          e.message +
-          '\n       stack: ' +
-          e.stack +
-          '\n     ',
-      )
+      throw new Error(`
+       error at ${line}:${column}
+       message: ${e.message}
+       stack: ${e.stack}
+     `)
     }
     return out
   },

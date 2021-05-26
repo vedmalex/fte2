@@ -21,9 +21,7 @@ module.exports = {
         if (indent && str) {
           return str
             .split('\n')
-            .map(function (s) {
-              return indent + s
-            })
+            .map((s) => indent + s)
             .join('\n')
         } else {
           return str
@@ -42,17 +40,11 @@ module.exports = {
       column = 45
       out += ';\n'
     } catch (e) {
-      throw new Error(
-        '\n       error at ' +
-          line +
-          ':' +
-          column +
-          '\n       message: ' +
-          e.message +
-          '\n       stack: ' +
-          e.stack +
-          '\n     ',
-      )
+      throw new Error(`
+       error at ${line}:${column}
+       message: ${e.message}
+       stack: ${e.stack}
+     `)
     }
     return out
   },

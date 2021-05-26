@@ -66,9 +66,7 @@ function applyIndent(_str, _indent) {
     indent = _indent;
   }
   if (indent && str) {
-    return str.split('\n').map(function (s) {
-        return indent + s;
-    }).join('\n');
+    return str.split('\n').map((s)=> indent + s).join('\n');
   } else {
     return str;
   }
@@ -89,9 +87,7 @@ function applyIndent(_str, _indent){
     indent = _indent
   }
   if (indent && str) {
-    return str.split('\n').map(function(s){
-      return indent + s;
-    }).join('\n');
+    return str.split('\n').map((s)=> indent + s).join('\n');
   } else {
     return str;
   }
