@@ -19,7 +19,7 @@ function load(fileName, folder, compile, optimize) {
       arrowParens: 'always',
       bracketSpacing: true,
       jsxBracketSameLine: true,
-      parser: 'babel',
+      parser: 'typescript',
     })
 
     fs.writeFileSync(
