@@ -64,13 +64,12 @@
 <#- if(alias){
 #> alias: #{JSON.stringify(alias)},
 <#- }-#>
+<# const useDirectContent = context.blocks || context.slots; #>
   script: function (#{contextName}, _content, partial, slot){
-    <#- if(context.blocks || context.slots) {-#>
     function content(blockName, ctx) {
       if(ctx === undefined || ctx === null) ctx = #{contextName};
       return _content(blockName, ctx, content, partial, slot);
     }
-    <#-}-#>
     <#if(useChunks){#>
     const _partial = partial
     partial = function(obj, template) {

@@ -1,6 +1,10 @@
 module.exports = {
   alias: ['codeblock.njs'],
   script: function (renderOptions, _content, partial, slot) {
+    function content(blockName, ctx) {
+      if (ctx === undefined || ctx === null) ctx = renderOptions
+      return _content(blockName, ctx, content, partial, slot)
+    }
     var out = ''
     try {
       var line
