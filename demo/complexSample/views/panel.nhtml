@@ -10,6 +10,7 @@
 <#@ context 'body' #>
   <div class="panel-body">
     #{body}
+    111
   </div>
 <#- end -#>
 <div class="panel panel-default">
