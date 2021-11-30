@@ -24,9 +24,9 @@ class TemplateBase {
     }
     mergeParent(src) {
         if (src) {
-            helpers_1.merge(src, this, 'blocks');
-            helpers_1.merge(src, this, 'aliases');
-            helpers_1.merge(src, this, 'slots');
+            (0, helpers_1.merge)(src, this, 'blocks');
+            (0, helpers_1.merge)(src, this, 'aliases');
+            (0, helpers_1.merge)(src, this, 'slots');
         }
     }
     compile() {

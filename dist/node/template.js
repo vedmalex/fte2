@@ -6,7 +6,7 @@ const helpers_1 = require("./helpers");
 class Template extends template_1.TemplateBase {
     compile() {
         if (this.srcCode) {
-            const result = helpers_1.makeTemplate(this.srcCode);
+            const result = (0, helpers_1.makeTemplate)(this.srcCode);
             if (!result.error) {
                 this.script = result.script;
                 this.blocks = result.blocks;

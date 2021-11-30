@@ -70,7 +70,7 @@ function makeFunction(fnDef, name) {
 exports.makeFunction = makeFunction;
 function makeTemplate(src) {
     let result;
-    const compiled = compile_1.compileLight(src);
+    const compiled = (0, compile_1.compileLight)(src);
     try {
         result = safeEval(compiled);
     }

@@ -38,7 +38,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             if (fs.existsSync(compiledJS)) {
                 let result;
                 const storedScript = fs.readFileSync(compiledJS);
-                result = helpers_1.safeEval(storedScript.toString());
+                result = (0, helpers_1.safeEval)(storedScript.toString());
                 if (result instanceof Function) {
                     result = {
                         script: result,
