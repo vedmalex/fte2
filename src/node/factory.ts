@@ -149,7 +149,7 @@ export class TemplateFactory extends TemplateFactoryBase {
 
   public express() {
     const self = this
-    return function(fileName, context, callback) {
+    return function (fileName, context, callback) {
       const templ = self.ensure(fileName, true)
       const bc = self.blockContent(templ)
       let result, err

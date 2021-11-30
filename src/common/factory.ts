@@ -75,8 +75,8 @@ export abstract class TemplateFactoryBase {
         this.checkChanges(template, fileName, absPath)
         const depList = Object.keys(template.dependency)
         for (let i = 0, len = depList.length; i < len; i++) {
-          const templates = this.watchTree[this.cache[depList[i]].absPath]
-            .templates
+          const templates =
+            this.watchTree[this.cache[depList[i]].absPath].templates
           templates[template.absPath] = template
         }
       }
@@ -151,7 +151,7 @@ export abstract class TemplateFactoryBase {
               return $this.script(context, content, partial, slot)
             } catch (e) {
               throw new Error(
-                `template ${$this.name} failed to execute with error 
+                `template ${$this.name} failed to execute with error
                   '${e.message}
                   ${e.stack}'`,
               )

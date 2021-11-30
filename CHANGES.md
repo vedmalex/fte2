@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 2.1.0
+implements `parse` method for in-memory templates
+
 # 0.8.0
 
 - return chunks as hash
