@@ -125,7 +125,7 @@ uexpression "escaped expression" = indent:_ ueStart content:(!( eEnd / eStart ) 
 codeBlock "code block" = indent:(eol? _) cbStart content:(!(cbEnd / (blockStartDif / blockEndEdn)) .)* cbEnd
 { return new node(f(content), "codeblock", undefined, f(indent));}
 
-directive "directive" = _ dStart _ content:directives __eol? "("? __eol? name:( stringType __eol? ","? __eol? )* ")"? __eol? cbEnd ( __eol)?
+directive "directive" = _ dStart _ content:valiableName __eol? "("? __eol? name:( stringType __eol? ","? __eol? )* ")"? __eol? cbEnd ( __eol)?
 { return new node(content, "directive", f(name)); }
 
 notText = directive / cbStart / cbEnd / expression / uexpression / blockEnd / blockStart
@@ -166,8 +166,6 @@ ueStart "escaped expression start" = "!{"
 eStart "expression start" = "#{"
 
 eEnd "expression end" = "}"
-
-directives = valiableName
 
 valiableName = name:([a-z0-9_]i)* {return f(name)}
 
