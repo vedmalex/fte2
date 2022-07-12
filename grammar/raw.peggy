@@ -62,10 +62,6 @@ function parseIt(input) {
     this.column = loc.start.column;
   }
 
-  function j(arr) {
-    return arr.join("");
-  }
-
   // flatten an array and join it
   function f(arr) {
    if(arr){
