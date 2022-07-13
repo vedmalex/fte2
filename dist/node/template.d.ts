@@ -1,5 +1,6 @@
 import { TemplateBase } from './../common/template';
-export declare class Template extends TemplateBase {
+import { DefaultFactoryOption } from '../common/interfaces';
+export declare class Template<T extends DefaultFactoryOption> extends TemplateBase<T> {
     compile(): this;
 }
 //# sourceMappingURL=template.d.ts.map

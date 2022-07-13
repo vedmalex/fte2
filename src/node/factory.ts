@@ -4,9 +4,16 @@ import * as glob from 'glob'
 import { Template } from './template'
 import { TemplateFactoryBase } from './../common/factory'
 import { safeEval } from './helpers'
-import { HashType, SlotsHash } from './../common/interfaces'
+import {
+  DefaultFactoryOption,
+  HashType,
+  SlotsHash,
+} from './../common/interfaces'
+import { SourceNode } from 'source-map'
 
-export class TemplateFactory extends TemplateFactoryBase {
+export class TemplateFactory<
+  T extends DefaultFactoryOption,
+> extends TemplateFactoryBase<T> {
   public load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
@@ -96,12 +103,31 @@ export class TemplateFactory extends TemplateFactoryBase {
     return tpl.compile()
   }
 
-  public run(
-    context: HashType,
-    name: string,
-    absPath?: boolean,
-  ): string | Array<object> {
+  public run<T extends Record<string, any>>({
+    context,
+    name,
+    absPath,
+    options,
+    slots,
+  }: {
+    context: HashType
+    name: string
+    absPath?: boolean
+    options?: T
+    slots?: SlotsHash
+  }): string | Array<object> {
     const templ = this.ensure(name, absPath)
+
+    // const source = new SourceNode(0, 0, templ.absPath)
+    // context.directives.forEach((d) => {
+    //   source.add(
+    //     new SourceNode(d.line, d.column, `// ${d.content} -> ${d.name}`),
+    //   )
+    // })
+
+    // context.main.forEach((m) => {
+    //   source.add(new SourceNode(m.column, m.line, m.content))
+    // })
     const bc = this.blockContent(templ, {})
     const result = bc.run(context, bc.content, bc.partial, bc.slot)
     if (Object.keys(bc.slots).length > 0) {
@@ -123,12 +149,19 @@ export class TemplateFactory extends TemplateFactoryBase {
     }
   }
 
-  public runPartial(
-    context: HashType,
-    name: string,
-    absPath?: boolean,
-    slots?: SlotsHash,
-  ): string {
+  public runPartial<T extends Record<string, any>>({
+    context,
+    name,
+    absPath,
+    options,
+    slots,
+  }: {
+    context: HashType
+    name: string
+    absPath?: boolean
+    options?: T
+    slots?: SlotsHash
+  }): string {
     const templ = this.ensure(name, absPath)
     const bc = this.blockContent(templ, slots)
     return bc.run(context, bc.content, bc.partial, bc.slot)

@@ -1,20 +1,40 @@
 import { TemplateBase } from './template';
-import { HashType, BlockContent, HashTypeGeneric, SlotsHash } from './../common/interfaces';
-export declare abstract class TemplateFactoryBase {
-    ext: any[];
-    cache: HashTypeGeneric<TemplateBase>;
+import { HashType, BlockContent, HashTypeGeneric, SlotsHash, DefaultFactoryOption } from './../common/interfaces';
+export declare const DefaultFactoryOptions: DefaultFactoryOption;
+export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
+    ext: Array<string>;
+    cache: HashTypeGeneric<TemplateBase<T>>;
     debug: boolean;
     watch: boolean;
     watchTree: any;
     root: any;
-    constructor(config: any);
-    register(tpl: TemplateBase, fileName?: string): TemplateBase;
-    ensure(fileName: string, absPath?: boolean): TemplateBase;
-    blockContent(tpl: TemplateBase, slots?: SlotsHash): BlockContent;
+    constructor(config?: {
+        root?: string | Array<string>;
+        debug?: boolean;
+        watch?: boolean;
+        ext?: Array<string>;
+        preload?: boolean;
+        options?: T;
+    });
+    register(tpl: TemplateBase<T>, fileName?: string): TemplateBase<T>;
+    ensure(fileName: string, absPath?: boolean): TemplateBase<T>;
+    blockContent(tpl: TemplateBase<T>, slots?: SlotsHash): BlockContent;
     preload(fileName?: string): void;
     checkChanges(template?: any, fileName?: any, absPath?: boolean): void;
-    load(fileName: string, absPath: boolean): TemplateBase;
-    run(ctx: HashType, name: string, absPath?: boolean): string | Array<object>;
-    runPartial(ctx: HashType, name: string, absPath?: boolean, slots?: SlotsHash): string;
+    load(fileName: string, absPath: boolean): TemplateBase<T>;
+    run<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
+        context: HashType;
+        name: string;
+        absPath?: boolean;
+        options: T;
+        slots?: SlotsHash;
+    }): string | Array<object>;
+    runPartial<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
+        context: HashType;
+        name: string;
+        absPath?: boolean;
+        options: T;
+        slots?: SlotsHash;
+    }): string;
 }
 //# sourceMappingURL=factory.d.ts.map

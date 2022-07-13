@@ -1,6 +1,6 @@
 import { TemplateFactoryBase } from './factory';
-import { BlocksHash, HashTypeGeneric, BlockRunFunction, TemplateConfig } from './interfaces';
-export declare class TemplateBase {
+import { BlocksHash, HashTypeGeneric, BlockRunFunction, TemplateConfig, DefaultFactoryOption } from './interfaces';
+export declare class TemplateBase<T extends DefaultFactoryOption> {
     parent: string;
     blocks: BlocksHash;
     slots: BlocksHash;
@@ -11,9 +11,9 @@ export declare class TemplateBase {
     name: string;
     srcCode: string;
     script: BlockRunFunction;
-    factory: TemplateFactoryBase;
-    constructor(config: TemplateConfig);
-    mergeParent(src: TemplateBase): void;
+    factory: TemplateFactoryBase<T>;
+    constructor(config: TemplateConfig<T>);
+    mergeParent(src: TemplateBase<T>): void;
     compile(): void;
 }
 //# sourceMappingURL=template.d.ts.map

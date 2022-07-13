@@ -1,5 +1,28 @@
 import { HashType } from './interfaces'
 
+export function applyIndent(_str: string, _indent: number | string) {
+  var str = String(_str)
+  var indent = ''
+  if (typeof _indent == 'number' && _indent > 0) {
+    var res = ''
+    for (var i = 0; i < _indent; i++) {
+      res += ' '
+    }
+    indent = res
+  }
+  if (typeof _indent == 'string' && _indent.length > 0) {
+    indent = _indent
+  }
+  if (indent && str) {
+    return str
+      .split('\n')
+      .map((s) => indent + s)
+      .join('\n')
+  } else {
+    return str
+  }
+}
+
 export function set(data: HashType, path: string, value: any) {
   if ('object' === typeof data) {
     const parts = path.split('.')

@@ -22,42 +22,50 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const prettier = __importStar(require("prettier"));
 const path = __importStar(require("path"));
+const glob_1 = __importDefault(require("glob"));
 const compile_1 = require("./node/compile");
 const src = 'templates';
-function load(fileName, folder, compile, optimize) {
+function load(fileName, folder, compile) {
     fs.ensureDirSync(folder);
     const fn = path.resolve(fileName);
     if (fs.existsSync(fn)) {
         const content = fs.readFileSync(fn);
-        const result = compile(content, optimize);
-        const prettified = prettier.format(result, {
-            singleQuote: true,
-            trailingComma: 'all',
-            semi: false,
-            arrowParens: 'always',
-            bracketSpacing: true,
-            jsxBracketSameLine: true,
-            parser: 'typescript',
-        });
-        fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), prettified);
-    }
-}
-const files = fs.readdirSync(src);
-if (files.length > 0) {
-    let rec, stat, ext;
-    for (let i = 0, len = files.length; i < len; i++) {
-        rec = path.join(src, files[i]);
-        stat = fs.statSync(rec);
-        if (stat.isFile()) {
-            ext = path.extname(rec);
-            if (ext === '.nhtml' || ext === '.njs') {
-                load(rec, src, compile_1.compileFull, true);
-            }
+        const result = compile(content, { fileName, content });
+        try {
+            const prettified = prettier.format(result, {
+                singleQuote: true,
+                trailingComma: 'all',
+                semi: false,
+                arrowParens: 'always',
+                bracketSpacing: true,
+                jsxBracketSameLine: true,
+                parser: 'typescript',
+            });
+            fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), prettified);
+        }
+        catch (err) {
+            console.log(fn);
+            fs.writeFileSync(fn + '.err.js', result);
+            throw err;
         }
     }
 }
+(0, glob_1.default)('templates/codeblock.njs', (err, files) => {
+    if (err) {
+        throw err;
+    }
+    else {
+        files.forEach((file) => {
+            console.log(file);
+            load(file, src, compile_1.compileFull);
+        });
+    }
+});
 //# sourceMappingURL=compile_templates.js.map

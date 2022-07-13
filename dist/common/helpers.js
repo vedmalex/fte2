@@ -1,6 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.merge = exports.get = exports.set = void 0;
+exports.merge = exports.get = exports.set = exports.applyIndent = void 0;
+function applyIndent(_str, _indent) {
+    var str = String(_str);
+    var indent = '';
+    if (typeof _indent == 'number' && _indent > 0) {
+        var res = '';
+        for (var i = 0; i < _indent; i++) {
+            res += ' ';
+        }
+        indent = res;
+    }
+    if (typeof _indent == 'string' && _indent.length > 0) {
+        indent = _indent;
+    }
+    if (indent && str) {
+        return str
+            .split('\n')
+            .map((s) => indent + s)
+            .join('\n');
+    }
+    else {
+        return str;
+    }
+}
+exports.applyIndent = applyIndent;
 function set(data, path, value) {
     if ('object' === typeof data) {
         const parts = path.split('.');

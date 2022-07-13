@@ -1,7 +1,8 @@
 import { TemplateBase } from './../common/template'
 import { makeTemplate } from './helpers'
+import { DefaultFactoryOption } from '../common/interfaces'
 
-export class Template extends TemplateBase {
+export class Template<T extends DefaultFactoryOption> extends TemplateBase<T> {
   public compile() {
     if (this.srcCode) {
       const result = makeTemplate(this.srcCode)

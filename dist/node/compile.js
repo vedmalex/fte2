@@ -46,19 +46,22 @@ function compileLight(content) {
         const F = new factory_1.TemplateFactory({
             root: templateRoot,
         });
-        return prepareCode(F.run(compiled, 'raw.njs'));
+        return prepareCode(F.run({ context: compiled, name: 'raw.njs' }));
     }
     catch (e) {
         throw e;
     }
 }
 exports.compileLight = compileLight;
-function compileFull(content) {
-    const compiled = raw.parse(content.toString());
+function compileFull(content, options) {
+    const compiled = raw.parse(content.toString(), {
+        grammarSource: options.fileName,
+        reservedWords: [],
+    });
     const F = new factory_1.TemplateFactory({
         root: templateRoot,
     });
-    return prepareCode(F.run(compiled, 'compiled.njs'));
+    return prepareCode(F.run({ context: compiled, name: 'compiled.njs' }));
 }
 exports.compileFull = compileFull;
 //# sourceMappingURL=compile.js.map

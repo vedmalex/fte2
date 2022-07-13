@@ -9,24 +9,37 @@ import {
   ContentFunction,
   SlotsHash,
   SlotFunction,
+  DefaultFactoryOption,
 } from './../common/interfaces'
+import { applyIndent } from './helpers'
+
+export const DefaultFactoryOptions: DefaultFactoryOption = {
+  applyIndent,
+}
 
 /**
  * template factory -- it instantiate the templates
  */
-export abstract class TemplateFactoryBase {
-  public ext = []
-  public cache: HashTypeGeneric<TemplateBase>
+export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
+  public ext: Array<string> = []
+  public cache: HashTypeGeneric<TemplateBase<T>>
   public debug = false
   public watch = false
   // подумать нужно ли делать один общий для все список watchTree
   public watchTree = undefined
   public root = undefined
 
-  constructor(config) {
-    if (!(this instanceof TemplateFactoryBase)) {
-      throw new Error('constructor is not a function')
-    }
+  constructor(
+    config: {
+      root?: string | Array<string>
+      debug?: boolean
+      watch?: boolean
+      ext?: Array<string>
+      preload?: boolean
+      options?: T
+    } = {},
+  ) {
+    config.options = { ...config.options, DefaultFactoryOptions }
     if (!process.browser) {
       // this only need in server-side code with server load code
       this.root = config
@@ -53,7 +66,7 @@ export abstract class TemplateFactoryBase {
       this.preload()
     }
   }
-  public register(tpl: TemplateBase, fileName?: string) {
+  public register(tpl: TemplateBase<T>, fileName?: string) {
     if (!(tpl.name in this.cache)) {
       this.cache[tpl.name] = tpl
       if (tpl.alias && Array.isArray(tpl.alias)) {
@@ -68,7 +81,7 @@ export abstract class TemplateFactoryBase {
     return tpl
   }
 
-  public ensure(fileName: string, absPath?: boolean): TemplateBase {
+  public ensure(fileName: string, absPath?: boolean): TemplateBase<T> {
     if (!(fileName in this.cache)) {
       const template = this.load(fileName, absPath)
       if (this.watch) {
@@ -84,7 +97,7 @@ export abstract class TemplateFactoryBase {
     }
     return this.cache[fileName]
   }
-  public blockContent(tpl: TemplateBase, slots?: SlotsHash): BlockContent {
+  public blockContent(tpl: TemplateBase<T>, slots?: SlotsHash): BlockContent {
     const scripts = []
     const self = this
     const bc: BlockContent = {
@@ -109,9 +122,21 @@ export abstract class TemplateFactoryBase {
       },
       partial(obj: HashType, name: string): string {
         if (tpl.aliases.hasOwnProperty(name)) {
-          return self.runPartial(obj, tpl.aliases[name], true, this.slots)
+          return self.runPartial({
+            context: obj,
+            name: tpl.aliases[name],
+            absPath: true,
+            slots: this.slots,
+            options: this.options,
+          })
         } else {
-          return self.runPartial(obj, name, false, this.slots)
+          return self.runPartial({
+            context: obj,
+            name,
+            absPath: false,
+            slots: this.slots,
+            options: this.options,
+          })
         }
       },
       content(
@@ -139,8 +164,14 @@ export abstract class TemplateFactoryBase {
         $content: ContentFunction,
         $partial: PartialFunction,
       ): string {
-        function go(context, content, partial, slot): string {
-          const $this = this as TemplateBase
+        function go(
+          this: TemplateBase<T>,
+          context,
+          content,
+          partial,
+          slot,
+        ): string {
+          const $this = this as TemplateBase<T>
           if ($this.parent) {
             const parent = self.ensure($this.parent)
             // tpl.mergeParent(parent); moved to compile.
@@ -176,24 +207,39 @@ export abstract class TemplateFactoryBase {
     throw new Error('abstract method call')
   }
 
-  public load(fileName: string, absPath: boolean): TemplateBase {
+  public load(fileName: string, absPath: boolean): TemplateBase<T> {
     throw new Error('abstract method call')
   }
 
-  public run(
-    ctx: HashType,
-    name: string,
-    absPath?: boolean,
-  ): string | Array<object> {
+  public run<T extends Record<string, any>>({
+    context,
+    name,
+    absPath,
+    options,
+    slots,
+  }: {
+    context: HashType
+    name: string
+    absPath?: boolean
+    options: T
+    slots?: SlotsHash
+  }): string | Array<object> {
     throw new Error('abstract method call')
   }
 
-  public runPartial(
-    ctx: HashType,
-    name: string,
-    absPath?: boolean,
-    slots?: SlotsHash,
-  ): string {
+  public runPartial<T extends Record<string, any>>({
+    context,
+    name,
+    absPath,
+    options,
+    slots,
+  }: {
+    context: HashType
+    name: string
+    absPath?: boolean
+    options: T
+    slots?: SlotsHash
+  }): string {
     throw new Error('abstract method call')
   }
 }

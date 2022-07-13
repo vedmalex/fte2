@@ -5,9 +5,10 @@ import {
   HashTypeGeneric,
   BlockRunFunction,
   TemplateConfig,
+  DefaultFactoryOption,
 } from './interfaces'
 
-export class TemplateBase {
+export class TemplateBase<T extends DefaultFactoryOption> {
   public parent: string
   public blocks: BlocksHash
   public slots: BlocksHash
@@ -18,9 +19,9 @@ export class TemplateBase {
   public name: string
   public srcCode: string
   public script: BlockRunFunction
-  public factory: TemplateFactoryBase
+  public factory: TemplateFactoryBase<T>
 
-  constructor(config: TemplateConfig) {
+  constructor(config: TemplateConfig<T>) {
     if (!(this instanceof TemplateBase)) {
       throw new Error('constructor is not a function')
     }
@@ -40,7 +41,7 @@ export class TemplateBase {
     }
   }
 
-  public mergeParent(src: TemplateBase) {
+  public mergeParent(src: TemplateBase<T>) {
     if (src) {
       merge(src, this, 'blocks')
       merge(src, this, 'aliases')

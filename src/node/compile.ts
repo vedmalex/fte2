@@ -23,16 +23,22 @@ export function compileLight(content: Buffer | string) {
     const F = new TemplateFactory({
       root: templateRoot,
     })
-    return prepareCode(F.run(compiled, 'raw.njs'))
+    return prepareCode(F.run({ context: compiled, name: 'raw.njs' }))
   } catch (e) {
     throw e
   }
 }
 
-export function compileFull(content: Buffer | string) {
-  const compiled = raw.parse(content.toString())
+export function compileFull(
+  content: Buffer | string,
+  options: { content: string; fileName: string },
+) {
+  const compiled = raw.parse(content.toString(), {
+    grammarSource: options.fileName,
+    reservedWords: [],
+  })
   const F = new TemplateFactory({
     root: templateRoot,
   })
-  return prepareCode(F.run(compiled, 'compiled.njs'))
+  return prepareCode(F.run({ context: compiled, name: 'compiled.njs' }))
 }

@@ -111,7 +111,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
         });
         return tpl.compile();
     }
-    run(context, name, absPath) {
+    run({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, {});
         const result = bc.run(context, bc.content, bc.partial, bc.slot);
@@ -135,7 +135,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             return result;
         }
     }
-    runPartial(context, name, absPath, slots) {
+    runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, slots);
         return bc.run(context, bc.content, bc.partial, bc.slot);

@@ -17,14 +17,14 @@ class TemplateFactoryBrowser extends factory_1.TemplateFactoryBase {
         templ.compile();
         return templ;
     }
-    run(context, name, absPath) {
+    run({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name);
-        const bc = this.blockContent(templ);
+        const bc = this.blockContent(templ, slots);
         return bc.run(context, bc.content, bc.partial, bc.slot);
     }
-    runPartial(context, name, absPath) {
+    runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name);
-        const bc = this.blockContent(templ);
+        const bc = this.blockContent(templ, slots);
         return bc.run(context, bc.content, bc.partial, bc.slot);
     }
 }

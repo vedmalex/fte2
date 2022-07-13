@@ -4,6 +4,10 @@ export type HashType = {
   [key: string]: any
 }
 
+export interface DefaultFactoryOption extends Record<string, any> {
+  applyIndent(_str: string, _indent: number | string): string
+}
+
 export type HashTypeGeneric<T> = {
   [key: string]: T
 }
@@ -42,11 +46,12 @@ export type BlockContent = {
 
 export type BlocksHash = HashTypeGeneric<BlockRunFunction>
 
-export type TemplateConfig = {
+export type TemplateConfig<T extends DefaultFactoryOption> = {
   source?: string
   name?: string
   absPath?: string
   parent?: string
+  options?: Record<string, any>
   blocks?: BlocksHash
   slots?: BlocksHash
   aliases?: HashTypeGeneric<string>
@@ -54,6 +59,6 @@ export type TemplateConfig = {
   dependency?: HashTypeGeneric<boolean>
   srcCode?: string
   script?: BlockRunFunction
-  factory?: TemplateFactoryBase
+  factory?: TemplateFactoryBase<T>
   compile?: () => void
 }

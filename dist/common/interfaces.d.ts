@@ -2,6 +2,9 @@ import { TemplateFactoryBase } from './factory';
 export declare type HashType = {
     [key: string]: any;
 };
+export interface DefaultFactoryOption extends Record<string, any> {
+    applyIndent(_str: string, _indent: number | string): string;
+}
 export declare type HashTypeGeneric<T> = {
     [key: string]: T;
 };
@@ -20,11 +23,12 @@ export declare type BlockContent = {
     slot: SlotFunction;
 };
 export declare type BlocksHash = HashTypeGeneric<BlockRunFunction>;
-export declare type TemplateConfig = {
+export declare type TemplateConfig<T extends DefaultFactoryOption> = {
     source?: string;
     name?: string;
     absPath?: string;
     parent?: string;
+    options?: Record<string, any>;
     blocks?: BlocksHash;
     slots?: BlocksHash;
     aliases?: HashTypeGeneric<string>;
@@ -32,7 +36,7 @@ export declare type TemplateConfig = {
     dependency?: HashTypeGeneric<boolean>;
     srcCode?: string;
     script?: BlockRunFunction;
-    factory?: TemplateFactoryBase;
+    factory?: TemplateFactoryBase<T>;
     compile?: () => void;
 };
 //# sourceMappingURL=interfaces.d.ts.map
