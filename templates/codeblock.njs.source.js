@@ -1,11 +1,6 @@
 module.exports = {
   alias: ['codeblock.njs'],
-  script: function (renderOptions, _content, partial, slot, options) {
-    function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = renderOptions
-      return _content(blockName, ctx, content, partial, slot)
-    }
-    const { SourceNode } = require('source-map-generator')
+  script: function (renderOptions) {
     var out = []
     var blockList = renderOptions.blocks
     var textQuote = false
@@ -32,10 +27,12 @@ module.exports = {
             if (block.indent) {
               res += `${JSON.stringify(block.indent)} + `
             }
+
             res += `${cont
               .split('\n')
               .map((s) => JSON.stringify(s + '\n'))
               .join('+ \n')}`
+
             out.push(res)
           }
           break
@@ -104,9 +101,11 @@ module.exports = {
           break
       }
     }
+
     if (textQuote) {
       out.push(')')
     }
+    // return ''
     return out.join('\n')
   },
   compile: function () {

@@ -2,61 +2,60 @@
 <#@ requireAs ('codeblock.njs','codeblock') #>
 <#-
   function processRequire(item){
-    var requires = item.name.split(',').map(function(i){return i.trim()});
-    return {name:requires[0], alias:requires[1]};
+    var requires = item.name.split(',').map(function(i){return i.trim()})
+    return {name:requires[0], alias:requires[1]}
   }
 
   function processContextName(item){
-    return item.name.split(',')[0].trim();
+    return item.name.split(',')[0].trim()
   }
 
   function processAsync(item){
-    return item.name.split(',')[0].trim();
+    return item.name.split(',')[0].trim()
   }
 
   function processAlias(item){
-    return item.name.split(',').map(a => a.trim());
+    return item.name.split(',').map(a => a.trim())
   }
 
   function processnoIndent(item){
-    return !!item;
+    return !!item
   }
 
-  var templateAlias = '';
-  var reqList = [];
-  var contextName = 'context';
-  var noIndent = false;
-  var alias = '';
-  var useChunks = '';
-  var inludeMainchunkInOutput = false;
-  var useHash = '';
-  var item, directives = context.directives, extend = '';
+  var templateAlias = ''
+  var reqList = []
+  var contextName = 'context'
+  var noIndent = false
+  var alias = ''
+  var useChunks = ''
+  var inludeMainchunkInOutput = false
+  var useHash = ''
+  var item, directives = context.directives, extend = ''
   for (var i = 0, len = directives.length; i < len; i++) {
-
-    item = directives[i];
-    if(item.content === 'extend'){
-      extend = item.name.trim();
+    item = directives[i]
+    if(item.content.indexOf('extend') > -1){
+      extend = item.name.trim()
     }
-    if(item.content === 'requireAs'){
-      reqList.push(processRequire(item));
+    if(item.content.indexOf('requireAs') > -1){
+      reqList.push(processRequire(item))
     }
-    if(item.content === 'context'){
+    if(item.content.indexOf('context') > -1){
       contextName = processContextName(item)
     }
-    if(item.content === 'noIndent'){
+    if(item.content.indexOf('noIndent') > -1){
       noIndent = processnoIndent(item)
     }
-    if(item.content === 'alias'){
-      alias = processAlias(item);
+    if(item.content.indexOf('alias') > -1){
+      alias = processAlias(item)
     }
-    if(item.content === 'chunks'){
-      useChunks = processAsync(item);
+    if(item.content.indexOf('chunks') > -1){
+      useChunks = processAsync(item)
     }
-    if(item.content === 'includeMainChunk'){
-      inludeMainchunkInOutput = processnoIndent(item);
+    if(item.content.indexOf('includeMainChunk') > -1){
+      inludeMainchunkInOutput = processnoIndent(item)
     }
-    if(item.content === 'useHash'){
-      useHash = !!item;
+    if(item.content.indexOf('useHash') > -1){
+      useHash = !!item
     }
   }
 -#>
@@ -65,58 +64,60 @@
 #> alias: #{JSON.stringify(alias)},
 <#- }-#>
 <# const useDirectContent = context.blocks || context.slots; #>
-  script: function (#{contextName}, _content, partial, slot){
+  script: function (#{contextName}, _content, partial, slot, options){
     function content(blockName, ctx) {
-      if(ctx === undefined || ctx === null) ctx = #{contextName};
-      return _content(blockName, ctx, content, partial, slot);
+      if(ctx === undefined || ctx === null) ctx = #{contextName}
+      return _content(blockName, ctx, content, partial, slot)
     }
     <#if(useChunks){#>
     const _partial = partial
     partial = function(obj, template) {
-      const result = _partial(obj, template);
+      const result = _partial(obj, template)
       if(Array.isArray(result)){
         result.forEach(r => {
-          chunkEnsure(r.name, r.content);
+          chunkEnsure(r.name, r.content)
         })
-        return '';
+        return ''
       } else {
-        return result;
+        return result
       }
     }
-    const main = '#{useChunks}';
-    var current = main;
-    let outStack = [current];
-    let result;
+    const main = '#{useChunks}'
+    var current = main
+    let outStack = [current]
+    let result
 
     function chunkEnsure(name, content) {
       if (!result) {
-        result = {};
+        result = {}
       }
       if (!result.hasOwnProperty(name)) {
-        result[name] = content ? content : '';
+        result[name] = content ? content : []
       }
     }
     function chunkStart(name) {
-      chunkEnsure(name);
-      chunkEnd();
-      current = name;
-      out = '';
+      chunkEnsure(name)
+      chunkEnd()
+      current = name
+      out = []
     }
     function chunkEnd() {
-      result[current] += out;
-      out = '';
-      current = outStack.pop() || main;
+      result[current].push(out)
+      out = []
+      current = outStack.pop() || main
     }
 
     <#}#>
-    var out = '';
+    const { SourceNode } = require("source-map-generator")
+
+    var out = []
     <#if(useChunks){#>
-      chunkStart(main);
+      chunkStart(main)
     <#}#>
     <#- var blocks = {blocks:context.main, noIndent:noIndent} -#>
     #{partial(blocks,'codeblock')}
     <#if(useChunks){#>
-      chunkEnd();
+      chunkEnd()
       <#if(!useHash){#>
         out = Object.keys(result)
         <#if(!inludeMainchunkInOutput){#>
@@ -124,104 +125,105 @@
         <#}#>
         .map(curr => ({ name: curr, content: result[curr] }))
       <#} else {#>
-        out = result;
+        out = result
         <#if(!inludeMainchunkInOutput){#>
-        delete out['#{useChunks}'];
+        delete out['#{useChunks}']
         <#}#>
       <#}#>
     <#}#>
-      return out;
+     return out.join('\n')
   },
 <#
-  var cb = context.blocks;
+  var cb = context.blocks
     if(cb) {-#>
   blocks : {
 <#    for(var cbn in cb){ -#>
-<#- var blockConetxtName = contextName;
-    var bdirvs = cb[cbn].directives;
-    var item = bdirvs[i];
-    var blkNoIndent = false;
-    var blAsyncType = '';
+<#- var blockConetxtName = contextName
+    var bdirvs = cb[cbn].directives
+    var item = bdirvs[i]
+    var blkNoIndent = false
+    var blAsyncType = ''
     for(var i = 0, len = bdirvs.length; i < len; i++){
-      item = bdirvs[i];
-      if(item.content === 'context'){
+      item = bdirvs[i]
+      if(item.content.indexOf('context') > -1){
         blockConetxtName = processContextName(item)
       }
-      if(item.content === 'noIndent'){
+      if(item.content.indexOf('noIndent') > -1){
         blkNoIndent = processnoIndent(item)
       }
-      if(item.content === 'async'){
-        blAsyncType = processAsync(item);
+      if(item.content.indexOf('async') > -1){
+        blAsyncType = processAsync(item)
       }
     }
 -#>
     "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
       function content(blockName, ctx) {
-        if(ctx === undefined || ctx === null) ctx = #{contextName};
-        return _content(blockName, ctx, content, partial, slot);
+        if(ctx === undefined || ctx === null) ctx = #{contextName}
+        return _content(blockName, ctx, content, partial, slot)
       }
-      var out = '';
+      var {applyIndent, escapeIt} = options
+      var out = []
       <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
       #{partial(blocks, 'codeblock')}
-      return out;
+      return out.join('\n')
     },
 <#      }-#>
   },
 <#-  } -#>
 <#
-    var cb = context.slots;
+    var cb = context.slots
 if(cb) {-#>
   slots : {
 <#    for(var cbn in cb){ -#>
-<#- var blockConetxtName = contextName;
-    var bdirvs = cb[cbn].directives;
-    var item = bdirvs[i];
-    var blkNoIndent = false;
-    var blAsyncType = '';
+<#- var blockConetxtName = contextName
+    var bdirvs = cb[cbn].directives
+    var item = bdirvs[i]
+    var blkNoIndent = false
+    var blAsyncType = ''
     for(var i = 0, len = bdirvs.length; i < len; i++){
-      item = bdirvs[i];
-      if(item.content === 'context'){
+      item = bdirvs[i]
+      if(item.content.indexOf('context') > -1){
         blockConetxtName = processContextName(item)
       }
-      if(item.content === 'noIndent'){
+      if(item.content.indexOf('noIndent') > -1){
         blkNoIndent = processnoIndent(item)
       }
-      if(item.content === 'async'){
-        blAsyncType = processAsync(item);
+      if(item.content.indexOf('async') > -1){
+        blAsyncType = processAsync(item)
       }
     }
 -#>
     "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
       function content(blockName, ctx) {
-        if(ctx === undefined || ctx === null) ctx = #{contextName};
-        return _content(blockName, ctx, content, partial, slot);
+        if(ctx === undefined || ctx === null) ctx = #{contextName}
+        return _content(blockName, ctx, content, partial, slot)
       }
-      var out = '';
+      var out = []
       <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
       #{partial(blocks, 'codeblock')}
-      return out;
+      return out.join('\n')
     },
 <#      }-#>
   },
 <#-  } -#>
   compile: function() {
 <#- if(alias){#>
-    this.alias = #{JSON.stringify(alias)};
+    this.alias = #{JSON.stringify(alias)}
 <#- }-#>
 <#-  if(reqList.length > 0) { -#>
-    this.aliases={};
-<# var rq;
+    this.aliases={}
+<# var rq
   for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i];
+    rq = reqList[i]
 -#>
-    this.aliases["#{rq.alias}"] = "#{rq.name}";
-    this.factory.ensure("#{rq.name}");
+    this.aliases["#{rq.alias}"] = "#{rq.name}"
+    this.factory.ensure("#{rq.name}")
 <#
   }
 }-#>
 
 <#-if(extend) {#>
-    this.parent = #{JSON.stringify(extend)};
+    this.parent = #{JSON.stringify(extend)}
     this.mergeParent(this.factory.ensure(this.parent))
 <#}-#>
   },
@@ -231,7 +233,7 @@ if(cb) {-#>
   <# }-#>
 <#- if(reqList.length > 0) {
   for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i];
+    rq = reqList[i]
 -#>
     "#{rq.name}": 1,
 <#
