@@ -48,18 +48,14 @@ function parseIt(input) {
   function node(content, type, name, indent){
     this.type = type;
     if(name) this.name = name;
-    this.content = content;
+    this.content = content
     if(indent) {
       this.indent = indent;// to use same indentation as source code
       if(~eol.indexOf(indent[0])){
         delete this.indent;
       }
     }
-    var loc = location();
-    var bol = loc.start.column == 1;
-    if(bol) this.bol = true;
-    this.line = loc.start.line;
-    this.column = loc.start.column;
+    this.location = location();
   }
 
   // flatten an array and join it
