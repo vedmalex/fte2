@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "compile:clean": "tsc --build tsconfig.json --clean",
     "prepublish": "tsc --build tsconfig.json",
     "templates": "node dist/compile_templates.js",
-    "grammar": "peggy --output ./grammar/raw.peggy.js ./grammar/raw.peggy",
+    "grammar": "peggy --source-map inline --output ./grammar/raw.peggy.js ./grammar/raw.peggy",
     "genit": "npm run grammar && npm run templates",
     "watch": "tsc --build tsconfig.json --watch"
   },
@@ -39,7 +39,8 @@
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
     "prettier": "^2.7.1",
-    "source-map": "^0.7.4",
+    "source-map": "0.8.0-beta.0",
+    "source-map-generator": "^0.8.0",
     "typescript": "^4.7.4"
   },
   "gitHead": "ef0fa33d54101ca9c7c7a450fc6b7fc802a2c327"
