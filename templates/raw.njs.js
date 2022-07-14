@@ -1,12 +1,10 @@
 module.exports = {
   alias: ['raw.njs'],
-  script: function (context, _content, partial, slot) {
+  script: function (context, _content, partial, slot, options) {
     var out = []
-    out.push(`
-(function(){
-  return ${partial(context, 'core')}
-})()
-`)
+    out.push(`(function(){
+      return ${partial(context, 'core')};
+    })();`)
     return out.join('\n')
   },
   compile: function () {

@@ -33,7 +33,6 @@ module.exports = {
       directives = context.directives,
       extend = ''
     for (var i = 0, len = directives.length; i < len; i++) {
-      debugger
       item = directives[i]
       if (item.content.indexOf('extend') > -1) {
         extend = item.name.trim()
@@ -70,6 +69,7 @@ module.exports = {
     out.push(contextName)
     out.push(
       ', _content, partial, slot, options){',
+      '    var {applyIndent, escapeIt} = options',
       '    function content(blockName, ctx) {',
       '      if(ctx === undefined || ctx === null) ctx =',
     )
@@ -261,13 +261,9 @@ module.exports = {
       out.push('    this.aliases={}', '')
       var rq
       for (var i = 0, len = reqList.length; i < len; i++) {
-        ;(rq = reqList[i]), out.push('    this.aliases["')
-        out.push(rq.alias)
-        out.push('"] = "')
-        out.push(rq.name)
-        out.push('"', '    this.factory.ensure("')
-        out.push(rq.name)
-        out.push('")', '')
+        rq = reqList[i]
+        out.push(`    this.aliases["${rq.alias}"] = "${rq.name}"`)
+        out.push(`    this.factory.ensure("${rq.name}")`)
       }
     }
     if (extend) {
@@ -282,9 +278,7 @@ module.exports = {
     }
     if (reqList.length > 0) {
       for (var i = 0, len = reqList.length; i < len; i++) {
-        ;(rq = reqList[i]), out.push('    "')
-        out.push(rq.name)
-        out.push('": 1,', '')
+        out.push(`    "${reqList[i].name}": 1,`)
       }
     }
     out.push('  }', '}', '')

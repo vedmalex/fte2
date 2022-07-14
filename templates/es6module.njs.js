@@ -1,13 +1,8 @@
 module.exports = {
   alias: ['es6module.njs'],
-  script: function (context, _content, partial, slot) {
-    function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = context
-      return _content(blockName, ctx, content, partial, slot)
-    }
+  script: function (context, _content, partial, slot, options) {
     var out = []
-    out.push('export default')
-    out.push(applyIndent(partial(context, 'core'), ' '))
+    out.push(`export default ${partial(context, 'core')};`)
     return out.join('\n')
   },
   compile: function () {
