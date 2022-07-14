@@ -10,15 +10,15 @@ import {
 
 export class TemplateBase<T extends DefaultFactoryOption> {
   public parent: string
-  public blocks: BlocksHash
-  public slots: BlocksHash
+  public blocks: BlocksHash<T>
+  public slots: BlocksHash<T>
   public aliases: HashTypeGeneric<string>
   public alias: Array<string>
   public dependency: HashTypeGeneric<boolean>
   public absPath: string
   public name: string
   public srcCode: string
-  public script: BlockRunFunction
+  public script: BlockRunFunction<T>
   public factory: TemplateFactoryBase<T>
 
   constructor(config: TemplateConfig<T>) {

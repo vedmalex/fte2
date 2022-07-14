@@ -114,12 +114,12 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     run({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, {});
-        const result = bc.run(context, bc.content, bc.partial, bc.slot);
+        const result = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
         if (Object.keys(bc.slots).length > 0) {
             if (Array.isArray(result)) {
                 return result.map((r) => {
                     const tpl = this.standalone(r.content);
-                    const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot);
+                    const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot, this.options);
                     return {
                         name: r.name,
                         content,
@@ -128,7 +128,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             }
             else {
                 const res = this.standalone(result);
-                return res.script(bc.slots, bc.content, bc.partial, bc.slot);
+                return res.script(bc.slots, bc.content, bc.partial, bc.slot, this.options);
             }
         }
         else {
@@ -138,7 +138,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, slots);
-        return bc.run(context, bc.content, bc.partial, bc.slot);
+        return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
     }
     blocksToFiles(context, name, absPath) {
         const templ = this.ensure(name, absPath);
@@ -150,12 +150,12 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     }
     express() {
         const self = this;
-        return function (fileName, context, callback) {
+        return (fileName, context, callback) => {
             const templ = self.ensure(fileName, true);
             const bc = self.blockContent(templ);
             let result, err;
             try {
-                result = bc.run(context, bc.content, bc.partial, bc.slot);
+                result = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
             }
             catch (e) {
                 err = e;

@@ -47,6 +47,7 @@ function load(fileName, folder, compile) {
                 bracketSpacing: true,
                 jsxBracketSameLine: true,
                 parser: 'typescript',
+                proseWrap: 'never',
             });
             fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), prettified);
         }
@@ -57,15 +58,32 @@ function load(fileName, folder, compile) {
         }
     }
 }
-(0, glob_1.default)('templates/codeblock.njs', (err, files) => {
-    if (err) {
-        throw err;
-    }
-    else {
-        files.forEach((file) => {
-            console.log(file);
-            load(file, src, compile_1.compileFull);
-        });
-    }
+glob_1.default.sync('templates/codeblock.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/MainTemplate.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/compilationError.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/compiled.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/es6module.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/raw.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
+});
+glob_1.default.sync('templates/test.njs').forEach((file) => {
+    console.log(file);
+    load(file, src, compile_1.compileFull);
 });
 //# sourceMappingURL=compile_templates.js.map

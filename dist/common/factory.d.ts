@@ -8,6 +8,7 @@ export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption
     watch: boolean;
     watchTree: any;
     root: any;
+    options: T;
     constructor(config?: {
         root?: string | Array<string>;
         debug?: boolean;
@@ -18,7 +19,7 @@ export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption
     });
     register(tpl: TemplateBase<T>, fileName?: string): TemplateBase<T>;
     ensure(fileName: string, absPath?: boolean): TemplateBase<T>;
-    blockContent(tpl: TemplateBase<T>, slots?: SlotsHash): BlockContent;
+    blockContent(tpl: TemplateBase<T>, slots?: SlotsHash): BlockContent<T>;
     preload(fileName?: string): void;
     checkChanges(template?: any, fileName?: any, absPath?: boolean): void;
     load(fileName: string, absPath: boolean): TemplateBase<T>;

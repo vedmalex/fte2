@@ -21,12 +21,14 @@ function load(fileName, folder, compile) {
         bracketSpacing: true,
         jsxBracketSameLine: true,
         parser: 'typescript',
+        proseWrap: 'never',
       })
 
       fs.writeFileSync(
         path.join(folder, path.basename(fileName) + '.js'),
         prettified,
       )
+      // fs.writeFileSync(fn + '.err.js', result)
     } catch (err) {
       console.log(fn)
       fs.writeFileSync(fn + '.err.js', result)
@@ -35,13 +37,36 @@ function load(fileName, folder, compile) {
   }
 }
 
-glob('templates/codeblock.njs', (err, files) => {
-  if (err) {
-    throw err
-  } else {
-    files.forEach((file) => {
-      console.log(file)
-      load(file, src, compileFull)
-    })
-  }
+glob.sync('templates/codeblock.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+
+glob.sync('templates/MainTemplate.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+
+glob.sync('templates/compilationError.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+glob.sync('templates/compiled.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+
+glob.sync('templates/es6module.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+
+glob.sync('templates/raw.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
+})
+
+glob.sync('templates/test.njs').forEach((file) => {
+  console.log(file)
+  load(file, src, compileFull)
 })

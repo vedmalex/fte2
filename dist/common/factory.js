@@ -4,6 +4,7 @@ exports.TemplateFactoryBase = exports.DefaultFactoryOptions = void 0;
 const helpers_1 = require("./helpers");
 exports.DefaultFactoryOptions = {
     applyIndent: helpers_1.applyIndent,
+    escapeIt: helpers_1.escapeIt,
 };
 class TemplateFactoryBase {
     constructor(config = {}) {
@@ -12,7 +13,8 @@ class TemplateFactoryBase {
         this.watch = false;
         this.watchTree = undefined;
         this.root = undefined;
-        config.options = { ...config.options, DefaultFactoryOptions: exports.DefaultFactoryOptions };
+        config.options = { ...config.options, ...exports.DefaultFactoryOptions };
+        this.options = config.options;
         if (!process.browser) {
             this.root = config
                 ? config.root
@@ -115,7 +117,7 @@ class TemplateFactoryBase {
             content(name, context, content, partial, slot) {
                 if (name) {
                     return tpl.blocks && tpl.blocks.hasOwnProperty(name)
-                        ? tpl.blocks[name](context, content, partial, slot)
+                        ? tpl.blocks[name](context, content, partial, slot, self.options)
                         : '';
                 }
                 else {
@@ -138,7 +140,7 @@ class TemplateFactoryBase {
                     }
                     else {
                         try {
-                            return $this.script(context, content, partial, slot);
+                            return $this.script(context, content, partial, slot, self.options);
                         }
                         catch (e) {
                             throw new Error(`template ${$this.name} failed to execute with error

@@ -1,4 +1,5 @@
 import { HashType } from './interfaces';
+export declare function escapeIt(text: string): string;
 export declare function applyIndent(_str: string, _indent: number | string): string;
 export declare function set(data: HashType, path: string, value: any): void;
 export declare function get(data: HashType, path: string): any;

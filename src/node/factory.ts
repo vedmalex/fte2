@@ -39,7 +39,7 @@ export class TemplateFactory<
         result.absPath = fn
         result.name = fileName
         result.factory = this
-        const templ = new Template(result)
+        const templ = new Template<T>(result)
         this.register(templ, fileName)
         templ.compile()
         return templ
@@ -129,12 +129,24 @@ export class TemplateFactory<
     //   source.add(new SourceNode(m.column, m.line, m.content))
     // })
     const bc = this.blockContent(templ, {})
-    const result = bc.run(context, bc.content, bc.partial, bc.slot)
+    const result = bc.run(
+      context,
+      bc.content,
+      bc.partial,
+      bc.slot,
+      this.options,
+    )
     if (Object.keys(bc.slots).length > 0) {
       if (Array.isArray(result)) {
         return result.map((r) => {
           const tpl = this.standalone(r.content)
-          const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot)
+          const content = tpl.script(
+            bc.slots,
+            bc.content,
+            bc.partial,
+            bc.slot,
+            this.options,
+          )
           return {
             name: r.name,
             content,
@@ -142,7 +154,13 @@ export class TemplateFactory<
         })
       } else {
         const res = this.standalone(result)
-        return res.script(bc.slots, bc.content, bc.partial, bc.slot)
+        return res.script(
+          bc.slots,
+          bc.content,
+          bc.partial,
+          bc.slot,
+          this.options,
+        )
       }
     } else {
       return result
@@ -164,7 +182,7 @@ export class TemplateFactory<
   }): string {
     const templ = this.ensure(name, absPath)
     const bc = this.blockContent(templ, slots)
-    return bc.run(context, bc.content, bc.partial, bc.slot)
+    return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
   public blocksToFiles(
@@ -182,12 +200,12 @@ export class TemplateFactory<
 
   public express() {
     const self = this
-    return function (fileName, context, callback) {
+    return (fileName, context, callback) => {
       const templ = self.ensure(fileName, true)
       const bc = self.blockContent(templ)
       let result, err
       try {
-        result = bc.run(context, bc.content, bc.partial, bc.slot)
+        result = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
       } catch (e) {
         err = e
       } finally {

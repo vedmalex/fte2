@@ -11,10 +11,11 @@ import {
   SlotFunction,
   DefaultFactoryOption,
 } from './../common/interfaces'
-import { applyIndent } from './helpers'
+import { applyIndent, escapeIt } from './helpers'
 
 export const DefaultFactoryOptions: DefaultFactoryOption = {
   applyIndent,
+  escapeIt,
 }
 
 /**
@@ -28,6 +29,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
   // подумать нужно ли делать один общий для все список watchTree
   public watchTree = undefined
   public root = undefined
+  public options: T
 
   constructor(
     config: {
@@ -39,7 +41,8 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
       options?: T
     } = {},
   ) {
-    config.options = { ...config.options, DefaultFactoryOptions }
+    config.options = { ...config.options, ...DefaultFactoryOptions }
+    this.options = config.options
     if (!process.browser) {
       // this only need in server-side code with server load code
       this.root = config
@@ -97,10 +100,13 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     }
     return this.cache[fileName]
   }
-  public blockContent(tpl: TemplateBase<T>, slots?: SlotsHash): BlockContent {
+  public blockContent(
+    tpl: TemplateBase<T>,
+    slots?: SlotsHash,
+  ): BlockContent<T> {
     const scripts = []
     const self = this
-    const bc: BlockContent = {
+    const bc: BlockContent<T> = {
       slots: slots ? slots : {},
       slot(name: string, content: string | Array<string>): void | string {
         if (name) {
@@ -148,7 +154,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
       ) {
         if (name) {
           return tpl.blocks && tpl.blocks.hasOwnProperty(name)
-            ? tpl.blocks[name](context, content, partial, slot)
+            ? tpl.blocks[name](context, content, partial, slot, self.options)
             : ''
         } else {
           const fn = scripts.pop()
@@ -179,7 +185,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
             return go.call(parent, context, content, partial, slot)
           } else {
             try {
-              return $this.script(context, content, partial, slot)
+              return $this.script(context, content, partial, slot, self.options)
             } catch (e) {
               throw new Error(
                 `template ${$this.name} failed to execute with error
