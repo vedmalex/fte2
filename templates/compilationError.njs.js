@@ -5,7 +5,6 @@ module.exports = {
       if (ctx === undefined || ctx === null) ctx = context
       return _content(blockName, ctx, content, partial, slot)
     }
-    const { SourceNode } = require('source-map-generator')
     var out = []
     out.push(context.error.message + ';\n' + '' + context.compiledFile + ';\n')
     return out.join('\n')

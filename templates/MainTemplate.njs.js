@@ -127,13 +127,7 @@ module.exports = {
           '    \n',
       )
     }
-    out.push(
-      '\n' +
-        '    const { SourceNode } = require("source-map-generator")\n' +
-        '\n' +
-        '    var out = []\n' +
-        '    \n',
-    )
+    out.push('\n' + '    var out = []\n' + '    \n')
     if (useChunks) {
       out.push('\n' + '      chunkStart(main)\n' + '    \n')
     }

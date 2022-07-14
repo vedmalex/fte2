@@ -108,8 +108,6 @@
     }
 
     <#}#>
-    const { SourceNode } = require("source-map-generator")
-
     var out = []
     <#if(useChunks){#>
       chunkStart(main)
