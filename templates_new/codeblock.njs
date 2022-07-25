@@ -1,8 +1,8 @@
 <#@ alias 'codeblock.njs' #>
-<#@ noEscape #>
-<#@ noContent #>
-<#@ context 'blockList' #>
+<#@ context 'renderOptions' #>
+<#@ noIndent #>
 <#
+    var blockList = renderOptions.blocks
     var textQuote = false
     for (var i = 0, len = blockList.length; i < len; i++) {
       var block = blockList[i]
@@ -24,6 +24,10 @@
                 res = `${lasItem} + `
               }
             }
+            if (block.indent) {
+              res += `${JSON.stringify(block.indent)} + `
+            }
+
             res += `${cont
               .split('\n')
               .map((s) => JSON.stringify(s + '\n'))
@@ -84,7 +88,7 @@
             }
           }
           break
-        case 'code':
+        case 'codeblock':
           if (textQuote) {
             let item = out.pop()
             out.push(`${item})`)
@@ -101,4 +105,4 @@
     if (textQuote) {
       out.push(')')
     }
-#>
+-#>

@@ -1,13 +1,8 @@
 module.exports = {
   alias: ['codeblock.njs'],
-  script: function (renderOptions, _content, partial, slot, options) {
-    function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = renderOptions
-      return _content(blockName, ctx, content, partial, slot)
-    }
-    const { SourceNode } = require('source-map-generator')
+  script: function (blockList, _content, partial, slot, options) {
     var out = []
-    var blockList = renderOptions.blocks
+    out.push('\n' + '' + '\n' + '' + '\n' + '' + '\n' + '\n')
     var textQuote = false
     for (var i = 0, len = blockList.length; i < len; i++) {
       var block = blockList[i]
@@ -29,12 +24,9 @@ module.exports = {
                 res = `${lasItem} + `
               }
             }
-            if (block.indent) {
-              res += `${JSON.stringify(block.indent)} + `
-            }
             res += `${cont
               .split('\n')
-              .map((s) => JSON.stringify(s + '\n'))
+              .map(s => JSON.stringify(s + '\n'))
               .join('+ \n')}`
             out.push(res)
           }
@@ -91,7 +83,7 @@ module.exports = {
             }
           }
           break
-        case 'codeblock':
+        case 'code':
           if (textQuote) {
             let item = out.pop()
             out.push(`${item})`)

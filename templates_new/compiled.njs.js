@@ -1,29 +1,21 @@
 module.exports = {
-  alias: ['es6module.njs'],
+  alias: ['compiled.njs'],
   script: function (context, _content, partial, slot, options) {
+    function content(blockName, ctx) {
+      if (ctx === undefined || ctx === null) ctx = context
+      return _content(blockName, ctx, content, partial, slot)
+    }
     var out = []
-    out.push(
-      '\n' +
-        '' +
-        '\n' +
-        '' +
-        '\n' +
-        '' +
-        '\n' +
-        'export default ' +
-        partial(context, 'core') +
-        ';\n',
-    )
+    out.push('module.exports =' + ' ' + partial(context, 'core') + ';\n' + '\n')
     return out.join('\n')
   },
   compile: function () {
-    this.alias = ['es6module.njs']
+    this.alias = ['compiled.njs']
     this.aliases = {}
     this.aliases['core'] = 'MainTemplate.njs'
     this.factory.ensure('MainTemplate.njs')
   },
   dependency: {
     'MainTemplate.njs': 1,
-    core: 1,
   },
 }

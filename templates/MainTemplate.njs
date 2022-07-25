@@ -1,75 +1,28 @@
 <#@ alias 'MainTemplate.njs' #>
+<#@ noEscape #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
-<#-
-  function processRequire(item){
-    var requires = item.name.split(',').map(function(i){return i.trim()})
-    return {name:requires[0], alias:requires[1]}
-  }
-
-  function processContextName(item){
-    return item.name.split(',')[0].trim()
-  }
-
-  function processAsync(item){
-    return item.name.split(',')[0].trim()
-  }
-
-  function processAlias(item){
-    return item.name.split(',').map(a => a.trim())
-  }
-
-  function processnoIndent(item){
-    return !!item
-  }
-
-  var templateAlias = ''
-  var reqList = []
-  var contextName = 'context'
-  var noIndent = false
-  var alias = ''
-  var useChunks = ''
-  var inludeMainchunkInOutput = false
-  var useHash = ''
-  var item, directives = context.directives, extend = ''
-  for (var i = 0, len = directives.length; i < len; i++) {
-    item = directives[i]
-    if(item.content.indexOf('extend') > -1){
-      extend = item.name.trim()
-    }
-    if(item.content.indexOf('requireAs') > -1){
-      reqList.push(processRequire(item))
-    }
-    if(item.content.indexOf('context') > -1){
-      contextName = processContextName(item)
-    }
-    if(item.content.indexOf('noIndent') > -1){
-      noIndent = processnoIndent(item)
-    }
-    if(item.content.indexOf('alias') > -1){
-      alias = processAlias(item)
-    }
-    if(item.content.indexOf('chunks') > -1){
-      useChunks = processAsync(item)
-    }
-    if(item.content.indexOf('includeMainChunk') > -1){
-      inludeMainchunkInOutput = processnoIndent(item)
-    }
-    if(item.content.indexOf('useHash') > -1){
-      useHash = !!item
-    }
-  }
--#>
+<# const { directives, blocks } = context #>
 {
-<#- if(alias){
-#> alias: #{JSON.stringify(alias)},
+<#- if(directives.alias){#>
+alias: #{JSON.stringify(directives.alias)},
 <#- }-#>
-<# const useDirectContent = context.blocks || context.slots; #>
-  script: function (#{contextName}, _content, partial, slot, options){
+
+<# block 'maincontent' : #>
+<#@ context 'directives'#>
+  <# if(directives.escapeIt){#>
+    const {escapeIt} = options
+  <#}#>
+
+  <#if(directives.content){#>
     function content(blockName, ctx) {
-      if(ctx === undefined || ctx === null) ctx = #{contextName}
+      if(ctx === undefined || ctx === null) ctx = #{directives.context}
       return _content(blockName, ctx, content, partial, slot)
     }
-    <#if(useChunks){#>
+  <#}#>
+<# end #>
+<# block 'chunks-start' : #>
+  <#@ context 'directives'#>
+  <#if(directives.chunks){#>
     const _partial = partial
     partial = function(obj, template) {
       const result = _partial(obj, template)
@@ -82,7 +35,7 @@
         return result
       }
     }
-    const main = '#{useChunks}'
+    const main = '#{directives.chunks}'
     var current = main
     let outStack = [current]
     let result
@@ -106,113 +59,78 @@
       out = []
       current = outStack.pop() || main
     }
-
-    <#}#>
-    var out = []
-    <#if(useChunks){#>
-      chunkStart(main)
-    <#}#>
-    <#- var blocks = {blocks:context.main, noIndent:noIndent} -#>
-    #{partial(blocks,'codeblock')}
-    <#if(useChunks){#>
-      chunkEnd()
-      <#if(!useHash){#>
-        out = Object.keys(result)
-        <#if(!inludeMainchunkInOutput){#>
-        .filter(i => i !== '#{useChunks}')
-        <#}#>
-        .map(curr => ({ name: curr, content: result[curr] }))
+    chunkStart(main)
+  <#}#>
+<# end #>
+<# block 'chunks-finish' : #>
+  <#@ context 'directives'#>
+  <#if(directives.chunks){#>
+    chunkEnd()
+    <#if(!useHash){#>
+    out = Object.keys(result)
+      <#if(!directives.includeMainChunk){#>
+      .filter(i => i !== '#{directives.chunks}')
+      <#}#>
+      .map(curr => ({ name: curr, content: result[curr] }))
       <#} else {#>
-        out = result
-        <#if(!inludeMainchunkInOutput){#>
-        delete out['#{useChunks}']
-        <#}#>
+    out = result
+      <#if(!directives.includeMainChunk){#>
+    delete out['#{directives.chunks}']
       <#}#>
     <#}#>
+  <#}#>
+<# end #>
+  script: function (#{directives.context}, _content, partial, slot, options){
+    #{content('maincontent', directives)}
+    var out = []
+    #{content('chunks-start', directives)}
+    #{partial(context.main,'codeblock')}
+    #{content('chunks-finish', directives)}
      return out.join('\n')
   },
 <#
-  var cb = context.blocks
-    if(cb) {-#>
+const blockNames = Object.keys(context.blocks)
+if(blockNames.length > 0) {-#>
   blocks : {
-<#    for(var cbn in cb){ -#>
-<#- var blockConetxtName = contextName
-    var bdirvs = cb[cbn].directives
-    var item = bdirvs[i]
-    var blkNoIndent = false
-    var blAsyncType = ''
-    for(var i = 0, len = bdirvs.length; i < len; i++){
-      item = bdirvs[i]
-      if(item.content.indexOf('context') > -1){
-        blockConetxtName = processContextName(item)
-      }
-      if(item.content.indexOf('noIndent') > -1){
-        blkNoIndent = processnoIndent(item)
-      }
-      if(item.content.indexOf('async') > -1){
-        blAsyncType = processAsync(item)
-      }
-    }
+<#
+  for(let i = 0; i < blockNames.length; i+=1) {
+    const block = context.blocks[blockNames[i]]
 -#>
-    "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
-      function content(blockName, ctx) {
-        if(ctx === undefined || ctx === null) ctx = #{contextName}
-        return _content(blockName, ctx, content, partial, slot)
-      }
-      var {applyIndent, escapeIt} = options
+    "#{blockNames[i]}": function(#{block.directives.context},  _content, partial, slot, options) {
+      #{content('maincontent', block.directives)}
       var out = []
-      <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
-      #{partial(blocks, 'codeblock')}
+      #{partial(block.main, 'codeblock')}
       return out.join('\n')
     },
-<#      }-#>
+<#}#>
   },
 <#-  } -#>
 <#
-    var cb = context.slots
-if(cb) {-#>
+const slotNames = Object.keys(context.slots)
+if(slotNames.length > 0) {-#>
   slots : {
-<#    for(var cbn in cb){ -#>
-<#- var blockConetxtName = contextName
-    var bdirvs = cb[cbn].directives
-    var item = bdirvs[i]
-    var blkNoIndent = false
-    var blAsyncType = ''
-    for(var i = 0, len = bdirvs.length; i < len; i++){
-      item = bdirvs[i]
-      if(item.content.indexOf('context') > -1){
-        blockConetxtName = processContextName(item)
-      }
-      if(item.content.indexOf('noIndent') > -1){
-        blkNoIndent = processnoIndent(item)
-      }
-      if(item.content.indexOf('async') > -1){
-        blAsyncType = processAsync(item)
-      }
-    }
+<#
+  for(let i = 0; i < slotNames.length; i+=1){
+    const slot = context.blocks[slotNames[i]]
 -#>
-    "#{cbn}": function(#{blockConetxtName},  _content, partial, slot){
-      function content(blockName, ctx) {
-        if(ctx === undefined || ctx === null) ctx = #{contextName}
-        return _content(blockName, ctx, content, partial, slot)
-      }
+    "#{slotNames[i]}": function(#{slot.directives.context},  _content, partial, slot, options){
+      #{content('maincontent', slot.directives)}
       var out = []
-      <#- var blocks = {blocks :cb[cbn].main, noIndent:blkNoIndent} -#>
-      #{partial(blocks, 'codeblock')}
+      #{partial(slot.main, 'codeblock')}
       return out.join('\n')
     },
-<#      }-#>
+<#}#>
   },
 <#-  } -#>
   compile: function() {
-<#- if(alias){#>
-    this.alias = #{JSON.stringify(alias)}
+<#- if(directives.alias){#>
+    this.alias = #{JSON.stringify(directives.alias)}
 <#- }-#>
-<#-  if(reqList.length > 0) { -#>
+<#-  if(directives.requireAs.length > 0) { -#>
     this.aliases={}
 <# var rq
-  for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i]
+  for (var i = 0, len = directives.requireAs.length; i < len; i++) {
+    rq = directives.requireAs[i]
 -#>
     this.aliases["#{rq.alias}"] = "#{rq.name}"
     this.factory.ensure("#{rq.name}")
@@ -220,20 +138,21 @@ if(cb) {-#>
   }
 }-#>
 
-<#-if(extend) {#>
-    this.parent = #{JSON.stringify(extend)}
+<#-if(directives.extend) {#>
+    this.parent = #{JSON.stringify(directives.extend)}
     this.mergeParent(this.factory.ensure(this.parent))
 <#}-#>
   },
   dependency: {
-  <# if(extend) {-#>
-    #{JSON.stringify(extend)}: 1,
+  <# if(directives.extend) {-#>
+    #{JSON.stringify(directives.extend)}: 1,
   <# }-#>
-<#- if(reqList.length > 0) {
-  for (var i = 0, len = reqList.length; i < len; i++) {
-    rq = reqList[i]
+<#- if(directives.requireAs.length > 0) {
+  for (var i = 0, len = directives.requireAs.length; i < len; i++) {
+    rq = directives.requireAs[i]
 -#>
     "#{rq.name}": 1,
+    "#{rq.alias}": 1,
 <#
   }
 }-#>

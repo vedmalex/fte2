@@ -1,15 +1,17 @@
 module.exports = {
   alias: ['raw.njs'],
   script: function (context, _content, partial, slot, options) {
-    function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = context
-      return _content(blockName, ctx, content, partial, slot)
-    }
     var out = []
     out.push(
-      '(function(){\n' +
-        '  return' +
-        ' ' +
+      '\n' +
+        '' +
+        '\n' +
+        '' +
+        '\n' +
+        '' +
+        '\n' +
+        '(function(){\n' +
+        '  return ' +
         partial(context, 'core') +
         ';\n' +
         '})();\n',
@@ -24,5 +26,6 @@ module.exports = {
   },
   dependency: {
     'MainTemplate.njs': 1,
+    core: 1,
   },
 }
