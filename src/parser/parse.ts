@@ -7,17 +7,23 @@ export type StateDefinition = {
   curly?: true
 }
 
-const noContentMatch = 'content('
-
 export type ResultTypes =
-  | 'expresson'
-  | 'uexpresson'
+  | 'expression'
+  | 'uexpression'
   | 'code'
   | 'directive'
   | 'slotStart'
   | 'blockStart'
   | 'blockEnd'
   | 'text'
+
+export type SystemBlocksType =
+  | 'directive'
+  | 'slotStart'
+  | 'blockStart'
+  | 'blockEnd'
+  | 'code'
+  | null
 
 const globalStates: { [key: string]: StateDefinition } = {
   /*
@@ -31,8 +37,8 @@ const globalStates: { [key: string]: StateDefinition } = {
   text: {
     // обратный порядок для ускорения цикла
     states: [
-      'expresson',
-      'uexpresson',
+      'expression',
+      'uexpression',
       'code',
       'directive',
       'slotStart',
@@ -40,11 +46,11 @@ const globalStates: { [key: string]: StateDefinition } = {
       'blockEnd',
     ],
   },
-  expresson: {
+  expression: {
     start: ['#{'],
     end: ['}'],
   },
-  uexpresson: {
+  uexpression: {
     start: ['!{'],
     end: ['}'],
     curly: true,
@@ -79,57 +85,18 @@ export interface ParserResult {
   type: ResultTypes
   start?: string
   end?: string
+  eol?: boolean
 }
 
-export class Items {
+export interface Items {
+  content?: string
   pos: number
   line: number
   column: number
   start: string
   end: string
-  constructor(init: ParserResult) {
-    this.pos = init.pos
-    this.line = init.line
-    this.column = init.column
-    this.start = init.start
-    this.end = init.end
-  }
-}
-
-export class Code extends Items {
-  content: string
-  type = 'code'
-  constructor(init: ParserResult) {
-    super(init)
-    this.content = init.data
-  }
-}
-
-export class Text extends Items {
-  content: string
-  type = 'text'
-  constructor(init: ParserResult) {
-    super(init)
-    this.content = init.data
-  }
-}
-
-export class Expression extends Items {
-  content: string
-  type = 'expression'
-  constructor(init: ParserResult) {
-    super(init)
-    this.content = init.data
-  }
-}
-
-export class UExpression extends Items {
-  content: string
-  type = 'uexpression'
-  constructor(init: ParserResult) {
-    super(init)
-    this.content = init.data
-  }
+  eol: boolean
+  type: ResultTypes
 }
 
 export type RequireItem = {
@@ -278,7 +245,7 @@ export class Parser {
       options,
     )
     parser.parse()
-    return parser.proces()
+    return parser.process()
   }
   private constructor(value: string, options: { indent?: string | number }) {
     if (options.indent) {
@@ -290,6 +257,16 @@ export class Parser {
     this.globalState = Parser.INITIAL_STATE
     this.buffer = value.toString()
     this.size = this.buffer.length
+  }
+
+  collect() {
+    const { term, eol } = this.SYMBOL()
+    if (eol) {
+      this.globalToken.eol = true
+      this.term()
+    } else {
+      this.globalToken.data += term
+    }
   }
 
   private run(currentState: ResultTypes) {
@@ -332,7 +309,7 @@ export class Parser {
               }
             }
             if (!foundEnd) {
-              this.globalToken.data += this.SYMBOL()
+              this.collect()
             } else {
               this.globalToken.end = state.end[i]
             }
@@ -355,7 +332,7 @@ export class Parser {
         }
       }
       if (!found) {
-        this.globalToken.data += this.SYMBOL()
+        this.collect()
       }
     }
     if (state.curly) {
@@ -374,46 +351,127 @@ export class Parser {
     }
   }
 
-  private proces() {
+  private process() {
     const content = new CodeBlock()
 
     const resultSize = this.result.length
     let curr = content
+    let state: SystemBlocksType = null
     for (let i = 0; i < resultSize; i += 1) {
       let r = this.result[i]
-      switch (r.type) {
+      let { type, pos, line, column, start, end, data, eol } = r
+      const processPrevious = () => {
+        if (curr.main.length > 0) {
+          let prev = curr.main[curr.main.length - 1]
+          if (prev.type == 'text' && prev.content.trim() == '') {
+            if (curr.main.pop().eol) {
+              curr.main[curr.main.length - 1].eol = true
+            }
+          }
+        }
+      }
+      if (curr.main.length > 0) {
+        let prev = curr.main[curr.main.length - 1]
+        if (prev.line != line) {
+          curr.main[curr.main.length - 1].eol = true
+        } else {
+          curr.main[curr.main.length - 1].eol = false
+        }
+      }
+      switch (type) {
         case 'directive':
+          state = 'directive'
+          processPrevious()
           curr.directives.push(r)
           break
         case 'blockStart':
+          state = 'blockStart'
+          processPrevious()
           curr = new CodeBlock(r)
           content.addBlock(curr)
           break
         case 'slotStart':
+          state = 'slotStart'
+          processPrevious()
           curr = new CodeBlock(r)
           content.addSlot(curr)
           break
         case 'blockEnd':
+          state = 'blockEnd'
           curr = content
           break
         case 'code':
-          if (r.data) {
-            curr.main.push(new Code(r))
+          if (data) {
+            if (start == '<#-') {
+              processPrevious()
+            }
+            if (end == '-#>') {
+              state = 'code'
+            }
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type,
+              eol,
+            })
           }
           break
-        case 'expresson':
-          if (r.data) {
-            curr.main.push(new Expression(r))
+        case 'expression':
+          if (data) {
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type,
+              eol,
+            })
           }
           break
-        case 'uexpresson':
-          if (r.data) {
-            curr.main.push(new UExpression(r))
+        case 'uexpression':
+          if (data) {
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type,
+              eol,
+            })
           }
           break
         case 'text':
-          if (r.data) {
-            curr.main.push(new Text(r))
+          if (data) {
+            if (
+              (state == 'directive' ||
+                state == 'blockEnd' ||
+                state == 'blockStart' ||
+                state == 'slotStart' ||
+                state == 'code') &&
+              data.trim() == ''
+            ) {
+              break
+            } else {
+              state = null
+              curr.main.push({
+                content: data,
+                pos,
+                line,
+                column,
+                start,
+                end,
+                type,
+                eol,
+              })
+            }
           }
           break
       }
@@ -444,6 +502,7 @@ export class Parser {
   }
   private SKIP(term: string) {
     const { INDENT } = this
+    let eol = false
     if (term.length == 1) {
       if (
         term == '\n' ||
@@ -456,6 +515,7 @@ export class Parser {
         }
         this.column = 1
         this.line += 1
+        eol = true
       } else if (term == '\t') {
         if (!INDENT) this.DETECT_INDENT()
         this.column += this.INDENT
@@ -474,7 +534,8 @@ export class Parser {
       } while (this.pos < startPos + term.length)
       term = nTerm
     }
-    return term
+
+    return { term, eol }
   }
   private block(extra: Partial<ParserResult> = {}): ParserResult {
     const { pos, line, column, globalState } = this
@@ -492,6 +553,7 @@ export class Parser {
     return SUB(buffer, pos, size, str)
   }
   private term(extra = {}) {
+    // if (this.globalToken) this.globalToken.eol()
     this.globalToken = this.block(extra)
     this.result.push(this.globalToken)
   }

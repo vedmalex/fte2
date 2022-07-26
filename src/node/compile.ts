@@ -38,5 +38,5 @@ export function compileFull(
   const F = new TemplateFactory({
     root: templateRoot,
   })
-  return prepareCode(F.run({ context: compiled, name: 'compiled.njs' }))
+  return F.run({ context: compiled, name: 'compiled.njs' })
 }

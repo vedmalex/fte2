@@ -25,7 +25,7 @@ console.time('parse')
 const result1 = ser.parse(text.toString())
 console.timeEnd('parse')
 fs.writeFileSync('res.json', JSON.stringify(result, undefined, 2))
-console.log(result)
+// console.log(result)
 // console.log(result1)
 
 //TODO: оформить парсер

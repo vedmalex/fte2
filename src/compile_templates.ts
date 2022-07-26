@@ -3,6 +3,7 @@ import * as prettier from 'prettier'
 import * as path from 'path'
 import glob from 'glob'
 import { compileFull /*, compileLight*/ } from './node/compile'
+import { writeFile, commit } from './filewriter'
 
 const src = 'templates'
 // сделать gulp
@@ -37,36 +38,52 @@ function load(fileName, folder, compile) {
   }
 }
 
-glob.sync('templates/codeblock.njs').forEach((file) => {
+function parseTemplate(fileName, folder, compile) {
+  fs.ensureDirSync(folder)
+  const fn = path.resolve(fileName)
+  if (fs.existsSync(fn)) {
+    const content = fs.readFileSync(fn)
+    const result = compile(content, { fileName, content })
+    writeFile(path.join(folder, path.basename(fileName) + '.js'), result, {
+      format: true,
+      pretty: true,
+      minify: false,
+    })
+  }
+}
+
+glob.sync('templates/*.njs').forEach((file) => {
   console.log(file)
-  load(file, src, compileFull)
+  parseTemplate(file, src, compileFull)
 })
 
-glob.sync('templates/MainTemplate.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
+// glob.sync('templates/MainTemplate.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
 
-glob.sync('templates/compilationError.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
-glob.sync('templates/compiled.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
+// glob.sync('templates/compilationError.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
+// glob.sync('templates/compiled.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
 
-glob.sync('templates/es6module.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
+// glob.sync('templates/es6module.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
 
-glob.sync('templates/raw.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
+// glob.sync('templates/raw.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
 
-glob.sync('templates/test.njs').forEach((file) => {
-  console.log(file)
-  load(file, src, compileFull)
-})
+// glob.sync('templates/test.njs').forEach((file) => {
+//   console.log(file)
+//   parseTemplate(file, src, compileFull)
+// })
+
+commit().then((_) => console.log('success'))
