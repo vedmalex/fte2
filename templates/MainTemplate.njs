@@ -1,3 +1,7 @@
+<*
+  основной шаблон для кодогенерации
+  создает структуру кода, для последующей интеграции в другие модули
+*>
 <#@ alias 'MainTemplate.njs' #>
 <#@ noEscape #>
 <#@ requireAs ('codeblock.njs','codeblock') #>

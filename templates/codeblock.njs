@@ -1,3 +1,8 @@
+<*
+  создает струкруру блока кода
+  текст или выражение
+  все встраивается в MainTemplate.njs
+*>
 <#@ alias 'codeblock.njs' #>
 <#@ noEscape #>
 <#@ noContent #>
