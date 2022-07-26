@@ -12,6 +12,7 @@ export type ResultTypes =
   | 'uexpression'
   | 'code'
   | 'directive'
+  | 'comments'
   | 'slotStart'
   | 'blockStart'
   | 'blockEnd'
@@ -19,6 +20,7 @@ export type ResultTypes =
 
 export type SystemBlocksType =
   | 'directive'
+  | 'comments'
   | 'slotStart'
   | 'blockStart'
   | 'blockEnd'
@@ -44,6 +46,7 @@ const globalStates: { [key: string]: StateDefinition } = {
       'slotStart',
       'blockStart',
       'blockEnd',
+      'comments',
     ],
   },
   expression: {
@@ -62,6 +65,10 @@ const globalStates: { [key: string]: StateDefinition } = {
   directive: {
     start: ['<#@'],
     end: ['#>'],
+  },
+  comments: {
+    start: ['<*'],
+    end: ['*>'],
   },
   blockStart: {
     start: ['<# block'],
@@ -185,6 +192,7 @@ export class CodeBlock {
   // сделать все необходимые проверки для более чистого кода
   //
   directives: CodeBlockDirectives = new CodeBlockDirectives()
+  documentation: Array<Items> = []
   slots?: { [slot: string]: CodeBlock } = {}
   blocks?: { [block: string]: CodeBlock } = {}
   constructor(init?: ParserResult) {
@@ -479,6 +487,20 @@ export class Parser {
             }
           }
           break
+        case 'comments':
+          if (data) {
+            curr.documentation.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type,
+              eol,
+            })
+          }
+          break
       }
     }
     return content
@@ -558,7 +580,6 @@ export class Parser {
     return SUB(buffer, pos, size, str)
   }
   private term(extra = {}) {
-    // if (this.globalToken) this.globalToken.eol()
     this.globalToken = this.block(extra)
     this.result.push(this.globalToken)
   }

@@ -10,7 +10,7 @@ import { Parser } from './parse'
 // /Users/vedmalex/work/fte.js/templates/MainTemplate.njs
 
 const text = fs.readFileSync(
-  '/Users/vedmalex/work/fte.js/templates/MainTemplate.njs',
+  '/Users/vedmalex/work/test/grainjs/apps/grainjs/web/views/DropDownMenuLink.nhtml',
 )
 
 // const result = parse(`  abc#{ array }of mutable`)
