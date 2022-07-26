@@ -6,7 +6,6 @@
     var textQuote = false
     for (var i = 0, len = blockList.length; i < len; i++) {
       var block = blockList[i]
-      var prevBlock = i - 1 >= 0 ? blockList[i - 1] : null
       var cont = block.content
       switch (block.type) {
         case 'text':
@@ -17,18 +16,13 @@
               res = 'out.push('
             } else {
               let lasItem = out.pop()
-              if (prevBlock?.type == 'text') {
-                let item = lasItem.slice(0, -3)
-                res = `${item}" + `
-              } else {
-                res = `${lasItem} + `
-              }
+              res = `${lasItem} + `
             }
-            res += `${cont
-              .split('\n')
-              .map((s) => JSON.stringify(s + '\n'))
-              .join('+ \n')}`
-
+            res += JSON.stringify(cont)
+            if (block.eol) {
+              res += ')'
+              textQuote = false
+            }
             out.push(res)
           }
           break
@@ -40,20 +34,13 @@
               res = 'out.push('
             } else {
               let lasItem = out.pop()
-              if (prevBlock?.type == 'text') {
-                let item = lasItem.slice(0, -3)
-                res = `${item}" + `
-              } else {
-                res = `${lasItem} + `
-              }
-            }
-            if (block.indent) {
-              res += `${JSON.stringify(block.indent)} + `
+              res = `${lasItem} + `
             }
             res += `escapeIt(${cont})`
-            if (textQuote) {
+            if (textQuote && !block.eol) {
               out.push(res)
             } else {
+              textQuote = false
               out.push(`${res})`)
             }
           }
@@ -66,20 +53,13 @@
               res = 'out.push('
             } else {
               let lasItem = out.pop()
-              if (prevBlock?.type == 'text') {
-                let item = lasItem.slice(0, -3)
-                res = `${item}" + `
-              } else {
-                res = `${lasItem} + `
-              }
-            }
-            if (block.indent) {
-              res += `${JSON.stringify(block.indent)} + `
+              res = `${lasItem} + `
             }
             res += `${cont}`
-            if (textQuote) {
+            if (textQuote && !block.eol) {
               out.push(res)
             } else {
+              textQuote = false
               out.push(`${res})`)
             }
           }
@@ -90,15 +70,12 @@
             out.push(`${item})`)
             textQuote = false
           }
-          if (block.indent) {
-            out.push(block.indent)
-          }
-          out.push(cont)
+          out.push(`${cont}${block.eol ? '\n' : ''}`)
           break
       }
     }
-
     if (textQuote) {
-      out.push(')')
+      let lasItem = out.pop()
+      out.push(`${lasItem})`)
     }
 #>

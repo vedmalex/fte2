@@ -1,4 +1,5 @@
-import * as raw from '../../grammar/raw.peggy.js'
+// import * as raw from '../../grammar/raw.peggy.js'
+import { Parser } from '../parser/parse'
 import * as ts from 'typescript'
 // import * as fs from 'fs-extra';
 import * as path from 'path'
@@ -19,7 +20,7 @@ function prepareCode(src) {
 
 export function compileLight(content: Buffer | string) {
   try {
-    const compiled = raw.parse(content.toString())
+    const compiled = Parser.parse(content.toString())
     const F = new TemplateFactory({
       root: templateRoot,
     })
@@ -33,10 +34,7 @@ export function compileFull(
   content: Buffer | string,
   options: { content: string; fileName: string },
 ) {
-  const compiled = raw.parse(content.toString(), {
-    grammarSource: options.fileName,
-    reservedWords: [],
-  })
+  const compiled = Parser.parse(content.toString())
   const F = new TemplateFactory({
     root: templateRoot,
   })

@@ -9,6 +9,8 @@ alias: #{JSON.stringify(directives.alias)},
 
 <# block 'maincontent' : #>
 <#@ context 'directives'#>
+<#@ noEscape #>
+<#@ noContent #>
   <# if(directives.escapeIt){#>
     const {escapeIt} = options
   <#}#>
@@ -22,6 +24,8 @@ alias: #{JSON.stringify(directives.alias)},
 <# end #>
 <# block 'chunks-start' : #>
   <#@ context 'directives'#>
+  <#@ noEscape #>
+  <#@ noContent #>
   <#if(directives.chunks){#>
     const _partial = partial
     partial = function(obj, template) {
@@ -64,6 +68,8 @@ alias: #{JSON.stringify(directives.alias)},
 <# end #>
 <# block 'chunks-finish' : #>
   <#@ context 'directives'#>
+  <#@ noEscape #>
+  <#@ noContent #>
   <#if(directives.chunks){#>
     chunkEnd()
     <#if(!useHash){#>

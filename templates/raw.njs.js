@@ -2,20 +2,9 @@ module.exports = {
   alias: ['raw.njs'],
   script: function (context, _content, partial, slot, options) {
     var out = []
-    out.push(
-      '\n' +
-        '' +
-        '\n' +
-        '' +
-        '\n' +
-        '' +
-        '\n' +
-        '(function(){\n' +
-        '  return ' +
-        partial(context, 'core') +
-        ';\n' +
-        '})();\n',
-    )
+    out.push('(function(){')
+    out.push('  return ' + partial(context, 'core') + ';')
+    out.push('})();')
     return out.join('\n')
   },
   compile: function () {
