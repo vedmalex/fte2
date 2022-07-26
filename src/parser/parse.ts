@@ -361,15 +361,20 @@ export class Parser {
       let r = this.result[i]
       let { type, pos, line, column, start, end, data, eol } = r
       const processPrevious = () => {
-        if (curr.main.length > 0) {
-          let prev = curr.main[curr.main.length - 1]
-          if (prev.type == 'text' && prev.content.trim() == '') {
-            if (curr.main.pop().eol) {
-              curr.main[curr.main.length - 1].eol = true
+        do {
+          if (curr.main.length > 0) {
+            let prev = curr.main[curr.main.length - 1]
+            if (prev.type == 'text' && prev.content.trim() == '') {
+              curr.main.pop()
+            } else {
+              break
             }
+          } else {
+            break
           }
-        }
+        } while (true)
       }
+
       if (curr.main.length > 0) {
         let prev = curr.main[curr.main.length - 1]
         if (prev.line != line) {
@@ -402,12 +407,12 @@ export class Parser {
           break
         case 'code':
           if (data) {
-            if (start == '<#-') {
-              processPrevious()
-            }
-            if (end == '-#>') {
-              state = 'code'
-            }
+            // if (start == '<#-') {
+            processPrevious()
+            // }
+            // if (end == '-#>') {
+            state = 'code'
+            // }
             curr.main.push({
               content: data,
               pos,

@@ -82,10 +82,8 @@ module.exports = {
     }
     out.push('  },')
     out.push('  dependency: {')
-    out.push('  ')
     if (directives.extend) {
       out.push(JSON.stringify(directives.extend) + ': 1,')
-      out.push('  ')
     }
     if (directives.requireAs.length > 0) {
       for (var i = 0, len = directives.requireAs.length; i < len; i++) {
@@ -103,9 +101,7 @@ module.exports = {
       var out = []
       if (directives.escapeIt) {
         out.push('    const {escapeIt} = options')
-        out.push('  ')
       }
-      out.push('  ')
       if (directives.content) {
         out.push('    function content(blockName, ctx) {')
         out.push(
@@ -116,7 +112,6 @@ module.exports = {
           '      return _content(blockName, ctx, content, partial, slot)',
         )
         out.push('    }')
-        out.push('  ')
       }
       return out.join('\n')
     },
@@ -159,7 +154,6 @@ module.exports = {
         out.push('      current = outStack.pop() || main')
         out.push('    }')
         out.push('    chunkStart(main)')
-        out.push('  ')
       }
       return out.join('\n')
     },
@@ -167,28 +161,20 @@ module.exports = {
       var out = []
       if (directives.chunks) {
         out.push('    chunkEnd()')
-        out.push('    ')
         if (!useHash) {
           out.push('    out = Object.keys(result)')
-          out.push('      ')
           if (!directives.includeMainChunk) {
             out.push("      .filter(i => i !== '" + directives.chunks + "')")
-            out.push('      ')
           }
           out.push(
             '      .map(curr => ({ name: curr, content: result[curr] }))',
           )
-          out.push('      ')
         } else {
           out.push('    out = result')
-          out.push('      ')
           if (!directives.includeMainChunk) {
             out.push("    delete out['" + directives.chunks + "']")
-            out.push('      ')
           }
-          out.push('    ')
         }
-        out.push('  ')
       }
       return out.join('\n')
     },

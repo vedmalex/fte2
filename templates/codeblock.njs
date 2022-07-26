@@ -3,7 +3,7 @@
 <#@ noContent #>
 <#@ context 'blockList' #>
 <#
-    var textQuote = false
+  var textQuote = false
     for (var i = 0, len = blockList.length; i < len; i++) {
       var block = blockList[i]
       var cont = block.content
@@ -20,7 +20,7 @@
             }
             res += JSON.stringify(cont)
             if (block.eol) {
-              res += ')'
+              res += ');'
               textQuote = false
             }
             out.push(res)
@@ -41,7 +41,7 @@
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res})`)
+              out.push(`${res});`)
             }
           }
           break
@@ -60,14 +60,14 @@
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res})`)
+              out.push(`${res});`)
             }
           }
           break
         case 'code':
           if (textQuote) {
             let item = out.pop()
-            out.push(`${item})`)
+            out.push(`${item});`)
             textQuote = false
           }
           out.push(`${cont}${block.eol ? '\n' : ''}`)
@@ -76,6 +76,6 @@
     }
     if (textQuote) {
       let lasItem = out.pop()
-      out.push(`${lasItem})`)
+      out.push(`${lasItem});`)
     }
 #>

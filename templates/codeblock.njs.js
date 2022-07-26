@@ -19,7 +19,7 @@ module.exports = {
             }
             res += JSON.stringify(cont)
             if (block.eol) {
-              res += ')'
+              res += ');'
               textQuote = false
             }
             out.push(res)
@@ -40,7 +40,7 @@ module.exports = {
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res})`)
+              out.push(`${res});`)
             }
           }
           break
@@ -59,14 +59,14 @@ module.exports = {
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res})`)
+              out.push(`${res});`)
             }
           }
           break
         case 'code':
           if (textQuote) {
             let item = out.pop()
-            out.push(`${item})`)
+            out.push(`${item});`)
             textQuote = false
           }
           out.push(`${cont}${block.eol ? '\n' : ''}`)
@@ -75,7 +75,7 @@ module.exports = {
     }
     if (textQuote) {
       let lasItem = out.pop()
-      out.push(`${lasItem})`)
+      out.push(`${lasItem});`)
     }
     return out.join('\n')
   },
