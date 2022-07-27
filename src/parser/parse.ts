@@ -1,15 +1,36 @@
+import { State } from 'astring'
 import detectIndent from 'detect-indent'
 
 export type StateDefinition = {
   start?: Array<string>
   end?: Array<string>
+  skip?: {
+    start?: Array<string>
+    end?: Array<string>
+  }
   states?: Array<ResultTypes>
-  curly?: true
+  curly?: 0 | 1 | 2
+  type?: { [key: string]: ResultTypes }
 }
+/**
+ <% 'Scriptlet' tag, for control-flow, no output
+ <%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
+ <%= Outputs the value into the template (HTML escaped)
+ <%- Outputs the unescaped value into the template
+ <%# Comment tag, no execution, no output
 
+ <%% Outputs a literal '<%'
+ %> Plain ending tag
+ removes/cleans whitespases after
+ -%> Trim-mode ('newline slurp') tag, trims following newline
+ _%> ‘Whitespace Slurping’ ending tag, removes all whitespace after it
+ */
 export type ResultTypes =
+  | 'unknown'
   | 'expression'
   | 'uexpression'
+  | 'expression2'
+  | 'uexpression2'
   | 'code'
   | 'directive'
   | 'comments'
@@ -39,8 +60,11 @@ const globalStates: { [key: string]: StateDefinition } = {
   text: {
     // обратный порядок для ускорения цикла
     states: [
+      'unknown',
       'expression',
       'uexpression',
+      'expression2',
+      'uexpression2',
       'code',
       'directive',
       'slotStart',
@@ -49,18 +73,50 @@ const globalStates: { [key: string]: StateDefinition } = {
       'comments',
     ],
   },
+  unknown: {
+    start: ['<%', '<%=', '<%-', '<%_', '<%#'],
+    end: ['%>', '-%>', '_%>'],
+    skip: {
+      start: ['<%%'],
+      end: ['%%>'],
+    },
+    type: {
+      '<%': 'code',
+      '<%=': 'uexpression',
+      '<%-': 'expression',
+      '<%#': 'comments',
+      '<%_': 'code',
+    },
+  },
   expression: {
     start: ['#{'],
     end: ['}'],
+    curly: 1,
+  },
+  expression2: {
+    start: ['{{'],
+    end: ['}}'],
+    curly: 2,
+    skip: {
+      start: ['{{&'],
+    },
   },
   uexpression: {
     start: ['!{'],
     end: ['}'],
-    curly: true,
+    curly: 1,
+  },
+  uexpression2: {
+    start: ['{{&'],
+    end: ['}}'],
+    curly: 2,
   },
   code: {
     start: ['<#', '<#-'],
     end: ['#>', '-#>'],
+    skip: {
+      start: ['<#@', '<# block', '<# slot', '<# end #>'],
+    },
   },
   directive: {
     start: ['<#@'],
@@ -111,6 +167,44 @@ export type RequireItem = {
   alias: string
 }
 
+const directives = [
+  'extend',
+  'context',
+  'alias',
+  'chunks',
+  'includeMainChunk',
+  'useHash',
+  'noContent',
+  'noSlots',
+  'noBlocks',
+  'noPartial',
+  'noOptions',
+  'promise',
+  'callback',
+  'noEscape',
+  'requireAs',
+]
+
+function detectDirective(input: string) {
+  let name
+  let params
+  if (input) {
+    input = input.trim()
+    for (let i = 0; i < directives.length; i += 1) {
+      const directive = directives[i]
+      if (SUB(input.trim(), directive) == directive) {
+        name = directive
+        params = UNPARAM(input.split(directive)[1])
+        break
+      }
+    }
+  }
+  return {
+    name: name ? name : input,
+    params,
+  }
+}
+
 export class CodeBlockDirectives {
   extend: string
   context: string = 'context'
@@ -130,10 +224,7 @@ export class CodeBlockDirectives {
   callback: boolean
   requireAs: Array<RequireItem> = []
   push(init: ParserResult) {
-    const data = init.data.trim()
-    const s = data.split(' ')
-    const name = s[0]
-    const params = UNPARAM(s[1])
+    const { name, params } = detectDirective(init.data.trim())
     switch (name) {
       case 'extend':
         this.extend = params[0]
@@ -237,11 +328,12 @@ export class Parser {
   private static INITIAL_STATE: ResultTypes = 'text'
   private static DEFAULT_TAB_SIZE = 2
   private globalState: ResultTypes
+  private actualState?: ResultTypes
   private globalToken: ParserResult
   private pos: number = 0
   private line: number = 1
   private column: number = 1
-  private curlyAware: boolean = false
+  private curlyAware: 0 | 1 | 2 = 0
   private curlyBalance: Array<number> = []
   private result: Array<ParserResult> = []
   public static parse(
@@ -281,9 +373,17 @@ export class Parser {
     const init_pos = this.pos
     const state = globalStates[currentState]
     if (state.curly) {
-      this.curlyAware = true
+      this.curlyAware = state.curly
     }
     if (state.start) {
+      if (state.skip?.start) {
+        for (let i = 0; i < state.skip.start.length; i += 1) {
+          if (this.SUB(state.skip.start[i]) == state.skip.start[i]) {
+            // process as string
+            return false
+          }
+        }
+      }
       //has start
       let foundStart = false
       let foundEnd = false
@@ -293,6 +393,7 @@ export class Parser {
         if (subs == p) {
           foundStart = true
           this.globalState = currentState
+          this.actualState = state.type?.[p] ?? currentState
           this.term({ start: p })
           this.SKIP(p)
           break
@@ -304,7 +405,12 @@ export class Parser {
             let i
             for (i = state.end.length - 1; i >= 0; i -= 1) {
               const p = state.end[i]
-              if (p.indexOf('}') > -1 && this.curlyAware) {
+              if (state.curly == 1 && p.indexOf('}') > -1) {
+                if (this.curlyBalance.length > 0) {
+                  break
+                }
+              }
+              if (state.curly == 2 && p.indexOf('}}') > -1) {
                 if (this.curlyBalance.length > 0) {
                   break
                 }
@@ -320,6 +426,7 @@ export class Parser {
               this.collect()
             } else {
               this.globalToken.end = state.end[i]
+              this.actualState = null
             }
           } else {
             foundEnd = true
@@ -344,7 +451,7 @@ export class Parser {
       }
     }
     if (state.curly) {
-      this.curlyAware = false
+      this.curlyAware = state.curly
     }
     return init_pos != this.pos
   }
@@ -413,6 +520,61 @@ export class Parser {
           state = 'blockEnd'
           curr = content
           break
+        case 'unknown':
+          if (data) {
+            /**
+            <% 'Scriptlet' tag, for control-flow, no output
+            <%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
+            <%= Outputs the value into the template (HTML escaped)
+            <%- Outputs the unescaped value into the template
+             */
+            let actual_type: ResultTypes
+            switch (r.start) {
+              case '<%':
+                actual_type = 'code'
+                processPrevious()
+                break
+              case '<%_':
+                actual_type = 'code'
+                processPrevious()
+                break
+              case '<%-':
+                actual_type = 'expression'
+                break
+              case '<%=':
+                actual_type = 'uexpression'
+                break
+              case '<%#':
+                actual_type = 'comments'
+                break
+            }
+            if (data) {
+              if (actual_type !== 'comments') {
+                curr.main.push({
+                  content: data,
+                  pos,
+                  line,
+                  column,
+                  start,
+                  end,
+                  type: actual_type,
+                  eol,
+                })
+              } else {
+                curr.documentation.push({
+                  content: data,
+                  pos,
+                  line,
+                  column,
+                  start,
+                  end,
+                  type: actual_type,
+                  eol,
+                })
+              }
+            }
+          }
+          break
         case 'code':
           if (data) {
             // if (start == '<#-') {
@@ -434,6 +596,7 @@ export class Parser {
           }
           break
         case 'expression':
+        case 'expression2':
           if (data) {
             curr.main.push({
               content: data,
@@ -442,12 +605,13 @@ export class Parser {
               column,
               start,
               end,
-              type,
+              type: 'expression',
               eol,
             })
           }
           break
         case 'uexpression':
+        case 'uexpression2':
           if (data) {
             curr.main.push({
               content: data,
@@ -456,7 +620,7 @@ export class Parser {
               column,
               start,
               end,
-              type,
+              type: 'uexpression',
               eol,
             })
           }
@@ -508,10 +672,17 @@ export class Parser {
 
   private SYMBOL() {
     const res = this.buffer[this.pos]
-    if (this.curlyAware) {
+    if (this.curlyAware == 1) {
       if (~res.indexOf('{')) {
         this.curlyBalance.push(this.pos)
       } else if (~res.indexOf('}')) {
+        this.curlyBalance.pop()
+      }
+    }
+    if (this.curlyAware == 2) {
+      if (~res.indexOf('{{')) {
+        this.curlyBalance.push(this.pos)
+      } else if (~res.indexOf('}}')) {
         this.curlyBalance.pop()
       }
     }
@@ -565,19 +736,19 @@ export class Parser {
     return { term, eol }
   }
   private block(extra: Partial<ParserResult> = {}): ParserResult {
-    const { pos, line, column, globalState } = this
+    const { pos, line, column, globalState, actualState } = this
     return {
       data: '',
       pos,
       line,
       column,
-      type: globalState,
+      type: actualState || globalState,
       ...extra,
     }
   }
   private SUB(str) {
     const { pos, size, buffer } = this
-    return SUB(buffer, pos, size, str)
+    return SUB(buffer, str, pos, size)
   }
   private term(extra = {}) {
     this.globalToken = this.block(extra)
@@ -585,7 +756,10 @@ export class Parser {
   }
 }
 
-function SUB(buffer: string, pos: number, size: number, str: string) {
+function SUB(buffer: string, str: string, pos: number = 0, size: number = 0) {
+  if (!size) {
+    size = buffer.length
+  }
   const len = str.length
   const from = pos
   const to = pos + len
