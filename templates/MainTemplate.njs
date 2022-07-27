@@ -7,6 +7,9 @@
 <#@ requireAs ('codeblock.njs','codeblock') #>
 <# const { directives } = context #>
 {
+<# if(directives.chunks){#>
+chinks: #{directives.chunks}
+<#}#>
 <#- if(directives.alias){#>
 alias: #{JSON.stringify(directives.alias)},
 <#- }-#>
@@ -96,7 +99,7 @@ alias: #{JSON.stringify(directives.alias)},
     #{content('chunks-start', directives)}
     #{partial(context.main,'codeblock')}
     #{content('chunks-finish', directives)}
-     return out.join('\n')
+     return out.join('')
   },
 <#
 const blockNames = Object.keys(context.blocks)
@@ -110,7 +113,7 @@ if(blockNames.length > 0) {-#>
       #{content('maincontent', block.directives)}
       var out = []
       #{partial(block.main, 'codeblock')}
-      return out.join('\n')
+      return out.join('')
     },
 <#}#>
   },
@@ -127,7 +130,7 @@ if(slotNames.length > 0) {-#>
       #{content('maincontent', slot.directives)}
       var out = []
       #{partial(slot.main, 'codeblock')}
-      return out.join('\n')
+      return out.join('')
     },
 <#}#>
   },

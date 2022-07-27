@@ -1,4 +1,3 @@
-import { State } from 'astring'
 import detectIndent from 'detect-indent'
 
 export type StateDefinition = {
@@ -372,9 +371,7 @@ export class Parser {
   private run(currentState: ResultTypes) {
     const init_pos = this.pos
     const state = globalStates[currentState]
-    if (state.curly) {
-      this.curlyAware = state.curly
-    }
+    this.curlyAware = state.curly
     if (state.start) {
       if (state.skip?.start) {
         for (let i = 0; i < state.skip.start.length; i += 1) {
@@ -442,6 +439,7 @@ export class Parser {
         found = this.run(name)
         if (found) {
           this.globalState = currentState
+          this.actualState = null
           this.term()
           break
         }
@@ -449,9 +447,6 @@ export class Parser {
       if (!found) {
         this.collect()
       }
-    }
-    if (state.curly) {
-      this.curlyAware = state.curly
     }
     return init_pos != this.pos
   }

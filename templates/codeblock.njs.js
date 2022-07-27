@@ -17,10 +17,12 @@ module.exports = {
               let lasItem = out.pop()
               res = `${lasItem} + `
             }
-            res += JSON.stringify(cont)
             if (block.eol) {
+              res += JSON.stringify(cont + '\n')
               res += ');'
               textQuote = false
+            } else {
+              res += JSON.stringify(cont)
             }
             out.push(res)
           }
@@ -40,7 +42,7 @@ module.exports = {
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res});`)
+              out.push(`${res} +"\\n");`)
             }
           }
           break
@@ -59,14 +61,14 @@ module.exports = {
               out.push(res)
             } else {
               textQuote = false
-              out.push(`${res});`)
+              out.push(`${res} +"\\n");`)
             }
           }
           break
         case 'code':
           if (textQuote) {
             let item = out.pop()
-            out.push(`${item});`)
+            out.push(`${item} + "\\n");`)
             textQuote = false
           }
           out.push(`${cont}${block.eol ? '\n' : ''}`)
@@ -77,7 +79,7 @@ module.exports = {
       let lasItem = out.pop()
       out.push(`${lasItem});`)
     }
-    return out.join('\n')
+    return out.join('')
   },
   compile: function () {
     this.alias = ['codeblock.njs']

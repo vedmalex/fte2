@@ -7,25 +7,28 @@ module.exports = {
     }
     var out = []
     const { directives } = context
-    out.push('{')
+    out.push('{\n')
+    if (directives.chunks) {
+      out.push('chinks: ' + directives.chunks + '\n')
+    }
     if (directives.alias) {
-      out.push('alias: ' + JSON.stringify(directives.alias) + ',')
+      out.push('alias: ' + JSON.stringify(directives.alias) + ',\n')
     }
     out.push(
       '  script: function (' +
         directives.context +
-        ', _content, partial, slot, options){',
+        ', _content, partial, slot, options){\n',
     )
-    out.push('    ' + content('maincontent', directives))
-    out.push('    var out = []')
-    out.push('    ' + content('chunks-start', directives))
-    out.push('    ' + partial(context.main, 'codeblock'))
-    out.push('    ' + content('chunks-finish', directives))
-    out.push("     return out.join('\\n')")
-    out.push('  },')
+    out.push('    ' + content('maincontent', directives) + '\n')
+    out.push('    var out = []\n')
+    out.push('    ' + content('chunks-start', directives) + '\n')
+    out.push('    ' + partial(context.main, 'codeblock') + '\n')
+    out.push('    ' + content('chunks-finish', directives) + '\n')
+    out.push("     return out.join('')\n")
+    out.push('  },\n')
     const blockNames = Object.keys(context.blocks)
     if (blockNames.length > 0) {
-      out.push('  blocks : {')
+      out.push('  blocks : {\n')
       for (let i = 0; i < blockNames.length; i += 1) {
         const block = context.blocks[blockNames[i]]
         out.push(
@@ -33,19 +36,19 @@ module.exports = {
             blockNames[i] +
             '": function(' +
             block.directives.context +
-            ',  _content, partial, slot, options) {',
+            ',  _content, partial, slot, options) {\n',
         )
-        out.push('      ' + content('maincontent', block.directives))
-        out.push('      var out = []')
-        out.push('      ' + partial(block.main, 'codeblock'))
-        out.push("      return out.join('\\n')")
-        out.push('    },')
+        out.push('      ' + content('maincontent', block.directives) + '\n')
+        out.push('      var out = []\n')
+        out.push('      ' + partial(block.main, 'codeblock') + '\n')
+        out.push("      return out.join('')\n")
+        out.push('    },\n')
       }
-      out.push('  },')
+      out.push('  },\n')
     }
     const slotNames = Object.keys(context.slots)
     if (slotNames.length > 0) {
-      out.push('  slots : {')
+      out.push('  slots : {\n')
       for (let i = 0; i < slotNames.length; i += 1) {
         const slot = context.blocks[slotNames[i]]
         out.push(
@@ -53,130 +56,131 @@ module.exports = {
             slotNames[i] +
             '": function(' +
             slot.directives.context +
-            ',  _content, partial, slot, options){',
+            ',  _content, partial, slot, options){\n',
         )
-        out.push('      ' + content('maincontent', slot.directives))
-        out.push('      var out = []')
-        out.push('      ' + partial(slot.main, 'codeblock'))
-        out.push("      return out.join('\\n')")
-        out.push('    },')
+        out.push('      ' + content('maincontent', slot.directives) + '\n')
+        out.push('      var out = []\n')
+        out.push('      ' + partial(slot.main, 'codeblock') + '\n')
+        out.push("      return out.join('')\n")
+        out.push('    },\n')
       }
-      out.push('  },')
+      out.push('  },\n')
     }
-    out.push('  compile: function() {')
+    out.push('  compile: function() {\n')
     if (directives.alias) {
-      out.push('    this.alias = ' + JSON.stringify(directives.alias))
+      out.push('    this.alias = ' + JSON.stringify(directives.alias) + '\n')
     }
     if (directives.requireAs.length > 0) {
-      out.push('    this.aliases={}')
+      out.push('    this.aliases={}\n')
       var rq
       for (var i = 0, len = directives.requireAs.length; i < len; i++) {
         rq = directives.requireAs[i]
-        out.push('    this.aliases["' + rq.alias + '"] = "' + rq.name + '"')
-        out.push('    this.factory.ensure("' + rq.name + '")')
+        out.push('    this.aliases["' + rq.alias + '"] = "' + rq.name + '"\n')
+        out.push('    this.factory.ensure("' + rq.name + '")\n')
       }
     }
     if (directives.extend) {
-      out.push('    this.parent = ' + JSON.stringify(directives.extend))
-      out.push('    this.mergeParent(this.factory.ensure(this.parent))')
+      out.push('    this.parent = ' + JSON.stringify(directives.extend) + '\n')
+      out.push('    this.mergeParent(this.factory.ensure(this.parent))\n')
     }
-    out.push('  },')
-    out.push('  dependency: {')
+    out.push('  },\n')
+    out.push('  dependency: {\n')
     if (directives.extend) {
-      out.push(JSON.stringify(directives.extend) + ': 1,')
+      out.push(JSON.stringify(directives.extend) + ': 1,\n')
     }
     if (directives.requireAs.length > 0) {
       for (var i = 0, len = directives.requireAs.length; i < len; i++) {
         rq = directives.requireAs[i]
-        out.push('    "' + rq.name + '": 1,')
-        out.push('    "' + rq.alias + '": 1,')
+        out.push('    "' + rq.name + '": 1,\n')
+        out.push('    "' + rq.alias + '": 1,\n')
       }
     }
-    out.push('  }')
-    out.push('}')
-    return out.join('\n')
+    out.push('  }\n')
+    out.push('}\n')
+    return out.join('')
   },
   blocks: {
     maincontent: function (directives, _content, partial, slot, options) {
       var out = []
       if (directives.escapeIt) {
-        out.push('    const {escapeIt} = options')
+        out.push('    const {escapeIt} = options\n')
       }
       if (directives.content) {
-        out.push('    function content(blockName, ctx) {')
+        out.push('    function content(blockName, ctx) {\n')
         out.push(
           '      if(ctx === undefined || ctx === null) ctx = ' +
-            directives.context,
+            directives.context +
+            '\n',
         )
         out.push(
-          '      return _content(blockName, ctx, content, partial, slot)',
+          '      return _content(blockName, ctx, content, partial, slot)\n',
         )
-        out.push('    }')
+        out.push('    }\n')
       }
-      return out.join('\n')
+      return out.join('')
     },
     'chunks-start': function (directives, _content, partial, slot, options) {
       var out = []
       if (directives.chunks) {
-        out.push('    const _partial = partial')
-        out.push('    partial = function(obj, template) {')
-        out.push('      const result = _partial(obj, template)')
-        out.push('      if(Array.isArray(result)){')
-        out.push('        result.forEach(r => {')
-        out.push('          chunkEnsure(r.name, r.content)')
-        out.push('        })')
-        out.push("        return ''")
-        out.push('      } else {')
-        out.push('        return result')
-        out.push('      }')
-        out.push('    }')
-        out.push("    const main = '" + directives.chunks + "'")
-        out.push('    var current = main')
-        out.push('    let outStack = [current]')
-        out.push('    let result')
-        out.push('    function chunkEnsure(name, content) {')
-        out.push('      if (!result) {')
-        out.push('        result = {}')
-        out.push('      }')
-        out.push('      if (!result.hasOwnProperty(name)) {')
-        out.push('        result[name] = content ? content : []')
-        out.push('      }')
-        out.push('    }')
-        out.push('    function chunkStart(name) {')
-        out.push('      chunkEnsure(name)')
-        out.push('      chunkEnd()')
-        out.push('      current = name')
-        out.push('      out = []')
-        out.push('    }')
-        out.push('    function chunkEnd() {')
-        out.push('      result[current].push(out)')
-        out.push('      out = []')
-        out.push('      current = outStack.pop() || main')
-        out.push('    }')
-        out.push('    chunkStart(main)')
+        out.push('    const _partial = partial\n')
+        out.push('    partial = function(obj, template) {\n')
+        out.push('      const result = _partial(obj, template)\n')
+        out.push('      if(Array.isArray(result)){\n')
+        out.push('        result.forEach(r => {\n')
+        out.push('          chunkEnsure(r.name, r.content)\n')
+        out.push('        })\n')
+        out.push("        return ''\n")
+        out.push('      } else {\n')
+        out.push('        return result\n')
+        out.push('      }\n')
+        out.push('    }\n')
+        out.push("    const main = '" + directives.chunks + "'\n")
+        out.push('    var current = main\n')
+        out.push('    let outStack = [current]\n')
+        out.push('    let result\n')
+        out.push('    function chunkEnsure(name, content) {\n')
+        out.push('      if (!result) {\n')
+        out.push('        result = {}\n')
+        out.push('      }\n')
+        out.push('      if (!result.hasOwnProperty(name)) {\n')
+        out.push('        result[name] = content ? content : []\n')
+        out.push('      }\n')
+        out.push('    }\n')
+        out.push('    function chunkStart(name) {\n')
+        out.push('      chunkEnsure(name)\n')
+        out.push('      chunkEnd()\n')
+        out.push('      current = name\n')
+        out.push('      out = []\n')
+        out.push('    }\n')
+        out.push('    function chunkEnd() {\n')
+        out.push('      result[current].push(out)\n')
+        out.push('      out = []\n')
+        out.push('      current = outStack.pop() || main\n')
+        out.push('    }\n')
+        out.push('    chunkStart(main)\n')
       }
-      return out.join('\n')
+      return out.join('')
     },
     'chunks-finish': function (directives, _content, partial, slot, options) {
       var out = []
       if (directives.chunks) {
-        out.push('    chunkEnd()')
+        out.push('    chunkEnd()\n')
         if (!useHash) {
-          out.push('    out = Object.keys(result)')
+          out.push('    out = Object.keys(result)\n')
           if (!directives.includeMainChunk) {
-            out.push("      .filter(i => i !== '" + directives.chunks + "')")
+            out.push("      .filter(i => i !== '" + directives.chunks + "')\n")
           }
           out.push(
-            '      .map(curr => ({ name: curr, content: result[curr] }))',
+            '      .map(curr => ({ name: curr, content: result[curr] }))\n',
           )
         } else {
-          out.push('    out = result')
+          out.push('    out = result\n')
           if (!directives.includeMainChunk) {
-            out.push("    delete out['" + directives.chunks + "']")
+            out.push("    delete out['" + directives.chunks + "']\n")
           }
         }
       }
-      return out.join('\n')
+      return out.join('')
     },
   },
   compile: function () {

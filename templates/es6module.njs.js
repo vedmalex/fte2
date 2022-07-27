@@ -3,7 +3,7 @@ module.exports = {
   script: function (context, _content, partial, slot, options) {
     var out = []
     out.push('export default ' + partial(context, 'core') + ';')
-    return out.join('\n')
+    return out.join('')
   },
   compile: function () {
     this.alias = ['es6module.njs']

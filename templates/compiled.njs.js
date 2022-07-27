@@ -2,8 +2,8 @@ module.exports = {
   alias: ['compiled.njs'],
   script: function (context, _content, partial, slot, options) {
     var out = []
-    out.push('module.exports = ' + partial(context, 'core') + ';')
-    return out.join('\n')
+    out.push('module.exports = ' + partial(context, 'core') + ';\n')
+    return out.join('')
   },
   compile: function () {
     this.alias = ['compiled.njs']
