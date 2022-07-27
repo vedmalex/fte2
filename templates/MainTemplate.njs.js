@@ -6,7 +6,7 @@ module.exports = {
       return _content(blockName, ctx, content, partial, slot)
     }
     var out = []
-    const { directives, blocks } = context
+    const { directives } = context
     out.push('{')
     if (directives.alias) {
       out.push('alias: ' + JSON.stringify(directives.alias) + ',')

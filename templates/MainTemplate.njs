@@ -5,7 +5,7 @@
 <#@ alias 'MainTemplate.njs' #>
 <#@ noEscape #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
-<# const { directives, blocks } = context #>
+<# const { directives } = context #>
 {
 <#- if(directives.alias){#>
 alias: #{JSON.stringify(directives.alias)},
