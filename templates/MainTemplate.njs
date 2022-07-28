@@ -10,9 +10,9 @@
 <# if(directives.chunks){#>
 chinks: #{directives.chunks}
 <#}#>
-<#- if(directives.alias){#>
+<# if(directives.alias){#>
 alias: #{JSON.stringify(directives.alias)},
-<#- }-#>
+<#}#>
 
 <# block 'maincontent' : #>
 <#@ context 'directives'#>
@@ -134,40 +134,40 @@ if(slotNames.length > 0) {-#>
     },
 <#}#>
   },
-<#-  } -#>
+<# } #>
   compile: function() {
-<#- if(directives.alias){#>
+<# if(directives.alias){#>
     this.alias = #{JSON.stringify(directives.alias)}
-<#- }-#>
-<#-  if(directives.requireAs.length > 0) { -#>
+<# }#>
+<#  if(directives.requireAs.length > 0) { #>
     this.aliases={}
 <# var rq
   for (var i = 0, len = directives.requireAs.length; i < len; i++) {
     rq = directives.requireAs[i]
--#>
+#>
     this.aliases["#{rq.alias}"] = "#{rq.name}"
     this.factory.ensure("#{rq.name}")
 <#
   }
-}-#>
+}#>
 
-<#-if(directives.extend) {#>
+<#if(directives.extend) {#>
     this.parent = #{JSON.stringify(directives.extend)}
     this.mergeParent(this.factory.ensure(this.parent))
-<#}-#>
+<#}#>
   },
   dependency: {
   <# if(directives.extend) {-#>
     #{JSON.stringify(directives.extend)}: 1,
   <# }-#>
-<#- if(directives.requireAs.length > 0) {
+<# if(directives.requireAs.length > 0) {
   for (var i = 0, len = directives.requireAs.length; i < len; i++) {
     rq = directives.requireAs[i]
--#>
+#>
     "#{rq.name}": 1,
     "#{rq.alias}": 1,
 <#
   }
-}-#>
+}#>
   }
 }

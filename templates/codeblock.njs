@@ -18,15 +18,15 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = '\nout.push('
+          res = 'out.push(\n'
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
         }
         if (block.eol) {
           res += JSON.stringify(cont + '\n')
-          res += ');'
-          textQuote = false
+          res += '\n'
+        //   textQuote = false
         } else {
           res += JSON.stringify(cont)
         }
@@ -38,7 +38,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = '\nout.push('
+          res = 'out.push(\n'
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
@@ -47,8 +47,8 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         if (textQuote && !block.eol) {
           out.push(res)
         } else {
-          textQuote = false
-          out.push(`${res} +"\\n");`)
+          // textQuote = false
+          out.push(`${res}\n`)
         }
       }
       break
@@ -57,7 +57,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = '\nout.push('
+          res = 'out.push(\n'
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
@@ -66,15 +66,15 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         if (textQuote && !block.eol) {
           out.push(res)
         } else {
-          textQuote = false
-          out.push(`${res} +"\\n");`)
+          // textQuote = false
+          out.push(`${res}\n`)
         }
       }
       break
     case 'code':
       if (textQuote) {
         let item = out.pop()
-        out.push(`${item} + "\\n");`)
+        out.push(`${item});\n`)
         textQuote = false
       }
       out.push(`${cont}${block.eol ? '\n' : ''}`)
@@ -83,6 +83,6 @@ for (var i = 0, len = blockList.length; i < len; i++) {
 }
 if (textQuote) {
   let lasItem = out.pop()
-  out.push(`${lasItem});`)
+  out.push(`${lasItem});\n`)
 }
 #>

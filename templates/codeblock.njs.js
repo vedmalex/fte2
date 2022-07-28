@@ -1,88 +1,92 @@
 module.exports = {
   alias: ['codeblock.njs'],
   script: function (blockList, _content, partial, slot, options) {
-    var out = []
-    var textQuote = false
+    var out = [];
+
+    out.push('\n' + '\n' + '\n');
+    var textQuote = false;
     for (var i = 0, len = blockList.length; i < len; i++) {
-      var block = blockList[i]
-      var cont = block.content
+      var block = blockList[i];
+      var cont = block.content;
       switch (block.type) {
         case 'text':
           {
-            let res = ''
+            let res = '';
             if (!textQuote) {
-              textQuote = true
-              res = 'out.push('
+              textQuote = true;
+              res = 'out.push(\n';
             } else {
-              let lasItem = out.pop()
-              res = `${lasItem} + `
+              let lasItem = out.pop();
+              res = `${lasItem} + `;
             }
             if (block.eol) {
-              res += JSON.stringify(cont + '\n')
-              res += ');'
-              textQuote = false
+              res += JSON.stringify(cont + '\n');
+              res += '\n';
+              //   textQuote = false
             } else {
-              res += JSON.stringify(cont)
+              res += JSON.stringify(cont);
             }
-            out.push(res)
+            out.push(res);
           }
-          break
+          break;
         case 'uexpression':
           {
-            let res = ''
+            let res = '';
             if (!textQuote) {
-              textQuote = true
-              res = 'out.push('
+              textQuote = true;
+              res = 'out.push(\n';
             } else {
-              let lasItem = out.pop()
-              res = `${lasItem} + `
+              let lasItem = out.pop();
+              res = `${lasItem} + `;
             }
-            res += `escapeIt(${cont})`
+            res += `escapeIt(${cont})`;
             if (textQuote && !block.eol) {
-              out.push(res)
+              out.push(res);
             } else {
-              textQuote = false
-              out.push(`${res} +"\\n");`)
+              // textQuote = false
+              out.push(`${res}\n`);
             }
           }
-          break
+          break;
         case 'expression':
           {
-            let res = ''
+            let res = '';
             if (!textQuote) {
-              textQuote = true
-              res = 'out.push('
+              textQuote = true;
+              res = 'out.push(\n';
             } else {
-              let lasItem = out.pop()
-              res = `${lasItem} + `
+              let lasItem = out.pop();
+              res = `${lasItem} + `;
             }
-            res += `${cont}`
+            res += `${cont}`;
             if (textQuote && !block.eol) {
-              out.push(res)
+              out.push(res);
             } else {
-              textQuote = false
-              out.push(`${res} +"\\n");`)
+              // textQuote = false
+              out.push(`${res}\n`);
             }
           }
-          break
+          break;
         case 'code':
           if (textQuote) {
-            let item = out.pop()
-            out.push(`${item} + "\\n");`)
-            textQuote = false
+            let item = out.pop();
+            out.push(`${item});\n`);
+            textQuote = false;
           }
-          out.push(`${cont}${block.eol ? '\n' : ''}`)
-          break
+          out.push(`${cont}${block.eol ? '\n' : ''}`);
+          break;
       }
     }
     if (textQuote) {
-      let lasItem = out.pop()
-      out.push(`${lasItem});`)
+      let lasItem = out.pop();
+      out.push(`${lasItem});\n`);
     }
-    return out.join('')
+
+    return out.join('');
   },
+
   compile: function () {
-    this.alias = ['codeblock.njs']
+    this.alias = ['codeblock.njs'];
   },
   dependency: {},
-}
+};
