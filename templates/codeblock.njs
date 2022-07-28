@@ -18,7 +18,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = 'out.push('
+          res = '\nout.push('
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
@@ -38,7 +38,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = 'out.push('
+          res = '\nout.push('
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
@@ -57,7 +57,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = 'out.push('
+          res = '\nout.push('
         } else {
           let lasItem = out.pop()
           res = `${lasItem} + `
