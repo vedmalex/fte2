@@ -3,14 +3,13 @@ import * as editor from 'mem-fs-editor'
 import * as astring from 'astring'
 import * as acorn from 'acorn'
 import prettier from 'prettier'
-import { extname } from 'node:path'
+import { extname } from 'path'
 import * as swc from '@swc/core'
-import * as esbuild from 'esbuild'
 
 const store = memFs.create()
 const fs = editor.create(store)
 
-export function parseFile(
+function parseFile(
   text: string,
   minify: boolean = true,
   pretty: boolean = false,
@@ -21,12 +20,12 @@ export function parseFile(
     if (minify) {
       // result = esbuild.transformSync(text, {
       //   treeShaking: true,
-      //   minify: true,
+      //   minify,
       // }).code
 
       result = swc.minifySync(text, {
-        sourceMap: false,
-        compress: false,
+        sourceMap: true,
+        compress: true,
         mangle: true,
       }).code
     } else {
@@ -56,7 +55,7 @@ export function parseFile(
   }
 }
 
-export function getParserForFileName(fileName: string) {
+function getParserForFileName(fileName: string) {
   let parser: string
   switch (extname(fileName)) {
     case '.jsx':
@@ -111,6 +110,10 @@ export function writeFile(
   } else {
     fs.write(fn, data)
   }
+}
+
+export function readFile(fn) {
+  fs.read(fn)
 }
 
 export function commit() {

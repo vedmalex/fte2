@@ -15,7 +15,10 @@ export declare type SlotsHash = {
     [key: string]: Array<string>;
 };
 export declare type ContentFunction = (name: string, context: HashType, content: ContentFunction, partial: PartialFunction, slot: SlotFunction) => string;
-export declare type BlockRunFunction<T extends DefaultFactoryOption> = (context: HashType, content: ContentFunction, partial: PartialFunction, slot: SlotFunction, options: T) => string;
+export declare type BlockRunFunction<T extends DefaultFactoryOption> = (context: HashType, content: ContentFunction, partial: PartialFunction, slot: SlotFunction, options: T) => string | Array<{
+    name: string;
+    content: string;
+}>;
 export declare type BlockContent<T extends DefaultFactoryOption> = {
     partial: PartialFunction;
     content: ContentFunction;

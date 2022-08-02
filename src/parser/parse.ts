@@ -37,6 +37,7 @@ export type ResultTypes =
   | 'blockStart'
   | 'blockEnd'
   | 'text'
+  | 'skip'
 
 export type SystemBlocksType =
   | 'directive'
@@ -126,15 +127,15 @@ const globalStates: { [key: string]: StateDefinition } = {
     end: ['*>'],
   },
   blockStart: {
-    start: ['<# block'],
-    end: [': #>'],
+    start: ['<# block', '<#- block'],
+    end: [': #>', ': -#>'],
   },
   slotStart: {
-    start: ['<# slot'],
-    end: [': #>'],
+    start: ['<# slot', '<#- slot'],
+    end: [': #>', ': -#>'],
   },
   blockEnd: {
-    start: ['<# end #>'],
+    start: ['<# end #>', '<#- end #>', '<# end -#>', '<#- end -#>'],
   },
 }
 export default globalStates
@@ -470,12 +471,25 @@ export class Parser {
     for (let i = 0; i < resultSize; i += 1) {
       let r = this.result[i]
       let { type, pos, line, column, start, end, data, eol } = r
-      const processPrevious = () => {
+
+      const trimStartLines = (lines?: number) => {
         do {
           if (curr.main.length > 0) {
             let prev = curr.main[curr.main.length - 1]
-            if (prev.type == 'text' && prev.content.trim() == '') {
-              curr.main.pop()
+            if (prev.type == 'text') {
+              prev.content = prev.content.trimEnd()
+              if (!prev.content) {
+                curr.main.pop()
+                if (lines) {
+                  lines -= 1
+                  if (!lines) {
+                    break
+                  }
+                }
+              } else {
+                prev.eol = false
+                break
+              }
             } else {
               break
             }
@@ -483,6 +497,57 @@ export class Parser {
             break
           }
         } while (true)
+      }
+      const trimEndLines = (lines?: number) => {
+        let nextline = 0
+        do {
+          nextline += 1
+          if (i + nextline < resultSize) {
+            let next = this.result[i + nextline]
+            if (next.type == 'text') {
+              next.data = next.data.trimStart()
+              if (!next.data) {
+                next.type = 'skip'
+                if (lines) {
+                  lines -= 1
+                  if (!lines) {
+                    break
+                  }
+                }
+              } else {
+                next.eol = false
+                break
+              }
+            } else {
+              break
+            }
+          } else {
+            break
+          }
+        } while (true)
+      }
+      const trimStartSpases = () => {
+        if (curr.main.length > 0) {
+          let prev = curr.main[curr.main.length - 1]
+          if (prev.type == 'text') {
+            prev.content = prev.content.replaceAll(' ', '')
+            if (!prev.content) {
+              curr.main.pop()
+            }
+          }
+        }
+      }
+
+      const trimEndSpaces = () => {
+        if (i + 1 < resultSize) {
+          let next = this.result[i + 1]
+          if (next.type == 'text') {
+            next.data = next.data.replaceAll(' ', '')
+            if (!next.data) {
+              next.type = 'skip'
+            }
+          }
+        }
       }
 
       if (curr.main.length > 0) {
@@ -496,88 +561,99 @@ export class Parser {
       switch (type) {
         case 'directive':
           state = 'directive'
-          processPrevious()
+          trimStartLines()
+          trimEndLines()
           curr.directives.push(r)
           break
         case 'blockStart':
           state = 'blockStart'
-          processPrevious()
+          trimStartLines()
+          trimEndLines()
           curr = new CodeBlock(r)
           content.addBlock(curr)
           break
         case 'slotStart':
           state = 'slotStart'
-          processPrevious()
+          trimStartLines()
+          trimEndLines()
           curr = new CodeBlock(r)
           content.addSlot(curr)
           break
         case 'blockEnd':
           state = 'blockEnd'
+          trimStartLines()
           curr = content
+          trimEndLines()
           break
         case 'unknown':
-          if (data) {
-            /**
+          /**
             <% 'Scriptlet' tag, for control-flow, no output
             <%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
             <%= Outputs the value into the template (HTML escaped)
             <%- Outputs the unescaped value into the template
              */
-            let actual_type: ResultTypes
-            switch (r.start) {
-              case '<%':
-                actual_type = 'code'
-                processPrevious()
-                break
-              case '<%_':
-                actual_type = 'code'
-                processPrevious()
-                break
-              case '<%-':
-                actual_type = 'expression'
-                break
-              case '<%=':
-                actual_type = 'uexpression'
-                break
-              case '<%#':
-                actual_type = 'comments'
-                break
-            }
-            if (data) {
-              if (actual_type !== 'comments') {
-                curr.main.push({
-                  content: data,
-                  pos,
-                  line,
-                  column,
-                  start,
-                  end,
-                  type: actual_type,
-                  eol,
-                })
-              } else {
-                curr.documentation.push({
-                  content: data,
-                  pos,
-                  line,
-                  column,
-                  start,
-                  end,
-                  type: actual_type,
-                  eol,
-                })
-              }
+          let actual_type: ResultTypes
+          switch (r.start) {
+            case '<%':
+              actual_type = 'code'
+              break
+            case '<%_':
+              actual_type = 'code'
+              trimStartSpases()
+              break
+            case '<%-':
+              actual_type = 'expression'
+              break
+            case '<%=':
+              actual_type = 'uexpression'
+              break
+            case '<%#':
+              actual_type = 'comments'
+              break
+          }
+          switch (r.end) {
+            case '-%>':
+              trimEndLines(1)
+              break
+            case '_%>':
+              trimEndSpaces()
+              break
+          }
+          if (data) {
+            if (actual_type !== 'comments') {
+              curr.main.push({
+                content: data,
+                pos,
+                line,
+                column,
+                start,
+                end,
+                type: actual_type,
+                eol,
+              })
+            } else {
+              curr.documentation.push({
+                content: data,
+                pos,
+                line,
+                column,
+                start,
+                end,
+                type: actual_type,
+                eol,
+              })
             }
           }
           break
         case 'code':
+          if (start == '<#-') {
+            trimStartLines()
+          }
+          if (end == '-#>') {
+            trimEndLines()
+          }
           if (data) {
-            // if (start == '<#-') {
-            processPrevious()
-            // }
-            // if (end == '-#>') {
             state = 'code'
-            // }
             curr.main.push({
               content: data,
               pos,
@@ -621,32 +697,21 @@ export class Parser {
           }
           break
         case 'text':
-          if (data) {
-            if (
-              (state == 'directive' ||
-                state == 'blockEnd' ||
-                state == 'blockStart' ||
-                state == 'slotStart' ||
-                state == 'code') &&
-              data.trim() == ''
-            ) {
-              break
-            } else {
-              state = null
-              curr.main.push({
-                content: data,
-                pos,
-                line,
-                column,
-                start,
-                end,
-                type,
-                eol,
-              })
-            }
-          }
+          state = null
+          curr.main.push({
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type,
+            eol,
+          })
           break
         case 'comments':
+          trimStartLines()
+          trimEndLines()
           if (data) {
             curr.documentation.push({
               content: data,

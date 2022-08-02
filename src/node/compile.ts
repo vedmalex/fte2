@@ -1,42 +1,42 @@
-// import * as raw from '../../grammar/raw.peggy.js'
 import { Parser } from '../parser/parse'
 import * as ts from 'typescript'
-// import * as fs from 'fs-extra';
-import * as path from 'path'
-import { TemplateFactory } from './factory'
 
-const templateRoot = path.join(__dirname, './../../templates')
 function prepareCode(src) {
   const result = ts.transpileModule(src, {
     compilerOptions: {
       allowJs: true,
       strict: false,
       target: ts.ScriptTarget.ES2020,
-      module: ts.ModuleKind.CommonJS,
+      module: ts.ModuleKind.ES2022,
     },
   })
   return result.outputText
 }
 
-export function compileLight(content: Buffer | string) {
-  try {
-    const compiled = Parser.parse(content.toString())
-    const F = new TemplateFactory({
-      root: templateRoot,
-    })
-    return prepareCode(F.run({ context: compiled, name: 'raw.njs' }))
-  } catch (e) {
-    throw e
-  }
+import templates from '../templates'
+import { TemplateFactoryStandalone } from '../standalone/factory'
+
+export const F = new TemplateFactoryStandalone(templates)
+
+export function run(context: any, template: keyof typeof templates) {
+  return F.run(context, template)
 }
 
-export function compileFull(
-  content: Buffer | string,
-  options: { content: string; fileName: string },
-) {
+export function compileLight(content: Buffer | string) {
   const compiled = Parser.parse(content.toString())
-  const F = new TemplateFactory({
-    root: templateRoot,
-  })
-  return F.run({ context: compiled, name: 'compiled.njs' })
+  return prepareCode(run(compiled, 'raw.njs'))
+}
+
+export function compileFull(content: Buffer | string) {
+  const compiled = Parser.parse(content.toString())
+  return prepareCode(run(compiled, 'compiled.njs'))
+}
+
+export function compileTs(content: Buffer | string) {
+  const compiled = Parser.parse(content.toString())
+  return prepareCode(run(compiled, 'es6module.njs'))
+}
+
+export function parseFile(content: Buffer | string) {
+  return Parser.parse(content.toString())
 }

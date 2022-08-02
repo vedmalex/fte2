@@ -1,22 +1,25 @@
 {
   "name": "fte.js",
-  "version": "3.0.0",
+  "version": "3.0.0-beta.2",
   "description": "fast template engine that is reborn",
-  "main": "dist/node/index.js",
+  "main": "lib/node.fte.js",
+  "bin": {
+    "fte.js": "./bin/fte.js"
+  },
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc --build tsconfig.json",
     "compile:clean": "tsc --build tsconfig.json --clean",
-    "prepublish": "tsc --build tsconfig.json",
-    "templates": "node dist/compile_templates.js",
-    "grammar": "peggy --source-map inline --output ./grammar/raw.peggy.js ./grammar/raw.peggy",
-    "genit": "npm run grammar && npm run templates",
-    "watch": "tsc --build tsconfig.json --watch"
+    "prepublish": "tsc --build tsconfig.json && npm run templates && npm run build && npm run make",
+    "templates": "node ./bin/fte.js bundle templates templates",
+    "build": "node ./bin/fte.js bundle templates src/templates -t",
+    "watch": "tsc --build tsconfig.json --watch",
+    "make": "node utils/browser.mjs && node utils/node.mjs && node utils/standalone.mjs"
   },
   "typescript": {
-    "definition": "dist"
+    "definition": "lib"
   },
-  "typings": "dist",
+  "typings": "lib",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vedmalex/fte2.git"
@@ -28,20 +31,27 @@
   },
   "homepage": "https://github.com/vedmalex/fte2#readme",
   "devDependencies": {
+    "@esbuild-plugins/node-resolve": "^0.1.4",
     "@types/fs-extra": "9.0.13",
     "@types/glob": "^7.2.0",
-    "@types/node": "^18.0.3",
-    "concurrently": "^7.2.2",
-    "nodemon": "^2.0.19",
-    "peggy": "^2.0.1"
+    "@types/node": "^18.6.3",
+    "esbuild": "^0.14.51",
+    "typescript": "^4.7.4",
+    "glob": "^8.0.3",
+    "mem-fs": "^2.2.1",
+    "mem-fs-editor": "^9.4.0",
+    "memfs": "^3.4.7",
+    "acorn": "^8.8.0",
+    "@swc/core": "^1.2.222",
+    "@types/mem-fs": "^1.1.2",
+    "@types/mem-fs-editor": "^7.0.2",
+    "unionfs": "^4.4.0",
+    "astring": "^1.8.3",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
-    "fs-extra": "^10.1.0",
-    "glob": "^8.0.3",
-    "prettier": "^2.7.1",
-    "source-map": "0.8.0-beta.0",
-    "source-map-generator": "^0.8.0",
-    "typescript": "^4.7.4"
+    "commander": "^9.4.0",
+    "detect-indent": "^6.1.0"
   },
   "gitHead": "ef0fa33d54101ca9c7c7a450fc6b7fc802a2c327"
 }

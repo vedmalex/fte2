@@ -167,7 +167,7 @@ class TemplateFactoryBase {
     load(fileName, absPath) {
         throw new Error('abstract method call');
     }
-    run({ context, name, absPath, options, slots, }) {
+    run(context, name) {
         throw new Error('abstract method call');
     }
     runPartial({ context, name, absPath, options, slots, }) {

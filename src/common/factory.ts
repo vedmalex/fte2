@@ -176,7 +176,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
           content,
           partial,
           slot,
-        ): string {
+        ): string | Array<{ name: string; content: string }> {
           const $this = this as TemplateBase<T>
           if ($this.parent) {
             const parent = self.ensure($this.parent)
@@ -217,19 +217,10 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     throw new Error('abstract method call')
   }
 
-  public run<T extends Record<string, any>>({
-    context,
-    name,
-    absPath,
-    options,
-    slots,
-  }: {
-    context: HashType
-    name: string
-    absPath?: boolean
-    options: T
-    slots?: SlotsHash
-  }): string | Array<object> {
+  public run<T extends Record<string, any>>(
+    context: HashType,
+    name: string,
+  ): string | Array<{ name: string; content: string }> {
     throw new Error('abstract method call')
   }
 

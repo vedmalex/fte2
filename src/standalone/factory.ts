@@ -8,7 +8,7 @@ import { DefaultFactoryOption } from '../common/interfaces'
  * We must ensure that template is registered with its compiled templates
  */
 
-export class TemplateFactoryBrowser<
+export class TemplateFactoryStandalone<
   T extends DefaultFactoryOption,
 > extends TemplateFactoryBase<T> {
   private templates: Record<string, TemplateConfig<T>>
@@ -20,12 +20,16 @@ export class TemplateFactoryBrowser<
   }
   public resolveTemplateConfig(fileName: string): TemplateConfig<T> {
     const result = this.templates[fileName]
-    result.factory = this
-    result.name = fileName
-    return result
+    if (result) {
+      result.factory = this
+      result.name = fileName
+      return result
+    } else {
+      throw new Error(`template ${fileName} not found`)
+    }
   }
 
-  public load(fileName: string, absPath?: boolean) {
+  public load(fileName: string) {
     const template = this.resolveTemplateConfig(fileName)
     const templ = new TemplateBrowser<T>(template)
     this.register(templ, fileName)
@@ -35,39 +39,38 @@ export class TemplateFactoryBrowser<
   public preload() {
     Object.keys(this.templates).forEach((t) => this.load(t))
   }
-  public run<T extends Record<string, any>>({
-    context,
-    name,
-    absPath,
-    options,
-    slots,
-  }: {
-    context: HashType
-    name: string
-    absPath?: boolean
-    options: T
-    slots?: SlotsHash
-  }): string | Array<object> {
+  public run<T extends Record<string, any>>(
+    context: HashType,
+    name: string,
+  ): string | Array<{ name: string; content: string }> {
     const templ = this.ensure(name)
-    const bc = this.blockContent(templ, slots)
+    const bc = this.blockContent(templ)
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
   public runPartial<T extends Record<string, any>>({
     context,
     name,
-    absPath,
-    options,
     slots,
   }: {
     context: HashType
     name: string
     absPath?: boolean
-    options: T
+    options?: T
     slots?: SlotsHash
   }): string {
     const templ = this.ensure(name)
-    const bc = this.blockContent(templ, slots)
-    return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    if (!templ.chunks) {
+      const bc = this.blockContent(templ, slots)
+      return bc.run(
+        context,
+        bc.content,
+        bc.partial,
+        bc.slot,
+        this.options,
+      ) as string
+    } else {
+      throw new Error("cant't use template with chunks as partial")
+    }
   }
 }

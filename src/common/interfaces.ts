@@ -36,7 +36,7 @@ export type BlockRunFunction<T extends DefaultFactoryOption> = (
   partial: PartialFunction,
   slot: SlotFunction,
   options: T,
-) => string
+) => string | Array<{ name: string; content: string }>
 
 export type BlockContent<T extends DefaultFactoryOption> = {
   partial: PartialFunction

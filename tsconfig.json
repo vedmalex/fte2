@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "composite": true,
-    "allowJs": true,
+    "allowJs": false,
     "module": "commonjs",
     "esModuleInterop": true,
     "sourceMap": true,
@@ -20,7 +20,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": ["es2020", "DOM"],
+    "lib": ["ES2022", "DOM"],
     "types": ["node"],
     "baseUrl": "./",
     "rootDir": "./src",

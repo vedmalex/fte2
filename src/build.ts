@@ -1,39 +1,129 @@
-import * as fs from 'fs-extra'
-import * as path from 'path'
+import path from 'path'
 import glob from 'glob'
-import { Parser } from './parser/parse'
-
+import { compileTs, compileFull, run, parseFile } from './node'
 import { writeFile, commit } from './filewriter'
-import { TemplateFactory } from './node/factory'
+import fs from 'fs'
 
-const templateRoot = path.join(__dirname, './../templates')
-
-export function compileFull(content: Buffer | string) {
-  const compiled = Parser.parse(content)
-  const F = new TemplateFactory({
-    root: templateRoot,
-  })
-  return F.run({ context: compiled, name: 'compiled.njs' })
-}
-
-function parseTemplate(fileName, dest, compile) {
+// берет файл из реальной fs
+// записывает во временное хранилище
+function parseTemplate(
+  fileName: string,
+  dest: string,
+  compile: (
+    content: Buffer | string,
+  ) => string | Array<{ name: string; content: string }>,
+  {
+    ts,
+    format,
+    pretty,
+    minify,
+  }: { ts: boolean; format: boolean; pretty: boolean; minify: boolean },
+) {
   const fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
     const content = fs.readFileSync(fn)
-    const result = compile(content, { fileName, content })
-    writeFile(path.join(dest, path.basename(fileName) + '.js'), result, {
-      minify: true,
-      format: true,
-      pretty: true,
-    })
+    const result = compile(content)
+    if (typeof result == 'string') {
+      writeFile(
+        path.join(dest, path.basename(fileName) + (ts ? '.ts' : '.js')),
+        result,
+        {
+          format,
+          pretty,
+          minify,
+        },
+      )
+    } else {
+      result.forEach((file) => {
+        writeFile(
+          path.join(dest, path.basename(file.name) + (ts ? '.ts' : '.js')),
+          file.content,
+          {
+            format,
+            pretty,
+            minify,
+          },
+        )
+      })
+    }
   }
 }
 
-const dest = 'standalone/templates'
-glob.sync('templates/*.njs').forEach((file) => {
-  fs.ensureDirSync(dest)
-  console.log(file)
-  parseTemplate(file, dest, compileFull)
-})
+export function build(
+  src: string,
+  dest: string,
+  options: {
+    ts: boolean
+    format: boolean
+    pretty: boolean
+    minify: boolean
+    sa: boolean
+    single: boolean
+    ext: string
+    file: string
+  },
+  callback: (err?: Error) => void,
+) {
+  debugger
+  glob(`${src}/**/*${options.ext ? options.ext : '.njs'}`, (err, files) => {
+    if (!err) {
+      if (options.single) {
+        const filelist = files.map((file) => {
+          const name = path.relative(src, file)
+          const content = fs.readFileSync(file)
+          return { name, template: parseFile(content) }
+          // parseTemplate(file, dest, options.ts ? compileTs : compileFull, options)
+        })
+        const templateFile = run(
+          filelist,
+          options.ts ? 'singlefile.njs' : 'singlefile.es6.njs',
+        )
+        if (typeof templateFile == 'string') {
+          writeFile(`${dest}/index${options.ts ? '.ts' : '.js'}`, templateFile)
+        } else {
+          templateFile.forEach((file) => {
+            writeFile(`${dest}/${file.name}`, file.content)
+          })
+        }
+      } else {
+        files.forEach((file) => {
+          parseTemplate(
+            file,
+            dest,
+            options.ts ? compileTs : compileFull,
+            options,
+          )
+        })
+        const indexFile = run(
+          files.map((f) => {
+            const fn = path.parse(f)
+            return {
+              name: path.relative(src, f),
+              path: `./${fn.base}${options.ts ? '' : '.js'}`,
+            }
+          }),
+          options.ts
+            ? options.sa
+              ? 'standalone.es6.njs'
+              : 'standalone.index.es6.njs'
+            : options.sa
+            ? 'standalone.njs'
+            : 'standalone.index.njs',
+        )
+        if (typeof indexFile == 'string') {
+          writeFile(`${dest}/index${options.ts ? '.ts' : '.js'}`, indexFile)
+        } else {
+          indexFile.forEach((file) => {
+            writeFile(`${dest}/${file.name}`, file.content)
+          })
+        }
+      }
 
-commit().then((_) => console.log('success'))
+      commit()
+        .then((_) => callback())
+        .catch((err) => callback(err))
+    } else {
+      callback(err)
+    }
+  })
+}

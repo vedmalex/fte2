@@ -1,4 +1,4 @@
-import * as fs from 'fs-extra'
+import * as fs from 'fs'
 import * as path from 'path'
 import * as glob from 'glob'
 import { Template } from './template'
@@ -9,7 +9,6 @@ import {
   HashType,
   SlotsHash,
 } from './../common/interfaces'
-import { SourceNode } from 'source-map'
 
 export class TemplateFactory<
   T extends DefaultFactoryOption,
@@ -103,19 +102,11 @@ export class TemplateFactory<
     return tpl.compile()
   }
 
-  public run<T extends Record<string, any>>({
-    context,
-    name,
-    absPath,
-    options,
-    slots,
-  }: {
-    context: HashType
-    name: string
-    absPath?: boolean
-    options?: T
-    slots?: SlotsHash
-  }): string | Array<object> {
+  public run<T extends Record<string, any>>(
+    context: HashType,
+    name: string,
+    absPath?: boolean,
+  ) {
     const templ = this.ensure(name, absPath)
 
     // const source = new SourceNode(0, 0, templ.absPath)
@@ -181,8 +172,18 @@ export class TemplateFactory<
     slots?: SlotsHash
   }): string {
     const templ = this.ensure(name, absPath)
-    const bc = this.blockContent(templ, slots)
-    return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    if (!templ.chunks) {
+      const bc = this.blockContent(templ, slots)
+      return bc.run(
+        context,
+        bc.content,
+        bc.partial,
+        bc.slot,
+        this.options,
+      ) as string
+    } else {
+      throw new Error("cant't use template with chunks as partial")
+    }
   }
 
   public blocksToFiles(

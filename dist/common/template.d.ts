@@ -9,6 +9,7 @@ export declare class TemplateBase<T extends DefaultFactoryOption> {
     dependency: HashTypeGeneric<boolean>;
     absPath: string;
     name: string;
+    chunks: string;
     srcCode: string;
     script: BlockRunFunction<T>;
     factory: TemplateFactoryBase<T>;

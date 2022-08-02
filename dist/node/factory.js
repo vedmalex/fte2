@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TemplateFactory = void 0;
-const fs = __importStar(require("fs-extra"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const glob = __importStar(require("glob"));
 const template_1 = require("./template");
@@ -111,7 +111,7 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
         });
         return tpl.compile();
     }
-    run({ context, name, absPath, options, slots, }) {
+    run(context, name, absPath) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, {});
         const result = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
@@ -137,8 +137,13 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     }
     runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
-        const bc = this.blockContent(templ, slots);
-        return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        if (!templ.chunks) {
+            const bc = this.blockContent(templ, slots);
+            return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        }
+        else {
+            throw new Error("cant't use template with chunks as partial");
+        }
     }
     blocksToFiles(context, name, absPath) {
         const templ = this.ensure(name, absPath);

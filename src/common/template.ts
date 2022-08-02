@@ -17,6 +17,7 @@ export class TemplateBase<T extends DefaultFactoryOption> {
   public dependency: HashTypeGeneric<boolean>
   public absPath: string
   public name: string
+  public chunks: string
   public srcCode: string
   public script: BlockRunFunction<T>
   public factory: TemplateFactoryBase<T>

@@ -29,21 +29,12 @@ export class TemplateFactoryBrowser<
     return templ
   }
 
-  public run<T extends Record<string, any>>({
-    context,
-    name,
-    absPath,
-    options,
-    slots,
-  }: {
-    context: HashType
-    name: string
-    absPath?: boolean
-    options: T
-    slots?: SlotsHash
-  }): string | Array<object> {
+  public run<T extends Record<string, any>>(
+    context: HashType,
+    name: string,
+  ): string | Array<{ name: string; content: string }> {
     const templ = this.ensure(name)
-    const bc = this.blockContent(templ, slots)
+    const bc = this.blockContent(templ)
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
@@ -61,7 +52,17 @@ export class TemplateFactoryBrowser<
     slots?: SlotsHash
   }): string {
     const templ = this.ensure(name)
-    const bc = this.blockContent(templ, slots)
-    return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    if (!templ.chunks) {
+      const bc = this.blockContent(templ, slots)
+      return bc.run(
+        context,
+        bc.content,
+        bc.partial,
+        bc.slot,
+        this.options,
+      ) as string
+    } else {
+      throw new Error("cant't use template with chunks as partial")
+    }
   }
 }

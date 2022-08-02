@@ -17,15 +17,20 @@ class TemplateFactoryBrowser extends factory_1.TemplateFactoryBase {
         templ.compile();
         return templ;
     }
-    run({ context, name, absPath, options, slots, }) {
+    run(context, name) {
         const templ = this.ensure(name);
-        const bc = this.blockContent(templ, slots);
+        const bc = this.blockContent(templ);
         return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
     }
     runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name);
-        const bc = this.blockContent(templ, slots);
-        return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        if (!templ.chunks) {
+            const bc = this.blockContent(templ, slots);
+            return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        }
+        else {
+            throw new Error("cant't use template with chunks as partial");
+        }
     }
 }
 exports.TemplateFactoryBrowser = TemplateFactoryBrowser;

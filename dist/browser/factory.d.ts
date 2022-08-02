@@ -6,13 +6,10 @@ import { DefaultFactoryOption } from '../common/interfaces';
 export declare class TemplateFactoryBrowser<T extends DefaultFactoryOption> extends TemplateFactoryBase<T> {
     resolveTemplateConfig(fileName: string): TemplateConfig<T>;
     load(fileName: string, absPath?: boolean): TemplateBrowser<T>;
-    run<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
-        context: HashType;
+    run<T extends Record<string, any>>(context: HashType, name: string): string | Array<{
         name: string;
-        absPath?: boolean;
-        options: T;
-        slots?: SlotsHash;
-    }): string | Array<object>;
+        content: string;
+    }>;
     runPartial<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
         context: HashType;
         name: string;

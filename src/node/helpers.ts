@@ -1,22 +1,12 @@
-import * as fs from 'fs-extra'
+import * as fs from 'fs'
 import { compileLight as compileTemplate } from './compile'
 
-import * as ts from 'typescript'
 export function safeEval(src: string) {
-  const result = ts.transpileModule(src, {
-    compilerOptions: {
-      allowJs: true,
-      strict: false,
-      target: ts.ScriptTarget.ES2020,
-      module: ts.ModuleKind.CommonJS,
-    },
-  })
   let retval
   try {
-    retval = eval(result.outputText)
+    retval = eval(src)
   } catch (err) {
-    fs.writeFileSync('failed.js', result.outputText)
-    console.log(result.diagnostics)
+    fs.writeFileSync('failed.js', src)
     console.log('\t \x1b[34m' + err.message + '\x1b[0m')
     console.log("for mode debug information see 'failed.js' ")
   }
@@ -24,7 +14,7 @@ export function safeEval(src: string) {
 }
 
 export function makeFunction(fnDef, name) {
-  let result
+  let result: { err?: any; code?: any }
   try {
     const fname = name.replace(/[\s,\\\/\.\-]/g, '_')
     result = safeEval(

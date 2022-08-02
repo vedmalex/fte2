@@ -5,7 +5,7 @@
 <#@ alias 'MainTemplate.njs' #>
 <#@ noEscape #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
-<# const { directives } = context #>
+<#- const { directives } = context -#>
 {
 <# if(directives.chunks){#>
 chinks: #{directives.chunks}
@@ -18,22 +18,22 @@ alias: #{JSON.stringify(directives.alias)},
 <#@ context 'directives'#>
 <#@ noEscape #>
 <#@ noContent #>
-  <# if(directives.escapeIt){#>
+  <#- if(directives.escapeIt){#>
     const {escapeIt} = options
-  <#}#>
+  <#}-#>
 
-  <#if(directives.content){#>
+  <#-if(directives.content){#>
     function content(blockName, ctx) {
       if(ctx === undefined || ctx === null) ctx = #{directives.context}
       return _content(blockName, ctx, content, partial, slot)
     }
-  <#}#>
+  <#}-#>
 <# end #>
 <# block 'chunks-start' : #>
   <#@ context 'directives'#>
   <#@ noEscape #>
   <#@ noContent #>
-  <#if(directives.chunks){#>
+  <#-if(directives.chunks){#>
     const _partial = partial
     partial = function(obj, template) {
       const result = _partial(obj, template)
@@ -71,7 +71,7 @@ alias: #{JSON.stringify(directives.alias)},
       current = outStack.pop() || main
     }
     chunkStart(main)
-  <#}#>
+  <#}-#>
 <# end #>
 <# block 'chunks-finish' : #>
   <#@ context 'directives'#>
@@ -79,7 +79,7 @@ alias: #{JSON.stringify(directives.alias)},
   <#@ noContent #>
   <#if(directives.chunks){#>
     chunkEnd()
-    <#if(!useHash){#>
+    <#if(!directives.useHash){#>
     out = Object.keys(result)
       <#if(!directives.includeMainChunk){#>
       .filter(i => i !== '#{directives.chunks}')
@@ -158,14 +158,14 @@ if(slotNames.length > 0) {-#>
   },
   dependency: {
   <# if(directives.extend) {-#>
-    #{JSON.stringify(directives.extend)}: 1,
+    #{JSON.stringify(directives.extend)}: true,
   <# }-#>
 <# if(directives.requireAs.length > 0) {
   for (var i = 0, len = directives.requireAs.length; i < len; i++) {
     rq = directives.requireAs[i]
 #>
-    "#{rq.name}": 1,
-    "#{rq.alias}": 1,
+    "#{rq.name}": true,
+    "#{rq.alias}": true,
 <#
   }
 }#>

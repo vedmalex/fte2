@@ -23,13 +23,10 @@ export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption
     preload(fileName?: string): void;
     checkChanges(template?: any, fileName?: any, absPath?: boolean): void;
     load(fileName: string, absPath: boolean): TemplateBase<T>;
-    run<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
-        context: HashType;
+    run<T extends Record<string, any>>(context: HashType, name: string): string | Array<{
         name: string;
-        absPath?: boolean;
-        options: T;
-        slots?: SlotsHash;
-    }): string | Array<object>;
+        content: string;
+    }>;
     runPartial<T extends Record<string, any>>({ context, name, absPath, options, slots, }: {
         context: HashType;
         name: string;
