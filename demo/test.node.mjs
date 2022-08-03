@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Parser } from '../dist/parser/parse.js'
+import { Parser } from '../lib/node.fte.js'
 
 //'/Users/vedmalex/work/fte.js/templates/MainTemplate.njs',
 // '/Users/vedmalex/work/test/grainjs/apps/grainjs/generators/server/Meta.Thing/ext.grid-thing.List.njs',
@@ -9,8 +9,11 @@ import { Parser } from '../dist/parser/parse.js'
 // template.txt
 // /Users/vedmalex/work/fte.js/templates/MainTemplate.njs
 // /Users/vedmalex/work/fte.js/demo/template.nhtml
+// /Users/vedmalex/work/test/ftejs/templates/Meta.Thing/graphql.njs
 
-const text = fs.readFileSync('/Users/vedmalex/work/fte.js/demo/template.nhtml')
+const text = fs.readFileSync(
+  '/Users/vedmalex/work/test/ftejs/templates/Meta.Thing/graphql.njs',
+)
 
 // const result = parse(`  abc#{ array }of mutable`)
 console.time('parse')

@@ -1,20 +1,22 @@
-<%#
-// single dropdown menu as link with menu drop items used in navigation bar
-// Context:
-// {
-// 	title: 'This is dropdown menu as Link in navigation panel',
-// 	badge: 45  - show badge info if need
-// 	items:
-// 	[
-// 		{url:"#", title:"one"},
-// 		{type:"divider"},
-// 		{url:"#", title:"two"},
-// 		{url:"#", title:"tree"},
-// 	]
-// }
-%>
-<%%
-<#@ requireAs('DropDownMenuList.nhtml','menuList') #><li class="dropdown">
-  	<a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ context.title }} <%if (context.badge){%><span class="badge">#{context.badge}</span><%}%><b class="caret"></b></a> {{& partial(context.get('items'), 'menuList')}}
-</li>
-<#@ requireAs('DropDownMenuList.nhtml','menuList') #>
+<#- if(!hasID){-#>
+      id: ID
+<#  } -#>
+<#- if(!has_ID){ -#>
+      _id: ID
+<#  } -#>
+<#if(hasChilds || context.extends ){-#>
+      _tid: String
+<#-}-#>
+<#-
+  // properties
+  for (var i=0, props = context.properties ,proplen = props?.length ?? 0; i < proplen; i++) {
+    var pName = props[i].propertyName.replaceAll('.','');-#>
+    <#-if(props[i].type === 'date') {#>
+      #{pName}(format:String, zone: Float, json: Boolean): #{getType(props[i].type)}
+    <#-} else {#>
+    #{pName}: #{getType(props[i].type)}
+    <#- }-#>
+<#-}#>
+  <#-if(context.hasRels > 0) {#>
+    childRel:#{context.GQLName(context.thingType)}Edges
+  <#}#>

@@ -1,8 +1,8 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.13",
   "description": "fast template engine that is reborn",
-  "main": "lib/node.fte.js",
+  "main": "dist/node/index.js",
   "bin": {
     "fte.js": "./bin/fte.js"
   },

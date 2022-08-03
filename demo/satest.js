@@ -2,11 +2,9 @@
 
 const { readFileSync } = require('fs')
 const factory = require('../standalone')
+const fte = new Factory(templates)
 
-const fte = new factory()
-const file = readFileSync()
-
-fte.load(`<# block "filename1.txt" : #>
+fte.run(`<# block "filename1.txt" : #>
 file1
 <# end #>
 

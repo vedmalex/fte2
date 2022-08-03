@@ -8,7 +8,7 @@
 
   - template inheritance
   - codeblocks with parameters and directives
-  - partials
+  - partials (works with templates that haven't use chunks)
   - partial with aliases
   - directives
   - progressive template caching
