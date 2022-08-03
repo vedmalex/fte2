@@ -74,17 +74,20 @@ export function build(
           const name = path.relative(src, file)
           const content = fs.readFileSync(file)
           return { name, template: parseFile(content) }
-          // parseTemplate(file, dest, options.ts ? compileTs : compileFull, options)
         })
         const templateFile = run(
           filelist,
-          options.ts ? 'singlefile.njs' : 'singlefile.es6.njs',
+          options.ts ? 'singlefile.es6.njs' : 'singlefile.njs',
         )
         if (typeof templateFile == 'string') {
-          writeFile(`${dest}/index${options.ts ? '.ts' : '.js'}`, templateFile)
+          writeFile(
+            `${dest}/${options.file}${options.ts ? '.ts' : '.js'}`,
+            templateFile,
+            options,
+          )
         } else {
           templateFile.forEach((file) => {
-            writeFile(`${dest}/${file.name}`, file.content)
+            writeFile(`${dest}/${file.name}`, file.content, options)
           })
         }
       } else {
@@ -99,7 +102,6 @@ export function build(
         })
         const indexFile = run(
           files.map((f) => {
-            const fn = path.parse(f)
             return {
               name: path.relative(src, f),
               path: `./${path.relative(src, f)}${options.ts ? '' : '.js'}`,
@@ -114,10 +116,14 @@ export function build(
             : 'standalone.index.njs',
         )
         if (typeof indexFile == 'string') {
-          writeFile(`${dest}/index${options.ts ? '.ts' : '.js'}`, indexFile)
+          writeFile(
+            `${dest}/${options.file}${options.ts ? '.ts' : '.js'}`,
+            indexFile,
+            options,
+          )
         } else {
           indexFile.forEach((file) => {
-            writeFile(`${dest}/${file.name}`, file.content)
+            writeFile(`${dest}/${file.name}`, file.content, options)
           })
         }
       }

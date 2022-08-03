@@ -11,7 +11,7 @@ const templates = {
 <#}) #>
 }
 
-exports.templates = template
+exports.templates = templates
 const F = new Factory(templates)
 
 function run(context, name){

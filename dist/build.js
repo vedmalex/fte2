@@ -43,13 +43,13 @@ function build(src, dest, options, callback) {
                     const content = fs_1.default.readFileSync(file);
                     return { name, template: (0, node_1.parseFile)(content) };
                 });
-                const templateFile = (0, node_1.run)(filelist, options.ts ? 'singlefile.njs' : 'singlefile.es6.njs');
+                const templateFile = (0, node_1.run)(filelist, options.ts ? 'singlefile.es6.njs' : 'singlefile.njs');
                 if (typeof templateFile == 'string') {
-                    (0, filewriter_1.writeFile)(`${dest}/index${options.ts ? '.ts' : '.js'}`, templateFile);
+                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.ts ? '.ts' : '.js'}`, templateFile, options);
                 }
                 else {
                     templateFile.forEach((file) => {
-                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content);
+                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options);
                     });
                 }
             }
@@ -58,7 +58,6 @@ function build(src, dest, options, callback) {
                     parseTemplate(file, src, dest, options.ts ? node_1.compileTs : node_1.compileFull, options);
                 });
                 const indexFile = (0, node_1.run)(files.map((f) => {
-                    const fn = path_1.default.parse(f);
                     return {
                         name: path_1.default.relative(src, f),
                         path: `./${path_1.default.relative(src, f)}${options.ts ? '' : '.js'}`,
@@ -71,11 +70,11 @@ function build(src, dest, options, callback) {
                         ? 'standalone.njs'
                         : 'standalone.index.njs');
                 if (typeof indexFile == 'string') {
-                    (0, filewriter_1.writeFile)(`${dest}/index${options.ts ? '.ts' : '.js'}`, indexFile);
+                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.ts ? '.ts' : '.js'}`, indexFile, options);
                 }
                 else {
                     indexFile.forEach((file) => {
-                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content);
+                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options);
                     });
                 }
             }
