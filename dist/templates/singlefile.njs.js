@@ -21,7 +21,7 @@ exports.default = {
             + "const F = new Factory(templates)\n"
             + "\n"
             + "function run(context, name){\n"
-            + "  return F.run({ context, name })\n"
+            + "  return F.run( context, name )\n"
             + "}\n"
             + "\n"
             + "exports.run = run\n"

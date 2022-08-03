@@ -15,7 +15,7 @@ exports.templates = templates
 const F = new Factory(templates)
 
 function run(context, name){
-  return F.run({ context, name })
+  return F.run( context, name )
 }
 
 exports.run = run
