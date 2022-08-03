@@ -15,7 +15,10 @@ export declare class TemplateFactory<T extends DefaultFactoryOption> extends Tem
     }): string;
     blocksToFiles(context: HashType, name: string, absPath?: boolean): Array<{
         file: string;
-        content: string;
+        content: string | Array<{
+            name: string;
+            content: string;
+        }>;
     }>;
     express(): (fileName: any, context: any, callback: any) => void;
     clearCache(fn: any, list: any): void;

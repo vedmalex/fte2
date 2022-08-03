@@ -28,7 +28,7 @@ export type ContentFunction = (
   content: ContentFunction,
   partial: PartialFunction,
   slot: SlotFunction,
-) => string
+) => string | Array<{ name: string; content: string }>
 
 export type BlockRunFunction<T extends DefaultFactoryOption> = (
   context: HashType,

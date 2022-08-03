@@ -8,6 +8,7 @@ import fs from 'fs'
 // записывает во временное хранилище
 function parseTemplate(
   fileName: string,
+  src: string,
   dest: string,
   compile: (
     content: Buffer | string,
@@ -24,8 +25,9 @@ function parseTemplate(
     const content = fs.readFileSync(fn)
     const result = compile(content)
     if (typeof result == 'string') {
+      path.relative(src, fileName)
       writeFile(
-        path.join(dest, path.basename(fileName) + (ts ? '.ts' : '.js')),
+        path.join(dest, path.relative(src, fileName) + (ts ? '.ts' : '.js')),
         result,
         {
           format,
@@ -89,6 +91,7 @@ export function build(
         files.forEach((file) => {
           parseTemplate(
             file,
+            src,
             dest,
             options.ts ? compileTs : compileFull,
             options,
@@ -99,7 +102,7 @@ export function build(
             const fn = path.parse(f)
             return {
               name: path.relative(src, f),
-              path: `./${fn.base}${options.ts ? '' : '.js'}`,
+              path: `./${path.relative(src, f)}${options.ts ? '' : '.js'}`,
             }
           }),
           options.ts

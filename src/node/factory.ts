@@ -190,7 +190,10 @@ export class TemplateFactory<
     context: HashType,
     name: string,
     absPath?: boolean,
-  ): Array<{ file: string; content: string }> {
+  ): Array<{
+    file: string
+    content: string | Array<{ name: string; content: string }>
+  }> {
     const templ = this.ensure(name, absPath)
     const bc = this.blockContent(templ)
     return Object.keys(templ.blocks).map((curr) => ({

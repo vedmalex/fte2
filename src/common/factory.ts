@@ -12,6 +12,7 @@ import {
   DefaultFactoryOption,
 } from './../common/interfaces'
 import { applyIndent, escapeIt } from './helpers'
+import { BlockRunFunction } from './interfaces'
 
 export const DefaultFactoryOptions: DefaultFactoryOption = {
   applyIndent,
@@ -104,7 +105,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     tpl: TemplateBase<T>,
     slots?: SlotsHash,
   ): BlockContent<T> {
-    const scripts = []
+    const scripts: Array<BlockRunFunction<T>> = []
     const self = this
     const bc: BlockContent<T> = {
       slots: slots ? slots : {},
@@ -159,7 +160,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
         } else {
           const fn = scripts.pop()
           if (typeof fn === 'function') {
-            return fn(context, content, partial)
+            return fn(context, content, partial, slot, self.options)
           } else {
             return ''
           }

@@ -9,13 +9,14 @@ const glob_1 = __importDefault(require("glob"));
 const node_1 = require("./node");
 const filewriter_1 = require("./filewriter");
 const fs_1 = __importDefault(require("fs"));
-function parseTemplate(fileName, dest, compile, { ts, format, pretty, minify, }) {
+function parseTemplate(fileName, src, dest, compile, { ts, format, pretty, minify, }) {
     const fn = path_1.default.resolve(fileName);
     if (fs_1.default.existsSync(fn)) {
         const content = fs_1.default.readFileSync(fn);
         const result = compile(content);
         if (typeof result == 'string') {
-            (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.basename(fileName) + (ts ? '.ts' : '.js')), result, {
+            path_1.default.relative(src, fileName);
+            (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.relative(src, fileName) + (ts ? '.ts' : '.js')), result, {
                 format,
                 pretty,
                 minify,
@@ -54,13 +55,13 @@ function build(src, dest, options, callback) {
             }
             else {
                 files.forEach((file) => {
-                    parseTemplate(file, dest, options.ts ? node_1.compileTs : node_1.compileFull, options);
+                    parseTemplate(file, src, dest, options.ts ? node_1.compileTs : node_1.compileFull, options);
                 });
                 const indexFile = (0, node_1.run)(files.map((f) => {
                     const fn = path_1.default.parse(f);
                     return {
                         name: path_1.default.relative(src, f),
-                        path: `./${fn.base}${options.ts ? '' : '.js'}`,
+                        path: `./${path_1.default.relative(src, f)}${options.ts ? '' : '.js'}`,
                     };
                 }), options.ts
                     ? options.sa
