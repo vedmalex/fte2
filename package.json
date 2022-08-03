@@ -12,7 +12,7 @@
     "compile:clean": "tsc --build tsconfig.json --clean",
     "prepublish": "tsc --build tsconfig.json && npm run templates && npm run build && npm run make",
     "templates": "node ./bin/fte.js bundle templates templates",
-    "build": "node ./bin/fte.js bundle templates src/templates -t",
+    "build": "node ./bin/fte.js bundle templates src/templates --typescript",
     "watch": "tsc --build tsconfig.json --watch",
     "make": "node utils/browser.mjs && node utils/node.mjs && node utils/standalone.mjs"
   },

@@ -1,9 +1,9 @@
 export declare function build(src: string, dest: string, options: {
-    ts: boolean;
+    typescript: boolean;
     format: boolean;
     pretty: boolean;
     minify: boolean;
-    sa: boolean;
+    standalone: boolean;
     single: boolean;
     ext: string;
     file: string;

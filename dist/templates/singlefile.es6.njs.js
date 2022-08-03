@@ -10,8 +10,7 @@ exports.default = {
             + "");
         files.forEach(file => {
             ;
-            out.push("\n"
-                + "  ['" + ((file.template.alias || file.name)) + "']: " + (partial(file.template, 'core')) + ",\n"
+            out.push("['" + ((file.template.alias || file.name)) + "']: " + (partial(file.template, 'core')) + ",\n"
                 + "");
         });
         out.push("\n"

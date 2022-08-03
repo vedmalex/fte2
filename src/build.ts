@@ -14,11 +14,11 @@ function parseTemplate(
     content: Buffer | string,
   ) => string | Array<{ name: string; content: string }>,
   {
-    ts,
+    typescript,
     format,
     pretty,
     minify,
-  }: { ts: boolean; format: boolean; pretty: boolean; minify: boolean },
+  }: { typescript: boolean; format: boolean; pretty: boolean; minify: boolean },
 ) {
   const fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
@@ -27,7 +27,10 @@ function parseTemplate(
     if (typeof result == 'string') {
       path.relative(src, fileName)
       writeFile(
-        path.join(dest, path.relative(src, fileName) + (ts ? '.ts' : '.js')),
+        path.join(
+          dest,
+          path.relative(src, fileName) + (typescript ? '.ts' : '.js'),
+        ),
         result,
         {
           format,
@@ -38,7 +41,10 @@ function parseTemplate(
     } else {
       result.forEach((file) => {
         writeFile(
-          path.join(dest, path.basename(file.name) + (ts ? '.ts' : '.js')),
+          path.join(
+            dest,
+            path.basename(file.name) + (typescript ? '.ts' : '.js'),
+          ),
           file.content,
           {
             format,
@@ -55,11 +61,11 @@ export function build(
   src: string,
   dest: string,
   options: {
-    ts: boolean
+    typescript: boolean
     format: boolean
     pretty: boolean
     minify: boolean
-    sa: boolean
+    standalone: boolean
     single: boolean
     ext: string
     file: string
@@ -77,11 +83,11 @@ export function build(
         })
         const templateFile = run(
           filelist,
-          options.ts ? 'singlefile.es6.njs' : 'singlefile.njs',
+          options.typescript ? 'singlefile.es6.njs' : 'singlefile.njs',
         )
         if (typeof templateFile == 'string') {
           writeFile(
-            `${dest}/${options.file}${options.ts ? '.ts' : '.js'}`,
+            `${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`,
             templateFile,
             options,
           )
@@ -96,7 +102,7 @@ export function build(
             file,
             src,
             dest,
-            options.ts ? compileTs : compileFull,
+            options.typescript ? compileTs : compileFull,
             options,
           )
         })
@@ -104,20 +110,22 @@ export function build(
           files.map((f) => {
             return {
               name: path.relative(src, f),
-              path: `./${path.relative(src, f)}${options.ts ? '' : '.js'}`,
+              path: `./${path.relative(src, f)}${
+                options.typescript ? '' : '.js'
+              }`,
             }
           }),
-          options.ts
-            ? options.sa
+          options.typescript
+            ? options.standalone
               ? 'standalone.es6.njs'
               : 'standalone.index.es6.njs'
-            : options.sa
+            : options.standalone
             ? 'standalone.njs'
             : 'standalone.index.njs',
         )
         if (typeof indexFile == 'string') {
           writeFile(
-            `${dest}/${options.file}${options.ts ? '.ts' : '.js'}`,
+            `${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`,
             indexFile,
             options,
           )

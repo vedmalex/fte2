@@ -17,13 +17,14 @@ program
   .command('bundle')
   .argument('[tempalates]', 'templates root folder', './templates')
   .argument('[dest]', 'destination file', './templates.js')
-  .option('-t, --ts', 'use typescript', false)
-  .option('-o, --single', 'use single file output mode', false)
-  .option('-f, --file <filename>', ' single file output mode name', 'index')
-  .option('-e, --ext <ext>', ' extension for file', '')
-  .option('-s, --sa', 'use standalone mode', false)
-  .option('-m, --minify', 'need to be minified', true)
-  .option('-p, --pretty', 'need to be prettied', true)
+  .option('--typescript', 'use typescript', false)
+  .option('--single', 'use single file output mode', false)
+  .option('--file <filename>', ' single file output mode name', 'index')
+  .option('--ext <ext>', ' extension for file', '')
+  .option('--standalone', 'use standalone mode', false)
+  .option('--format', 'need to be formated', false)
+  .option('--minify', 'need to be minified', false)
+  .option('--pretty', 'need to be prettied', false)
   .action(function (tempalates, dest, options) {
     build(
       `${path.resolve(process.cwd(), tempalates)}`,

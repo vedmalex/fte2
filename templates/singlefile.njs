@@ -6,7 +6,7 @@
 const { Factory } = require('fte.js/lib/standalone.fte.js')
 
 const templates = {
-<# files.forEach(file=>{#>
+<# files.forEach(file=>{-#>
   ['#{(file.template.alias || file.name)}']: #{partial(file.template, 'core')},
 <#}) #>
 }
