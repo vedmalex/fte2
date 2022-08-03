@@ -18,7 +18,7 @@ module.exports = {
             + "const F = new Factory(templates)\n"
             + "\n"
             + "export function run (context, name) {\n"
-            + "  F.run({ context, name })\n"
+            + "  return F.run({ context, name })\n"
             + "}\n"
             + "\n"
             + "" + "");
