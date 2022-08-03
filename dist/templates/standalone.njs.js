@@ -21,7 +21,7 @@ exports.default = {
             + "const F = new Factory(templates)\n"
             + "\n"
             + "module.exports = (context, name) => {\n"
-            + "  F.run( context, name )\n"
+            + "  return F.run( context, name )\n"
             + "}\n"
             + "" + "");
         return out.join('');
