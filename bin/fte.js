@@ -16,7 +16,7 @@ program
 program
   .command('bundle')
   .argument('[tempalates]', 'templates root folder', './templates')
-  .argument('[dest]', 'destination file', './templates.js')
+  .argument('[dest]', 'destination path')
   .option('--typescript', 'use typescript', false)
   .option('--single', 'use single file output mode', false)
   .option('--file <filename>', ' single file output mode name', 'index')
@@ -26,6 +26,9 @@ program
   .option('--minify', 'need to be minified', false)
   .option('--pretty', 'need to be prettied', false)
   .action(function (tempalates, dest, options) {
+    if (!dest) {
+      dest = tempalates
+    }
     build(
       `${path.resolve(process.cwd(), tempalates)}`,
       `${path.resolve(process.cwd(), dest)}`,

@@ -8,7 +8,7 @@
 <#- const { directives } = context -#>
 {
 <# if(directives.chunks){#>
-chinks: #{directives.chunks}
+chunks: #{JSON.stringify(directives.chunks)},
 <#}#>
 <# if(directives.alias){#>
 alias: #{JSON.stringify(directives.alias)},

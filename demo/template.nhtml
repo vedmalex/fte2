@@ -1,22 +1,8 @@
-<#- if(!hasID){-#>
-      id: ID
-<#  } -#>
-<#- if(!has_ID){ -#>
-      _id: ID
-<#  } -#>
-<#if(hasChilds || context.extends ){-#>
-      _tid: String
-<#-}-#>
-<#-
-  // properties
-  for (var i=0, props = context.properties ,proplen = props?.length ?? 0; i < proplen; i++) {
-    var pName = props[i].propertyName.replaceAll('.','');-#>
-    <#-if(props[i].type === 'date') {#>
-      #{pName}(format:String, zone: Float, json: Boolean): #{getType(props[i].type)}
-    <#-} else {#>
-    #{pName}: #{getType(props[i].type)}
-    <#- }-#>
-<#-}#>
-  <#-if(context.hasRels > 0) {#>
-    childRel:#{context.GQLName(context.thingType)}Edges
-  <#}#>
+<#@ context "context" -#>
+<#@ alias "graphql-api" -#>
+<#@ chunks "api.js" -#>
+<#
+const { model, nextApp } = context;
+#>
+<#- chunkStart(`${model.name}.js`); #>
+import { ApolloServer, gql, AuthenticationError } from 'apollo-server-micro'

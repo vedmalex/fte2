@@ -11,8 +11,6 @@ const globalStates = {
             'unknown',
             'expression',
             'uexpression',
-            'expression2',
-            'uexpression2',
             'code',
             'directive',
             'slotStart',
@@ -41,23 +39,10 @@ const globalStates = {
         end: ['}'],
         curly: 1,
     },
-    expression2: {
-        start: ['{{'],
-        end: ['}}'],
-        curly: 2,
-        skip: {
-            start: ['{{&'],
-        },
-    },
     uexpression: {
         start: ['!{'],
         end: ['}'],
         curly: 1,
-    },
-    uexpression2: {
-        start: ['{{&'],
-        end: ['}}'],
-        curly: 2,
     },
     code: {
         start: ['<#', '<#-'],
@@ -68,7 +53,7 @@ const globalStates = {
     },
     directive: {
         start: ['<#@'],
-        end: ['#>'],
+        end: ['#>', '-#>'],
     },
     comments: {
         start: ['<*'],
@@ -113,7 +98,7 @@ function detectDirective(input) {
             const directive = directives[i];
             if (SUB(input.trim(), directive) == directive) {
                 name = directive;
-                params = UNPARAM(input.split(directive)[1]);
+                params = UNPARAM(input.slice(directive.length));
                 break;
             }
         }

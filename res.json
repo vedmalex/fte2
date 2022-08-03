@@ -1,345 +1,68 @@
 {
   "main": [
     {
-      "content": " if(!hasID){",
-      "pos": 0,
-      "line": 1,
-      "column": 1,
-      "start": "<#-",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "id: ID",
-      "pos": 19,
-      "line": 2,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 32,
-      "line": 3,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "  } ",
-      "pos": 32,
-      "line": 3,
-      "column": 1,
-      "start": "<#",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": " if(!has_ID){ ",
-      "pos": 42,
-      "line": 4,
-      "column": 1,
-      "start": "<#-",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "_id: ID",
-      "pos": 63,
+      "content": "const { model, nextApp } = context;",
+      "pos": 81,
       "line": 5,
       "column": 1,
-      "type": "text",
+      "type": "code",
       "eol": true
     },
     {
-      "content": "",
-      "pos": 77,
-      "line": 6,
+      "content": " chunkStart(`${model.name}.js`); ",
+      "pos": 120,
+      "line": 7,
       "column": 1,
-      "type": "text",
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
       "eol": false
     },
     {
-      "content": "  } ",
-      "pos": 77,
-      "line": 6,
-      "column": 1,
-      "start": "<#",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "if(hasChilds || context.extends ){",
-      "pos": 87,
+      "content": "",
+      "pos": 158,
       "line": 7,
-      "column": 1,
-      "start": "<#",
-      "end": "-#>",
-      "type": "code",
+      "column": 39,
+      "type": "text",
       "eol": true
     },
     {
-      "content": "_tid: String",
-      "pos": 127,
+      "content": "import { ApolloServer, gql, AuthenticationError } from 'apollo-server-micro'",
+      "pos": 159,
       "line": 8,
       "column": 1,
       "type": "text",
-      "eol": false
+      "eol": true
     },
     {
-      "content": "}",
-      "pos": 146,
+      "content": "",
+      "pos": 236,
       "line": 9,
       "column": 1,
-      "start": "<#-",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "  // properties",
-      "pos": 158,
-      "line": 11,
-      "column": 1,
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "  for (var i=0, props = context.properties ,proplen = props?.length ?? 0; i < proplen; i++) {",
-      "pos": 174,
-      "line": 12,
-      "column": 1,
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "    var pName = props[i].propertyName.replaceAll('.','');",
-      "pos": 268,
-      "line": 13,
-      "column": 1,
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "if(props[i].type === 'date') {",
-      "pos": 333,
-      "line": 14,
-      "column": 5,
-      "start": "<#-",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 368,
-      "line": 14,
-      "column": 40,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "      ",
-      "pos": 369,
-      "line": 15,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "pName",
-      "pos": 375,
-      "line": 15,
-      "column": 7,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": "(format:String, zone: Float, json: Boolean): ",
-      "pos": 383,
-      "line": 15,
-      "column": 15,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "getType(props[i].type)",
-      "pos": 428,
-      "line": 15,
-      "column": 60,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": "} else {",
-      "pos": 458,
-      "line": 16,
-      "column": 5,
-      "start": "<#-",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 471,
-      "line": 16,
-      "column": 18,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "    ",
-      "pos": 472,
-      "line": 17,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "pName",
-      "pos": 476,
-      "line": 17,
-      "column": 5,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": ": ",
-      "pos": 484,
-      "line": 17,
-      "column": 13,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "getType(props[i].type)",
-      "pos": 486,
-      "line": 17,
-      "column": 15,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": " }",
-      "pos": 516,
-      "line": 18,
-      "column": 5,
-      "start": "<#-",
-      "end": "-#>",
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": "}",
-      "pos": 525,
-      "line": 19,
-      "column": 1,
-      "start": "<#-",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "if(context.hasRels > 0) {",
-      "pos": 534,
-      "line": 20,
-      "column": 3,
-      "start": "<#-",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 564,
-      "line": 20,
-      "column": 33,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "    childRel:",
-      "pos": 565,
-      "line": 21,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "context.GQLName(context.thingType)",
-      "pos": 578,
-      "line": 21,
-      "column": 14,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": "Edges",
-      "pos": 615,
-      "line": 21,
-      "column": 51,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "  ",
-      "pos": 621,
-      "line": 22,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "}",
-      "pos": 623,
-      "line": 22,
-      "column": 3,
-      "start": "<#",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 628,
-      "line": 22,
-      "column": 8,
       "type": "text",
       "eol": false
     },
     {
       "content": "",
-      "pos": 628,
-      "line": 22,
-      "column": 8,
+      "pos": 236,
+      "line": 9,
+      "column": 1,
       "type": "text"
     }
   ],
   "directives": {
-    "context": "context",
+    "context": "\"",
     "content": true,
     "slots": true,
     "blocks": true,
     "partial": true,
     "options": true,
     "escapeIt": true,
-    "requireAs": []
+    "requireAs": [],
+    "alias": [
+      "graphql-api"
+    ],
+    "chunks": "api.js"
   },
   "documentation": [],
   "slots": {},

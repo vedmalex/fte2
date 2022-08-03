@@ -13,7 +13,7 @@ export default {
         if (directives.chunks) {
             ;
             out.push("\n"
-                + "chinks: " + (directives.chunks) + "\n"
+                + "chunks: " + (JSON.stringify(directives.chunks)) + ",\n"
                 + "");
         }
         ;

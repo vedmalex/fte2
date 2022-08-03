@@ -9,8 +9,7 @@ exports.default = {
             + "");
         for (let i = 0; i < files.length; i += 1) {
             ;
-            out.push("\n"
-                + "  import " + (files[i].name.replaceAll(/[\s\.]/g, '_')) + " from '" + (files[i].path) + "'\n"
+            out.push("import " + (files[i].name.replaceAll(/[\s\.]/g, '_')) + " from '" + (files[i].path) + "'\n"
                 + "");
         }
         ;
@@ -20,8 +19,7 @@ exports.default = {
             + "");
         for (let i = 0; i < files.length; i += 1) {
             ;
-            out.push("\n"
-                + "  '" + (files[i].name) + "': " + (files[i].name.replaceAll(/[\s\.]/g, '_')) + ",\n"
+            out.push("'" + (files[i].name) + "': " + (files[i].name.replaceAll(/[\s\.]/g, '_')) + ",\n"
                 + "");
         }
         ;
