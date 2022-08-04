@@ -1,23 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    alias: ["raw.njs"],
+    alias: [
+        "raw.njs"
+    ],
     script: function (context, _content, partial, slot, options) {
         var out = [];
-        out.push("(function(){\n"
-            + "  return " + (partial(context, 'core')) + ";\n"
-            + "})();" + "");
-        return out.join('');
+        out.push("(function(){\n  return " + partial(context, "core") + ";\n})();");
+        return out.join("");
     },
     compile: function () {
-        this.alias = ["raw.njs"];
+        this.alias = [
+            "raw.njs"
+        ];
         this.aliases = {};
         this.aliases["core"] = "MainTemplate.njs";
         this.factory.ensure("MainTemplate.njs");
     },
     dependency: {
         "MainTemplate.njs": true,
-        "core": true,
+        core: true
     }
 };
 //# sourceMappingURL=raw.njs.js.map

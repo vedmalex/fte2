@@ -1,7 +1,26 @@
 import { Parser } from '../parser/parse'
 import * as ts from 'typescript'
+import * as swc from '@swc/core'
 
 function prepareCode(src) {
+  const result = swc.transformSync(src, {
+    jsc: {
+      minify: {
+        compress: {
+          dead_code: true,
+          defaults: false,
+          ecma: 2020,
+          side_effects: false,
+          unused: true,
+        },
+        format: { beautify: true, semicolons: true },
+      },
+    },
+  })
+  return result.code
+}
+
+function prepareCodeTS(src) {
   const result = ts.transpileModule(src, {
     compilerOptions: {
       allowJs: true,

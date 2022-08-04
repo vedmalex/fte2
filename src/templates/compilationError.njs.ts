@@ -1,13 +1,16 @@
 export default {
-    alias: ["compilationError.njs"],
-    script: function (context, _content, partial, slot, options) {
+    alias: [
+        "compilationError.njs"
+    ],
+    script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push((context.error.message) + ";\n"
-            + "" + (context.compiledFile) + ";" + "");
-        return out.join('');
+        out.push(context.error.message + ";\n" + context.compiledFile + ";");
+        return out.join("");
     },
-    compile: function () {
-        this.alias = ["compilationError.njs"];
+    compile: function() {
+        this.alias = [
+            "compilationError.njs"
+        ];
     },
     dependency: {}
 };

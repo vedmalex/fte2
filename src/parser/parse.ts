@@ -100,7 +100,7 @@ const globalStates: { [key: string]: StateDefinition } = {
     start: ['<#', '<#-'],
     end: ['#>', '-#>'],
     skip: {
-      start: ['<#@', '<# block', '<# slot', '<# end #>'],
+      start: ['<#@', '<# block', '<# slot', '<# end #>', '<#{'],
     },
   },
   directive: {

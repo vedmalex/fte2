@@ -59,10 +59,20 @@ for (var i = 0, len = blockList.length; i < len; i++) {
           textQuote = true
           res = ';out.push(\n'
         } else {
-          let lasItem = out.pop()
-          res = `${lasItem} + `
+          if(block.start){
+            let lasItem = out.pop()
+            res = `${lasItem} + `
+          }
         }
-        res += `(${cont})`
+        if(block.start && block.end){
+          res += `(${cont})`
+        } else if(block.start){
+          res += `(${cont}`
+        } else if(block.end){
+          res += `${cont})`
+        } else {
+          res += `${cont}`
+        }
         if (textQuote && !block.eol) {
           out.push(res)
         } else {

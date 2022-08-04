@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-beta.14",
+  "version": "3.0.0-beta.16",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
   "bin": {
@@ -42,7 +42,7 @@
     "mem-fs-editor": "^9.4.0",
     "memfs": "^3.4.7",
     "acorn": "^8.8.0",
-    "@swc/core": "^1.2.222",
+    "@swc/core": "^1.2.223",
     "@types/mem-fs": "^1.1.2",
     "@types/mem-fs-editor": "^7.0.2",
     "unionfs": "^4.4.0",

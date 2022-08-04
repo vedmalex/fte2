@@ -29,7 +29,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseFile = exports.compileTs = exports.compileFull = exports.compileLight = exports.run = exports.F = void 0;
 const parse_1 = require("../parser/parse");
 const ts = __importStar(require("typescript"));
+const swc = __importStar(require("@swc/core"));
 function prepareCode(src) {
+    const result = swc.transformSync(src, {
+        jsc: {
+            minify: {
+                compress: {
+                    dead_code: true,
+                    defaults: false,
+                    ecma: 2020,
+                    side_effects: false,
+                    unused: true,
+                },
+                format: { beautify: true, semicolons: true },
+            },
+        },
+    });
+    return result.code;
+}
+function prepareCodeTS(src) {
     const result = ts.transpileModule(src, {
         compilerOptions: {
             allowJs: true,

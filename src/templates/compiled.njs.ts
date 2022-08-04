@@ -1,19 +1,22 @@
 export default {
-    alias: ["compiled.njs"],
-    script: function (context, _content, partial, slot, options) {
+    alias: [
+        "compiled.njs"
+    ],
+    script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("module.exports = " + (partial(context, 'core')) + ";\n"
-            + "" + "");
-        return out.join('');
+        out.push("module.exports = " + partial(context, "core") + ";\n");
+        return out.join("");
     },
-    compile: function () {
-        this.alias = ["compiled.njs"];
+    compile: function() {
+        this.alias = [
+            "compiled.njs"
+        ];
         this.aliases = {};
         this.aliases["core"] = "MainTemplate.njs";
         this.factory.ensure("MainTemplate.njs");
     },
     dependency: {
         "MainTemplate.njs": true,
-        "core": true,
+        core: true
     }
 };

@@ -22,16 +22,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commit = exports.readFile = exports.writeFile = void 0;
 const memFs = __importStar(require("mem-fs"));
 const editor = __importStar(require("mem-fs-editor"));
-const astring = __importStar(require("astring"));
-const acorn = __importStar(require("acorn"));
-const prettier_1 = __importDefault(require("prettier"));
 const path_1 = require("path");
 const swc = __importStar(require("@swc/core"));
 const store = memFs.create();
@@ -42,29 +36,34 @@ function parseFile(text, minify = true, pretty = false, parser = 'babel') {
         if (minify) {
             result = swc.minifySync(text, {
                 sourceMap: true,
-                compress: true,
+                compress: {
+                    side_effects: false,
+                    unused: true,
+                },
                 mangle: true,
             }).code;
         }
         else {
             if (parser == 'babel') {
-                code = text;
-                const ast = acorn.parse(code, { ecmaVersion: 'latest' });
-                result = astring.generate(ast, { comments: true });
+                result = swc.transformSync(text, {
+                    jsc: {
+                        minify: {
+                            compress: {
+                                dead_code: true,
+                                defaults: false,
+                                ecma: 2020,
+                                side_effects: false,
+                                unused: true,
+                                unsafe: false,
+                                passes: 1,
+                            },
+                            format: { beautify: true, semicolons: true },
+                        },
+                    },
+                }).code;
             }
             else {
                 result = text;
-            }
-            if (pretty) {
-                result = prettier_1.default.format(result, {
-                    semi: false,
-                    trailingComma: 'all',
-                    singleQuote: true,
-                    printWidth: 80,
-                    tabWidth: 2,
-                    arrowParens: 'avoid',
-                    parser,
-                });
             }
         }
         return result;
