@@ -27,39 +27,21 @@ exports.commit = exports.readFile = exports.writeFile = void 0;
 const memFs = __importStar(require("mem-fs"));
 const editor = __importStar(require("mem-fs-editor"));
 const path_1 = require("path");
-const swc = __importStar(require("@swc/core"));
+const esbuild = __importStar(require("esbuild"));
 const store = memFs.create();
 const fs = editor.create(store);
 function parseFile(text, minify = true, pretty = false, parser = 'babel') {
     let code, result;
     try {
         if (minify) {
-            result = swc.minifySync(text, {
-                sourceMap: true,
-                compress: {
-                    side_effects: false,
-                    unused: true,
-                },
-                mangle: true,
+            result = esbuild.transformSync(text, {
+                minify: true,
             }).code;
         }
         else {
             if (parser == 'babel') {
-                result = swc.transformSync(text, {
-                    jsc: {
-                        minify: {
-                            compress: {
-                                dead_code: true,
-                                defaults: false,
-                                ecma: 2020,
-                                side_effects: false,
-                                unused: true,
-                                unsafe: false,
-                                passes: 1,
-                            },
-                            format: { beautify: true, semicolons: true },
-                        },
-                    },
+                result = esbuild.transformSync(text, {
+                    minify: false,
                 }).code;
             }
             else {

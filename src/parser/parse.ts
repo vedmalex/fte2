@@ -683,6 +683,7 @@ export class Parser {
           break
         case 'text':
           state = null
+          // if (data) {
           curr.main.push({
             content: data,
             pos,
@@ -693,6 +694,11 @@ export class Parser {
             type,
             eol,
           })
+          // } else {
+          //   if (r.eol) {
+          //     // curr.main[curr.main.length - 1].eol = true
+          //   }
+          // }
           break
         case 'comments':
           trimStartLines()

@@ -1,8 +1,18 @@
-<#@ context "context" -#>
-<#@ alias "graphql-api" -#>
-<#@ chunks "api.js" -#>
-<#
-const { model, nextApp } = context;
-#>
-<#- chunkStart(`${model.name}.js`); #>
-import { ApolloServer, gql, AuthenticationError } from 'apollo-server-micro'
+<#@ alias 'singlefile.es6.njs' #>
+<#@ context 'files' #>
+<#@ noEscape #>
+<#@ noContent #>
+<#@ requireAs ('MainTemplate.njs','core') #>
+import { Factory } from 'fte.js/lib/standalone.fte.js'
+
+export const templates = {
+<# files.forEach(file=>{#>
+  ['#{(file.template.alias || file.name)}']: #{partial(file.template, 'core')},
+<#}) #>
+}
+
+const F = new Factory(templates)
+
+export function run (context, name) {
+  return F.run(context, name)
+}

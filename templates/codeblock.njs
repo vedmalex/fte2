@@ -7,10 +7,11 @@
 <#@ noEscape #>
 <#@ noContent #>
 <#@ context 'blockList' #>
-<#
+<#-
 var textQuote = false
 for (var i = 0, len = blockList.length; i < len; i++) {
   var block = blockList[i]
+  var next = (i + 1) < len ? blockList[i+1] : null
   var cont = block.content
   switch (block.type) {
     case 'text':
@@ -18,10 +19,10 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = ';out.push(\n'
+          res = 'out.push(\n'
         } else {
           let lasItem = out.pop()
-          res = `${lasItem} + `
+          res = lasItem + " + "
         }
         if (block.eol) {
           res += JSON.stringify(cont + '\n')
@@ -38,17 +39,29 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = ';out.push(\n'
+          res = 'out.push(\n'
         } else {
           let lasItem = out.pop()
-          res = `${lasItem} + `
+          res = lasItem + " + "
         }
-        res += `escapeIt(${cont})`
+
+        const lcont = "escapeIt("+cont+")"
+
+        if(block.start && block.end){
+          res += "("+lcont+")"
+        } else if(block.start){
+          res += "("+lcont
+        } else if(block.end){
+          res += lcont+")"
+        } else {
+          res += lcont
+        }
+
         if (textQuote && !block.eol) {
           out.push(res)
         } else {
           // textQuote = false
-          out.push(`${res}\n`)
+          out.push(res+"\n")
         }
       }
       break
@@ -57,42 +70,42 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = ';out.push(\n'
+          res = 'out.push(\n'
         } else {
           if(block.start){
             let lasItem = out.pop()
-            res = `${lasItem} + `
+            res = lasItem+" + "
           }
         }
         if(block.start && block.end){
-          res += `(${cont})`
+          res += "("+cont+")"
         } else if(block.start){
-          res += `(${cont}`
+          res += "("+cont
         } else if(block.end){
-          res += `${cont})`
+          res += cont+")"
         } else {
-          res += `${cont}`
+          res += cont
         }
         if (textQuote && !block.eol) {
           out.push(res)
         } else {
           // textQuote = false
-          out.push(`${res}\n`)
+          out.push(res+"\n")
         }
       }
       break
     case 'code':
       if (textQuote) {
         let item = out.pop()
-        out.push(`${item});\n`)
+        out.push(item+");\n")
         textQuote = false
       }
-      out.push(`${cont}${block.eol ? '\n' : ''}`)
+      out.push(cont + ((block.eol || next?.type != 'code') ? '\n' : ''))
       break
   }
 }
 if (textQuote) {
   let lasItem = out.pop()
-  out.push(`${lasItem});\n`)
+  out.push(lasItem+");\n")
 }
 #>

@@ -1,10 +1,7 @@
 import * as memFs from 'mem-fs'
 import * as editor from 'mem-fs-editor'
-import * as astring from 'astring'
-import * as acorn from 'acorn'
-import prettier from 'prettier'
 import { extname } from 'path'
-import * as swc from '@swc/core'
+import * as esbuild from 'esbuild'
 
 const store = memFs.create()
 const fs = editor.create(store)
@@ -15,52 +12,24 @@ function parseFile(
   pretty: boolean = false,
   parser: string = 'babel',
 ) {
+  // return text
   let code: string, result: string
   try {
     if (minify) {
-      result = swc.minifySync(text, {
-        sourceMap: true,
-        compress: {
-          side_effects: false,
-          unused: true,
-        },
-        mangle: true,
+      result = esbuild.transformSync(text, {
+        minify: true,
       }).code
     } else {
       if (parser == 'babel') {
-        // code = text
-        // const ast = acorn.parse(code, { ecmaVersion: 'latest' })
-        // result = astring.generate(ast, { comments: true })
-        result = swc.transformSync(text, {
-          jsc: {
-            minify: {
-              compress: {
-                dead_code: true,
-                defaults: false,
-                ecma: 2020,
-                side_effects: false,
-                unused: true,
-                unsafe: false,
-                passes: 1,
-              },
-              format: { beautify: true, semicolons: true },
-            },
-          },
+        result = esbuild.transformSync(text, {
+          minify: false,
+          // treeShaking: true,
+          // minifyIdentifiers: true,
+          // minifySyntax: true,
         }).code
       } else {
         result = text
       }
-      // if (pretty) {
-      //   result = prettier.format(result, {
-      //     semi: false,
-      //     trailingComma: 'all',
-      //     singleQuote: true,
-      //     printWidth: 80,
-      //     tabWidth: 2,
-      //     arrowParens: 'avoid',
-      //     parser,
-      //   })
-      // }
     }
     return result
   } catch (err) {

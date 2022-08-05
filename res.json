@@ -1,34 +1,24 @@
 {
   "main": [
     {
-      "content": "const { model, nextApp } = context;",
-      "pos": 81,
-      "line": 5,
+      "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
+      "pos": 135,
+      "line": 6,
       "column": 1,
-      "type": "code",
-      "eol": true
-    },
-    {
-      "content": " chunkStart(`${model.name}.js`); ",
-      "pos": 120,
-      "line": 7,
-      "column": 1,
-      "start": "<#-",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 158,
-      "line": 7,
-      "column": 39,
       "type": "text",
       "eol": true
     },
     {
-      "content": "import { ApolloServer, gql, AuthenticationError } from 'apollo-server-micro'",
-      "pos": 159,
+      "content": "",
+      "pos": 190,
+      "line": 7,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "export const templates = {",
+      "pos": 191,
       "line": 8,
       "column": 1,
       "type": "text",
@@ -36,33 +26,189 @@
     },
     {
       "content": "",
-      "pos": 236,
+      "pos": 218,
       "line": 9,
       "column": 1,
       "type": "text",
       "eol": false
     },
     {
-      "content": "",
-      "pos": 236,
+      "content": " files.forEach(file=>{",
+      "pos": 218,
       "line": 9,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 244,
+      "line": 9,
+      "column": 27,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  ['",
+      "pos": 245,
+      "line": 10,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "(file.template.alias || file.name)",
+      "pos": 249,
+      "line": 10,
+      "column": 5,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "']: ",
+      "pos": 286,
+      "line": 10,
+      "column": 42,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "partial(file.template, 'core')",
+      "pos": 290,
+      "line": 10,
+      "column": 46,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": ",",
+      "pos": 323,
+      "line": 10,
+      "column": 79,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 325,
+      "line": 11,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "}) ",
+      "pos": 325,
+      "line": 11,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 332,
+      "line": 11,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 333,
+      "line": 12,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 335,
+      "line": 13,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const F = new Factory(templates)",
+      "pos": 336,
+      "line": 14,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 369,
+      "line": 15,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "export function run (context, name) {",
+      "pos": 370,
+      "line": 16,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  return F.run(context, name)",
+      "pos": 408,
+      "line": 17,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 438,
+      "line": 18,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 440,
+      "line": 19,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 440,
+      "line": 19,
       "column": 1,
       "type": "text"
     }
   ],
   "directives": {
-    "context": "\"",
-    "content": true,
+    "context": "files",
+    "content": false,
     "slots": true,
     "blocks": true,
     "partial": true,
     "options": true,
-    "escapeIt": true,
-    "requireAs": [],
-    "alias": [
-      "graphql-api"
+    "escapeIt": false,
+    "requireAs": [
+      {
+        "name": "MainTemplate.njs",
+        "alias": "core"
+      }
     ],
-    "chunks": "api.js"
+    "alias": [
+      "singlefile.es6.njs"
+    ]
   },
   "documentation": [],
   "slots": {},

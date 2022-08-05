@@ -1,21 +1,14 @@
 import { Parser } from '../parser/parse'
 import * as ts from 'typescript'
-import * as swc from '@swc/core'
+import * as esbuild from 'esbuild'
+// import * as swc from '@swc/core'
 
-function prepareCode(src) {
-  const result = swc.transformSync(src, {
-    jsc: {
-      minify: {
-        compress: {
-          dead_code: true,
-          defaults: false,
-          ecma: 2020,
-          side_effects: false,
-          unused: true,
-        },
-        format: { beautify: true, semicolons: true },
-      },
-    },
+function prepareCode(text) {
+  // return text
+  const result = esbuild.transformSync(text, {
+    minify: false,
+    // treeShaking: true,
+    // minifySyntax: true,
   })
   return result.code
 }
