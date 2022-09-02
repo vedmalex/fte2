@@ -1,7 +1,5 @@
 import { Parser } from '../parser/parse'
-import * as ts from 'typescript'
 import * as esbuild from 'esbuild'
-// import * as swc from '@swc/core'
 
 function prepareCode(text) {
   // return text
@@ -11,18 +9,6 @@ function prepareCode(text) {
     // minifySyntax: true,
   })
   return result.code
-}
-
-function prepareCodeTS(src) {
-  const result = ts.transpileModule(src, {
-    compilerOptions: {
-      allowJs: true,
-      strict: false,
-      target: ts.ScriptTarget.ES2020,
-      module: ts.ModuleKind.ES2022,
-    },
-  })
-  return result.outputText
 }
 
 import templates from '../templates'

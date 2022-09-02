@@ -28,24 +28,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseFile = exports.compileTs = exports.compileFull = exports.compileLight = exports.run = exports.F = void 0;
 const parse_1 = require("../parser/parse");
-const ts = __importStar(require("typescript"));
 const esbuild = __importStar(require("esbuild"));
 function prepareCode(text) {
     const result = esbuild.transformSync(text, {
         minify: false,
     });
     return result.code;
-}
-function prepareCodeTS(src) {
-    const result = ts.transpileModule(src, {
-        compilerOptions: {
-            allowJs: true,
-            strict: false,
-            target: ts.ScriptTarget.ES2020,
-            module: ts.ModuleKind.ES2022,
-        },
-    });
-    return result.outputText;
 }
 const templates_1 = __importDefault(require("../templates"));
 const factory_1 = require("../standalone/factory");
