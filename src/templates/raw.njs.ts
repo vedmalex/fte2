@@ -2,9 +2,9 @@ export default {
   alias: ["raw.njs"],
   script: function(context, _content, partial, slot, options) {
     var out = [];
-    out.push(
-      "(function(){\n  return " + partial(context, "core") + ";\n})();"
-    );
+    out.push("(function(){\n");
+    out.push("  return " + partial(context, "core") + ";\n");
+    out.push("})();");
     return out.join("");
   },
   compile: function() {

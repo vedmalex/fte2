@@ -13,16 +13,17 @@ module.exports = {
             let res = "";
             if (!textQuote) {
               textQuote = true;
-              res = "out.push(\n";
+              res = "out.push(";
             } else {
               let lasItem = out.pop();
               res = lasItem + " + ";
             }
-            if (block.eol) {
-              res += JSON.stringify(cont + "\n");
-              res += "\n";
-            } else {
+            if (!block.eol) {
               res += JSON.stringify(cont);
+            } else {
+              res += JSON.stringify(cont + "\n");
+              res += ");\n";
+              textQuote = false;
             }
             out.push(res);
           }
@@ -32,7 +33,7 @@ module.exports = {
             let res = "";
             if (!textQuote) {
               textQuote = true;
-              res = "out.push(\n";
+              res = "out.push(";
             } else {
               let lasItem = out.pop();
               res = lasItem + " + ";
@@ -47,10 +48,11 @@ module.exports = {
             } else {
               res += lcont;
             }
-            if (textQuote && !block.eol) {
+            if (!block.eol) {
               out.push(res);
             } else {
-              out.push(res + "\n");
+              textQuote = false;
+              out.push(res + ");\n");
             }
           }
           break;
@@ -59,7 +61,7 @@ module.exports = {
             let res = "";
             if (!textQuote) {
               textQuote = true;
-              res = "out.push(\n";
+              res = "out.push(";
             } else {
               if (block.start) {
                 let lasItem = out.pop();
@@ -75,10 +77,11 @@ module.exports = {
             } else {
               res += cont;
             }
-            if (textQuote && !block.eol) {
+            if (!block.eol) {
               out.push(res);
             } else {
-              out.push(res + "\n");
+              textQuote = false;
+              out.push(res + ");\n");
             }
           }
           break;
@@ -96,9 +99,6 @@ module.exports = {
       let lasItem = out.pop();
       out.push(lasItem + ");\n");
     }
-    out.push(
-      ""
-    );
     return out.join("");
   },
   compile: function() {

@@ -683,22 +683,22 @@ export class Parser {
           break
         case 'text':
           state = null
-          // if (data) {
-          curr.main.push({
-            content: data,
-            pos,
-            line,
-            column,
-            start,
-            end,
-            type,
-            eol,
-          })
-          // } else {
-          //   if (r.eol) {
-          //     // curr.main[curr.main.length - 1].eol = true
-          //   }
-          // }
+          if (data || eol) {
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type,
+              eol,
+            })
+            // } else {
+            //   if (eol) {
+            //     // curr.main[curr.main.length - 1].eol = true
+            //   }
+          }
           break
         case 'comments':
           trimStartLines()

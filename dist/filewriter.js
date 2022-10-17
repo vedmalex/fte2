@@ -30,7 +30,7 @@ const path_1 = require("path");
 const esbuild = __importStar(require("esbuild"));
 const store = memFs.create();
 const fs = editor.create(store);
-function parseFile(text, minify = true, pretty = false, parser = 'babel') {
+function parseFile(text, minify = false, pretty = false, parser = 'babel') {
     let code, result;
     try {
         if (minify) {

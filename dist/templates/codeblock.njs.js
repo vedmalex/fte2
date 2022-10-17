@@ -15,18 +15,19 @@ exports.default = {
                         let res = "";
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(\n";
+                            res = "out.push(";
                         }
                         else {
                             let lasItem = out.pop();
                             res = lasItem + " + ";
                         }
-                        if (block.eol) {
-                            res += JSON.stringify(cont + "\n");
-                            res += "\n";
+                        if (!block.eol) {
+                            res += JSON.stringify(cont);
                         }
                         else {
-                            res += JSON.stringify(cont);
+                            res += JSON.stringify(cont + "\n");
+                            res += ");\n";
+                            textQuote = false;
                         }
                         out.push(res);
                     }
@@ -36,7 +37,7 @@ exports.default = {
                         let res = "";
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(\n";
+                            res = "out.push(";
                         }
                         else {
                             let lasItem = out.pop();
@@ -55,11 +56,12 @@ exports.default = {
                         else {
                             res += lcont;
                         }
-                        if (textQuote && !block.eol) {
+                        if (!block.eol) {
                             out.push(res);
                         }
                         else {
-                            out.push(res + "\n");
+                            textQuote = false;
+                            out.push(res + ");\n");
                         }
                     }
                     break;
@@ -68,7 +70,7 @@ exports.default = {
                         let res = "";
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(\n";
+                            res = "out.push(";
                         }
                         else {
                             if (block.start) {
@@ -88,11 +90,12 @@ exports.default = {
                         else {
                             res += cont;
                         }
-                        if (textQuote && !block.eol) {
+                        if (!block.eol) {
                             out.push(res);
                         }
                         else {
-                            out.push(res + "\n");
+                            textQuote = false;
+                            out.push(res + ");\n");
                         }
                     }
                     break;
@@ -110,7 +113,6 @@ exports.default = {
             let lasItem = out.pop();
             out.push(lasItem + ");\n");
         }
-        out.push("");
         return out.join("");
     },
     compile: function () {

@@ -570,16 +570,18 @@ class Parser {
                     break;
                 case 'text':
                     state = null;
-                    curr.main.push({
-                        content: data,
-                        pos,
-                        line,
-                        column,
-                        start,
-                        end,
-                        type,
-                        eol,
-                    });
+                    if (data || eol) {
+                        curr.main.push({
+                            content: data,
+                            pos,
+                            line,
+                            column,
+                            start,
+                            end,
+                            type,
+                            eol,
+                        });
+                    }
                     break;
                 case 'comments':
                     trimStartLines();

@@ -16,22 +16,23 @@ for (var i = 0, len = blockList.length; i < len; i++) {
   switch (block.type) {
     case 'text':
       {
-        let res = ''
-        if (!textQuote) {
-          textQuote = true
-          res = 'out.push(\n'
-        } else {
-          let lasItem = out.pop()
-          res = lasItem + " + "
-        }
-        if (block.eol) {
-          res += JSON.stringify(cont + '\n')
-          res += '\n'
-        //   textQuote = false
-        } else {
-          res += JSON.stringify(cont)
-        }
-        out.push(res)
+          let res = ''
+          if (!textQuote) {
+            textQuote = true
+            res = 'out.push('
+          } else {
+            let lasItem = out.pop()
+            res = lasItem + " + "
+          }
+
+          if (!block.eol) {
+            res += JSON.stringify(cont)
+          } else {
+            res += JSON.stringify(cont + '\n')
+            res += ');\n'
+            textQuote = false
+          }
+          out.push(res)
       }
       break
     case 'uexpression':
@@ -39,7 +40,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = 'out.push(\n'
+          res = 'out.push('
         } else {
           let lasItem = out.pop()
           res = lasItem + " + "
@@ -57,11 +58,12 @@ for (var i = 0, len = blockList.length; i < len; i++) {
           res += lcont
         }
 
-        if (textQuote && !block.eol) {
+        //here always textQuote == true
+        if (!block.eol) {
           out.push(res)
         } else {
-          // textQuote = false
-          out.push(res+"\n")
+          textQuote = false
+          out.push(res+");\n")
         }
       }
       break
@@ -70,7 +72,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         let res = ''
         if (!textQuote) {
           textQuote = true
-          res = 'out.push(\n'
+          res = 'out.push('
         } else {
           if(block.start){
             let lasItem = out.pop()
@@ -86,11 +88,13 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         } else {
           res += cont
         }
-        if (textQuote && !block.eol) {
+
+        //here always textQuote == true
+        if (!block.eol) {
           out.push(res)
         } else {
-          // textQuote = false
-          out.push(res+"\n")
+          textQuote = false
+          out.push(res+");\n")
         }
       }
       break

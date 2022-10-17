@@ -8,7 +8,7 @@ const fs = editor.create(store)
 
 function parseFile(
   text: string,
-  minify: boolean = true,
+  minify: boolean = false,
   pretty: boolean = false,
   parser: string = 'babel',
 ) {
