@@ -72,7 +72,6 @@ export function build(
   },
   callback: (err?: Error) => void,
 ) {
-  debugger
   glob(`${src}/**/*${options.ext ? options.ext : '.njs'}`, (err, files) => {
     if (!err) {
       if (options.single) {

@@ -34,7 +34,6 @@ function parseTemplate(fileName, src, dest, compile, { typescript, format, prett
     }
 }
 function build(src, dest, options, callback) {
-    debugger;
     (0, glob_1.default)(`${src}/**/*${options.ext ? options.ext : '.njs'}`, (err, files) => {
         if (!err) {
             if (options.single) {
