@@ -66,7 +66,7 @@ alias: #{JSON.stringify(directives.alias)},
       out = []
     }
     function chunkEnd() {
-      result[current].push(out)
+      result[current].push(...out)
       out = []
       current = outStack.pop() || main
     }
@@ -99,7 +99,15 @@ alias: #{JSON.stringify(directives.alias)},
     #{content('chunks-start', directives)}
     #{partial(context.main,'codeblock')}
     #{content('chunks-finish', directives)}
-     return out.join('')
+    <#if(directives.chunks){#>
+    if(out.some(t=>typeof t == 'object')){
+      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+    } else {
+      return out.join('')
+    }
+    <#} else {#>
+      return out.join('')
+    <#}#>
   },
 <#
 const blockNames = Object.keys(context.blocks)
@@ -113,7 +121,15 @@ if(blockNames.length > 0) {-#>
       #{content('maincontent', block.directives)}
       var out = []
       #{partial(block.main, 'codeblock')}
-      return out.join('')
+      <#-if(directives.chunks){#>
+      if(out.some(t=>typeof t == 'object')){
+        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+      } else {
+        return out.join('')
+      }
+      <#} else {#>
+        return out.join('')
+      <#}#>
     },
 <#}#>
   },
@@ -130,7 +146,15 @@ if(slotNames.length > 0) {-#>
       #{content('maincontent', slot.directives)}
       var out = []
       #{partial(slot.main, 'codeblock')}
-      return out.join('')
+      <#-if(directives.chunks){#>
+      if(out.some(t=>typeof t == 'object')){
+        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+      } else {
+        return out.join('')
+      }
+      <#} else {#>
+        return out.join('')
+      <#}#>
     },
 <#}#>
   },

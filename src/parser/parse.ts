@@ -38,6 +38,7 @@ export type ResultTypes =
   | 'blockEnd'
   | 'text'
   | 'skip'
+  | 'empty'
 
 export type SystemBlocksType =
   | 'directive'
@@ -681,25 +682,21 @@ export class Parser {
             })
           }
           break
-        case 'text':
+        case 'text': {
           state = null
-          if (data || eol) {
-            curr.main.push({
-              content: data,
-              pos,
-              line,
-              column,
-              start,
-              end,
-              type,
-              eol,
-            })
-            // } else {
-            //   if (eol) {
-            //     // curr.main[curr.main.length - 1].eol = true
-            //   }
-          }
+          let actualType: ResultTypes = data || eol ? type : 'empty'
+          curr.main.push({
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type: actualType,
+            eol,
+          })
           break
+        }
         case 'comments':
           trimStartLines()
           trimEndLines()

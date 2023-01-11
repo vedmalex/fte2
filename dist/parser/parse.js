@@ -568,21 +568,21 @@ class Parser {
                         });
                     }
                     break;
-                case 'text':
+                case 'text': {
                     state = null;
-                    if (data || eol) {
-                        curr.main.push({
-                            content: data,
-                            pos,
-                            line,
-                            column,
-                            start,
-                            end,
-                            type,
-                            eol,
-                        });
-                    }
+                    let actualType = data || eol ? type : 'empty';
+                    curr.main.push({
+                        content: data,
+                        pos,
+                        line,
+                        column,
+                        start,
+                        end,
+                        type: actualType,
+                        eol,
+                    });
                     break;
+                }
                 case 'comments':
                     trimStartLines();
                     trimEndLines();

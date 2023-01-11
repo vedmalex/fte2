@@ -10,9 +10,10 @@ import { Parser } from '../lib/node.fte.js'
 // /Users/vedmalex/work/fte.js/templates/MainTemplate.njs
 // /Users/vedmalex/work/fte.js/demo/template.nhtml
 // /Users/vedmalex/work/test/ftejs/templates/Meta.Thing/graphql.njs
+// /Users/vedmalex/work/test/grainjs/apps/grainjs/generators/diagram/root.njs
 
 const text = fs.readFileSync(
-  '/Users/vedmalex/work/test/ftejs/templates/Meta.Thing/graphql.njs',
+  '/Users/vedmalex/work/test/grainjs/apps/grainjs/generators/diagram/root.njs',
 )
 
 // const result = parse(`  abc#{ array }of mutable`)

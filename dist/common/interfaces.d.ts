@@ -18,6 +18,11 @@ export declare type ContentFunction = (name: string, context: HashType, content:
     name: string;
     content: string;
 }>;
+export declare type OriginalSource = {
+    line: number;
+    col: number;
+    pos: number;
+};
 export declare type BlockRunFunction<T extends DefaultFactoryOption> = (context: HashType, content: ContentFunction, partial: PartialFunction, slot: SlotFunction, options: T) => string | Array<{
     name: string;
     content: string;

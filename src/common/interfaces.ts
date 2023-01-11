@@ -1,5 +1,4 @@
 import { TemplateFactoryBase } from './factory'
-import { createInterface } from 'readline'
 export type HashType = {
   [key: string]: any
 }
@@ -29,6 +28,13 @@ export type ContentFunction = (
   partial: PartialFunction,
   slot: SlotFunction,
 ) => string | Array<{ name: string; content: string }>
+// | Array<{ content: string; original: OriginalSource }>
+
+export type OriginalSource = {
+  line: number
+  col: number
+  pos: number
+}
 
 export type BlockRunFunction<T extends DefaultFactoryOption> = (
   context: HashType,
@@ -37,6 +43,7 @@ export type BlockRunFunction<T extends DefaultFactoryOption> = (
   slot: SlotFunction,
   options: T,
 ) => string | Array<{ name: string; content: string }>
+// | Array<{ content: string; original: OriginalSource }>
 
 export type BlockContent<T extends DefaultFactoryOption> = {
   partial: PartialFunction

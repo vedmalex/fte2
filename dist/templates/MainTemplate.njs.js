@@ -20,13 +20,30 @@ exports.default = {
             out.push("\n");
             out.push("alias: " + JSON.stringify(directives.alias) + ",\n");
         }
+        out.push("\n");
+        out.push("\n");
         out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
         out.push("    " + content("maincontent", directives) + "\n");
         out.push("    var out = []\n");
         out.push("    " + content("chunks-start", directives) + "\n");
         out.push("    " + partial(context.main, "codeblock") + "\n");
         out.push("    " + content("chunks-finish", directives) + "\n");
-        out.push("     return out.join('')\n");
+        out.push("    ");
+        if (directives.chunks) {
+            out.push("\n");
+            out.push("    if(out.some(t=>typeof t == 'object')){\n");
+            out.push("      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+            out.push("    } else {\n");
+            out.push("      return out.join('')\n");
+            out.push("    }\n");
+            out.push("    ");
+        }
+        else {
+            out.push("\n");
+            out.push("      return out.join('')\n");
+            out.push("    ");
+        }
+        out.push("\n");
         out.push("  },\n");
         const blockNames = Object.keys(context.blocks);
         if (blockNames.length > 0) {
@@ -36,12 +53,26 @@ exports.default = {
                 out.push('"' + blockNames[i2] + '": function(' + block.directives.context + ",  _content, partial, slot, options) {\n");
                 out.push("      " + content("maincontent", block.directives) + "\n");
                 out.push("      var out = []\n");
-                out.push("      " + partial(block.main, "codeblock") + "\n");
-                out.push("      return out.join('')\n");
+                out.push("      " + partial(block.main, "codeblock"));
+                if (directives.chunks) {
+                    out.push("\n");
+                    out.push("      if(out.some(t=>typeof t == 'object')){\n");
+                    out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+                    out.push("      } else {\n");
+                    out.push("        return out.join('')\n");
+                    out.push("      }\n");
+                    out.push("      ");
+                }
+                else {
+                    out.push("\n");
+                    out.push("        return out.join('')\n");
+                    out.push("      ");
+                }
+                out.push("\n");
                 out.push("    },\n");
             }
             out.push("\n");
-            out.push("  },");
+            out.push("  },\n");
         }
         const slotNames = Object.keys(context.slots);
         if (slotNames.length > 0) {
@@ -51,8 +82,22 @@ exports.default = {
                 out.push('"' + slotNames[i2] + '": function(' + slot2.directives.context + ",  _content, partial, slot, options){\n");
                 out.push("      " + content("maincontent", slot2.directives) + "\n");
                 out.push("      var out = []\n");
-                out.push("      " + partial(slot2.main, "codeblock") + "\n");
-                out.push("      return out.join('')\n");
+                out.push("      " + partial(slot2.main, "codeblock"));
+                if (directives.chunks) {
+                    out.push("\n");
+                    out.push("      if(out.some(t=>typeof t == 'object')){\n");
+                    out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+                    out.push("      } else {\n");
+                    out.push("        return out.join('')\n");
+                    out.push("      }\n");
+                    out.push("      ");
+                }
+                else {
+                    out.push("\n");
+                    out.push("        return out.join('')\n");
+                    out.push("      ");
+                }
+                out.push("\n");
                 out.push("    },\n");
             }
             out.push("\n");
@@ -158,7 +203,7 @@ exports.default = {
                 out.push("      out = []\n");
                 out.push("    }\n");
                 out.push("    function chunkEnd() {\n");
-                out.push("      result[current].push(out)\n");
+                out.push("      result[current].push(...out)\n");
                 out.push("      out = []\n");
                 out.push("      current = outStack.pop() || main\n");
                 out.push("    }\n");
@@ -201,6 +246,7 @@ exports.default = {
                 out.push("\n");
                 out.push("  ");
             }
+            out.push("\n");
             return out.join("");
         }
     },

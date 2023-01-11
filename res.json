@@ -1,214 +1,83 @@
 {
   "main": [
     {
-      "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
-      "pos": 135,
+      "content": " chunkStart(`root.dot`); ",
+      "pos": 79,
+      "line": 5,
+      "column": 1,
+      "start": "<#-",
+      "end": "-#>",
+      "type": "code",
+      "eol": true
+    },
+    {
+      "content": " diagram.namespaceList.forEach(namespace => {",
+      "pos": 111,
       "line": 6,
       "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 160,
+      "line": 6,
+      "column": 50,
       "type": "text",
       "eol": true
     },
     {
-      "content": "",
-      "pos": 190,
+      "content": "  ",
+      "pos": 161,
       "line": 7,
       "column": 1,
       "type": "text",
+      "eol": false
+    },
+    {
+      "content": "namespace.name",
+      "pos": 163,
+      "line": 7,
+      "column": 3,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 180,
+      "line": 7,
+      "column": 20,
+      "type": "text",
       "eol": true
     },
     {
-      "content": "export const templates = {",
-      "pos": 191,
+      "content": "})",
+      "pos": 181,
       "line": 8,
       "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 218,
-      "line": 9,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": " files.forEach(file=>{",
-      "pos": 218,
-      "line": 9,
-      "column": 1,
       "start": "<#",
       "end": "#>",
       "type": "code",
       "eol": false
-    },
-    {
-      "content": "",
-      "pos": 244,
-      "line": 9,
-      "column": 27,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "  ['",
-      "pos": 245,
-      "line": 10,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "(file.template.alias || file.name)",
-      "pos": 249,
-      "line": 10,
-      "column": 5,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": "']: ",
-      "pos": 286,
-      "line": 10,
-      "column": 42,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "partial(file.template, 'core')",
-      "pos": 290,
-      "line": 10,
-      "column": 46,
-      "start": "#{",
-      "end": "}",
-      "type": "expression",
-      "eol": false
-    },
-    {
-      "content": ",",
-      "pos": 323,
-      "line": 10,
-      "column": 79,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 325,
-      "line": 11,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "}) ",
-      "pos": 325,
-      "line": 11,
-      "column": 1,
-      "start": "<#",
-      "end": "#>",
-      "type": "code",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 332,
-      "line": 11,
-      "column": 8,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "}",
-      "pos": 333,
-      "line": 12,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 335,
-      "line": 13,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "const F = new Factory(templates)",
-      "pos": 336,
-      "line": 14,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 369,
-      "line": 15,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "export function run (context, name) {",
-      "pos": 370,
-      "line": 16,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "  return F.run(context, name)",
-      "pos": 408,
-      "line": 17,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "}",
-      "pos": 438,
-      "line": 18,
-      "column": 1,
-      "type": "text",
-      "eol": true
-    },
-    {
-      "content": "",
-      "pos": 440,
-      "line": 19,
-      "column": 1,
-      "type": "text",
-      "eol": false
-    },
-    {
-      "content": "",
-      "pos": 440,
-      "line": 19,
-      "column": 1,
-      "type": "text"
     }
   ],
   "directives": {
-    "context": "files",
-    "content": false,
+    "context": "diagram",
+    "content": true,
     "slots": true,
     "blocks": true,
     "partial": true,
     "options": true,
-    "escapeIt": false,
-    "requireAs": [
-      {
-        "name": "MainTemplate.njs",
-        "alias": "core"
-      }
-    ],
+    "escapeIt": true,
+    "requireAs": [],
     "alias": [
-      "singlefile.es6.njs"
-    ]
+      "model-root"
+    ],
+    "chunks": "$$$main$$$"
   },
   "documentation": [],
   "slots": {},
