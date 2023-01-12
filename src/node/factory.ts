@@ -1,12 +1,18 @@
-import * as fs from 'fs-extra'
+import * as fs from 'fs'
 import * as path from 'path'
 import * as glob from 'glob'
 import { Template } from './template'
 import { TemplateFactoryBase } from './../common/factory'
 import { safeEval } from './helpers'
-import { HashType, SlotsHash } from './../common/interfaces'
+import {
+  DefaultFactoryOption,
+  HashType,
+  SlotsHash,
+} from './../common/interfaces'
 
-export class TemplateFactory extends TemplateFactoryBase {
+export class TemplateFactory<
+  T extends DefaultFactoryOption,
+> extends TemplateFactoryBase<T> {
   public load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
@@ -32,7 +38,7 @@ export class TemplateFactory extends TemplateFactoryBase {
         result.absPath = fn
         result.name = fileName
         result.factory = this
-        const templ = new Template(result)
+        const templ = new Template<T>(result)
         this.register(templ, fileName)
         templ.compile()
         return templ
@@ -96,19 +102,42 @@ export class TemplateFactory extends TemplateFactoryBase {
     return tpl.compile()
   }
 
-  public run(
+  public run<T extends Record<string, any>>(
     context: HashType,
     name: string,
     absPath?: boolean,
-  ): string | Array<object> {
+  ) {
     const templ = this.ensure(name, absPath)
+
+    // const source = new SourceNode(0, 0, templ.absPath)
+    // context.directives.forEach((d) => {
+    //   source.add(
+    //     new SourceNode(d.line, d.column, `// ${d.content} -> ${d.name}`),
+    //   )
+    // })
+
+    // context.main.forEach((m) => {
+    //   source.add(new SourceNode(m.column, m.line, m.content))
+    // })
     const bc = this.blockContent(templ, {})
-    const result = bc.run(context, bc.content, bc.partial, bc.slot)
+    const result = bc.run(
+      context,
+      bc.content,
+      bc.partial,
+      bc.slot,
+      this.options,
+    )
     if (Object.keys(bc.slots).length > 0) {
       if (Array.isArray(result)) {
         return result.map((r) => {
           const tpl = this.standalone(r.content)
-          const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot)
+          const content = tpl.script(
+            bc.slots,
+            bc.content,
+            bc.partial,
+            bc.slot,
+            this.options,
+          )
           return {
             name: r.name,
             content,
@@ -116,29 +145,55 @@ export class TemplateFactory extends TemplateFactoryBase {
         })
       } else {
         const res = this.standalone(result)
-        return res.script(bc.slots, bc.content, bc.partial, bc.slot)
+        return res.script(
+          bc.slots,
+          bc.content,
+          bc.partial,
+          bc.slot,
+          this.options,
+        )
       }
     } else {
       return result
     }
   }
 
-  public runPartial(
-    context: HashType,
-    name: string,
-    absPath?: boolean,
-    slots?: SlotsHash,
-  ): string {
+  public runPartial<T extends Record<string, any>>({
+    context,
+    name,
+    absPath,
+    options,
+    slots,
+  }: {
+    context: HashType
+    name: string
+    absPath?: boolean
+    options?: T
+    slots?: SlotsHash
+  }): string {
     const templ = this.ensure(name, absPath)
-    const bc = this.blockContent(templ, slots)
-    return bc.run(context, bc.content, bc.partial, bc.slot)
+    if (!templ.chunks) {
+      const bc = this.blockContent(templ, slots)
+      return bc.run(
+        context,
+        bc.content,
+        bc.partial,
+        bc.slot,
+        this.options,
+      ) as string
+    } else {
+      throw new Error("cant't use template with chunks as partial")
+    }
   }
 
   public blocksToFiles(
     context: HashType,
     name: string,
     absPath?: boolean,
-  ): Array<{ file: string; content: string }> {
+  ): Array<{
+    file: string
+    content: string | Array<{ name: string; content: string }>
+  }> {
     const templ = this.ensure(name, absPath)
     const bc = this.blockContent(templ)
     return Object.keys(templ.blocks).map((curr) => ({
@@ -149,12 +204,12 @@ export class TemplateFactory extends TemplateFactoryBase {
 
   public express() {
     const self = this
-    return function (fileName, context, callback) {
+    return (fileName, context, callback) => {
       const templ = self.ensure(fileName, true)
       const bc = self.blockContent(templ)
       let result, err
       try {
-        result = bc.run(context, bc.content, bc.partial, bc.slot)
+        result = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
       } catch (e) {
         err = e
       } finally {

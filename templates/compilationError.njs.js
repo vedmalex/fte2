@@ -1,41 +1,13 @@
 module.exports = {
-  alias: ['compilationError.njs'],
-  script: function (context, _content, partial, slot) {
-    function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = context
-      return _content(blockName, ctx, content, partial, slot)
-    }
-    var out = ''
-    try {
-      var line
-      var column
-      /*2:1*/
-      line = 2
-      column = 1
-      out += context.error.message
-      /*2:25*/
-      line = 2
-      column = 25
-      out += ';\n'
-      /*3:1*/
-      line = 3
-      column = 1
-      out += context.compiledFile
-      /*3:24*/
-      line = 3
-      column = 24
-      out += ';'
-    } catch (e) {
-      throw new Error(`
-       error at ${line}:${column}
-       message: ${e.message}
-       stack: ${e.stack}
-     `)
-    }
-    return out
+  alias: ["compilationError.njs"],
+  script: function(context, _content, partial, slot, options) {
+    var out = [];
+    out.push(context.error.message + ";\n");
+    out.push(context.compiledFile + ";");
+    return out.join("");
   },
-  compile: function () {
-    this.alias = ['compilationError.njs']
+  compile: function() {
+    this.alias = ["compilationError.njs"];
   },
-  dependency: {},
-}
+  dependency: {}
+};

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -18,43 +22,43 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compileFull = exports.compileLight = void 0;
-const raw = __importStar(require("../../grammar/raw.peggy.js"));
-const ts = __importStar(require("typescript"));
-const path = __importStar(require("path"));
-const factory_1 = require("./factory");
-const templateRoot = path.join(__dirname, './../../templates');
-function prepareCode(src) {
-    const result = ts.transpileModule(src, {
-        compilerOptions: {
-            allowJs: true,
-            strict: false,
-            target: ts.ScriptTarget.ES2020,
-            module: ts.ModuleKind.CommonJS,
-        },
+exports.parseFile = exports.compileTs = exports.compileFull = exports.compileLight = exports.run = exports.F = void 0;
+const parse_1 = require("../parser/parse");
+const esbuild = __importStar(require("esbuild"));
+function prepareCode(text) {
+    const result = esbuild.transformSync(text, {
+        minify: false,
     });
-    return result.outputText;
+    return result.code;
 }
+const templates_1 = __importDefault(require("../templates"));
+const factory_1 = require("../standalone/factory");
+exports.F = new factory_1.TemplateFactoryStandalone(templates_1.default);
+function run(context, template) {
+    return exports.F.run(context, template);
+}
+exports.run = run;
 function compileLight(content) {
-    try {
-        const compiled = raw.parse(content.toString());
-        const F = new factory_1.TemplateFactory({
-            root: templateRoot,
-        });
-        return prepareCode(F.run(compiled, 'raw.njs'));
-    }
-    catch (e) {
-        throw e;
-    }
+    const compiled = parse_1.Parser.parse(content.toString());
+    return prepareCode(run(compiled, 'raw.njs'));
 }
 exports.compileLight = compileLight;
 function compileFull(content) {
-    const compiled = raw.parse(content.toString());
-    const F = new factory_1.TemplateFactory({
-        root: templateRoot,
-    });
-    return prepareCode(F.run(compiled, 'compiled.njs'));
+    const compiled = parse_1.Parser.parse(content.toString());
+    return prepareCode(run(compiled, 'compiled.njs'));
 }
 exports.compileFull = compileFull;
+function compileTs(content) {
+    const compiled = parse_1.Parser.parse(content.toString());
+    return prepareCode(run(compiled, 'es6module.njs'));
+}
+exports.compileTs = compileTs;
+function parseFile(content) {
+    return parse_1.Parser.parse(content.toString());
+}
+exports.parseFile = parseFile;
 //# sourceMappingURL=compile.js.map

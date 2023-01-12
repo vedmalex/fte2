@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TemplateFactoryBase = void 0;
+exports.TemplateFactoryBase = exports.DefaultFactoryOptions = void 0;
+const helpers_1 = require("./helpers");
+exports.DefaultFactoryOptions = {
+    applyIndent: helpers_1.applyIndent,
+    escapeIt: helpers_1.escapeIt,
+};
 class TemplateFactoryBase {
-    constructor(config) {
+    constructor(config = {}) {
         this.ext = [];
         this.debug = false;
         this.watch = false;
         this.watchTree = undefined;
         this.root = undefined;
-        if (!(this instanceof TemplateFactoryBase)) {
-            throw new Error('constructor is not a function');
-        }
+        config.options = { ...config.options, ...exports.DefaultFactoryOptions };
+        this.options = config.options;
         if (!process.browser) {
             this.root = config
                 ? config.root
@@ -92,22 +96,34 @@ class TemplateFactoryBase {
             },
             partial(obj, name) {
                 if (tpl.aliases.hasOwnProperty(name)) {
-                    return self.runPartial(obj, tpl.aliases[name], true, this.slots);
+                    return self.runPartial({
+                        context: obj,
+                        name: tpl.aliases[name],
+                        absPath: true,
+                        slots: this.slots,
+                        options: this.options,
+                    });
                 }
                 else {
-                    return self.runPartial(obj, name, false, this.slots);
+                    return self.runPartial({
+                        context: obj,
+                        name,
+                        absPath: false,
+                        slots: this.slots,
+                        options: this.options,
+                    });
                 }
             },
             content(name, context, content, partial, slot) {
                 if (name) {
                     return tpl.blocks && tpl.blocks.hasOwnProperty(name)
-                        ? tpl.blocks[name](context, content, partial, slot)
+                        ? tpl.blocks[name](context, content, partial, slot, self.options)
                         : '';
                 }
                 else {
                     const fn = scripts.pop();
                     if (typeof fn === 'function') {
-                        return fn(context, content, partial);
+                        return fn(context, content, partial, slot, self.options);
                     }
                     else {
                         return '';
@@ -124,7 +140,7 @@ class TemplateFactoryBase {
                     }
                     else {
                         try {
-                            return $this.script(context, content, partial, slot);
+                            return $this.script(context, content, partial, slot, self.options);
                         }
                         catch (e) {
                             throw new Error(`template ${$this.name} failed to execute with error
@@ -151,10 +167,10 @@ class TemplateFactoryBase {
     load(fileName, absPath) {
         throw new Error('abstract method call');
     }
-    run(ctx, name, absPath) {
+    run(context, name) {
         throw new Error('abstract method call');
     }
-    runPartial(ctx, name, absPath, slots) {
+    runPartial({ context, name, absPath, options, slots, }) {
         throw new Error('abstract method call');
     }
 }

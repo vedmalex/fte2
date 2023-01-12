@@ -1,612 +1,257 @@
 module.exports = {
-  alias: ['MainTemplate.njs'],
-  script: function (context, _content, partial, slot) {
+  alias: ["MainTemplate.njs"],
+  script: function(context, _content, partial, slot, options) {
     function content(blockName, ctx) {
-      if (ctx === undefined || ctx === null) ctx = context
-      return _content(blockName, ctx, content, partial, slot)
+      if (ctx === void 0 || ctx === null)
+        ctx = context;
+      return _content(blockName, ctx, content, partial, slot);
     }
-    var out = ''
-    try {
-      var line
-      var column
-      function applyIndent(_str, _indent) {
-        var str = String(_str)
-        var indent = ''
-        if (typeof _indent == 'number' && _indent > 0) {
-          var res = ''
-          for (var i = 0; i < _indent; i++) {
-            res += ' '
-          }
-          indent = res
-        }
-        if (typeof _indent == 'string' && _indent.length > 0) {
-          indent = _indent
-        }
-        if (indent && str) {
-          return str
-            .split('\n')
-            .map((s) => indent + s)
-            .join('\n')
-        } else {
-          return str
-        }
-      }
-      /*3:1*/
-      line = 3
-      column = 1
-      function processRequire(item) {
-        var requires = item.name.split(',').map(function (i) {
-          return i.trim()
-        })
-        return { name: requires[0], alias: requires[1] }
-      }
-      function processContextName(item) {
-        return item.name.split(',')[0].trim()
-      }
-      function processAsync(item) {
-        return item.name.split(',')[0].trim()
-      }
-      function processAlias(item) {
-        return item.name.split(',').map((a) => a.trim())
-      }
-      function processnoIndent(item) {
-        return !!item
-      }
-      var templateAlias = ''
-      var reqList = []
-      var contextName = 'context'
-      var noIndent = false
-      var alias = ''
-      var useChunks = ''
-      var inludeMainchunkInOutput = false
-      var useHash = ''
-      var item,
-        directives = context.directives,
-        extend = ''
-      for (var i = 0, len = directives.length; i < len; i++) {
-        item = directives[i]
-        if (item.content === 'extend') {
-          extend = item.name.trim()
-        }
-        if (item.content === 'requireAs') {
-          reqList.push(processRequire(item))
-        }
-        if (item.content === 'context') {
-          contextName = processContextName(item)
-        }
-        if (item.content === 'noIndent') {
-          noIndent = processnoIndent(item)
-        }
-        if (item.content === 'alias') {
-          alias = processAlias(item)
-        }
-        if (item.content === 'chunks') {
-          useChunks = processAsync(item)
-        }
-        if (item.content === 'includeMainChunk') {
-          inludeMainchunkInOutput = processnoIndent(item)
-        }
-        if (item.content === 'useHash') {
-          useHash = !!item
-        }
-      }
-      /*63:1*/
-      line = 63
-      column = 1
-      out += '{'
-      /*63:2*/
-      line = 63
-      column = 2
-      if (alias) {
-        /*65:3*/
-        line = 65
-        column = 3
-        out += ' alias:'
-        /*65:10*/
-        line = 65
-        column = 10
-        out += applyIndent(JSON.stringify(alias), ' ')
-        /*65:35*/
-        line = 65
-        column = 35
-        out += ','
-        /*65:36*/
-        line = 65
-        column = 36
-      }
-      /*67:1*/
-      line = 67
-      column = 1
-      const useDirectContent = context.blocks || context.slots
-      /*67:64*/
-      line = 67
-      column = 64
-      out += '\n  script: function ('
-      /*68:21*/
-      line = 68
-      column = 21
-      out += contextName
-      /*68:35*/
-      line = 68
-      column = 35
-      out +=
-        ', _content, partial, slot){\n    function content(blockName, ctx) {\n      if(ctx === undefined || ctx === null) ctx ='
-      /*70:50*/
-      line = 70
-      column = 50
-      out += applyIndent(contextName, ' ')
-      /*70:65*/
-      line = 70
-      column = 65
-      out +=
-        ';\n      return _content(blockName, ctx, content, partial, slot);\n    }\n    '
-      /*73:5*/
-      line = 73
-      column = 5
-      if (useChunks) {
-        /*73:23*/
-        line = 73
-        column = 23
-        out +=
-          "\n    const _partial = partial\n    partial = function(obj, template) {\n      const result = _partial(obj, template);\n      if(Array.isArray(result)){\n        result.forEach(r => {\n          chunkEnsure(r.name, r.content);\n        })\n        return '';\n      } else {\n        return result;\n      }\n    }\n    const main = '"
-        /*86:19*/
-        line = 86
-        column = 19
-        out += useChunks
-        /*86:31*/
-        line = 86
-        column = 31
-        out +=
-          "';\n    var current = main;\n    let outStack = [current];\n    let result;\n\n    function chunkEnsure(name, content) {\n      if (!result) {\n        result = {};\n      }\n      if (!result.hasOwnProperty(name)) {\n        result[name] = content ? content : '';\n      }\n    }\n    function chunkStart(name) {\n      chunkEnsure(name);\n      chunkEnd();\n      current = name;\n      out = '';\n    }\n    function chunkEnd() {\n      result[current] += out;\n      out = '';\n      current = outStack.pop() || main;\n    }\n\n    "
-        /*111:5*/
-        line = 111
-        column = 5
-      }
-      /*111:10*/
-      line = 111
-      column = 10
-      out += "\n    var out = '';\n    "
-      /*113:5*/
-      line = 113
-      column = 5
-      if (useChunks) {
-        /*113:23*/
-        line = 113
-        column = 23
-        out += '\n      chunkStart(main);\n    '
-        /*115:5*/
-        line = 115
-        column = 5
-      }
-      /*115:10*/
-      line = 115
-      column = 10
-      var blocks = { blocks: context.main, noIndent: noIndent }
-      /*117:1*/
-      line = 117
-      column = 1
-      out += applyIndent(partial(blocks, 'codeblock'), '    ')
-      /*117:35*/
-      line = 117
-      column = 35
-      out += '\n    '
-      /*118:5*/
-      line = 118
-      column = 5
-      if (useChunks) {
-        /*118:23*/
-        line = 118
-        column = 23
-        out += '\n      chunkEnd();\n      '
-        /*120:7*/
-        line = 120
-        column = 7
-        if (!useHash) {
-          /*120:24*/
-          line = 120
-          column = 24
-          out += '\n        out = Object.keys(result)\n        '
-          /*122:9*/
-          line = 122
-          column = 9
-          if (!inludeMainchunkInOutput) {
-            /*122:42*/
-            line = 122
-            column = 42
-            out += "\n        .filter(i => i !== '"
-            /*123:29*/
-            line = 123
-            column = 29
-            out += useChunks
-            /*123:41*/
-            line = 123
-            column = 41
-            out += "')\n        "
-            /*124:9*/
-            line = 124
-            column = 9
-          }
-          /*124:14*/
-          line = 124
-          column = 14
-          out +=
-            '\n        .map(curr => ({ name: curr, content: result[curr] }))\n      '
-          /*126:7*/
-          line = 126
-          column = 7
-        } else {
-          /*126:19*/
-          line = 126
-          column = 19
-          out += '\n        out = result;\n        '
-          /*128:9*/
-          line = 128
-          column = 9
-          if (!inludeMainchunkInOutput) {
-            /*128:42*/
-            line = 128
-            column = 42
-            out += "\n        delete out['"
-            /*129:21*/
-            line = 129
-            column = 21
-            out += useChunks
-            /*129:33*/
-            line = 129
-            column = 33
-            out += "'];\n        "
-            /*130:9*/
-            line = 130
-            column = 9
-          }
-          /*130:14*/
-          line = 130
-          column = 14
-          out += '\n      '
-          /*131:7*/
-          line = 131
-          column = 7
-        }
-        /*131:12*/
-        line = 131
-        column = 12
-        out += '\n    '
-        /*132:5*/
-        line = 132
-        column = 5
-      }
-      /*132:10*/
-      line = 132
-      column = 10
-      out += '\n      return out;\n  },\n'
-      /*135:1*/
-      line = 135
-      column = 1
-      var cb = context.blocks
-      if (cb) {
-        /*138:1*/
-        line = 138
-        column = 1
-        out += '  blocks : {\n'
-        /*139:1*/
-        line = 139
-        column = 1
-        for (var cbn in cb) {
-          /*140:1*/
-          line = 140
-          column = 1
-          var blockConetxtName = contextName
-          var bdirvs = cb[cbn].directives
-          var item = bdirvs[i]
-          var blkNoIndent = false
-          var blAsyncType = ''
-          for (var i = 0, len = bdirvs.length; i < len; i++) {
-            item = bdirvs[i]
-            if (item.content === 'context') {
-              blockConetxtName = processContextName(item)
-            }
-            if (item.content === 'noIndent') {
-              blkNoIndent = processnoIndent(item)
-            }
-            if (item.content === 'async') {
-              blAsyncType = processAsync(item)
-            }
-          }
-          /*158:1*/
-          line = 158
-          column = 1
-          out += '    "'
-          /*158:6*/
-          line = 158
-          column = 6
-          out += cbn
-          /*158:12*/
-          line = 158
-          column = 12
-          out += '": function('
-          /*158:24*/
-          line = 158
-          column = 24
-          out += blockConetxtName
-          /*158:43*/
-          line = 158
-          column = 43
-          out +=
-            ',  _content, partial, slot){\n      function content(blockName, ctx) {\n        if(ctx === undefined || ctx === null) ctx ='
-          /*160:52*/
-          line = 160
-          column = 52
-          out += applyIndent(contextName, ' ')
-          /*160:67*/
-          line = 160
-          column = 67
-          out +=
-            ";\n        return _content(blockName, ctx, content, partial, slot);\n      }\n      var out = '';"
-          /*163:20*/
-          line = 163
-          column = 20
-          var blocks = { blocks: cb[cbn].main, noIndent: blkNoIndent }
-          /*165:1*/
-          line = 165
-          column = 1
-          out += applyIndent(partial(blocks, 'codeblock'), '      ')
-          /*165:38*/
-          line = 165
-          column = 38
-          out += '\n      return out;\n    },\n'
-          /*168:1*/
-          line = 168
-          column = 1
-        }
-        /*169:1*/
-        line = 169
-        column = 1
-        out += '  },'
-        /*169:5*/
-        line = 169
-        column = 5
-      }
-      /*171:1*/
-      line = 171
-      column = 1
-      var cb = context.slots
-      if (cb) {
-        /*174:1*/
-        line = 174
-        column = 1
-        out += '  slots : {\n'
-        /*175:1*/
-        line = 175
-        column = 1
-        for (var cbn in cb) {
-          /*176:1*/
-          line = 176
-          column = 1
-          var blockConetxtName = contextName
-          var bdirvs = cb[cbn].directives
-          var item = bdirvs[i]
-          var blkNoIndent = false
-          var blAsyncType = ''
-          for (var i = 0, len = bdirvs.length; i < len; i++) {
-            item = bdirvs[i]
-            if (item.content === 'context') {
-              blockConetxtName = processContextName(item)
-            }
-            if (item.content === 'noIndent') {
-              blkNoIndent = processnoIndent(item)
-            }
-            if (item.content === 'async') {
-              blAsyncType = processAsync(item)
-            }
-          }
-          /*194:1*/
-          line = 194
-          column = 1
-          out += '    "'
-          /*194:6*/
-          line = 194
-          column = 6
-          out += cbn
-          /*194:12*/
-          line = 194
-          column = 12
-          out += '": function('
-          /*194:24*/
-          line = 194
-          column = 24
-          out += blockConetxtName
-          /*194:43*/
-          line = 194
-          column = 43
-          out +=
-            ',  _content, partial, slot){\n      function content(blockName, ctx) {\n        if(ctx === undefined || ctx === null) ctx ='
-          /*196:52*/
-          line = 196
-          column = 52
-          out += applyIndent(contextName, ' ')
-          /*196:67*/
-          line = 196
-          column = 67
-          out +=
-            ";\n        return _content(blockName, ctx, content, partial, slot);\n      }\n      var out = '';"
-          /*199:20*/
-          line = 199
-          column = 20
-          var blocks = { blocks: cb[cbn].main, noIndent: blkNoIndent }
-          /*201:1*/
-          line = 201
-          column = 1
-          out += applyIndent(partial(blocks, 'codeblock'), '      ')
-          /*201:38*/
-          line = 201
-          column = 38
-          out += '\n      return out;\n    },\n'
-          /*204:1*/
-          line = 204
-          column = 1
-        }
-        /*205:1*/
-        line = 205
-        column = 1
-        out += '  },'
-        /*205:5*/
-        line = 205
-        column = 5
-      }
-      /*207:1*/
-      line = 207
-      column = 1
-      out += '  compile: function() {'
-      /*207:24*/
-      line = 207
-      column = 24
-      if (alias) {
-        /*208:17*/
-        line = 208
-        column = 17
-        out += '\n    this.alias ='
-        /*209:17*/
-        line = 209
-        column = 17
-        out += applyIndent(JSON.stringify(alias), ' ')
-        /*209:42*/
-        line = 209
-        column = 42
-        out += ';'
-        /*209:43*/
-        line = 209
-        column = 43
-      }
-      /*211:1*/
-      line = 211
-      column = 1
-      if (reqList.length > 0) {
-        /*212:1*/
-        line = 212
-        column = 1
-        out += '    this.aliases={};\n'
-        /*213:1*/
-        line = 213
-        column = 1
-        var rq
-        for (var i = 0, len = reqList.length; i < len; i++) {
-          rq = reqList[i]
-          /*217:1*/
-          line = 217
-          column = 1
-          out += '    this.aliases["'
-          /*217:19*/
-          line = 217
-          column = 19
-          out += rq.alias
-          /*217:30*/
-          line = 217
-          column = 30
-          out += '"] = "'
-          /*217:36*/
-          line = 217
-          column = 36
-          out += rq.name
-          /*217:46*/
-          line = 217
-          column = 46
-          out += '";\n    this.factory.ensure("'
-          /*218:26*/
-          line = 218
-          column = 26
-          out += rq.name
-          /*218:36*/
-          line = 218
-          column = 36
-          out += '");\n'
-          /*219:1*/
-          line = 219
-          column = 1
-        }
-      }
-      /*222:1*/
-      line = 222
-      column = 1
-      if (extend) {
-        /*223:18*/
-        line = 223
-        column = 18
-        out += '\n    this.parent ='
-        /*224:18*/
-        line = 224
-        column = 18
-        out += applyIndent(JSON.stringify(extend), ' ')
-        /*224:44*/
-        line = 224
-        column = 44
-        out += ';\n    this.mergeParent(this.factory.ensure(this.parent))\n'
-        /*226:1*/
-        line = 226
-        column = 1
-      }
-      /*227:1*/
-      line = 227
-      column = 1
-      out += '  },\n  dependency: {\n  '
-      /*229:3*/
-      line = 229
-      column = 3
-      if (extend) {
-        /*230:1*/
-        line = 230
-        column = 1
-        out += applyIndent(JSON.stringify(extend), '    ')
-        /*230:30*/
-        line = 230
-        column = 30
-        out += ': 1,\n  '
-        /*231:3*/
-        line = 231
-        column = 3
-      }
-      /*232:1*/
-      line = 232
-      column = 1
-      if (reqList.length > 0) {
-        for (var i = 0, len = reqList.length; i < len; i++) {
-          rq = reqList[i]
-          /*236:1*/
-          line = 236
-          column = 1
-          out += '    "'
-          /*236:6*/
-          line = 236
-          column = 6
-          out += rq.name
-          /*236:16*/
-          line = 236
-          column = 16
-          out += '": 1,\n'
-          /*237:1*/
-          line = 237
-          column = 1
-        }
-      }
-      /*240:1*/
-      line = 240
-      column = 1
-      out += '  }\n}\n'
-    } catch (e) {
-      throw new Error(`
-       error at ${line}:${column}
-       message: ${e.message}
-       stack: ${e.stack}
-     `)
+    var out = [];
+    const { directives } = context;
+    out.push("{\n");
+    if (directives.chunks) {
+      out.push("\n");
+      out.push("chunks: " + JSON.stringify(directives.chunks) + ",\n");
     }
-    return out
+    out.push("\n");
+    if (directives.alias) {
+      out.push("\n");
+      out.push("alias: " + JSON.stringify(directives.alias) + ",\n");
+    }
+    out.push("\n");
+    out.push("\n");
+    out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
+    out.push("    " + content("maincontent", directives) + "\n");
+    out.push("    var out = []\n");
+    out.push("    " + content("chunks-start", directives) + "\n");
+    out.push("    " + partial(context.main, "codeblock") + "\n");
+    out.push("    " + content("chunks-finish", directives) + "\n");
+    out.push("    ");
+    if (directives.chunks) {
+      out.push("\n");
+      out.push("    if(out.some(t=>typeof t == 'object')){\n");
+      out.push("      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+      out.push("    } else {\n");
+      out.push("      return out.join('')\n");
+      out.push("    }\n");
+      out.push("    ");
+    } else {
+      out.push("\n");
+      out.push("      return out.join('')\n");
+      out.push("    ");
+    }
+    out.push("\n");
+    out.push("  },\n");
+    const blockNames = Object.keys(context.blocks);
+    if (blockNames.length > 0) {
+      out.push("blocks : {\n");
+      for (let i2 = 0; i2 < blockNames.length; i2 += 1) {
+        const block = context.blocks[blockNames[i2]];
+        out.push('"' + blockNames[i2] + '": function(' + block.directives.context + ",  _content, partial, slot, options) {\n");
+        out.push("      " + content("maincontent", block.directives) + "\n");
+        out.push("      var out = []\n");
+        out.push("      " + partial(block.main, "codeblock"));
+        if (directives.chunks) {
+          out.push("\n");
+          out.push("      if(out.some(t=>typeof t == 'object')){\n");
+          out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+          out.push("      } else {\n");
+          out.push("        return out.join('')\n");
+          out.push("      }\n");
+          out.push("      ");
+        } else {
+          out.push("\n");
+          out.push("        return out.join('')\n");
+          out.push("      ");
+        }
+        out.push("\n");
+        out.push("    },\n");
+      }
+      out.push("\n");
+      out.push("  },\n");
+    }
+    const slotNames = Object.keys(context.slots);
+    if (slotNames.length > 0) {
+      out.push("slots : {\n");
+      for (let i2 = 0; i2 < slotNames.length; i2 += 1) {
+        const slot2 = context.blocks[slotNames[i2]];
+        out.push('"' + slotNames[i2] + '": function(' + slot2.directives.context + ",  _content, partial, slot, options){\n");
+        out.push("      " + content("maincontent", slot2.directives) + "\n");
+        out.push("      var out = []\n");
+        out.push("      " + partial(slot2.main, "codeblock"));
+        if (directives.chunks) {
+          out.push("\n");
+          out.push("      if(out.some(t=>typeof t == 'object')){\n");
+          out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+          out.push("      } else {\n");
+          out.push("        return out.join('')\n");
+          out.push("      }\n");
+          out.push("      ");
+        } else {
+          out.push("\n");
+          out.push("        return out.join('')\n");
+          out.push("      ");
+        }
+        out.push("\n");
+        out.push("    },\n");
+      }
+      out.push("\n");
+      out.push("  },\n");
+    }
+    out.push("\n");
+    out.push("  compile: function() {\n");
+    if (directives.alias) {
+      out.push("\n");
+      out.push("    this.alias = " + JSON.stringify(directives.alias) + "\n");
+    }
+    out.push("\n");
+    if (directives.requireAs.length > 0) {
+      out.push("\n");
+      out.push("    this.aliases={}\n");
+      var rq;
+      for (var i = 0, len = directives.requireAs.length; i < len; i++) {
+        rq = directives.requireAs[i];
+        out.push("\n");
+        out.push('    this.aliases["' + rq.alias + '"] = "' + rq.name + '"\n');
+        out.push('    this.factory.ensure("' + rq.name + '")\n');
+      }
+    }
+    out.push("\n");
+    out.push("\n");
+    if (directives.extend) {
+      out.push("\n");
+      out.push("    this.parent = " + JSON.stringify(directives.extend) + "\n");
+      out.push("    this.mergeParent(this.factory.ensure(this.parent))\n");
+    }
+    out.push("\n");
+    out.push("  },\n");
+    out.push("  dependency: {\n");
+    out.push("  ");
+    if (directives.extend) {
+      out.push(JSON.stringify(directives.extend) + ": true,\n");
+      out.push("  ");
+    }
+    if (directives.requireAs.length > 0) {
+      for (var i = 0, len = directives.requireAs.length; i < len; i++) {
+        rq = directives.requireAs[i];
+        out.push("\n");
+        out.push('    "' + rq.name + '": true,\n');
+        out.push('    "' + rq.alias + '": true,\n');
+      }
+    }
+    out.push("\n");
+    out.push("  }\n");
+    out.push("}\n");
+    return out.join("");
   },
-  compile: function () {
-    this.alias = ['MainTemplate.njs']
-    this.aliases = {}
-    this.aliases['codeblock'] = 'codeblock.njs'
-    this.factory.ensure('codeblock.njs')
+  blocks: {
+    "maincontent": function(directives, _content, partial, slot, options) {
+      var out = [];
+      if (directives.escapeIt) {
+        out.push("\n");
+        out.push("    const {escapeIt} = options\n");
+        out.push("  ");
+      }
+      if (directives.content) {
+        out.push("\n");
+        out.push("    function content(blockName, ctx) {\n");
+        out.push("      if(ctx === undefined || ctx === null) ctx = " + directives.context + "\n");
+        out.push("      return _content(blockName, ctx, content, partial, slot)\n");
+        out.push("    }\n");
+        out.push("  ");
+      }
+      return out.join("");
+    },
+    "chunks-start": function(directives, _content, partial, slot, options) {
+      var out = [];
+      if (directives.chunks) {
+        out.push("\n");
+        out.push("    const _partial = partial\n");
+        out.push("    partial = function(obj, template) {\n");
+        out.push("      const result = _partial(obj, template)\n");
+        out.push("      if(Array.isArray(result)){\n");
+        out.push("        result.forEach(r => {\n");
+        out.push("          chunkEnsure(r.name, r.content)\n");
+        out.push("        })\n");
+        out.push("        return ''\n");
+        out.push("      } else {\n");
+        out.push("        return result\n");
+        out.push("      }\n");
+        out.push("    }\n");
+        out.push("    const main = '" + directives.chunks + "'\n");
+        out.push("    var current = main\n");
+        out.push("    let outStack = [current]\n");
+        out.push("    let result\n");
+        out.push("\n");
+        out.push("    function chunkEnsure(name, content) {\n");
+        out.push("      if (!result) {\n");
+        out.push("        result = {}\n");
+        out.push("      }\n");
+        out.push("      if (!result.hasOwnProperty(name)) {\n");
+        out.push("        result[name] = content ? content : []\n");
+        out.push("      }\n");
+        out.push("    }\n");
+        out.push("    function chunkStart(name) {\n");
+        out.push("      chunkEnsure(name)\n");
+        out.push("      chunkEnd()\n");
+        out.push("      current = name\n");
+        out.push("      out = []\n");
+        out.push("    }\n");
+        out.push("    function chunkEnd() {\n");
+        out.push("      result[current].push(...out)\n");
+        out.push("      out = []\n");
+        out.push("      current = outStack.pop() || main\n");
+        out.push("    }\n");
+        out.push("    chunkStart(main)\n");
+        out.push("  ");
+      }
+      return out.join("");
+    },
+    "chunks-finish": function(directives, _content, partial, slot, options) {
+      var out = [];
+      if (directives.chunks) {
+        out.push("\n");
+        out.push("    chunkEnd()\n");
+        out.push("    ");
+        if (!directives.useHash) {
+          out.push("\n");
+          out.push("    out = Object.keys(result)\n");
+          out.push("      ");
+          if (!directives.includeMainChunk) {
+            out.push("\n");
+            out.push("      .filter(i => i !== '" + directives.chunks + "')\n");
+            out.push("      ");
+          }
+          out.push("\n");
+          out.push("      .map(curr => ({ name: curr, content: result[curr] }))\n");
+          out.push("      ");
+        } else {
+          out.push("\n");
+          out.push("    out = result\n");
+          out.push("      ");
+          if (!directives.includeMainChunk) {
+            out.push("\n");
+            out.push("    delete out['" + directives.chunks + "']\n");
+            out.push("      ");
+          }
+          out.push("\n");
+          out.push("    ");
+        }
+        out.push("\n");
+        out.push("  ");
+      }
+      out.push("\n");
+      return out.join("");
+    }
+  },
+  compile: function() {
+    this.alias = ["MainTemplate.njs"];
+    this.aliases = {};
+    this.aliases["codeblock"] = "codeblock.njs";
+    this.factory.ensure("codeblock.njs");
   },
   dependency: {
-    'codeblock.njs': 1,
-  },
-}
+    "codeblock.njs": true,
+    "codeblock": true
+  }
+};

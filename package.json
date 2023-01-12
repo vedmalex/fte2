@@ -1,22 +1,25 @@
 {
   "name": "fte.js",
-  "version": "2.1.0",
+  "version": "3.0.0-beta.23",
   "description": "fast template engine that is reborn",
   "main": "dist/node/index.js",
+  "bin": {
+    "fte.js": "./bin/fte.js"
+  },
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc --build tsconfig.json",
     "compile:clean": "tsc --build tsconfig.json --clean",
-    "prepublish": "tsc --build tsconfig.json",
-    "templates": "node dist/compile_templates.js",
-    "grammar": "peggy --output ./grammar/raw.peggy.js ./grammar/raw.peggy",
-    "genit": "npm run grammar && npm run templates",
-    "watch": "tsc --build tsconfig.json --watch"
+    "prepublish": "tsc --build tsconfig.json && npm run templates && npm run build && npm run make",
+    "templates": "node ./bin/fte.js bundle templates templates",
+    "build": "node ./bin/fte.js bundle templates src/templates --typescript",
+    "watch": "tsc --build tsconfig.json --watch",
+    "make": "node utils/browser.mjs && node utils/node.mjs && node utils/standalone.mjs"
   },
   "typescript": {
-    "definition": "dist"
+    "definition": "lib"
   },
-  "typings": "dist",
+  "typings": "lib",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vedmalex/fte2.git"
@@ -28,19 +31,24 @@
   },
   "homepage": "https://github.com/vedmalex/fte2#readme",
   "devDependencies": {
+    "@esbuild-plugins/node-resolve": "^0.1.4",
     "@types/fs-extra": "9.0.13",
-    "@types/glob": "^7.2.0",
-    "@types/node": "^16.11.11",
-    "concurrently": "^6.4.0",
-    "nearley": "^2.20.1",
-    "nodemon": "^2.0.15",
-    "peggy": "^1.2.0"
+    "@types/glob": "^8.0.0",
+    "@types/mem-fs": "^1.1.2",
+    "@types/mem-fs-editor": "^7.0.2",
+    "@types/node": "^18.11.0",
+    "esbuild": "^0.15.11",
+    "glob": "^8.0.3",
+    "mem-fs": "^2.2.1",
+    "mem-fs-editor": "^9.5.0",
+    "memfs": "^3.4.7",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4",
+    "unionfs": "^4.4.0"
   },
   "dependencies": {
-    "fs-extra": "^10.0.0",
-    "glob": "^7.2.0",
-    "prettier": "^2.5.0",
-    "typescript": "^4.5.2"
+    "commander": "^9.4.1",
+    "detect-indent": "^6.1.0"
   },
   "gitHead": "ef0fa33d54101ca9c7c7a450fc6b7fc802a2c327"
 }

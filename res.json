@@ -1,0 +1,85 @@
+{
+  "main": [
+    {
+      "content": " chunkStart(`root.dot`); ",
+      "pos": 79,
+      "line": 5,
+      "column": 1,
+      "start": "<#-",
+      "end": "-#>",
+      "type": "code",
+      "eol": true
+    },
+    {
+      "content": " diagram.namespaceList.forEach(namespace => {",
+      "pos": 111,
+      "line": 6,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 160,
+      "line": 6,
+      "column": 50,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  ",
+      "pos": 161,
+      "line": 7,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "namespace.name",
+      "pos": 163,
+      "line": 7,
+      "column": 3,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 180,
+      "line": 7,
+      "column": 20,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "})",
+      "pos": 181,
+      "line": 8,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    }
+  ],
+  "directives": {
+    "context": "diagram",
+    "content": true,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "escapeIt": true,
+    "requireAs": [],
+    "alias": [
+      "model-root"
+    ],
+    "chunks": "$$$main$$$"
+  },
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
+}

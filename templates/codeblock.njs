@@ -1,160 +1,117 @@
+<*
+  создает струкруру блока кода
+  текст или выражение
+  все встраивается в MainTemplate.njs
+*>
 <#@ alias 'codeblock.njs' #>
-<#@ context 'renderOptions' #>
-<#@ noIndent #>
-try {
-var line;
-var column;
-<#
-var blockList = renderOptions.blocks;
-var noIndent = renderOptions.noIndent;
-var needToIndent = false;
-if(!noIndent){
-  for (var i = 0, len = blockList.length; i < len; i++) {
-    if(blockList[i].indent){
-      needToIndent = true;
-      break;
-    }
-  }
-} else {
-  needToIndent = !noIndent;
-}
--#>
-<#
-var escapeBlocks = false;
-  for (var i = 0, len = blockList.length; i < len; i++) {
-    if(blockList[i].type === 'uexpression'){
-      escapeBlocks = true;
-      break;
-    }
-  }
--#>
-<#if(escapeBlocks) { -#>
-var escapeExp = /[&<>"]/,
-    escapeAmpExp = /&/g,
-    escapeLtExp = /</g,
-    escapeGtExp = />/g,
-    escapeQuotExp = /"/g;
-
-function escapeIt (text) {
-  if (text == null) {
-    return '';
-  }
-
-  var result = text.toString();
-  if (!escapeExp.test(result)) {
-    return result;
-  }
-
-  return result.replace(escapeAmpExp, '&amp;')
-  .replace(escapeLtExp, '&lt;')
-  .replace(escapeGtExp, '&gt;')
-  .replace(escapeQuotExp, '&quot;');
-};
-<#}-#>
-<#if(needToIndent){ -#>
-function applyIndent(_str, _indent) {
-  var str = String(_str);
-  var indent = '';
-  if (typeof _indent == 'number' && _indent > 0) {
-    var res = '';
-    for (var i = 0; i < _indent; i++) {
-      res += ' ';
-    }
-    indent = res;
-  }
-  if (typeof _indent == 'string' && _indent.length > 0) {
-    indent = _indent;
-  }
-  if (indent && str) {
-    return str.split('\n').map((s)=> indent + s).join('\n');
-  } else {
-    return str;
-  }
-}
-<#}-#>
+<#@ noEscape #>
+<#@ noContent #>
+<#@ context 'blockList' #>
 <#-
-function applyIndent(_str, _indent){
-  var str = String(_str);
-  var indent='';
-  if (typeof _indent == 'number' && _indent > 0){
-    var res = '';
-    for (var i=0;i < _indent; i++) {
-      res += ' ';
-    }
-    indent = res;
-  }
-  if (typeof _indent == 'string' && _indent.length > 0){
-    indent = _indent
-  }
-  if (indent && str) {
-    return str.split('\n').map((s)=> indent + s).join('\n');
-  } else {
-    return str;
-  }
-}
+var textQuote = false
 for (var i = 0, len = blockList.length; i < len; i++) {
-  var block = blockList[i];
-  var content = block.content;
-  var blockIndent = block.indent && !noIndent;
-  var indent = '';
-  if(block.indent){
-    indent = JSON.stringify(block.indent);
-}#>
+  var block = blockList[i]
+  var next = (i + 1) < len ? blockList[i+1] : null
+  var cont = block.content
+  switch (block.type) {
+    // case 'empty':
+    //   {
+    //     out.push(';')
+    //   }
+    // break;
+    case 'text': {
+          let res = ''
+          if (!textQuote) {
+            textQuote = true
+            res = 'out.push('
+          } else {
+            let lasItem = out.pop()
+            res = lasItem + " + "
+          }
 
-/*#{block.line}:#{block.column}*/
+          if (!block.eol) {
+            res += JSON.stringify(cont)
+          } else {
+            res += JSON.stringify(cont + '\n')
+            res += ');\n'
+            textQuote = false
+          }
+          out.push(res)
+      }
+      break
+    case 'uexpression': {
+        let res = ''
+        if (!textQuote) {
+          textQuote = true
+          res = 'out.push('
+        } else {
+          let lasItem = out.pop()
+          res = lasItem + " + "
+        }
 
-line = #{block.line}
-column = #{block.column}
+        const lcont = "escapeIt("+cont+")"
 
-<#
-  switch(block.type){
-    case 'text':
-#> out +=<#if (block.indent && !noIndent) { -#>
-#{JSON.stringify(applyIndent(content, block.indent))};
- <#- } else if(indent) { -#>
-#{indent} + #{JSON.stringify(content)};
-<#- } else { -#>
-#{JSON.stringify(content)};
-<#- }-#>
-<#
-    break;
-    case 'uexpression':
-#> out +=<#if (indent && !noIndent) { -#>
-applyIndent(escapeIt(#{content}), #{indent});
-<#- } else if(indent){ -#>
-#{indent} + escapeIt(#{content});
-<#- } else { -#>
-escapeIt(#{content});
-<#- } -#>
-<#
-    break;
-    case 'expression':
-#> out +=<#if (indent && !noIndent) { -#>
-applyIndent(#{content}, #{indent});
-<#- } else if(indent) { -#>
-#{indent} + #{content};
-<#- } else { -#>
-#{content};
-<#}-#>
-<#
-    break;
-    case 'codeblock':
-#> <#if (blockIndent) { -#>
-#{applyIndent(content, block.indent)}
-<#- } else if(block.indent) { -#>
-#{block.indent}#{content}
-<#- } else { -#>
-#{content}
-<#- } -#>
-<#
-    break;
+        if(block.start && block.end){
+          res += "("+lcont+")"
+        } else if(block.start){
+          res += "("+lcont
+        } else if(block.end){
+          res += lcont+")"
+        } else {
+          res += lcont
+        }
+
+        //here always textQuote == true
+        if (!block.eol) {
+          out.push(res)
+        } else {
+          textQuote = false
+          out.push(res+");\n")
+        }
+      }
+      break
+    case 'expression': {
+        let res = ''
+        if (!textQuote) {
+          textQuote = true
+          res = 'out.push('
+        } else {
+          if(block.start){
+            let lasItem = out.pop()
+            res = lasItem+" + "
+          }
+        }
+        if(block.start && block.end){
+          res += "("+cont+")"
+        } else if(block.start){
+          res += "("+cont
+        } else if(block.end){
+          res += cont+")"
+        } else {
+          res += cont
+        }
+
+        //here always textQuote == true
+        if (!block.eol) {
+          out.push(res)
+        } else {
+          textQuote = false
+          out.push(res+");\n")
+        }
+      }
+      break
+    case 'code':
+      if (textQuote) {
+        let item = out.pop()
+        out.push(item+");\n")
+        textQuote = false
+      }
+      out.push(cont + ((block.eol || next?.type != 'code') ? '\n' : ''))
+      break
   }
--#>
-<#}-#>
-} catch (e) {
-  throw new Error(`
-  error at ${line}:${column}
-  message: ${e.message}
-  stack: ${e.stack}
-`)
 }
+if (textQuote) {
+  let lasItem = out.pop()
+  out.push(lasItem+");\n")
+}
+#>

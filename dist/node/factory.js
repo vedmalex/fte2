@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -20,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TemplateFactory = void 0;
-const fs = __importStar(require("fs-extra"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const glob = __importStar(require("glob"));
 const template_1 = require("./template");
@@ -110,12 +114,12 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     run(context, name, absPath) {
         const templ = this.ensure(name, absPath);
         const bc = this.blockContent(templ, {});
-        const result = bc.run(context, bc.content, bc.partial, bc.slot);
+        const result = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
         if (Object.keys(bc.slots).length > 0) {
             if (Array.isArray(result)) {
                 return result.map((r) => {
                     const tpl = this.standalone(r.content);
-                    const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot);
+                    const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot, this.options);
                     return {
                         name: r.name,
                         content,
@@ -124,17 +128,22 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             }
             else {
                 const res = this.standalone(result);
-                return res.script(bc.slots, bc.content, bc.partial, bc.slot);
+                return res.script(bc.slots, bc.content, bc.partial, bc.slot, this.options);
             }
         }
         else {
             return result;
         }
     }
-    runPartial(context, name, absPath, slots) {
+    runPartial({ context, name, absPath, options, slots, }) {
         const templ = this.ensure(name, absPath);
-        const bc = this.blockContent(templ, slots);
-        return bc.run(context, bc.content, bc.partial, bc.slot);
+        if (!templ.chunks) {
+            const bc = this.blockContent(templ, slots);
+            return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        }
+        else {
+            throw new Error("cant't use template with chunks as partial");
+        }
     }
     blocksToFiles(context, name, absPath) {
         const templ = this.ensure(name, absPath);
@@ -146,12 +155,12 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
     }
     express() {
         const self = this;
-        return function (fileName, context, callback) {
+        return (fileName, context, callback) => {
             const templ = self.ensure(fileName, true);
             const bc = self.blockContent(templ);
             let result, err;
             try {
-                result = bc.run(context, bc.content, bc.partial, bc.slot);
+                result = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
             }
             catch (e) {
                 err = e;

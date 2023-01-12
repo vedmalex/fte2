@@ -1,5 +1,51 @@
 import { HashType } from './interfaces'
 
+var escapeExp = /[&<>"]/,
+  escapeAmpExp = /&/g,
+  escapeLtExp = /</g,
+  escapeGtExp = />/g,
+  escapeQuotExp = /"/g
+
+export function escapeIt(text: string) {
+  if (text == null) {
+    return ''
+  }
+
+  var result = text.toString()
+  if (!escapeExp.test(result)) {
+    return result
+  }
+
+  return result
+    .replace(escapeAmpExp, '&amp;')
+    .replace(escapeLtExp, '&lt;')
+    .replace(escapeGtExp, '&gt;')
+    .replace(escapeQuotExp, '&quot;')
+}
+
+export function applyIndent(_str: string, _indent: number | string) {
+  var str = String(_str)
+  var indent = ''
+  if (typeof _indent == 'number' && _indent > 0) {
+    var res = ''
+    for (var i = 0; i < _indent; i++) {
+      res += ' '
+    }
+    indent = res
+  }
+  if (typeof _indent == 'string' && _indent.length > 0) {
+    indent = _indent
+  }
+  if (indent && str) {
+    return str
+      .split('\n')
+      .map((s) => indent + s)
+      .join('\n')
+  } else {
+    return str
+  }
+}
+
 export function set(data: HashType, path: string, value: any) {
   if ('object' === typeof data) {
     const parts = path.split('.')

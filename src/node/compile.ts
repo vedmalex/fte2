@@ -1,38 +1,40 @@
-import * as raw from '../../grammar/raw.peggy.js'
-import * as ts from 'typescript'
-// import * as fs from 'fs-extra';
-import * as path from 'path'
-import { TemplateFactory } from './factory'
+import { Parser } from '../parser/parse'
+import * as esbuild from 'esbuild'
 
-const templateRoot = path.join(__dirname, './../../templates')
-function prepareCode(src) {
-  const result = ts.transpileModule(src, {
-    compilerOptions: {
-      allowJs: true,
-      strict: false,
-      target: ts.ScriptTarget.ES2020,
-      module: ts.ModuleKind.CommonJS,
-    },
+function prepareCode(text) {
+  // return text
+  const result = esbuild.transformSync(text, {
+    minify: false,
+    // treeShaking: true,
+    // minifySyntax: true,
   })
-  return result.outputText
+  return result.code
+}
+
+import templates from '../templates'
+import { TemplateFactoryStandalone } from '../standalone/factory'
+
+export const F = new TemplateFactoryStandalone(templates)
+
+export function run(context: any, template: keyof typeof templates) {
+  return F.run(context, template)
 }
 
 export function compileLight(content: Buffer | string) {
-  try {
-    const compiled = raw.parse(content.toString())
-    const F = new TemplateFactory({
-      root: templateRoot,
-    })
-    return prepareCode(F.run(compiled, 'raw.njs'))
-  } catch (e) {
-    throw e
-  }
+  const compiled = Parser.parse(content.toString())
+  return prepareCode(run(compiled, 'raw.njs'))
 }
 
 export function compileFull(content: Buffer | string) {
-  const compiled = raw.parse(content.toString())
-  const F = new TemplateFactory({
-    root: templateRoot,
-  })
-  return prepareCode(F.run(compiled, 'compiled.njs'))
+  const compiled = Parser.parse(content.toString())
+  return prepareCode(run(compiled, 'compiled.njs'))
+}
+
+export function compileTs(content: Buffer | string) {
+  const compiled = Parser.parse(content.toString())
+  return prepareCode(run(compiled, 'es6module.njs'))
+}
+
+export function parseFile(content: Buffer | string) {
+  return Parser.parse(content.toString())
 }

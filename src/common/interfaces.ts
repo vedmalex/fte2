@@ -1,7 +1,11 @@
 import { TemplateFactoryBase } from './factory'
-import { createInterface } from 'readline'
 export type HashType = {
   [key: string]: any
+}
+
+export interface DefaultFactoryOption extends Record<string, any> {
+  applyIndent(_str: string, _indent: number | string): string
+  escapeIt(text: string): string
 }
 
 export type HashTypeGeneric<T> = {
@@ -23,37 +27,49 @@ export type ContentFunction = (
   content: ContentFunction,
   partial: PartialFunction,
   slot: SlotFunction,
-) => string
+) => string | Array<{ name: string; content: string }>
+// | Array<{ content: string; original: OriginalSource }>
 
-export type BlockRunFunction = (
+export type OriginalSource = {
+  line: number
+  col: number
+  pos: number
+}
+
+export type BlockRunFunction<T extends DefaultFactoryOption> = (
   context: HashType,
   content: ContentFunction,
   partial: PartialFunction,
   slot: SlotFunction,
-) => string
+  options: T,
+) => string | Array<{ name: string; content: string }>
+// | Array<{ content: string; original: OriginalSource }>
 
-export type BlockContent = {
+export type BlockContent<T extends DefaultFactoryOption> = {
   partial: PartialFunction
   content: ContentFunction
-  run: BlockRunFunction
+  run: BlockRunFunction<T>
   slots: SlotsHash
   slot: SlotFunction
 }
 
-export type BlocksHash = HashTypeGeneric<BlockRunFunction>
+export type BlocksHash<T extends DefaultFactoryOption> = HashTypeGeneric<
+  BlockRunFunction<T>
+>
 
-export type TemplateConfig = {
+export type TemplateConfig<T extends DefaultFactoryOption> = {
   source?: string
   name?: string
   absPath?: string
   parent?: string
-  blocks?: BlocksHash
-  slots?: BlocksHash
+  options?: Record<string, any>
+  blocks?: BlocksHash<T>
+  slots?: BlocksHash<T>
   aliases?: HashTypeGeneric<string>
   alias?: Array<string>
   dependency?: HashTypeGeneric<boolean>
   srcCode?: string
-  script?: BlockRunFunction
-  factory?: TemplateFactoryBase
+  script?: BlockRunFunction<T>
+  factory?: TemplateFactoryBase<T>
   compile?: () => void
 }

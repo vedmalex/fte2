@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -20,25 +24,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeTemplate = exports.makeFunction = exports.safeEval = void 0;
-const fs = __importStar(require("fs-extra"));
+const fs = __importStar(require("fs"));
 const compile_1 = require("./compile");
-const ts = __importStar(require("typescript"));
 function safeEval(src) {
-    const result = ts.transpileModule(src, {
-        compilerOptions: {
-            allowJs: true,
-            strict: false,
-            target: ts.ScriptTarget.ES2020,
-            module: ts.ModuleKind.CommonJS,
-        },
-    });
     let retval;
     try {
-        retval = eval(result.outputText);
+        retval = eval(src);
     }
     catch (err) {
-        fs.writeFileSync('failed.js', result.outputText);
-        console.log(result.diagnostics);
+        fs.writeFileSync('failed.js', src);
         console.log('\t \x1b[34m' + err.message + '\x1b[0m');
         console.log("for mode debug information see 'failed.js' ");
     }
