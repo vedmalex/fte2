@@ -6,12 +6,14 @@ export interface FactoryConfig<T> {
     ext?: Array<string>;
     preload?: boolean;
     options?: T;
+    watch?: boolean;
 }
 export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     ext: Array<string>;
     cache: HashTypeGeneric<TemplateBase<T>>;
     root: any;
     options: T;
+    watch: boolean;
     constructor(config?: FactoryConfig<T>);
     register(tpl: TemplateBase<T>, fileName?: string): TemplateBase<T>;
     ensure(fileName: string, absPath?: boolean): TemplateBase<T>;

@@ -1,15 +1,10 @@
-import { FactoryConfig, TemplateFactoryBase } from './../common/factory';
+import { TemplateFactoryBase } from './../common/factory';
 import { FSWatcher } from 'chokidar';
 import { DefaultFactoryOption, HashType, SlotsHash } from './../common/interfaces';
 import { TemplateBase } from 'src/common/template';
-export interface NodeFactoryConfig<T> extends FactoryConfig<T> {
-    watch?: boolean;
-}
 export declare class TemplateFactory<T extends DefaultFactoryOption> extends TemplateFactoryBase<T> {
-    watch: boolean;
-    watchList: any[];
+    watchList: Array<string>;
     watcher: FSWatcher;
-    constructor(config?: NodeFactoryConfig<T>);
     load(fileName: string, absPath?: boolean): any;
     preload(): void;
     standalone(source: string): any;
@@ -23,7 +18,7 @@ export declare class TemplateFactory<T extends DefaultFactoryOption> extends Tem
         slots?: SlotsHash;
     }): string;
     express(): (fileName: any, context: any, callback: any) => void;
-    clearCache(list: any): void;
+    clearCache(template: TemplateBase<T>): void;
     ensure(fileName: string, absPath?: boolean): TemplateBase<T>;
 }
 //# sourceMappingURL=factory.d.ts.map

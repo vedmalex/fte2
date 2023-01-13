@@ -32,16 +32,10 @@ const factory_1 = require("./../common/factory");
 const helpers_1 = require("./helpers");
 const chokidar_1 = require("chokidar");
 class TemplateFactory extends factory_1.TemplateFactoryBase {
-    constructor(config = {}) {
-        super(config);
-        this.watch = false;
+    constructor() {
+        super(...arguments);
         this.watchList = [];
         this.watcher = undefined;
-        this.watch = config && config.watch;
-        if (this.watch) {
-            this.watcher = (0, chokidar_1.watch)([]);
-            this.watchList = [];
-        }
     }
     load(fileName, absPath) {
         let root;
@@ -179,34 +173,41 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             }
         };
     }
-    clearCache(list) {
-        for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
-            delete this.cache[list[keys[i]].name];
-            delete this.cache[list[keys[i]].absPath];
-        }
+    clearCache(template) {
+        delete this.cache[template.name];
+        delete this.cache[template.absPath];
+        template.alias.forEach((alias) => {
+            delete this.cache[alias];
+        });
     }
     ensure(fileName, absPath) {
         const template = super.ensure(fileName, absPath);
         if (this.watch) {
+            if (!this.watchList)
+                this.watchList = [];
+            if (!this.watcher) {
+                this.watcher = (0, chokidar_1.watch)(this.watchList);
+                this.watcher.on('change', (fn) => {
+                    const template = this.cache[fn];
+                    this.clearCache(template);
+                    this.ensure(template.absPath, true);
+                    delete require.cache[fn];
+                });
+                this.watcher.on('unlink', (fn) => {
+                    this.clearCache(this.cache[fn]);
+                    const index = this.watchList.indexOf(fn);
+                    delete require.cache[fn];
+                    const temp = [...this.watchList];
+                    this.watcher.unwatch(temp);
+                    this.watchList = this.watchList.splice(index, 1);
+                    if (this.watchList.length > 0) {
+                        this.watcher.add(temp);
+                    }
+                });
+            }
             if (this.watchList.indexOf(template.absPath) == -1) {
                 this.watchList.push(template.absPath);
-            }
-            if (this.watchList.length > 0) {
-                if (!this.watcher) {
-                    this.watcher = (0, chokidar_1.watch)(this.watchList);
-                    this.watcher.on('change', (filename) => {
-                        this.watcher.on('change', (fn) => {
-                            const index = this.watchList.indexOf(fn);
-                            delete require.cache[fn];
-                            const temp = [...this.watchList];
-                            this.watcher.unwatch(temp);
-                            this.watchList = this.watchList.splice(index, 1);
-                            if (this.watchList.length > 0) {
-                            }
-                        });
-                    });
-                    this.watcher.on('unlink', (filename) => { });
-                }
+                this.watcher.add(template.absPath);
             }
         }
         return template;

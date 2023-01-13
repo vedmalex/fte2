@@ -13,25 +13,12 @@ import {
 } from './../common/interfaces'
 import { TemplateBase } from 'src/common/template'
 
-export interface NodeFactoryConfig<T> extends FactoryConfig<T> {
-  watch?: boolean
-}
-
 export class TemplateFactory<
   T extends DefaultFactoryOption,
 > extends TemplateFactoryBase<T> {
   // подумать нужно ли делать один общий для все список watchTree
-  public watch = false
-  public watchList = []
+  public watchList: Array<string> = []
   public watcher: FSWatcher = undefined
-  constructor(config: NodeFactoryConfig<T> = {}) {
-    super(config)
-    this.watch = config && config.watch
-    if (this.watch) {
-      this.watcher = watch([])
-      this.watchList = []
-    }
-  }
   public override load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
@@ -224,35 +211,43 @@ export class TemplateFactory<
     }
   }
 
-  public clearCache(list) {
-    for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
-      delete this.cache[list[keys[i]].name]
-      delete this.cache[list[keys[i]].absPath]
-    }
+  public clearCache(template: TemplateBase<T>) {
+    delete this.cache[template.name]
+    delete this.cache[template.absPath]
+    template.alias.forEach((alias) => {
+      delete this.cache[alias]
+    })
   }
 
   public override ensure(fileName: string, absPath?: boolean): TemplateBase<T> {
     const template = super.ensure(fileName, absPath)
     if (this.watch) {
+      if (!this.watchList) this.watchList = []
+      if (!this.watcher) {
+        this.watcher = watch(this.watchList)
+
+        this.watcher.on('change', (fn: string) => {
+          const template = this.cache[fn]
+          this.clearCache(template)
+          this.ensure(template.absPath, true)
+          delete require.cache[fn]
+        })
+
+        this.watcher.on('unlink', (fn: string) => {
+          this.clearCache(this.cache[fn])
+          const index = this.watchList.indexOf(fn)
+          delete require.cache[fn]
+          const temp = [...this.watchList]
+          this.watcher.unwatch(temp)
+          this.watchList = this.watchList.splice(index, 1)
+          if (this.watchList.length > 0) {
+            this.watcher.add(temp)
+          }
+        })
+      }
       if (this.watchList.indexOf(template.absPath) == -1) {
         this.watchList.push(template.absPath)
-      }
-      if (this.watchList.length > 0) {
-        if (!this.watcher) {
-          this.watcher = watch(this.watchList)
-          this.watcher.on('change', (filename) => {
-            this.watcher.on('change', (fn) => {
-              const index = this.watchList.indexOf(fn)
-              delete require.cache[fn]
-              const temp = [...this.watchList]
-              this.watcher.unwatch(temp)
-              this.watchList = this.watchList.splice(index, 1)
-              if (this.watchList.length > 0) {
-              }
-            })
-          })
-          this.watcher.on('unlink', (filename) => {})
-        }
+        this.watcher.add(template.absPath)
       }
     }
     return template

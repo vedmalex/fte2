@@ -23,6 +23,7 @@ export interface FactoryConfig<T> {
   ext?: Array<string>
   preload?: boolean
   options?: T
+  watch?: boolean
 }
 
 /**
@@ -33,10 +34,12 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
   public cache: HashTypeGeneric<TemplateBase<T>>
   public root = undefined
   public options: T
+  public watch = false
 
   constructor(config: FactoryConfig<T> = {}) {
     config.options = { ...config.options, ...DefaultFactoryOptions }
     this.options = config.options
+    this.watch = config && config.watch
     if (!process.browser) {
       // this only need in server-side code with server load code
       this.root = config

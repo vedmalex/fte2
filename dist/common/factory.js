@@ -10,8 +10,10 @@ class TemplateFactoryBase {
     constructor(config = {}) {
         this.ext = [];
         this.root = undefined;
+        this.watch = false;
         config.options = { ...config.options, ...exports.DefaultFactoryOptions };
         this.options = config.options;
+        this.watch = config && config.watch;
         if (!process.browser) {
             this.root = config
                 ? config.root
