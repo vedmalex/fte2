@@ -25,7 +25,6 @@ export const DefaultFactoryOptions: DefaultFactoryOption = {
 export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
   public ext: Array<string> = []
   public cache: HashTypeGeneric<TemplateBase<T>>
-  public debug = false
   public watch = false
   // подумать нужно ли делать один общий для все список watchTree
   public watchTree = undefined
@@ -35,7 +34,6 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
   constructor(
     config: {
       root?: string | Array<string>
-      debug?: boolean
       watch?: boolean
       ext?: Array<string>
       preload?: boolean
@@ -53,7 +51,6 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
             : [config.root]
           : [process.cwd()]
         : [process.cwd()]
-      this.debug = (config && config.debug) || false
       this.watch = config && config.watch
 
       if (config && config.ext) {

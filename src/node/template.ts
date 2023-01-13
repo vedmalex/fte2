@@ -3,7 +3,7 @@ import { makeTemplate } from './helpers'
 import { DefaultFactoryOption } from '../common/interfaces'
 
 export class Template<T extends DefaultFactoryOption> extends TemplateBase<T> {
-  public compile() {
+  public override compile() {
     if (this.srcCode) {
       const result = makeTemplate(this.srcCode)
       if (!result.error) {

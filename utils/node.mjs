@@ -8,6 +8,9 @@ build({
   platform: 'node',
   sourcemap: 'external',
   minify: false,
+  logOverride: {
+    'direct-eval': 'info',
+  },
   outfile: 'lib/node.fte.js',
   plugins: [
     NodeResolvePlugin({

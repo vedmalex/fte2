@@ -13,7 +13,7 @@ import {
 export class TemplateFactory<
   T extends DefaultFactoryOption,
 > extends TemplateFactoryBase<T> {
-  public load(fileName: string, absPath?: boolean) {
+  public override load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
       root = this.root[i]
@@ -23,12 +23,8 @@ export class TemplateFactory<
       const compiledJS = fn + '.js'
       if (fs.existsSync(compiledJS)) {
         let result
-        // if (this.debug) {
-        // 	result = require(compiledJS);
-        // } else {
         const storedScript = fs.readFileSync(compiledJS)
         result = safeEval(storedScript.toString())
-        // }
         if (result instanceof Function) {
           result = {
             script: result,
@@ -64,7 +60,7 @@ export class TemplateFactory<
     throw new Error(`template ${fileName} not found (absPath= ${absPath} )`)
   }
 
-  public preload() {
+  public override preload() {
     let files = []
     for (let i = 0, rLen = this.root.length; i < rLen; i++) {
       for (let j = 0, eLen = this.ext.length; j < eLen; j++) {
@@ -102,7 +98,7 @@ export class TemplateFactory<
     return tpl.compile()
   }
 
-  public run<T extends Record<string, any>>(
+  public override run<T extends Record<string, any>>(
     context: HashType,
     name: string,
     absPath?: boolean,
@@ -158,7 +154,7 @@ export class TemplateFactory<
     }
   }
 
-  public runPartial<T extends Record<string, any>>({
+  public override runPartial<T extends Record<string, any>>({
     context,
     name,
     absPath,
@@ -186,22 +182,6 @@ export class TemplateFactory<
     }
   }
 
-  public blocksToFiles(
-    context: HashType,
-    name: string,
-    absPath?: boolean,
-  ): Array<{
-    file: string
-    content: string | Array<{ name: string; content: string }>
-  }> {
-    const templ = this.ensure(name, absPath)
-    const bc = this.blockContent(templ)
-    return Object.keys(templ.blocks).map((curr) => ({
-      file: curr,
-      content: bc.content(curr, context, bc.content, bc.partial, bc.slot),
-    }))
-  }
-
   public express() {
     const self = this
     return (fileName, context, callback) => {
@@ -225,7 +205,7 @@ export class TemplateFactory<
     }
   }
 
-  public checkChanges(template, fileName: string, absPath: boolean) {
+  public override checkChanges(template, fileName: string, absPath: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
       root = this.root[i]

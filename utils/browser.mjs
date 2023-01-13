@@ -6,5 +6,8 @@ build({
   format: 'cjs',
   platform: 'browser',
   sourcemap: 'external',
+  logOverride: {
+    'direct-eval': 'info',
+  },
   outfile: 'lib/browser.fte.js',
 })
