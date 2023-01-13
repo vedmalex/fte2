@@ -24,6 +24,11 @@ module.exports = {
   },
   blocks: {
     "nav": function(context, _content, partial, slot, options) {
+      function content(blockName, ctx) {
+        if (ctx === void 0 || ctx === null)
+          ctx = context;
+        return _content(blockName, ctx, content, partial, slot);
+      }
       var out = [];
       out.push('<nav class="navbar navbar-inverse navbar-fixed-top">\n');
       out.push('  <div class="container">\n');

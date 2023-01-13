@@ -41,29 +41,29 @@
    "line": 8,
    "column": 1,
    "type": "text",
-   "eol": true
+   "eol": false
   },
   {
    "content": " var extra = { title: 'Another panel', body:'extra!!! content'}",
    "pos": 147,
    "line": 9,
    "column": 1,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 214,
+   "pos": 215,
    "line": 9,
-   "column": 68,
+   "column": 69,
    "type": "text",
    "eol": true
   },
   {
    "content": "partial(extra, 'panel')",
-   "pos": 217,
+   "pos": 218,
    "line": 10,
    "column": 3,
    "start": "#{",
@@ -74,16 +74,35 @@
   },
   {
    "content": "",
-   "pos": 243,
+   "pos": 244,
    "line": 10,
    "column": 29,
    "type": "text",
    "eol": true
   },
   {
-   "content": "</section>",
-   "pos": 244,
+   "content": "partial(extra, 'panel_e')",
+   "pos": 247,
    "line": 11,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 275,
+   "line": 11,
+   "column": 31,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "</section>",
+   "pos": 276,
+   "line": 12,
    "column": 1,
    "type": "text",
    "eol": false
