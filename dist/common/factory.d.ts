@@ -4,14 +4,12 @@ export declare const DefaultFactoryOptions: DefaultFactoryOption;
 export declare abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     ext: Array<string>;
     cache: HashTypeGeneric<TemplateBase<T>>;
-    debug: boolean;
     watch: boolean;
     watchTree: any;
     root: any;
     options: T;
     constructor(config?: {
         root?: string | Array<string>;
-        debug?: boolean;
         watch?: boolean;
         ext?: Array<string>;
         preload?: boolean;

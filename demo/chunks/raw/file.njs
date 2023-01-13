@@ -1,4 +1,5 @@
 <#@ chunks 'main.file.txt' #>
+<#@ noEscape #>
 <#@ includeMainChunk #>
 
 <# chunkStart("filename1.txt") #>

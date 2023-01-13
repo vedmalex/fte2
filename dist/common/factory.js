@@ -9,7 +9,6 @@ exports.DefaultFactoryOptions = {
 class TemplateFactoryBase {
     constructor(config = {}) {
         this.ext = [];
-        this.debug = false;
         this.watch = false;
         this.watchTree = undefined;
         this.root = undefined;
@@ -23,7 +22,6 @@ class TemplateFactoryBase {
                         : [config.root]
                     : [process.cwd()]
                 : [process.cwd()];
-            this.debug = (config && config.debug) || false;
             this.watch = config && config.watch;
             if (config && config.ext) {
                 if (Array.isArray(config.ext)) {

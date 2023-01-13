@@ -1,0 +1,24 @@
+/// <reference types="node" />
+import { Parser } from '../parser/parse';
+import { TemplateFactoryStandalone } from './factory';
+import templates from '../templates';
+export { Parser };
+export declare const F: TemplateFactoryStandalone<any>;
+export declare function run(context: any, template: keyof typeof templates): string | {
+    name: string;
+    content: string;
+}[];
+export declare function compileLight(content: Buffer | string): string | {
+    name: string;
+    content: string;
+}[];
+export declare function compileFull(content: Buffer | string): string | {
+    name: string;
+    content: string;
+}[];
+export declare function compileTs(content: Buffer | string): string | {
+    name: string;
+    content: string;
+}[];
+export declare function parseFile(content: Buffer | string): import("../parser/parse").CodeBlock;
+//# sourceMappingURL=compile.d.ts.map
