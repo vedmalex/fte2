@@ -1,6 +1,5 @@
 <#@ alias 'singlefile.njs' #>
 <#@ context 'files' #>
-<#@ noEscape #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
 const { Factory } = require('fte.js/lib/standalone.fte.js')

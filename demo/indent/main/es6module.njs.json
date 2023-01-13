@@ -1,0 +1,50 @@
+{
+ "main": [
+  {
+   "content": "export default ",
+   "pos": 91,
+   "line": 4,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "partial(context, 'core')",
+   "pos": 106,
+   "line": 4,
+   "column": 16,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": ";",
+   "pos": 133,
+   "line": 4,
+   "column": 43,
+   "type": "text",
+   "eol": true
+  }
+ ],
+ "directives": {
+  "context": "context",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [
+   {
+    "name": "MainTemplate.njs",
+    "alias": "core"
+   }
+  ],
+  "alias": [
+   "es6module.njs"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}

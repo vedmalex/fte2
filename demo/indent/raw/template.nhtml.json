@@ -1,14 +1,6 @@
 {
  "main": [
   {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
-  },
-  {
    "content": "<!DOCTYPE html>",
    "pos": 928,
    "line": 29,
@@ -133,21 +125,6 @@
    "column": 1,
    "type": "text",
    "eol": true
-  },
-  {
-   "content": "",
-   "pos": 1082,
-   "line": 42,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 1082,
-   "line": 42,
-   "column": 1,
-   "type": "empty"
   }
  ],
  "directives": {
@@ -157,7 +134,6 @@
   "blocks": true,
   "partial": true,
   "options": true,
-  "escapeIt": false,
   "requireAs": [],
   "alias": [
    "template"
@@ -342,14 +318,6 @@
      "line": 27,
      "column": 1,
      "type": "text",
-     "eol": true
-    },
-    {
-     "content": "",
-     "pos": 918,
-     "line": 28,
-     "column": 1,
-     "type": "empty",
      "eol": false
     }
    ],
@@ -360,7 +328,6 @@
     "blocks": true,
     "partial": true,
     "options": true,
-    "escapeIt": false,
     "requireAs": []
    },
    "documentation": [],

@@ -1,6 +1,5 @@
 <#@ alias 'standalone.njs'#>
 <#@ noContent #>
-<#@ noEscape #>
 <#@ context 'files' #>
 
 const { Factory } = require('fte.js/lib/standalone.fte.js')

@@ -1,0 +1,251 @@
+{
+ "main": [
+  {
+   "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
+   "pos": 73,
+   "line": 4,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 128,
+   "line": 5,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 129,
+   "line": 6,
+   "column": 1,
+   "start": "<#",
+   "end": "-#>",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "import ",
+   "pos": 177,
+   "line": 7,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+   "pos": 186,
+   "line": 7,
+   "column": 10,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": " from '",
+   "pos": 228,
+   "line": 7,
+   "column": 52,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].path",
+   "pos": 235,
+   "line": 7,
+   "column": 59,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "'",
+   "pos": 251,
+   "line": 7,
+   "column": 75,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 253,
+   "line": 8,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 258,
+   "line": 8,
+   "column": 6,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 259,
+   "line": 9,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "const templates = {",
+   "pos": 260,
+   "line": 10,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 280,
+   "line": 11,
+   "column": 1,
+   "start": "<#",
+   "end": "-#>",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "'",
+   "pos": 328,
+   "line": 12,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name",
+   "pos": 331,
+   "line": 12,
+   "column": 4,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "': ",
+   "pos": 347,
+   "line": 12,
+   "column": 20,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+   "pos": 350,
+   "line": 12,
+   "column": 23,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": ",",
+   "pos": 392,
+   "line": 12,
+   "column": 65,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 394,
+   "line": 13,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 399,
+   "line": 13,
+   "column": 6,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 400,
+   "line": 14,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 402,
+   "line": 15,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "const F = new Factory(templates)",
+   "pos": 403,
+   "line": 16,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 436,
+   "line": 17,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "module.exports = (context, name) => {",
+   "pos": 437,
+   "line": 18,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  return F.run( context, name )",
+   "pos": 475,
+   "line": 19,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 507,
+   "line": 20,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  }
+ ],
+ "directives": {
+  "context": "files",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [],
+  "alias": [
+   "standalone.es6.njs"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}

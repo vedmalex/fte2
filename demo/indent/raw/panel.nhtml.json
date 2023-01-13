@@ -1,14 +1,6 @@
 {
  "main": [
   {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
-  },
-  {
    "content": "<div class=\"panel panel-default\">",
    "pos": 351,
    "line": 20,
@@ -80,13 +72,6 @@
    "column": 1,
    "type": "text",
    "eol": false
-  },
-  {
-   "content": "",
-   "pos": 474,
-   "line": 24,
-   "column": 7,
-   "type": "empty"
   }
  ],
  "directives": {
@@ -96,7 +81,6 @@
   "blocks": true,
   "partial": true,
   "options": true,
-  "escapeIt": false,
   "requireAs": [],
   "alias": [
    "panel"
@@ -147,14 +131,6 @@
      "line": 10,
      "column": 1,
      "type": "text",
-     "eol": true
-    },
-    {
-     "content": "",
-     "pos": 213,
-     "line": 11,
-     "column": 1,
-     "type": "empty",
      "eol": false
     }
    ],
@@ -165,7 +141,6 @@
     "blocks": true,
     "partial": true,
     "options": true,
-    "escapeIt": false,
     "requireAs": []
    },
    "documentation": [],
@@ -208,14 +183,6 @@
      "line": 18,
      "column": 1,
      "type": "text",
-     "eol": true
-    },
-    {
-     "content": "",
-     "pos": 341,
-     "line": 19,
-     "column": 1,
-     "type": "empty",
      "eol": false
     }
    ],
@@ -226,7 +193,6 @@
     "blocks": true,
     "partial": true,
     "options": true,
-    "escapeIt": false,
     "requireAs": []
    },
    "documentation": [],

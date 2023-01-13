@@ -1,6 +1,5 @@
 <#@ alias 'singlefile.es6.njs' #>
 <#@ context 'files' #>
-<#@ noEscape #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
 import { Factory } from 'fte.js/lib/standalone.fte.js'

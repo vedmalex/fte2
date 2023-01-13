@@ -1,0 +1,195 @@
+{
+ "main": [
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 81,
+   "line": 5,
+   "column": 1,
+   "start": "<#",
+   "end": "-#>",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "import ",
+   "pos": 129,
+   "line": 6,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+   "pos": 138,
+   "line": 6,
+   "column": 10,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": " from '",
+   "pos": 180,
+   "line": 6,
+   "column": 52,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].path",
+   "pos": 187,
+   "line": 6,
+   "column": 59,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "'",
+   "pos": 203,
+   "line": 6,
+   "column": 75,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 205,
+   "line": 7,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 210,
+   "line": 7,
+   "column": 6,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 211,
+   "line": 8,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "const templates = {",
+   "pos": 212,
+   "line": 9,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 232,
+   "line": 10,
+   "column": 1,
+   "start": "<#",
+   "end": "-#>",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "'",
+   "pos": 280,
+   "line": 11,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name",
+   "pos": 283,
+   "line": 11,
+   "column": 4,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "': ",
+   "pos": 299,
+   "line": 11,
+   "column": 20,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+   "pos": 302,
+   "line": 11,
+   "column": 23,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": ",",
+   "pos": 344,
+   "line": 11,
+   "column": 65,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 346,
+   "line": 12,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 351,
+   "line": 12,
+   "column": 6,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 352,
+   "line": 13,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "export default templates",
+   "pos": 354,
+   "line": 14,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  }
+ ],
+ "directives": {
+  "context": "files",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [],
+  "alias": [
+   "standalone.index.es6.njs"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}

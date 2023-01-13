@@ -20,8 +20,6 @@ exports.default = {
             out.push("\n");
             out.push("alias: " + JSON.stringify(directives.alias) + ",\n");
         }
-        out.push("\n");
-        out.push("\n");
         out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
         out.push(options.applyIndent(content("maincontent", directives), "    ") + "\n");
         out.push("    var out = []\n");
@@ -72,7 +70,7 @@ exports.default = {
                 out.push("    },\n");
             }
             out.push("\n");
-            out.push("  },\n");
+            out.push("  },");
         }
         const slotNames = Object.keys(context.slots);
         if (slotNames.length > 0) {
@@ -152,12 +150,7 @@ exports.default = {
     blocks: {
         "maincontent": function (directives, _content, partial, slot, options) {
             var out = [];
-            if (directives.escapeIt) {
-                out.push("\n");
-                out.push("    const {escapeIt} = options\n");
-                out.push("  ");
-            }
-            if (directives.content) {
+            if (directives?.content) {
                 out.push("\n");
                 out.push("    function content(blockName, ctx) {\n");
                 out.push("      if(ctx === undefined || ctx === null) ctx = " + directives.context + "\n");
@@ -246,7 +239,6 @@ exports.default = {
                 out.push("\n");
                 out.push("  ");
             }
-            out.push("\n");
             return out.join("");
         }
     },

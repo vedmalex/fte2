@@ -3,7 +3,6 @@
   создает структуру кода, для последующей интеграции в другие модули
 *>
 <#@ alias 'MainTemplate.njs' #>
-<#@ noEscape #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
 <#- const { directives } = context -#>
 {
@@ -16,13 +15,8 @@ alias: #{JSON.stringify(directives.alias)},
 
 <# block 'maincontent' : #>
 <#@ context 'directives'#>
-<#@ noEscape #>
 <#@ noContent #>
-  <#- if(directives.escapeIt){#>
-    const {escapeIt} = options
-  <#}-#>
-
-  <#-if(directives.content){#>
+  <#-if(directives?.content){#>
     function content(blockName, ctx) {
       if(ctx === undefined || ctx === null) ctx = #{directives.context}
       return _content(blockName, ctx, content, partial, slot)
@@ -31,7 +25,6 @@ alias: #{JSON.stringify(directives.alias)},
 <# end #>
 <# block 'chunks-start' : #>
   <#@ context 'directives'#>
-  <#@ noEscape #>
   <#@ noContent #>
   <#-if(directives.chunks){#>
     const _partial = partial
@@ -75,7 +68,6 @@ alias: #{JSON.stringify(directives.alias)},
 <# end #>
 <# block 'chunks-finish' : #>
   <#@ context 'directives'#>
-  <#@ noEscape #>
   <#@ noContent #>
   <#if(directives.chunks){#>
     chunkEnd()

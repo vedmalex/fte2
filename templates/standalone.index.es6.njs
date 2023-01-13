@@ -1,7 +1,6 @@
 <#@ alias 'standalone.index.es6.njs' #>
 <#@ context 'files' #>
 <#@ noContent #>
-<#@ noEscape #>
 
 <# for (let i = 0; i < files.length; i+=1){ -#>
   import #{files[i].name.replaceAll(/[\s\.]/g,'_')} from '#{files[i].path}'

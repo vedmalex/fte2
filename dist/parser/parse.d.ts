@@ -55,7 +55,6 @@ export declare class CodeBlockDirectives {
     blocks: boolean;
     partial: boolean;
     options: boolean;
-    escapeIt: boolean;
     promise: boolean;
     callback: boolean;
     requireAs: Array<RequireItem>;
