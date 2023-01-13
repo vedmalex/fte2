@@ -49,7 +49,11 @@ for (var i = 0, len = blockList.length; i < len; i++) {
           res = lasItem + " + "
         }
 
-        const lcont = "escapeIt("+cont+")"
+        let lcont = "escapeIt("+cont+")"
+
+        if(block.indent) {
+          lcont = "options.applyIndent("+lcont+", '"+block.indent+"')"
+        }
 
         if(block.start && block.end){
           res += "("+lcont+")"
@@ -81,6 +85,11 @@ for (var i = 0, len = blockList.length; i < len; i++) {
             res = lasItem+" + "
           }
         }
+
+        if(block.indent) {
+          cont = "options.applyIndent("+cont+", '"+block.indent+"')"
+        }
+
         if(block.start && block.end){
           res += "("+cont+")"
         } else if(block.start){

@@ -23,11 +23,11 @@ exports.default = {
         out.push("\n");
         out.push("\n");
         out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
-        out.push("    " + content("maincontent", directives) + "\n");
+        out.push(options.applyIndent(content("maincontent", directives), "    ") + "\n");
         out.push("    var out = []\n");
-        out.push("    " + content("chunks-start", directives) + "\n");
-        out.push("    " + partial(context.main, "codeblock") + "\n");
-        out.push("    " + content("chunks-finish", directives) + "\n");
+        out.push(options.applyIndent(content("chunks-start", directives), "    ") + "\n");
+        out.push(options.applyIndent(partial(context.main, "codeblock"), "    ") + "\n");
+        out.push(options.applyIndent(content("chunks-finish", directives), "    ") + "\n");
         out.push("    ");
         if (directives.chunks) {
             out.push("\n");
@@ -51,9 +51,9 @@ exports.default = {
             for (let i2 = 0; i2 < blockNames.length; i2 += 1) {
                 const block = context.blocks[blockNames[i2]];
                 out.push('"' + blockNames[i2] + '": function(' + block.directives.context + ",  _content, partial, slot, options) {\n");
-                out.push("      " + content("maincontent", block.directives) + "\n");
+                out.push(options.applyIndent(content("maincontent", block.directives), "      ") + "\n");
                 out.push("      var out = []\n");
-                out.push("      " + partial(block.main, "codeblock"));
+                out.push(options.applyIndent(partial(block.main, "codeblock"), "      "));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -80,9 +80,9 @@ exports.default = {
             for (let i2 = 0; i2 < slotNames.length; i2 += 1) {
                 const slot2 = context.blocks[slotNames[i2]];
                 out.push('"' + slotNames[i2] + '": function(' + slot2.directives.context + ",  _content, partial, slot, options){\n");
-                out.push("      " + content("maincontent", slot2.directives) + "\n");
+                out.push(options.applyIndent(content("maincontent", slot2.directives), "      ") + "\n");
                 out.push("      var out = []\n");
-                out.push("      " + partial(slot2.main, "codeblock"));
+                out.push(options.applyIndent(partial(slot2.main, "codeblock"), "      "));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");

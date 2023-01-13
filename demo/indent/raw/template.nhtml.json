@@ -1,0 +1,372 @@
+{
+ "main": [
+  {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
+   "content": "<!DOCTYPE html>",
+   "pos": 928,
+   "line": 29,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "<html lang=\"en\">",
+   "pos": 944,
+   "line": 30,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 961,
+   "line": 31,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  <head>",
+   "pos": 962,
+   "line": 32,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "    <title>Starter plate</title>",
+   "pos": 971,
+   "line": 33,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  </head>",
+   "pos": 1004,
+   "line": 34,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 1014,
+   "line": 35,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  <body>",
+   "pos": 1015,
+   "line": 36,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "content('nav')",
+   "pos": 1028,
+   "line": 37,
+   "column": 5,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "    "
+  },
+  {
+   "content": "",
+   "pos": 1045,
+   "line": 37,
+   "column": 22,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "content()",
+   "pos": 1050,
+   "line": 38,
+   "column": 5,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "    "
+  },
+  {
+   "content": "",
+   "pos": 1062,
+   "line": 38,
+   "column": 17,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  </body>",
+   "pos": 1063,
+   "line": 39,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 1073,
+   "line": 40,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "</html>",
+   "pos": 1074,
+   "line": 41,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 1082,
+   "line": 42,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 1082,
+   "line": 42,
+   "column": 1,
+   "type": "empty"
+  }
+ ],
+ "directives": {
+  "context": "context",
+  "content": true,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "escapeIt": false,
+  "requireAs": [],
+  "alias": [
+   "template"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {
+  "nav": {
+   "main": [
+    {
+     "content": "<nav class=\"navbar navbar-inverse navbar-fixed-top\">",
+     "pos": 93,
+     "line": 6,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "  <div class=\"container\">",
+     "pos": 146,
+     "line": 7,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "    <div class=\"navbar-header\">",
+     "pos": 172,
+     "line": 8,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\"",
+     "pos": 204,
+     "line": 9,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        aria-expanded=\"false\" aria-controls=\"navbar\">",
+     "pos": 309,
+     "line": 10,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <span class=\"sr-only\">Toggle navigation</span>",
+     "pos": 363,
+     "line": 11,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <span class=\"icon-bar\"></span>",
+     "pos": 418,
+     "line": 12,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <span class=\"icon-bar\"></span>",
+     "pos": 457,
+     "line": 13,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <span class=\"icon-bar\"></span>",
+     "pos": 496,
+     "line": 14,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "      </button>",
+     "pos": 535,
+     "line": 15,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "      <a class=\"navbar-brand\" href=\"#\">Project name</a>",
+     "pos": 551,
+     "line": 16,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "    </div>",
+     "pos": 607,
+     "line": 17,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "    <div id=\"navbar\" class=\"collapse navbar-collapse\">",
+     "pos": 618,
+     "line": 18,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "      <ul class=\"nav navbar-nav\">",
+     "pos": 673,
+     "line": 19,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <li class=\"active\"><a href=\"#\">Home</a></li>",
+     "pos": 707,
+     "line": 20,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <li><a href=\"#about\">About</a></li>",
+     "pos": 760,
+     "line": 21,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "        <li><a href=\"#contact\">Contact</a></li>",
+     "pos": 804,
+     "line": 22,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "      </ul>",
+     "pos": 852,
+     "line": 23,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "    </div>",
+     "pos": 864,
+     "line": 24,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "    <!--/.nav-collapse -->",
+     "pos": 875,
+     "line": 25,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "  </div>",
+     "pos": 902,
+     "line": 26,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "</nav>",
+     "pos": 911,
+     "line": 27,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "",
+     "pos": 918,
+     "line": 28,
+     "column": 1,
+     "type": "empty",
+     "eol": false
+    }
+   ],
+   "directives": {
+    "context": "context",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "escapeIt": false,
+    "requireAs": []
+   },
+   "documentation": [],
+   "slots": {},
+   "blocks": {},
+   "name": "nav"
+  }
+ }
+}

@@ -139,6 +139,7 @@ export interface ParserResult {
 
 export interface Items {
   content?: string
+  indent?: string
   pos: number
   line: number
   column: number
@@ -655,7 +656,7 @@ export class Parser {
         case 'expression':
         case 'expression2':
           if (data) {
-            curr.main.push({
+            const current: Items = {
               content: data,
               pos,
               line,
@@ -664,13 +665,26 @@ export class Parser {
               end,
               type: 'expression',
               eol,
-            })
+            }
+
+            const prev = curr.main.pop()
+            if (
+              prev.type !== 'text' ||
+              (prev.type === 'text' && prev.content.trim().length > 0) ||
+              (prev.type === 'text' && prev.eol)
+            ) {
+              curr.main.push(prev)
+            } else {
+              current.indent = prev.content
+            }
+
+            curr.main.push(current)
           }
           break
         case 'uexpression':
         case 'uexpression2':
           if (data) {
-            curr.main.push({
+            const current: Items = {
               content: data,
               pos,
               line,
@@ -679,7 +693,16 @@ export class Parser {
               end,
               type: 'uexpression',
               eol,
-            })
+            }
+
+            const prev = curr.main.pop()
+            if (prev.type !== 'text' || (prev.type === 'text' && prev.eol)) {
+              curr.main.push(prev)
+            } else {
+              current.indent = prev.content
+            }
+
+            curr.main.push(current)
           }
           break
         case 'text': {
@@ -715,6 +738,8 @@ export class Parser {
           break
       }
     }
+    // здесь у нас полностью обработанный шаблон
+
     return content
   }
 

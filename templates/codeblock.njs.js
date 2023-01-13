@@ -38,7 +38,10 @@ module.exports = {
               let lasItem = out.pop();
               res = lasItem + " + ";
             }
-            const lcont = "escapeIt(" + cont + ")";
+            let lcont = "escapeIt(" + cont + ")";
+            if (block.indent) {
+              lcont = "options.applyIndent(" + lcont + ", '" + block.indent + "')";
+            }
             if (block.start && block.end) {
               res += "(" + lcont + ")";
             } else if (block.start) {
@@ -67,6 +70,9 @@ module.exports = {
                 let lasItem = out.pop();
                 res = lasItem + " + ";
               }
+            }
+            if (block.indent) {
+              cont = "options.applyIndent(" + cont + ", '" + block.indent + "')";
             }
             if (block.start && block.end) {
               res += "(" + cont + ")";

@@ -100,12 +100,12 @@
 - убрать или добавить зависиомсти
 - swc vs esbuild
 
-посмотреть как require делать для модулей при работе с fw.watch
-
-пересмотреть кэширование файлов
-там же сделать invalidate cache
-https://stackoverflow.com/questions/9210542/node-js-require-cache-possible-to-invalidate
-
+[x] посмотреть как require делать для модулей при работе с fw.watch
+    пересмотреть кэширование файлов
+    там же сделать invalidate cache
+    https://stackoverflow.com/questions/9210542/node-js-require-cache-possible-to-invalidate
 
 посмотреть как я использовал slots
+
+любые expression в случае если не стоит noIndent обрабатываю вместе с предыдущими пробелами
 

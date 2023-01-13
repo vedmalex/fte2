@@ -1,0 +1,132 @@
+{
+ "main": [
+  {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
+   "content": "<section>",
+   "pos": 85,
+   "line": 5,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "partial(context, 'panel')",
+   "pos": 97,
+   "line": 6,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 125,
+   "line": 6,
+   "column": 31,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "</section>",
+   "pos": 126,
+   "line": 7,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "<section>",
+   "pos": 137,
+   "line": 8,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 147,
+   "line": 9,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " var extra = { title: 'Another panel', body:'extra!!! content'}",
+   "pos": 147,
+   "line": 9,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 214,
+   "line": 9,
+   "column": 68,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "partial(extra, 'panel')",
+   "pos": 217,
+   "line": 10,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 243,
+   "line": 10,
+   "column": 29,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "</section>",
+   "pos": 244,
+   "line": 11,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 254,
+   "line": 11,
+   "column": 11,
+   "type": "empty"
+  }
+ ],
+ "directives": {
+  "context": "context",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "escapeIt": false,
+  "requireAs": [],
+  "alias": [
+   "index"
+  ],
+  "extend": "template.nhtml"
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}

@@ -1,16 +1,14 @@
 var fs = require('node:fs')
 var path = require('path')
-var { compileFull, parseFile } = require('../../dist/node')
+var compileFull = require('../../dist/node').compileFull
+var compileLight = require('../../dist/node').compileLight
 
 function load(fileName, folder, compile, optimize) {
   var fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
     var content = fs.readFileSync(fn)
-    var result = JSON.stringify(parseFile(content), undefined, ' ')
-    fs.writeFileSync(
-      path.join(folder, path.basename(fileName) + '.json'),
-      result,
-    )
+    var result = compile(content.toString(), optimize)
+    fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), result)
   }
 }
 

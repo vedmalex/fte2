@@ -30,6 +30,7 @@ export interface ParserResult {
 }
 export interface Items {
     content?: string;
+    indent?: string;
     pos: number;
     line: number;
     column: number;

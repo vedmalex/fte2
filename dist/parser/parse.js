@@ -541,7 +541,7 @@ class Parser {
                 case 'expression':
                 case 'expression2':
                     if (data) {
-                        curr.main.push({
+                        const current = {
                             content: data,
                             pos,
                             line,
@@ -550,13 +550,23 @@ class Parser {
                             end,
                             type: 'expression',
                             eol,
-                        });
+                        };
+                        const prev = curr.main.pop();
+                        if (prev.type !== 'text' ||
+                            (prev.type === 'text' && prev.content.trim().length > 0) ||
+                            (prev.type === 'text' && prev.eol)) {
+                            curr.main.push(prev);
+                        }
+                        else {
+                            current.indent = prev.content;
+                        }
+                        curr.main.push(current);
                     }
                     break;
                 case 'uexpression':
                 case 'uexpression2':
                     if (data) {
-                        curr.main.push({
+                        const current = {
                             content: data,
                             pos,
                             line,
@@ -565,7 +575,15 @@ class Parser {
                             end,
                             type: 'uexpression',
                             eol,
-                        });
+                        };
+                        const prev = curr.main.pop();
+                        if (prev.type !== 'text' || (prev.type === 'text' && prev.eol)) {
+                            curr.main.push(prev);
+                        }
+                        else {
+                            current.indent = prev.content;
+                        }
+                        curr.main.push(current);
                     }
                     break;
                 case 'text': {
