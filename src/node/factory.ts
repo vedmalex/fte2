@@ -2,17 +2,36 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as glob from 'glob'
 import { Template } from './template'
-import { TemplateFactoryBase } from './../common/factory'
+import { FactoryConfig, TemplateFactoryBase } from './../common/factory'
 import { safeEval } from './helpers'
+import { FSWatcher, watch } from 'chokidar'
+
 import {
   DefaultFactoryOption,
   HashType,
   SlotsHash,
 } from './../common/interfaces'
+import { TemplateBase } from 'src/common/template'
+
+export interface NodeFactoryConfig<T> extends FactoryConfig<T> {
+  watch?: boolean
+}
 
 export class TemplateFactory<
   T extends DefaultFactoryOption,
 > extends TemplateFactoryBase<T> {
+  // подумать нужно ли делать один общий для все список watchTree
+  public watch = false
+  public watchList = []
+  public watcher: FSWatcher = undefined
+  constructor(config: NodeFactoryConfig<T> = {}) {
+    super(config)
+    this.watch = config && config.watch
+    if (this.watch) {
+      this.watcher = watch([])
+      this.watchList = []
+    }
+  }
   public override load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
@@ -23,8 +42,15 @@ export class TemplateFactory<
       const compiledJS = fn + '.js'
       if (fs.existsSync(compiledJS)) {
         let result
-        const storedScript = fs.readFileSync(compiledJS)
-        result = safeEval(storedScript.toString())
+        // always
+        try {
+          // try to resolve module
+          result = require(compiledJS)
+        } catch (error) {
+          // load as file
+          const storedScript = fs.readFileSync(compiledJS)
+          result = safeEval(storedScript.toString())
+        }
         if (result instanceof Function) {
           result = {
             script: result,
@@ -78,6 +104,14 @@ export class TemplateFactory<
     }
   }
 
+  public standalone(source: string) {
+    const tpl = new Template({
+      source: source,
+      factory: this,
+    })
+    return tpl.compile()
+  }
+
   // создает шаблон из текста
   public create(source: string, name?: string) {
     if (!name) {
@@ -88,14 +122,6 @@ export class TemplateFactory<
     tpl.absPath = name
     this.register(tpl)
     return name
-  }
-
-  public standalone(source: string) {
-    const tpl = new Template({
-      source: source,
-      factory: this,
-    })
-    return tpl.compile()
   }
 
   public override run<T extends Record<string, any>>(
@@ -198,47 +224,37 @@ export class TemplateFactory<
     }
   }
 
-  public clearCache(fn, list) {
+  public clearCache(list) {
     for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
       delete this.cache[list[keys[i]].name]
       delete this.cache[list[keys[i]].absPath]
     }
   }
 
-  public override checkChanges(template, fileName: string, absPath: boolean) {
-    let root
-    for (let i = 0, len = this.root.length; i < len; i++) {
-      root = this.root[i]
-      const fn = absPath
-        ? path.resolve(fileName)
-        : path.resolve(path.join(root, fileName))
-      let fw = undefined
-      if (fs.existsSync(fn + '.js')) {
-        fw = fn + '.js'
-      } else if (fs.existsSync(fn)) {
-        fw = fn
+  public override ensure(fileName: string, absPath?: boolean): TemplateBase<T> {
+    const template = super.ensure(fileName, absPath)
+    if (this.watch) {
+      if (this.watchList.indexOf(template.absPath) == -1) {
+        this.watchList.push(template.absPath)
       }
-      if (fw) {
-        if (!this.watchTree[fw]) {
-          const templates: HashType = {}
-          templates[template.absPath] = template
-          templates[template.name] = template
-          this.watchTree[fw] = {
-            // TODO: use chokidar !!! for fs.watch
-            watcher: fs.watch(fw, { persistent: false }, (event, filename) => {
-              if (event === 'change') {
-                const list = this.watchTree[fw].templates
-                this.clearCache(fw, list)
-              } else {
-                this.watchTree[fw].close()
-                delete this.watchTree[fw]
+      if (this.watchList.length > 0) {
+        if (!this.watcher) {
+          this.watcher = watch(this.watchList)
+          this.watcher.on('change', (filename) => {
+            this.watcher.on('change', (fn) => {
+              const index = this.watchList.indexOf(fn)
+              delete require.cache[fn]
+              const temp = [...this.watchList]
+              this.watcher.unwatch(temp)
+              this.watchList = this.watchList.splice(index, 1)
+              if (this.watchList.length > 0) {
               }
-            }),
-            templates: templates,
-          }
+            })
+          })
+          this.watcher.on('unlink', (filename) => {})
         }
-        break
       }
     }
+    return template
   }
 }

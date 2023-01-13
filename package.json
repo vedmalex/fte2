@@ -50,6 +50,7 @@
     "unionfs": "^4.4.0"
   },
   "dependencies": {
+    "chokidar": "^3.5.3",
     "commander": "^9.5.0",
     "detect-indent": "^6.1.0"
   },

@@ -1,13 +1,18 @@
+<#@ noEscape #>
 <#@ alias "panel" #>
 <#@ context 'panel' #>
 <# block 'title' : #>
 <#@ context 'title' #>
+<#@ noContent #>
+<#@ noEscape #>
 <div class="panel-heading">
   <h3 class="panel-title">#{title}</h3>
 </div>
 <# end #>
 <# block 'body' : #>
 <#@ context 'body' #>
+<#@ noContent #>
+<#@ noEscape #>
 <div class="panel-body">
   #{body}
 </div>

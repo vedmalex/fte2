@@ -1,3 +1,5 @@
+<#@ noEscape #>
+<#@ noContent #>
 <#@ alias "index" #>
 <#@ extend 'template.nhtml' #>
 <section>

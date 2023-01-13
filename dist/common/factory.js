@@ -9,8 +9,6 @@ exports.DefaultFactoryOptions = {
 class TemplateFactoryBase {
     constructor(config = {}) {
         this.ext = [];
-        this.watch = false;
-        this.watchTree = undefined;
         this.root = undefined;
         config.options = { ...config.options, ...exports.DefaultFactoryOptions };
         this.options = config.options;
@@ -22,7 +20,6 @@ class TemplateFactoryBase {
                         : [config.root]
                     : [process.cwd()]
                 : [process.cwd()];
-            this.watch = config && config.watch;
             if (config && config.ext) {
                 if (Array.isArray(config.ext)) {
                     this.ext = config.ext;
@@ -31,7 +28,6 @@ class TemplateFactoryBase {
                     this.ext = [config.ext];
                 }
             }
-            this.watchTree = {};
         }
         this.cache = {};
         if (config && config.preload) {
@@ -54,16 +50,7 @@ class TemplateFactoryBase {
     }
     ensure(fileName, absPath) {
         if (!(fileName in this.cache)) {
-            const template = this.load(fileName, absPath);
-            if (this.watch) {
-                this.checkChanges(template, fileName, absPath);
-                const depList = Object.keys(template.dependency);
-                for (let i = 0, len = depList.length; i < len; i++) {
-                    const templates = this.watchTree[this.cache[depList[i]].absPath].templates;
-                    templates[template.absPath] = template;
-                }
-            }
-            return template;
+            return this.load(fileName, absPath);
         }
         return this.cache[fileName];
     }
@@ -157,9 +144,6 @@ class TemplateFactoryBase {
         return bc;
     }
     preload(fileName) {
-        throw new Error('abstract method call');
-    }
-    checkChanges(template, fileName, absPath) {
         throw new Error('abstract method call');
     }
     load(fileName, absPath) {
