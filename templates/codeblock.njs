@@ -15,11 +15,6 @@ for (var i = 0, len = blockList.length; i < len; i++) {
   var next = (i + 1) < len ? blockList[i+1] : null
   var cont = block?.content
   switch (block.type) {
-    // case 'empty':
-    //   {
-    //     out.push(';')
-    //   }
-    // break;
     case 'text': {
           let res = ''
           if (!textQuote) {

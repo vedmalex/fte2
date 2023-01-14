@@ -5,9 +5,9 @@
 import { Factory } from 'fte.js/lib/standalone.fte.js'
 
 export const templates = {
-<# files.forEach(file=>{-#>
+<#- files.forEach(file=>{ #>
   ['#{(file.template.alias || file.name)}']: #{partial(file.template, 'core')},
-<#}) #>
+<#-}) #>
 }
 
 const F = new Factory(templates)
