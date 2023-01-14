@@ -703,6 +703,7 @@ export class Parser {
         case 'text': {
           state = null
           let actualType: ResultTypes = data || eol ? type : 'empty'
+          // if (!(actualType === 'empty' && eol)) {
           if (actualType !== 'empty') {
             curr.main.push({
               content: data,

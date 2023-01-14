@@ -4,14 +4,14 @@
 *>
 <#@ alias 'MainTemplate.njs' #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
-<#- const { directives } = context #>
+<#- const { directives } = context -#>
 {
-<# if(directives.chunks){#>
+<#- if(directives.chunks){#>
 chunks: #{JSON.stringify(directives.chunks)},
-<#}#>
-<# if(directives.alias){#>
+<#-}#>
+<#- if(directives.alias){#>
 alias: #{JSON.stringify(directives.alias)},
-<#}#>
+<#-}#>
 
 <# block 'maincontent' : #>
 <#@ context 'directives'#>

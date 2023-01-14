@@ -8,16 +8,14 @@ module.exports = {
     }
     var out = [];
     const { directives } = context;
-    out.push("\n");
-    out.push("{\n");
+    out.push("{");
     if (directives.chunks) {
       out.push("\n");
-      out.push("chunks: " + JSON.stringify(directives.chunks) + ",\n");
+      out.push("chunks: " + JSON.stringify(directives.chunks) + ",");
     }
-    out.push("\n");
     if (directives.alias) {
       out.push("\n");
-      out.push("alias: " + JSON.stringify(directives.alias) + ",\n");
+      out.push("alias: " + JSON.stringify(directives.alias) + ",");
     }
     out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
     out.push(options.applyIndent(content("maincontent", directives), "    ") + "\n");

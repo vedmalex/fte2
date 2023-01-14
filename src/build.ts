@@ -12,6 +12,7 @@ function parseTemplate(
   dest: string,
   compile: (
     content: Buffer | string,
+    optimize?: boolean,
   ) => string | Array<{ name: string; content: string }>,
   {
     typescript,
@@ -23,7 +24,7 @@ function parseTemplate(
   const fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
     const content = fs.readFileSync(fn)
-    const result = compile(content)
+    const result = compile(content, false)
     if (typeof result == 'string') {
       path.relative(src, fileName)
       writeFile(

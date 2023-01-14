@@ -11,7 +11,7 @@ module.exports = {
     out.push("  <p>\n");
     out.push("    extended panel\n");
     out.push("  </p>\n");
-    out.push("</div>\n");
+    out.push("</div>");
     return out.join("");
   },
   compile: function() {

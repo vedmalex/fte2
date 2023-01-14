@@ -38,7 +38,7 @@
    "line": 9,
    "column": 1,
    "type": "text",
-   "eol": true
+   "eol": false
   }
  ],
  "directives": {
