@@ -4,21 +4,17 @@
   все встраивается в MainTemplate.njs
 *>
 <#@ alias 'codeblock.njs' #>
-<#@ noEscape #>
 <#@ noContent #>
 <#@ context 'blockList' #>
 <#-
 var textQuote = false
+blockList = blockList.filter(block=>block)
 for (var i = 0, len = blockList.length; i < len; i++) {
+  var last = i === blockList.length - 1
   var block = blockList[i]
   var next = (i + 1) < len ? blockList[i+1] : null
-  var cont = block.content
+  var cont = block?.content
   switch (block.type) {
-    // case 'empty':
-    //   {
-    //     out.push(';')
-    //   }
-    // break;
     case 'text': {
           let res = ''
           if (!textQuote) {
@@ -33,7 +29,7 @@ for (var i = 0, len = blockList.length; i < len; i++) {
             res += JSON.stringify(cont)
           } else {
             res += JSON.stringify(cont + '\n')
-            res += ');\n'
+            res += ');' + (last ? '' : '\n')
             textQuote = false
           }
           out.push(res)
@@ -49,7 +45,11 @@ for (var i = 0, len = blockList.length; i < len; i++) {
           res = lasItem + " + "
         }
 
-        const lcont = "escapeIt("+cont+")"
+        let lcont = "options.escapeIt("+cont+")"
+
+        if(block.indent) {
+          lcont = "options.applyIndent("+lcont+", '"+block.indent+"')"
+        }
 
         if(block.start && block.end){
           res += "("+lcont+")"
@@ -65,8 +65,8 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         if (!block.eol) {
           out.push(res)
         } else {
+          out.push(res+");" + (last ? '' : '\n'))
           textQuote = false
-          out.push(res+");\n")
         }
       }
       break
@@ -81,6 +81,11 @@ for (var i = 0, len = blockList.length; i < len; i++) {
             res = lasItem+" + "
           }
         }
+
+        if(block.indent) {
+          cont = "options.applyIndent("+cont+", '"+block.indent+"')"
+        }
+
         if(block.start && block.end){
           res += "("+cont+")"
         } else if(block.start){
@@ -95,8 +100,8 @@ for (var i = 0, len = blockList.length; i < len; i++) {
         if (!block.eol) {
           out.push(res)
         } else {
+          out.push(res+");" + (last ? '' : '\n'))
           textQuote = false
-          out.push(res+");\n")
         }
       }
       break
@@ -112,6 +117,6 @@ for (var i = 0, len = blockList.length; i < len; i++) {
 }
 if (textQuote) {
   let lasItem = out.pop()
-  out.push(lasItem+");\n")
+  out.push(lasItem+");")
 }
 #>

@@ -1,0 +1,204 @@
+{
+ "main": [
+  {
+   "content": "<div class=\"panel panel-default\">",
+   "pos": 351,
+   "line": 20,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "content('title', panel.title)",
+   "pos": 387,
+   "line": 21,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 419,
+   "line": 21,
+   "column": 35,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "content('body', panel.body)",
+   "pos": 422,
+   "line": 22,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 452,
+   "line": 22,
+   "column": 33,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "content()",
+   "pos": 455,
+   "line": 23,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "",
+   "pos": 467,
+   "line": 23,
+   "column": 15,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "</div>",
+   "pos": 468,
+   "line": 24,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  }
+ ],
+ "directives": {
+  "context": "panel",
+  "content": true,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [],
+  "alias": [
+   "panel"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {
+  "title": {
+   "main": [
+    {
+     "content": "<div class=\"panel-heading\">",
+     "pos": 138,
+     "line": 8,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "  <h3 class=\"panel-title\">",
+     "pos": 166,
+     "line": 9,
+     "column": 1,
+     "type": "text",
+     "eol": false
+    },
+    {
+     "content": "title",
+     "pos": 192,
+     "line": 9,
+     "column": 27,
+     "start": "#{",
+     "end": "}",
+     "type": "expression",
+     "eol": false
+    },
+    {
+     "content": "</h3>",
+     "pos": 200,
+     "line": 9,
+     "column": 35,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "</div>",
+     "pos": 206,
+     "line": 10,
+     "column": 1,
+     "type": "text",
+     "eol": false
+    }
+   ],
+   "directives": {
+    "context": "title",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": []
+   },
+   "documentation": [],
+   "slots": {},
+   "blocks": {},
+   "name": "title"
+  },
+  "body": {
+   "main": [
+    {
+     "content": "<div class=\"panel-body\">",
+     "pos": 299,
+     "line": 16,
+     "column": 1,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "body",
+     "pos": 326,
+     "line": 17,
+     "column": 3,
+     "start": "#{",
+     "end": "}",
+     "type": "expression",
+     "eol": false,
+     "indent": "  "
+    },
+    {
+     "content": "",
+     "pos": 333,
+     "line": 17,
+     "column": 10,
+     "type": "text",
+     "eol": true
+    },
+    {
+     "content": "</div>",
+     "pos": 334,
+     "line": 18,
+     "column": 1,
+     "type": "text",
+     "eol": false
+    }
+   ],
+   "directives": {
+    "context": "body",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": []
+   },
+   "documentation": [],
+   "slots": {},
+   "blocks": {},
+   "name": "body"
+  }
+ }
+}

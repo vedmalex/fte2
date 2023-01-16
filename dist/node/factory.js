@@ -30,7 +30,13 @@ const glob = __importStar(require("glob"));
 const template_1 = require("./template");
 const factory_1 = require("./../common/factory");
 const helpers_1 = require("./helpers");
+const chokidar_1 = require("chokidar");
 class TemplateFactory extends factory_1.TemplateFactoryBase {
+    constructor() {
+        super(...arguments);
+        this.watchList = [];
+        this.watcher = undefined;
+    }
     load(fileName, absPath) {
         let root;
         for (let i = 0, len = this.root.length; i < len; i++) {
@@ -41,8 +47,13 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             const compiledJS = fn + '.js';
             if (fs.existsSync(compiledJS)) {
                 let result;
-                const storedScript = fs.readFileSync(compiledJS);
-                result = (0, helpers_1.safeEval)(storedScript.toString());
+                try {
+                    result = require(compiledJS);
+                }
+                catch (error) {
+                    const storedScript = fs.readFileSync(compiledJS);
+                    result = (0, helpers_1.safeEval)(storedScript.toString());
+                }
                 if (result instanceof Function) {
                     result = {
                         script: result,
@@ -94,6 +105,13 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             this.load(files[i]);
         }
     }
+    standalone(source) {
+        const tpl = new template_1.Template({
+            source: source,
+            factory: this,
+        });
+        return tpl.compile();
+    }
     create(source, name) {
         if (!name) {
             name = 'freegenerated' + Math.random().toString() + '.js';
@@ -103,13 +121,6 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
         tpl.absPath = name;
         this.register(tpl);
         return name;
-    }
-    standalone(source) {
-        const tpl = new template_1.Template({
-            source: source,
-            factory: this,
-        });
-        return tpl.compile();
     }
     run(context, name, absPath) {
         const templ = this.ensure(name, absPath);
@@ -145,14 +156,6 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             throw new Error("cant't use template with chunks as partial");
         }
     }
-    blocksToFiles(context, name, absPath) {
-        const templ = this.ensure(name, absPath);
-        const bc = this.blockContent(templ);
-        return Object.keys(templ.blocks).map((curr) => ({
-            file: curr,
-            content: bc.content(curr, context, bc.content, bc.partial, bc.slot),
-        }));
-    }
     express() {
         const self = this;
         return (fileName, context, callback) => {
@@ -170,48 +173,44 @@ class TemplateFactory extends factory_1.TemplateFactoryBase {
             }
         };
     }
-    clearCache(fn, list) {
-        for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
-            delete this.cache[list[keys[i]].name];
-            delete this.cache[list[keys[i]].absPath];
-        }
+    clearCache(template) {
+        delete this.cache[template.name];
+        delete this.cache[template.absPath];
+        template.alias.forEach((alias) => {
+            delete this.cache[alias];
+        });
     }
-    checkChanges(template, fileName, absPath) {
-        let root;
-        for (let i = 0, len = this.root.length; i < len; i++) {
-            root = this.root[i];
-            const fn = absPath
-                ? path.resolve(fileName)
-                : path.resolve(path.join(root, fileName));
-            let fw = undefined;
-            if (fs.existsSync(fn + '.js')) {
-                fw = fn + '.js';
+    ensure(fileName, absPath) {
+        const template = super.ensure(fileName, absPath);
+        if (this.watch) {
+            if (!this.watchList)
+                this.watchList = [];
+            if (!this.watcher) {
+                this.watcher = (0, chokidar_1.watch)(this.watchList);
+                this.watcher.on('change', (fn) => {
+                    const template = this.cache[fn];
+                    this.clearCache(template);
+                    this.ensure(template.absPath, true);
+                    delete require.cache[fn];
+                });
+                this.watcher.on('unlink', (fn) => {
+                    this.clearCache(this.cache[fn]);
+                    const index = this.watchList.indexOf(fn);
+                    delete require.cache[fn];
+                    const temp = [...this.watchList];
+                    this.watcher.unwatch(temp);
+                    this.watchList = this.watchList.splice(index, 1);
+                    if (this.watchList.length > 0) {
+                        this.watcher.add(temp);
+                    }
+                });
             }
-            else if (fs.existsSync(fn)) {
-                fw = fn;
-            }
-            if (fw) {
-                if (!this.watchTree[fw]) {
-                    const templates = {};
-                    templates[template.absPath] = template;
-                    templates[template.name] = template;
-                    this.watchTree[fw] = {
-                        watcher: fs.watch(fw, { persistent: false }, (event, filename) => {
-                            if (event === 'change') {
-                                const list = this.watchTree[fw].templates;
-                                this.clearCache(fw, list);
-                            }
-                            else {
-                                this.watchTree[fw].close();
-                                delete this.watchTree[fw];
-                            }
-                        }),
-                        templates: templates,
-                    };
-                }
-                break;
+            if (this.watchList.indexOf(template.absPath) == -1) {
+                this.watchList.push(template.absPath);
+                this.watcher.add(template.absPath);
             }
         }
+        return template;
     }
 }
 exports.TemplateFactory = TemplateFactory;

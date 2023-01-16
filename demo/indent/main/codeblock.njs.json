@@ -1,0 +1,916 @@
+{
+ "main": [
+  {
+   "content": "var textQuote = false",
+   "pos": 174,
+   "line": 10,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "blockList = blockList.filter(block=>block)",
+   "pos": 196,
+   "line": 11,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "for (var i = 0, len = blockList.length; i < len; i++) {",
+   "pos": 239,
+   "line": 12,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  var last = i === blockList.length - 1",
+   "pos": 295,
+   "line": 13,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  var block = blockList[i]",
+   "pos": 335,
+   "line": 14,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  var next = (i + 1) < len ? blockList[i+1] : null",
+   "pos": 362,
+   "line": 15,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  var cont = block?.content",
+   "pos": 413,
+   "line": 16,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  switch (block.type) {",
+   "pos": 441,
+   "line": 17,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    // case 'empty':",
+   "pos": 465,
+   "line": 18,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    //   {",
+   "pos": 486,
+   "line": 19,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    //     out.push(';')",
+   "pos": 497,
+   "line": 20,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    //   }",
+   "pos": 522,
+   "line": 21,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    // break;",
+   "pos": 533,
+   "line": 22,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'text': {",
+   "pos": 547,
+   "line": 23,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          let res = ''",
+   "pos": 566,
+   "line": 24,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          if (!textQuote) {",
+   "pos": 589,
+   "line": 25,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            textQuote = true",
+   "pos": 617,
+   "line": 26,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res = 'out.push('",
+   "pos": 646,
+   "line": 27,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          } else {",
+   "pos": 676,
+   "line": 28,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            let lasItem = out.pop()",
+   "pos": 695,
+   "line": 29,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res = lasItem + \" + \"",
+   "pos": 731,
+   "line": 30,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          }",
+   "pos": 765,
+   "line": 31,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          if (!block.eol) {",
+   "pos": 778,
+   "line": 33,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res += JSON.stringify(cont)",
+   "pos": 806,
+   "line": 34,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          } else {",
+   "pos": 846,
+   "line": 35,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res += JSON.stringify(cont + '\\n')",
+   "pos": 865,
+   "line": 36,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res += ');' + (last ? '' : '\\n')",
+   "pos": 912,
+   "line": 37,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            textQuote = false",
+   "pos": 957,
+   "line": 38,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          }",
+   "pos": 987,
+   "line": 39,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res)",
+   "pos": 999,
+   "line": 40,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 1023,
+   "line": 41,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 1031,
+   "line": 42,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'uexpression': {",
+   "pos": 1043,
+   "line": 43,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        let res = ''",
+   "pos": 1069,
+   "line": 44,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if (!textQuote) {",
+   "pos": 1090,
+   "line": 45,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = true",
+   "pos": 1116,
+   "line": 46,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res = 'out.push('",
+   "pos": 1143,
+   "line": 47,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 1171,
+   "line": 48,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          let lasItem = out.pop()",
+   "pos": 1188,
+   "line": 49,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res = lasItem + \" + \"",
+   "pos": 1222,
+   "line": 50,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1254,
+   "line": 51,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        let lcont = \"options.escapeIt(\"+cont+\")\"",
+   "pos": 1265,
+   "line": 53,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if(block.indent) {",
+   "pos": 1315,
+   "line": 55,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          lcont = \"options.applyIndent(\"+lcont+\", '\"+block.indent+\"')\"",
+   "pos": 1342,
+   "line": 56,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1413,
+   "line": 57,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if(block.start && block.end){",
+   "pos": 1424,
+   "line": 59,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += \"(\"+lcont+\")\"",
+   "pos": 1462,
+   "line": 60,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else if(block.start){",
+   "pos": 1493,
+   "line": 61,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += \"(\"+lcont",
+   "pos": 1525,
+   "line": 62,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else if(block.end){",
+   "pos": 1552,
+   "line": 63,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += lcont+\")\"",
+   "pos": 1582,
+   "line": 64,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 1609,
+   "line": 65,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += lcont",
+   "pos": 1626,
+   "line": 66,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1649,
+   "line": 67,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        //here always textQuote == true",
+   "pos": 1660,
+   "line": 69,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if (!block.eol) {",
+   "pos": 1700,
+   "line": 70,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res)",
+   "pos": 1726,
+   "line": 71,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 1750,
+   "line": 72,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
+   "pos": 1767,
+   "line": 73,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = false",
+   "pos": 1817,
+   "line": 74,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1845,
+   "line": 75,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 1855,
+   "line": 76,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 1863,
+   "line": 77,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'expression': {",
+   "pos": 1875,
+   "line": 78,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        let res = ''",
+   "pos": 1900,
+   "line": 79,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if (!textQuote) {",
+   "pos": 1921,
+   "line": 80,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = true",
+   "pos": 1947,
+   "line": 81,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res = 'out.push('",
+   "pos": 1974,
+   "line": 82,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 2002,
+   "line": 83,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          if(block.start){",
+   "pos": 2019,
+   "line": 84,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            let lasItem = out.pop()",
+   "pos": 2046,
+   "line": 85,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "            res = lasItem+\" + \"",
+   "pos": 2082,
+   "line": 86,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          }",
+   "pos": 2114,
+   "line": 87,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 2126,
+   "line": 88,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if(block.indent) {",
+   "pos": 2137,
+   "line": 90,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          cont = \"options.applyIndent(\"+cont+\", '\"+block.indent+\"')\"",
+   "pos": 2164,
+   "line": 91,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 2233,
+   "line": 92,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if(block.start && block.end){",
+   "pos": 2244,
+   "line": 94,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += \"(\"+cont+\")\"",
+   "pos": 2282,
+   "line": 95,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else if(block.start){",
+   "pos": 2312,
+   "line": 96,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += \"(\"+cont",
+   "pos": 2344,
+   "line": 97,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else if(block.end){",
+   "pos": 2370,
+   "line": 98,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += cont+\")\"",
+   "pos": 2400,
+   "line": 99,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 2426,
+   "line": 100,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          res += cont",
+   "pos": 2443,
+   "line": 101,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 2465,
+   "line": 102,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        //here always textQuote == true",
+   "pos": 2476,
+   "line": 104,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if (!block.eol) {",
+   "pos": 2516,
+   "line": 105,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res)",
+   "pos": 2542,
+   "line": 106,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        } else {",
+   "pos": 2566,
+   "line": 107,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
+   "pos": 2583,
+   "line": 108,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = false",
+   "pos": 2633,
+   "line": 109,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 2661,
+   "line": 110,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 2671,
+   "line": 111,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 2679,
+   "line": 112,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'code':",
+   "pos": 2691,
+   "line": 113,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      if (textQuote) {",
+   "pos": 2708,
+   "line": 114,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        let item = out.pop()",
+   "pos": 2731,
+   "line": 115,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        out.push(item+\");\\n\")",
+   "pos": 2760,
+   "line": 116,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        textQuote = false",
+   "pos": 2790,
+   "line": 117,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 2816,
+   "line": 118,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      out.push(cont + ((block.eol || next?.type != 'code') ? '\\n' : ''))",
+   "pos": 2824,
+   "line": 119,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 2897,
+   "line": 120,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  }",
+   "pos": 2909,
+   "line": 121,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 2913,
+   "line": 122,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "if (textQuote) {",
+   "pos": 2915,
+   "line": 123,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  let lasItem = out.pop()",
+   "pos": 2932,
+   "line": 124,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "  out.push(lasItem+\");\")",
+   "pos": 2958,
+   "line": 125,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 2983,
+   "line": 126,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  }
+ ],
+ "directives": {
+  "context": "blockList",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [],
+  "alias": [
+   "codeblock.njs"
+  ]
+ },
+ "documentation": [
+  {
+   "content": "  создает струкруру блока кода",
+   "pos": 3,
+   "line": 2,
+   "column": 1,
+   "type": "comments",
+   "eol": true
+  },
+  {
+   "content": "  текст или выражение",
+   "pos": 34,
+   "line": 3,
+   "column": 1,
+   "type": "comments",
+   "eol": true
+  },
+  {
+   "content": "  все встраивается в MainTemplate.njs",
+   "pos": 56,
+   "line": 4,
+   "column": 1,
+   "type": "comments",
+   "eol": true
+  }
+ ],
+ "slots": {},
+ "blocks": {}
+}

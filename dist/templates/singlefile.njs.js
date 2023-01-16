@@ -6,9 +6,10 @@ exports.default = {
         var out = [];
         out.push("const { Factory } = require('fte.js/lib/standalone.fte.js')\n");
         out.push("\n");
-        out.push("const templates = {\n");
+        out.push("const templates = {");
         files.forEach((file) => {
-            out.push("['" + (file.template.alias || file.name) + "']: " + partial(file.template, "core") + ",\n");
+            out.push("\n");
+            out.push("  ['" + (file.template.alias || file.name) + "']: " + partial(file.template, "core") + ",");
         });
         out.push("\n");
         out.push("}\n");

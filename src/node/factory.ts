@@ -2,18 +2,24 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as glob from 'glob'
 import { Template } from './template'
-import { TemplateFactoryBase } from './../common/factory'
+import { FactoryConfig, TemplateFactoryBase } from './../common/factory'
 import { safeEval } from './helpers'
+import { FSWatcher, watch } from 'chokidar'
+
 import {
   DefaultFactoryOption,
   HashType,
   SlotsHash,
 } from './../common/interfaces'
+import { TemplateBase } from 'src/common/template'
 
 export class TemplateFactory<
   T extends DefaultFactoryOption,
 > extends TemplateFactoryBase<T> {
-  public load(fileName: string, absPath?: boolean) {
+  // подумать нужно ли делать один общий для все список watchTree
+  public watchList: Array<string> = []
+  public watcher: FSWatcher = undefined
+  public override load(fileName: string, absPath?: boolean) {
     let root
     for (let i = 0, len = this.root.length; i < len; i++) {
       root = this.root[i]
@@ -23,12 +29,15 @@ export class TemplateFactory<
       const compiledJS = fn + '.js'
       if (fs.existsSync(compiledJS)) {
         let result
-        // if (this.debug) {
-        // 	result = require(compiledJS);
-        // } else {
-        const storedScript = fs.readFileSync(compiledJS)
-        result = safeEval(storedScript.toString())
-        // }
+        // always
+        try {
+          // try to resolve module
+          result = require(compiledJS)
+        } catch (error) {
+          // load as file
+          const storedScript = fs.readFileSync(compiledJS)
+          result = safeEval(storedScript.toString())
+        }
         if (result instanceof Function) {
           result = {
             script: result,
@@ -64,7 +73,7 @@ export class TemplateFactory<
     throw new Error(`template ${fileName} not found (absPath= ${absPath} )`)
   }
 
-  public preload() {
+  public override preload() {
     let files = []
     for (let i = 0, rLen = this.root.length; i < rLen; i++) {
       for (let j = 0, eLen = this.ext.length; j < eLen; j++) {
@@ -82,6 +91,14 @@ export class TemplateFactory<
     }
   }
 
+  public standalone(source: string) {
+    const tpl = new Template({
+      source: source,
+      factory: this,
+    })
+    return tpl.compile()
+  }
+
   // создает шаблон из текста
   public create(source: string, name?: string) {
     if (!name) {
@@ -94,15 +111,7 @@ export class TemplateFactory<
     return name
   }
 
-  public standalone(source: string) {
-    const tpl = new Template({
-      source: source,
-      factory: this,
-    })
-    return tpl.compile()
-  }
-
-  public run<T extends Record<string, any>>(
+  public override run<T extends Record<string, any>>(
     context: HashType,
     name: string,
     absPath?: boolean,
@@ -158,7 +167,7 @@ export class TemplateFactory<
     }
   }
 
-  public runPartial<T extends Record<string, any>>({
+  public override runPartial<T extends Record<string, any>>({
     context,
     name,
     absPath,
@@ -186,22 +195,6 @@ export class TemplateFactory<
     }
   }
 
-  public blocksToFiles(
-    context: HashType,
-    name: string,
-    absPath?: boolean,
-  ): Array<{
-    file: string
-    content: string | Array<{ name: string; content: string }>
-  }> {
-    const templ = this.ensure(name, absPath)
-    const bc = this.blockContent(templ)
-    return Object.keys(templ.blocks).map((curr) => ({
-      file: curr,
-      content: bc.content(curr, context, bc.content, bc.partial, bc.slot),
-    }))
-  }
-
   public express() {
     const self = this
     return (fileName, context, callback) => {
@@ -218,47 +211,45 @@ export class TemplateFactory<
     }
   }
 
-  public clearCache(fn, list) {
-    for (let i = 0, keys = Object.keys(list), len = keys.length; i < len; i++) {
-      delete this.cache[list[keys[i]].name]
-      delete this.cache[list[keys[i]].absPath]
-    }
+  public clearCache(template: TemplateBase<T>) {
+    delete this.cache[template.name]
+    delete this.cache[template.absPath]
+    template.alias.forEach((alias) => {
+      delete this.cache[alias]
+    })
   }
 
-  public checkChanges(template, fileName: string, absPath: boolean) {
-    let root
-    for (let i = 0, len = this.root.length; i < len; i++) {
-      root = this.root[i]
-      const fn = absPath
-        ? path.resolve(fileName)
-        : path.resolve(path.join(root, fileName))
-      let fw = undefined
-      if (fs.existsSync(fn + '.js')) {
-        fw = fn + '.js'
-      } else if (fs.existsSync(fn)) {
-        fw = fn
-      }
-      if (fw) {
-        if (!this.watchTree[fw]) {
-          const templates: HashType = {}
-          templates[template.absPath] = template
-          templates[template.name] = template
-          this.watchTree[fw] = {
-            // TODO: use chokidar !!! for fs.watch
-            watcher: fs.watch(fw, { persistent: false }, (event, filename) => {
-              if (event === 'change') {
-                const list = this.watchTree[fw].templates
-                this.clearCache(fw, list)
-              } else {
-                this.watchTree[fw].close()
-                delete this.watchTree[fw]
-              }
-            }),
-            templates: templates,
+  public override ensure(fileName: string, absPath?: boolean): TemplateBase<T> {
+    const template = super.ensure(fileName, absPath)
+    if (this.watch) {
+      if (!this.watchList) this.watchList = []
+      if (!this.watcher) {
+        this.watcher = watch(this.watchList)
+
+        this.watcher.on('change', (fn: string) => {
+          const template = this.cache[fn]
+          this.clearCache(template)
+          this.ensure(template.absPath, true)
+          delete require.cache[fn]
+        })
+
+        this.watcher.on('unlink', (fn: string) => {
+          this.clearCache(this.cache[fn])
+          const index = this.watchList.indexOf(fn)
+          delete require.cache[fn]
+          const temp = [...this.watchList]
+          this.watcher.unwatch(temp)
+          this.watchList = this.watchList.splice(index, 1)
+          if (this.watchList.length > 0) {
+            this.watcher.add(temp)
           }
-        }
-        break
+        })
+      }
+      if (this.watchList.indexOf(template.absPath) == -1) {
+        this.watchList.push(template.absPath)
+        this.watcher.add(template.absPath)
       }
     }
+    return template
   }
 }

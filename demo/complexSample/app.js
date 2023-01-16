@@ -16,7 +16,7 @@ var index = new fte({
   root: path.join(__dirname, 'views'),
   watch: true,
   preload: true,
-  ext: 'nhtml',
+  ext: ['nhtml'],
 })
 
 // app.set('views', path.join(__dirname, 'views'));

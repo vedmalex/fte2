@@ -86,7 +86,6 @@ const directives = [
     'noOptions',
     'promise',
     'callback',
-    'noEscape',
     'requireAs',
 ];
 function detectDirective(input) {
@@ -116,7 +115,6 @@ class CodeBlockDirectives {
         this.blocks = true;
         this.partial = true;
         this.options = true;
-        this.escapeIt = true;
         this.requireAs = [];
     }
     push(init) {
@@ -161,14 +159,10 @@ class CodeBlockDirectives {
             case 'callback':
                 this.callback = true;
                 break;
-            case 'noEscape':
-                this.escapeIt = false;
-                break;
             case 'requireAs':
                 this.requireAs.push({ name: params[0], alias: params[1] });
                 break;
             default:
-                console.log('unknown directive: ' + name);
         }
     }
 }
@@ -215,6 +209,11 @@ const UNPARAM = (str) => {
     }
 };
 class Parser {
+    static parse(text, options = {}) {
+        const parser = new Parser(typeof text == 'string' ? text : text.toString(), options);
+        parser.parse();
+        return parser.process();
+    }
     constructor(value, options) {
         this.pos = 0;
         this.line = 1;
@@ -231,11 +230,6 @@ class Parser {
         this.globalState = Parser.INITIAL_STATE;
         this.buffer = value.toString();
         this.size = this.buffer.length;
-    }
-    static parse(text, options = {}) {
-        const parser = new Parser(typeof text == 'string' ? text : text.toString(), options);
-        parser.parse();
-        return parser.process();
     }
     collect() {
         const { term, eol } = this.SYMBOL();
@@ -348,7 +342,7 @@ class Parser {
                 do {
                     if (curr.main.length > 0) {
                         let prev = curr.main[curr.main.length - 1];
-                        if (prev.type == 'text') {
+                        if (prev?.type == 'text') {
                             prev.content = prev.content.trimEnd();
                             if (!prev.content) {
                                 curr.main.pop();
@@ -541,7 +535,7 @@ class Parser {
                 case 'expression':
                 case 'expression2':
                     if (data) {
-                        curr.main.push({
+                        const current = {
                             content: data,
                             pos,
                             line,
@@ -550,13 +544,23 @@ class Parser {
                             end,
                             type: 'expression',
                             eol,
-                        });
+                        };
+                        const prev = curr.main.pop();
+                        if (prev?.type !== 'text' ||
+                            (prev?.type === 'text' && prev?.content.trim().length > 0) ||
+                            (prev?.type === 'text' && prev?.eol)) {
+                            curr.main.push(prev);
+                        }
+                        else {
+                            current.indent = prev.content;
+                        }
+                        curr.main.push(current);
                     }
                     break;
                 case 'uexpression':
                 case 'uexpression2':
                     if (data) {
-                        curr.main.push({
+                        const current = {
                             content: data,
                             pos,
                             line,
@@ -565,22 +569,32 @@ class Parser {
                             end,
                             type: 'uexpression',
                             eol,
-                        });
+                        };
+                        const prev = curr.main.pop();
+                        if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
+                            curr.main.push(prev);
+                        }
+                        else {
+                            current.indent = prev.content;
+                        }
+                        curr.main.push(current);
                     }
                     break;
                 case 'text': {
                     state = null;
                     let actualType = data || eol ? type : 'empty';
-                    curr.main.push({
-                        content: data,
-                        pos,
-                        line,
-                        column,
-                        start,
-                        end,
-                        type: actualType,
-                        eol,
-                    });
+                    if (actualType !== 'empty') {
+                        curr.main.push({
+                            content: data,
+                            pos,
+                            line,
+                            column,
+                            start,
+                            end,
+                            type: actualType,
+                            eol,
+                        });
+                    }
                     break;
                 }
                 case 'comments':

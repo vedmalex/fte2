@@ -1,5 +1,4 @@
 declare let process: { browser: boolean; cwd: () => string }
-
 import { TemplateBase } from './template'
 import {
   HashType,
@@ -19,31 +18,28 @@ export const DefaultFactoryOptions: DefaultFactoryOption = {
   escapeIt,
 }
 
+export interface FactoryConfig<T> {
+  root?: string | Array<string>
+  ext?: Array<string>
+  preload?: boolean
+  options?: T
+  watch?: boolean
+}
+
 /**
  * template factory -- it instantiate the templates
  */
 export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
   public ext: Array<string> = []
   public cache: HashTypeGeneric<TemplateBase<T>>
-  public debug = false
-  public watch = false
-  // подумать нужно ли делать один общий для все список watchTree
-  public watchTree = undefined
   public root = undefined
   public options: T
+  public watch = false
 
-  constructor(
-    config: {
-      root?: string | Array<string>
-      debug?: boolean
-      watch?: boolean
-      ext?: Array<string>
-      preload?: boolean
-      options?: T
-    } = {},
-  ) {
+  constructor(config: FactoryConfig<T> = {}) {
     config.options = { ...config.options, ...DefaultFactoryOptions }
     this.options = config.options
+    this.watch = config && config.watch
     if (!process.browser) {
       // this only need in server-side code with server load code
       this.root = config
@@ -53,8 +49,6 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
             : [config.root]
           : [process.cwd()]
         : [process.cwd()]
-      this.debug = (config && config.debug) || false
-      this.watch = config && config.watch
 
       if (config && config.ext) {
         if (Array.isArray(config.ext)) {
@@ -63,7 +57,6 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
           this.ext = [config.ext]
         }
       }
-      this.watchTree = {}
     }
     this.cache = {}
     if (config && config.preload) {
@@ -87,17 +80,7 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
 
   public ensure(fileName: string, absPath?: boolean): TemplateBase<T> {
     if (!(fileName in this.cache)) {
-      const template = this.load(fileName, absPath)
-      if (this.watch) {
-        this.checkChanges(template, fileName, absPath)
-        const depList = Object.keys(template.dependency)
-        for (let i = 0, len = depList.length; i < len; i++) {
-          const templates =
-            this.watchTree[this.cache[depList[i]].absPath].templates
-          templates[template.absPath] = template
-        }
-      }
-      return template
+      return this.load(fileName, absPath)
     }
     return this.cache[fileName]
   }
@@ -210,10 +193,6 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     throw new Error('abstract method call')
   }
 
-  public checkChanges(template?: any, fileName?: any, absPath?: boolean) {
-    throw new Error('abstract method call')
-  }
-
   public load(fileName: string, absPath: boolean): TemplateBase<T> {
     throw new Error('abstract method call')
   }
@@ -241,6 +220,3 @@ export abstract class TemplateFactoryBase<T extends DefaultFactoryOption> {
     throw new Error('abstract method call')
   }
 }
-
-// надо удалить так же все watcher Зависимости обновляемого шаблона,
-// в случае его удаления из кэша, и так же не использовать массив, а

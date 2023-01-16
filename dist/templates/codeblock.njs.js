@@ -5,10 +5,12 @@ exports.default = {
     script: function (blockList, _content, partial, slot, options) {
         var out = [];
         var textQuote = false;
+        blockList = blockList.filter((block2) => block2);
         for (var i = 0, len = blockList.length; i < len; i++) {
+            var last = i === blockList.length - 1;
             var block = blockList[i];
             var next = i + 1 < len ? blockList[i + 1] : null;
-            var cont = block.content;
+            var cont = block?.content;
             switch (block.type) {
                 case "text":
                     {
@@ -26,7 +28,7 @@ exports.default = {
                         }
                         else {
                             res += JSON.stringify(cont + "\n");
-                            res += ");\n";
+                            res += ");" + (last ? "" : "\n");
                             textQuote = false;
                         }
                         out.push(res);
@@ -43,7 +45,10 @@ exports.default = {
                             let lasItem = out.pop();
                             res = lasItem + " + ";
                         }
-                        const lcont = "escapeIt(" + cont + ")";
+                        let lcont = "options.escapeIt(" + cont + ")";
+                        if (block.indent) {
+                            lcont = "options.applyIndent(" + lcont + ", '" + block.indent + "')";
+                        }
                         if (block.start && block.end) {
                             res += "(" + lcont + ")";
                         }
@@ -60,8 +65,8 @@ exports.default = {
                             out.push(res);
                         }
                         else {
+                            out.push(res + ");" + (last ? "" : "\n"));
                             textQuote = false;
-                            out.push(res + ");\n");
                         }
                     }
                     break;
@@ -77,6 +82,9 @@ exports.default = {
                                 let lasItem = out.pop();
                                 res = lasItem + " + ";
                             }
+                        }
+                        if (block.indent) {
+                            cont = "options.applyIndent(" + cont + ", '" + block.indent + "')";
                         }
                         if (block.start && block.end) {
                             res += "(" + cont + ")";
@@ -94,8 +102,8 @@ exports.default = {
                             out.push(res);
                         }
                         else {
+                            out.push(res + ");" + (last ? "" : "\n"));
                             textQuote = false;
-                            out.push(res + ");\n");
                         }
                     }
                     break;
@@ -111,7 +119,7 @@ exports.default = {
         }
         if (textQuote) {
             let lasItem = out.pop();
-            out.push(lasItem + ");\n");
+            out.push(lasItem + ");");
         }
         return out.join("");
     },

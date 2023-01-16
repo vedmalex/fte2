@@ -2,16 +2,17 @@ export default {
   alias: ["standalone.es6.njs"],
   script: function(files, _content, partial, slot, options) {
     var out = [];
-    out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'\n");
-    out.push("\n");
+    out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'");
     for (let i = 0; i < files.length; i += 1) {
-      out.push("import " + files[i].name.replaceAll(/[\s\.]/g, "_") + " from '" + files[i].path + "'\n");
+      out.push("\n");
+      out.push("  import " + files[i].name.replaceAll(/[\s\.]/g, "_") + " from '" + files[i].path + "'");
     }
     out.push("\n");
     out.push("\n");
-    out.push("const templates = {\n");
+    out.push("const templates = {");
     for (let i = 0; i < files.length; i += 1) {
-      out.push("'" + files[i].name + "': " + files[i].name.replaceAll(/[\s\.]/g, "_") + ",\n");
+      out.push("\n");
+      out.push("  '" + files[i].name + "': " + files[i].name.replaceAll(/[\s\.]/g, "_") + ",");
     }
     out.push("\n");
     out.push("}\n");

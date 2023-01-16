@@ -36,9 +36,9 @@ export function makeFunction(fnDef, name) {
   }
 }
 
-export function makeTemplate(src: string) {
+export function makeTemplate(src: string, optimize: boolean = true) {
   let result
-  const compiled = compileTemplate(src)
+  const compiled = compileTemplate(src, optimize)
   try {
     result = safeEval(compiled)
   } catch (error) {

@@ -1,5 +1,5 @@
 /// <reference types="node" />
-export declare type StateDefinition = {
+export type StateDefinition = {
     start?: Array<string>;
     end?: Array<string>;
     skip?: {
@@ -12,8 +12,8 @@ export declare type StateDefinition = {
         [key: string]: ResultTypes;
     };
 };
-export declare type ResultTypes = 'unknown' | 'expression' | 'uexpression' | 'expression2' | 'uexpression2' | 'code' | 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'text' | 'skip' | 'empty';
-export declare type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null;
+export type ResultTypes = 'unknown' | 'expression' | 'uexpression' | 'expression2' | 'uexpression2' | 'code' | 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'text' | 'skip' | 'empty';
+export type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null;
 declare const globalStates: {
     [key: string]: StateDefinition;
 };
@@ -30,6 +30,7 @@ export interface ParserResult {
 }
 export interface Items {
     content?: string;
+    indent?: string;
     pos: number;
     line: number;
     column: number;
@@ -38,7 +39,7 @@ export interface Items {
     eol: boolean;
     type: ResultTypes;
 }
-export declare type RequireItem = {
+export type RequireItem = {
     name: string;
     alias: string;
 };
@@ -54,7 +55,6 @@ export declare class CodeBlockDirectives {
     blocks: boolean;
     partial: boolean;
     options: boolean;
-    escapeIt: boolean;
     promise: boolean;
     callback: boolean;
     requireAs: Array<RequireItem>;

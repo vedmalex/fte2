@@ -1,31 +1,31 @@
-var fs = require('fs-extra');
-var path = require('path');
-var compileFull = require('../../dist/node').compileFull;
-var compileLight = require('../../dist/node').compileLight;
+var fs = require('node:fs')
+var path = require('path')
+var compileFull = require('../../dist/node').compileFull
+var compileLight = require('../../dist/node').compileLight
 
 function load(fileName, folder, compile, optimize) {
-  fs.ensureDirSync(folder);
-  var fn = path.resolve(fileName);
+  // fs.ensureDirSync(folder)
+  var fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
-    var content = fs.readFileSync(fn);
-    var result = compile(content.toString(), optimize);
-    fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), result);
+    var content = fs.readFileSync(fn)
+    var result = compile(content.toString(), optimize)
+    fs.writeFileSync(path.join(folder, path.basename(fileName) + '.js'), result)
   }
 }
 
-var files = fs.readdirSync('raw');
-var stat;
+var files = fs.readdirSync('./raw')
+var stat
 if (files.length > 0) {
-  var rec, stat, ext;
+  var rec, stat, ext
   for (var i = 0, len = files.length; i < len; i++) {
-    rec = path.join('raw', files[i]);
-    stat = fs.statSync(rec);
+    rec = path.join('raw', files[i])
+    stat = fs.statSync(rec)
     if (stat.isFile()) {
-      ext = path.extname(rec);
+      ext = path.extname(rec)
       if (ext === '.nhtml' || ext === '.njs') {
-        load(rec, './raw', compileFull, true);
-        load(rec, './compiled', compileFull);
-        load(rec, './compiledLight', compileLight);
+        load(rec, './raw', compileFull, true)
+        load(rec, './compiled', compileFull)
+        load(rec, './compiledLight', compileLight)
       }
     }
   }

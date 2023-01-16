@@ -20,19 +20,22 @@ export function run(context: any, template: keyof typeof templates) {
   return F.run(context, template)
 }
 
-export function compileLight(content: Buffer | string) {
+export function compileLight(content: Buffer | string, optimize: boolean) {
   const compiled = Parser.parse(content.toString())
-  return prepareCode(run(compiled, 'raw.njs'))
+  const text = run(compiled, 'raw.njs')
+  return optimize ? prepareCode(text) : (text as string)
 }
 
-export function compileFull(content: Buffer | string) {
+export function compileFull(content: Buffer | string, optimize: boolean) {
   const compiled = Parser.parse(content.toString())
-  return prepareCode(run(compiled, 'compiled.njs'))
+  const text = run(compiled, 'compiled.njs')
+  return optimize ? prepareCode(text) : (text as string)
 }
 
-export function compileTs(content: Buffer | string) {
+export function compileTs(content: Buffer | string, optimize: boolean) {
   const compiled = Parser.parse(content.toString())
-  return prepareCode(run(compiled, 'es6module.njs'))
+  const text = run(compiled, 'es6module.njs')
+  return optimize ? prepareCode(text) : (text as string)
 }
 
 export function parseFile(content: Buffer | string) {

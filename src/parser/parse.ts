@@ -139,6 +139,7 @@ export interface ParserResult {
 
 export interface Items {
   content?: string
+  indent?: string
   pos: number
   line: number
   column: number
@@ -167,7 +168,6 @@ const directives = [
   'noOptions',
   'promise',
   'callback',
-  'noEscape',
   'requireAs',
 ]
 
@@ -203,7 +203,6 @@ export class CodeBlockDirectives {
   blocks: boolean = true
   partial: boolean = true
   options: boolean = true
-  escapeIt: boolean = true
   // return promise
   promise: boolean
   // return callback
@@ -251,14 +250,11 @@ export class CodeBlockDirectives {
       case 'callback':
         this.callback = true
         break
-      case 'noEscape':
-        this.escapeIt = false
-        break
       case 'requireAs':
         this.requireAs.push({ name: params[0], alias: params[1] })
         break
       default:
-        console.log('unknown directive: ' + name)
+      // console.log('unknown directive: ' + name)
     }
   }
 }
@@ -462,7 +458,7 @@ export class Parser {
         do {
           if (curr.main.length > 0) {
             let prev = curr.main[curr.main.length - 1]
-            if (prev.type == 'text') {
+            if (prev?.type == 'text') {
               prev.content = prev.content.trimEnd()
               if (!prev.content) {
                 curr.main.pop()
@@ -655,7 +651,7 @@ export class Parser {
         case 'expression':
         case 'expression2':
           if (data) {
-            curr.main.push({
+            const current: Items = {
               content: data,
               pos,
               line,
@@ -664,13 +660,26 @@ export class Parser {
               end,
               type: 'expression',
               eol,
-            })
+            }
+
+            const prev = curr.main.pop()
+            if (
+              prev?.type !== 'text' ||
+              (prev?.type === 'text' && prev?.content.trim().length > 0) ||
+              (prev?.type === 'text' && prev?.eol)
+            ) {
+              curr.main.push(prev)
+            } else {
+              current.indent = prev.content
+            }
+
+            curr.main.push(current)
           }
           break
         case 'uexpression':
         case 'uexpression2':
           if (data) {
-            curr.main.push({
+            const current: Items = {
               content: data,
               pos,
               line,
@@ -679,22 +688,34 @@ export class Parser {
               end,
               type: 'uexpression',
               eol,
-            })
+            }
+
+            const prev = curr.main.pop()
+            if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
+              curr.main.push(prev)
+            } else {
+              current.indent = prev.content
+            }
+
+            curr.main.push(current)
           }
           break
         case 'text': {
           state = null
           let actualType: ResultTypes = data || eol ? type : 'empty'
-          curr.main.push({
-            content: data,
-            pos,
-            line,
-            column,
-            start,
-            end,
-            type: actualType,
-            eol,
-          })
+          // if (!(actualType === 'empty' && eol)) {
+          if (actualType !== 'empty') {
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type: actualType,
+              eol,
+            })
+          }
           break
         }
         case 'comments':

@@ -29,17 +29,17 @@ export class TemplateFactoryStandalone<
     }
   }
 
-  public load(fileName: string) {
+  public override load(fileName: string) {
     const template = this.resolveTemplateConfig(fileName)
     const templ = new TemplateBrowser<T>(template)
     this.register(templ, fileName)
     templ.compile()
     return templ
   }
-  public preload() {
+  public override preload() {
     Object.keys(this.templates).forEach((t) => this.load(t))
   }
-  public run<T extends Record<string, any>>(
+  public override run<T extends Record<string, any>>(
     context: HashType,
     name: string,
   ): string | Array<{ name: string; content: string }> {
@@ -48,7 +48,7 @@ export class TemplateFactoryStandalone<
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
-  public runPartial<T extends Record<string, any>>({
+  public override runPartial<T extends Record<string, any>>({
     context,
     name,
     slots,

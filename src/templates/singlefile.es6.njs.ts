@@ -4,9 +4,10 @@ export default {
     var out = [];
     out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'\n");
     out.push("\n");
-    out.push("export const templates = {\n");
+    out.push("export const templates = {");
     files.forEach((file) => {
-      out.push("['" + (file.template.alias || file.name) + "']: " + partial(file.template, "core") + ",\n");
+      out.push("\n");
+      out.push("  ['" + (file.template.alias || file.name) + "']: " + partial(file.template, "core") + ",");
     });
     out.push("\n");
     out.push("}\n");

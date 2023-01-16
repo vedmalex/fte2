@@ -1,0 +1,66 @@
+{
+ "main": [
+  {
+   "content": "(function(){",
+   "pos": 85,
+   "line": 4,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  return ",
+   "pos": 98,
+   "line": 5,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "partial(context, 'core')",
+   "pos": 107,
+   "line": 5,
+   "column": 10,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": ";",
+   "pos": 134,
+   "line": 5,
+   "column": 37,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "})();",
+   "pos": 136,
+   "line": 6,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  }
+ ],
+ "directives": {
+  "context": "context",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [
+   {
+    "name": "MainTemplate.njs",
+    "alias": "core"
+   }
+  ],
+  "alias": [
+   "raw.njs"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}

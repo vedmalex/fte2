@@ -11,6 +11,7 @@
     "removeComments": true,
     "strict": false,
     "noImplicitAny": false,
+    "noImplicitOverride": true,
     "emitDecoratorMetadata": true,
     "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,

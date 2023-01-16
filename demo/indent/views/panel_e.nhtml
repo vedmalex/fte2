@@ -1,0 +1,9 @@
+<#@ noEscape #>
+<#@ alias "panel_e" #>
+<#@ extend "panel.nhtml"#>
+<#@ context 'panel' #>
+<div>
+  <p>
+    extended panel
+  </p>
+</div>

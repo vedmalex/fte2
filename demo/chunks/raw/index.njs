@@ -1,4 +1,5 @@
 <#@ chunks 'index.txt' #>
+<#@ noEscape #>
 <#@ includeMainChunk #>
 
 <# chunkStart("dir.txt") #>

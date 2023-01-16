@@ -4,7 +4,6 @@
   #{partial(context, 'panel')}
 </section>
 <section>
-<# var extra = { title: 'Another panel', body:'extra!!! content'}#>
+<# var extra = { title: 'Another panel!!!', body:'extra content'}#>
   #{partial(extra, 'panel')}
 </section>
-1

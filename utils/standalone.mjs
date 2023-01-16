@@ -5,6 +5,9 @@ build({
   bundle: true,
   format: 'cjs',
   platform: 'node',
+  logOverride: {
+    'direct-eval': 'info',
+  },
   outfile: 'lib/standalone.fte.js',
   sourcemap: 'external',
   minify: false,

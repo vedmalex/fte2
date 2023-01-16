@@ -1,0 +1,200 @@
+{
+ "main": [
+  {
+   "content": "const { Factory } = require('fte.js/lib/standalone.fte.js')",
+   "pos": 115,
+   "line": 5,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 175,
+   "line": 6,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "const templates = {",
+   "pos": 176,
+   "line": 7,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": " files.forEach(file=>{",
+   "pos": 196,
+   "line": 8,
+   "column": 1,
+   "start": "<#",
+   "end": "-#>",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "['",
+   "pos": 224,
+   "line": 9,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "(file.template.alias || file.name)",
+   "pos": 228,
+   "line": 9,
+   "column": 5,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "']: ",
+   "pos": 265,
+   "line": 9,
+   "column": 42,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "partial(file.template, 'core')",
+   "pos": 269,
+   "line": 9,
+   "column": 46,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": ",",
+   "pos": 302,
+   "line": 9,
+   "column": 79,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}) ",
+   "pos": 304,
+   "line": 10,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 311,
+   "line": 10,
+   "column": 8,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 312,
+   "line": 11,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 314,
+   "line": 12,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "exports.templates = templates",
+   "pos": 315,
+   "line": 13,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "const F = new Factory(templates)",
+   "pos": 345,
+   "line": 14,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 378,
+   "line": 15,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "function run(context, name){",
+   "pos": 379,
+   "line": 16,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "  return F.run( context, name )",
+   "pos": 408,
+   "line": 17,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 440,
+   "line": 18,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 442,
+   "line": 19,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "exports.run = run",
+   "pos": 443,
+   "line": 20,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  }
+ ],
+ "directives": {
+  "context": "files",
+  "content": false,
+  "slots": true,
+  "blocks": true,
+  "partial": true,
+  "options": true,
+  "requireAs": [
+   {
+    "name": "MainTemplate.njs",
+    "alias": "core"
+   }
+  ],
+  "alias": [
+   "singlefile.njs"
+  ]
+ },
+ "documentation": [],
+ "slots": {},
+ "blocks": {}
+}
