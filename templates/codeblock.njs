@@ -7,8 +7,27 @@
 <#@ noContent #>
 <#@ context 'blockList' #>
 <#-
+
 var textQuote = false
-blockList = blockList.filter(block=>block)
+do {
+  const cur = blockList.shift()
+  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {
+    blockList.unshift(cur)
+    break
+  }
+  if(blockList.length == 0) break
+}
+while(true)
+do {
+  const cur = blockList.pop()
+  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {
+    blockList.push(cur)
+    break
+  }
+  if(blockList.length == 0) break
+}
+while(true)
+blockList[blockList.length - 1].eol = false
 for (var i = 0, len = blockList.length; i < len; i++) {
   var last = i === blockList.length - 1
   var block = blockList[i]

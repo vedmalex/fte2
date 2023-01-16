@@ -455,12 +455,17 @@ export class Parser {
       let { type, pos, line, column, start, end, data, eol } = r
 
       const trimStartLines = (lines?: number) => {
+        let newLine = false
         do {
           if (curr.main.length > 0) {
             let prev = curr.main[curr.main.length - 1]
-            if (prev?.type == 'text') {
+            if (
+              prev?.type == 'text' ||
+              (prev?.type == 'empty' && type === 'code')
+            ) {
               prev.content = prev.content.trimEnd()
               if (!prev.content) {
+                if (prev.eol) newLine = true
                 curr.main.pop()
                 if (lines) {
                   lines -= 1
@@ -473,6 +478,7 @@ export class Parser {
                 break
               }
             } else {
+              if (newLine && prev.type === 'code') prev.eol = true
               break
             }
           } else {
@@ -703,19 +709,16 @@ export class Parser {
         case 'text': {
           state = null
           let actualType: ResultTypes = data || eol ? type : 'empty'
-          // if (!(actualType === 'empty' && eol)) {
-          if (actualType !== 'empty') {
-            curr.main.push({
-              content: data,
-              pos,
-              line,
-              column,
-              start,
-              end,
-              type: actualType,
-              eol,
-            })
-          }
+          curr.main.push({
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type: actualType,
+            eol,
+          })
           break
         }
         case 'comments':

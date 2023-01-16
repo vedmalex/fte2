@@ -8,44 +8,42 @@ module.exports = {
     }
     var out = [];
     const { directives } = context;
-    out.push("{\n");
+    out.push("{");
     if (directives.chunks) {
       out.push("\n");
-      out.push("chunks: " + JSON.stringify(directives.chunks) + ",\n");
+      out.push("chunks: " + JSON.stringify(directives.chunks) + ",");
     }
-    out.push("\n");
     if (directives.alias) {
       out.push("\n");
-      out.push("alias: " + JSON.stringify(directives.alias) + ",\n");
+      out.push("alias: " + JSON.stringify(directives.alias) + ",");
     }
     out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
     out.push(options.applyIndent(content("maincontent", directives), "    ") + "\n");
     out.push("    var out = []\n");
     out.push(options.applyIndent(content("chunks-start", directives), "    ") + "\n");
     out.push(options.applyIndent(partial(context.main, "codeblock"), "    ") + "\n");
-    out.push(options.applyIndent(content("chunks-finish", directives), "    ") + "\n");
-    out.push("    ");
+    out.push(options.applyIndent(content("chunks-finish", directives), "    "));
     if (directives.chunks) {
       out.push("\n");
       out.push("    if(out.some(t=>typeof t == 'object')){\n");
       out.push("      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
       out.push("    } else {\n");
       out.push("      return out.join('')\n");
-      out.push("    }\n");
-      out.push("    ");
+      out.push("    }");
     } else {
       out.push("\n");
-      out.push("      return out.join('')\n");
-      out.push("    ");
+      out.push("      return out.join('')");
     }
     out.push("\n");
     out.push("  },\n");
     const blockNames = Object.keys(context.blocks);
     if (blockNames.length > 0) {
-      out.push("blocks : {\n");
+      out.push("\n");
+      out.push("  blocks : {\n");
       for (let i2 = 0; i2 < blockNames.length; i2 += 1) {
         const block = context.blocks[blockNames[i2]];
-        out.push('"' + blockNames[i2] + '": function(' + block.directives.context + ",  _content, partial, slot, options) {\n");
+        out.push("\n");
+        out.push('    "' + blockNames[i2] + '": function(' + block.directives.context + ",  _content, partial, slot, options) {\n");
         out.push(options.applyIndent(content("maincontent", block.directives), "      ") + "\n");
         out.push("      var out = []\n");
         out.push(options.applyIndent(partial(block.main, "codeblock"), "      "));
@@ -55,25 +53,25 @@ module.exports = {
           out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
           out.push("      } else {\n");
           out.push("        return out.join('')\n");
-          out.push("      }\n");
-          out.push("      ");
+          out.push("      }");
         } else {
           out.push("\n");
-          out.push("        return out.join('')\n");
-          out.push("      ");
+          out.push("        return out.join('')");
         }
         out.push("\n");
-        out.push("    },\n");
+        out.push("    },");
       }
       out.push("\n");
       out.push("  },");
     }
     const slotNames = Object.keys(context.slots);
     if (slotNames.length > 0) {
-      out.push("slots : {\n");
+      out.push("\n");
+      out.push("  slots : {\n");
       for (let i2 = 0; i2 < slotNames.length; i2 += 1) {
         const slot2 = context.blocks[slotNames[i2]];
-        out.push('"' + slotNames[i2] + '": function(' + slot2.directives.context + ",  _content, partial, slot, options){\n");
+        out.push("\n");
+        out.push('    "' + slotNames[i2] + '": function(' + slot2.directives.context + ",  _content, partial, slot, options){\n");
         out.push(options.applyIndent(content("maincontent", slot2.directives), "      ") + "\n");
         out.push("      var out = []\n");
         out.push(options.applyIndent(partial(slot2.main, "codeblock"), "      "));
@@ -83,29 +81,26 @@ module.exports = {
           out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
           out.push("      } else {\n");
           out.push("        return out.join('')\n");
-          out.push("      }\n");
-          out.push("      ");
+          out.push("      }");
         } else {
           out.push("\n");
-          out.push("        return out.join('')\n");
-          out.push("      ");
+          out.push("        return out.join('')");
         }
         out.push("\n");
-        out.push("    },\n");
+        out.push("    },");
       }
       out.push("\n");
-      out.push("  },\n");
+      out.push("  },");
     }
     out.push("\n");
-    out.push("  compile: function() {\n");
+    out.push("  compile: function() {");
     if (directives.alias) {
       out.push("\n");
-      out.push("    this.alias = " + JSON.stringify(directives.alias) + "\n");
+      out.push("    this.alias = " + JSON.stringify(directives.alias));
     }
-    out.push("\n");
     if (directives.requireAs.length > 0) {
       out.push("\n");
-      out.push("    this.aliases={}\n");
+      out.push("    this.aliases={}");
       var rq;
       for (var i = 0, len = directives.requireAs.length; i < len; i++) {
         rq = directives.requireAs[i];
@@ -114,20 +109,17 @@ module.exports = {
         out.push('    this.factory.ensure("' + rq.name + '")\n');
       }
     }
-    out.push("\n");
-    out.push("\n");
     if (directives.extend) {
       out.push("\n");
       out.push("    this.parent = " + JSON.stringify(directives.extend) + "\n");
-      out.push("    this.mergeParent(this.factory.ensure(this.parent))\n");
+      out.push("    this.mergeParent(this.factory.ensure(this.parent))");
     }
     out.push("\n");
     out.push("  },\n");
-    out.push("  dependency: {\n");
-    out.push("  ");
+    out.push("  dependency: {");
     if (directives.extend) {
-      out.push(JSON.stringify(directives.extend) + ": true,\n");
-      out.push("  ");
+      out.push("\n");
+      out.push(options.applyIndent(JSON.stringify(directives.extend), "    ") + ": true,");
     }
     if (directives.requireAs.length > 0) {
       for (var i = 0, len = directives.requireAs.length; i < len; i++) {
@@ -150,8 +142,7 @@ module.exports = {
         out.push("    function content(blockName, ctx) {\n");
         out.push("      if(ctx === undefined || ctx === null) ctx = " + directives.context + "\n");
         out.push("      return _content(blockName, ctx, content, partial, slot)\n");
-        out.push("    }\n");
-        out.push("  ");
+        out.push("    }");
       }
       return out.join("");
     },
@@ -195,8 +186,7 @@ module.exports = {
         out.push("      out = []\n");
         out.push("      current = outStack.pop() || main\n");
         out.push("    }\n");
-        out.push("    chunkStart(main)\n");
-        out.push("  ");
+        out.push("    chunkStart(main)");
       }
       return out.join("");
     },
@@ -204,34 +194,24 @@ module.exports = {
       var out = [];
       if (directives.chunks) {
         out.push("\n");
-        out.push("    chunkEnd()\n");
-        out.push("    ");
+        out.push("    chunkEnd()");
         if (!directives.useHash) {
           out.push("\n");
-          out.push("    out = Object.keys(result)\n");
-          out.push("      ");
+          out.push("    out = Object.keys(result)");
           if (!directives.includeMainChunk) {
             out.push("\n");
-            out.push("      .filter(i => i !== '" + directives.chunks + "')\n");
-            out.push("      ");
+            out.push("      .filter(i => i !== '" + directives.chunks + "')");
           }
           out.push("\n");
-          out.push("      .map(curr => ({ name: curr, content: result[curr] }))\n");
-          out.push("      ");
+          out.push("      .map(curr => ({ name: curr, content: result[curr] }))");
         } else {
           out.push("\n");
-          out.push("    out = result\n");
-          out.push("      ");
+          out.push("    out = result");
           if (!directives.includeMainChunk) {
             out.push("\n");
-            out.push("    delete out['" + directives.chunks + "']\n");
-            out.push("      ");
+            out.push("    delete out['" + directives.chunks + "']");
           }
-          out.push("\n");
-          out.push("    ");
         }
-        out.push("\n");
-        out.push("  ");
       }
       return out.join("");
     }

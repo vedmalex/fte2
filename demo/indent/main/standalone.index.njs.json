@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "const templates = {",
    "pos": 76,
    "line": 4,
@@ -9,17 +17,33 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 96,
+   "line": 5,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
    "content": " for (let i = 0; i < files.length; i+=1){ ",
    "pos": 96,
    "line": 5,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 143,
+   "line": 5,
+   "column": 48,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "'",
+   "content": "  '",
    "pos": 144,
    "line": 6,
    "column": 1,
@@ -63,26 +87,34 @@
    "eol": true
   },
   {
-   "content": "}",
+   "content": "",
    "pos": 195,
    "line": 7,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 195,
+   "line": 7,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 200,
+   "pos": 202,
    "line": 7,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "}",
-   "pos": 201,
+   "pos": 203,
    "line": 8,
    "column": 1,
    "type": "text",
@@ -90,11 +122,18 @@
   },
   {
    "content": "module.exports = templates",
-   "pos": 203,
+   "pos": 205,
    "line": 9,
    "column": 1,
    "type": "text",
    "eol": false
+  },
+  {
+   "content": "",
+   "pos": 231,
+   "line": 9,
+   "column": 27,
+   "type": "empty"
   }
  ],
  "directives": {

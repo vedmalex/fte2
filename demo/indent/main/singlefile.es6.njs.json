@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
    "pos": 119,
    "line": 5,
@@ -25,18 +33,34 @@
    "eol": true
   },
   {
-   "content": " files.forEach(file=>{",
+   "content": "",
    "pos": 202,
    "line": 8,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " files.forEach(file=>{ ",
+   "pos": 202,
+   "line": 8,
+   "column": 1,
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 230,
+   "line": 8,
+   "column": 29,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "['",
-   "pos": 230,
+   "content": "  ['",
+   "pos": 231,
    "line": 9,
    "column": 1,
    "type": "text",
@@ -44,7 +68,7 @@
   },
   {
    "content": "(file.template.alias || file.name)",
-   "pos": 234,
+   "pos": 235,
    "line": 9,
    "column": 5,
    "start": "#{",
@@ -54,7 +78,7 @@
   },
   {
    "content": "']: ",
-   "pos": 271,
+   "pos": 272,
    "line": 9,
    "column": 42,
    "type": "text",
@@ -62,7 +86,7 @@
   },
   {
    "content": "partial(file.template, 'core')",
-   "pos": 275,
+   "pos": 276,
    "line": 9,
    "column": 46,
    "start": "#{",
@@ -72,33 +96,41 @@
   },
   {
    "content": ",",
-   "pos": 308,
+   "pos": 309,
    "line": 9,
    "column": 79,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}) ",
-   "pos": 310,
+   "content": "",
+   "pos": 311,
    "line": 10,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "}) ",
+   "pos": 311,
+   "line": 10,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 317,
+   "pos": 319,
    "line": 10,
-   "column": 8,
+   "column": 9,
    "type": "text",
    "eol": true
   },
   {
    "content": "}",
-   "pos": 318,
+   "pos": 320,
    "line": 11,
    "column": 1,
    "type": "text",
@@ -106,7 +138,7 @@
   },
   {
    "content": "",
-   "pos": 320,
+   "pos": 322,
    "line": 12,
    "column": 1,
    "type": "text",
@@ -114,7 +146,7 @@
   },
   {
    "content": "const F = new Factory(templates)",
-   "pos": 321,
+   "pos": 323,
    "line": 13,
    "column": 1,
    "type": "text",
@@ -122,7 +154,7 @@
   },
   {
    "content": "",
-   "pos": 354,
+   "pos": 356,
    "line": 14,
    "column": 1,
    "type": "text",
@@ -130,7 +162,7 @@
   },
   {
    "content": "export function run (context, name) {",
-   "pos": 355,
+   "pos": 357,
    "line": 15,
    "column": 1,
    "type": "text",
@@ -138,7 +170,7 @@
   },
   {
    "content": "  return F.run(context, name)",
-   "pos": 393,
+   "pos": 395,
    "line": 16,
    "column": 1,
    "type": "text",
@@ -146,7 +178,7 @@
   },
   {
    "content": "}",
-   "pos": 423,
+   "pos": 425,
    "line": 17,
    "column": 1,
    "type": "text",
@@ -154,11 +186,26 @@
   },
   {
    "content": "",
-   "pos": 425,
+   "pos": 427,
    "line": 18,
    "column": 1,
    "type": "text",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 428,
+   "line": 19,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 428,
+   "line": 19,
+   "column": 1,
+   "type": "empty"
   }
  ],
  "directives": {

@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "export default ",
    "pos": 91,
    "line": 4,
@@ -25,6 +33,21 @@
    "column": 43,
    "type": "text",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 135,
+   "line": 5,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 135,
+   "line": 5,
+   "column": 1,
+   "type": "empty"
   }
  ],
  "directives": {

@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "var textQuote = false",
    "pos": 174,
    "line": 10,
@@ -9,7 +17,7 @@
    "eol": true
   },
   {
-   "content": "blockList = blockList.filter(block=>block)",
+   "content": "for (var i = 0, len = blockList.length; i < len; i++) {",
    "pos": 196,
    "line": 11,
    "column": 1,
@@ -17,304 +25,288 @@
    "eol": true
   },
   {
-   "content": "for (var i = 0, len = blockList.length; i < len; i++) {",
-   "pos": 239,
+   "content": "  var last = i === blockList.length - 1",
+   "pos": 252,
    "line": 12,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  var last = i === blockList.length - 1",
-   "pos": 295,
+   "content": "  var block = blockList[i]",
+   "pos": 292,
    "line": 13,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  var block = blockList[i]",
-   "pos": 335,
+   "content": "  var next = (i + 1) < len ? blockList[i+1] : null",
+   "pos": 319,
    "line": 14,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  var next = (i + 1) < len ? blockList[i+1] : null",
-   "pos": 362,
+   "content": "  var cont = block?.content",
+   "pos": 370,
    "line": 15,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  var cont = block?.content",
-   "pos": 413,
+   "content": "  switch (block.type) {",
+   "pos": 398,
    "line": 16,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  switch (block.type) {",
-   "pos": 441,
+   "content": "    case 'text': {",
+   "pos": 422,
    "line": 17,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    // case 'empty':",
-   "pos": 465,
+   "content": "          let res = ''",
+   "pos": 441,
    "line": 18,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    //   {",
-   "pos": 486,
+   "content": "          if (!textQuote) {",
+   "pos": 464,
    "line": 19,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    //     out.push(';')",
-   "pos": 497,
+   "content": "            textQuote = true",
+   "pos": 492,
    "line": 20,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    //   }",
-   "pos": 522,
+   "content": "            res = 'out.push('",
+   "pos": 521,
    "line": 21,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    // break;",
-   "pos": 533,
+   "content": "          } else {",
+   "pos": 551,
    "line": 22,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    case 'text': {",
-   "pos": 547,
+   "content": "            let lasItem = out.pop()",
+   "pos": 570,
    "line": 23,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          let res = ''",
-   "pos": 566,
+   "content": "            res = lasItem + \" + \"",
+   "pos": 606,
    "line": 24,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          if (!textQuote) {",
-   "pos": 589,
+   "content": "          }",
+   "pos": 640,
    "line": 25,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "            textQuote = true",
-   "pos": 617,
-   "line": 26,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "            res = 'out.push('",
-   "pos": 646,
+   "content": "          if (!block.eol) {",
+   "pos": 653,
    "line": 27,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          } else {",
-   "pos": 676,
+   "content": "            res += JSON.stringify(cont)",
+   "pos": 681,
    "line": 28,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "            let lasItem = out.pop()",
-   "pos": 695,
+   "content": "          } else {",
+   "pos": 721,
    "line": 29,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "            res = lasItem + \" + \"",
-   "pos": 731,
+   "content": "            res += JSON.stringify(cont + '\\n')",
+   "pos": 740,
    "line": 30,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          }",
-   "pos": 765,
+   "content": "            res += ');' + (last ? '' : '\\n')",
+   "pos": 787,
    "line": 31,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          if (!block.eol) {",
-   "pos": 778,
-   "line": 33,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "            res += JSON.stringify(cont)",
-   "pos": 806,
-   "line": 34,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "          } else {",
-   "pos": 846,
-   "line": 35,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "            res += JSON.stringify(cont + '\\n')",
-   "pos": 865,
-   "line": 36,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "            res += ');' + (last ? '' : '\\n')",
-   "pos": 912,
-   "line": 37,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
    "content": "            textQuote = false",
-   "pos": 957,
-   "line": 38,
+   "pos": 832,
+   "line": 32,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          }",
-   "pos": 987,
-   "line": 39,
+   "pos": 862,
+   "line": 33,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          out.push(res)",
-   "pos": 999,
-   "line": 40,
+   "pos": 874,
+   "line": 34,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "      }",
-   "pos": 1023,
-   "line": 41,
+   "pos": 898,
+   "line": 35,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "      break",
-   "pos": 1031,
-   "line": 42,
+   "pos": 906,
+   "line": 36,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "    case 'uexpression': {",
-   "pos": 1043,
-   "line": 43,
+   "pos": 918,
+   "line": 37,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        let res = ''",
-   "pos": 1069,
-   "line": 44,
+   "pos": 944,
+   "line": 38,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        if (!textQuote) {",
-   "pos": 1090,
-   "line": 45,
+   "pos": 965,
+   "line": 39,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          textQuote = true",
-   "pos": 1116,
-   "line": 46,
+   "pos": 991,
+   "line": 40,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res = 'out.push('",
-   "pos": 1143,
-   "line": 47,
+   "pos": 1018,
+   "line": 41,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else {",
-   "pos": 1171,
-   "line": 48,
+   "pos": 1046,
+   "line": 42,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          let lasItem = out.pop()",
-   "pos": 1188,
-   "line": 49,
+   "pos": 1063,
+   "line": 43,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res = lasItem + \" + \"",
-   "pos": 1222,
+   "pos": 1097,
+   "line": 44,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1129,
+   "line": 45,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        let lcont = \"options.escapeIt(\"+cont+\")\"",
+   "pos": 1140,
+   "line": 47,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        if(block.indent) {",
+   "pos": 1190,
+   "line": 49,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          lcont = \"options.applyIndent(\"+lcont+\", '\"+block.indent+\"')\"",
+   "pos": 1217,
    "line": 50,
    "column": 1,
    "type": "code",
@@ -322,142 +314,158 @@
   },
   {
    "content": "        }",
-   "pos": 1254,
+   "pos": 1288,
    "line": 51,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        let lcont = \"options.escapeIt(\"+cont+\")\"",
-   "pos": 1265,
+   "content": "        if(block.start && block.end){",
+   "pos": 1299,
    "line": 53,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        if(block.indent) {",
-   "pos": 1315,
-   "line": 55,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "          lcont = \"options.applyIndent(\"+lcont+\", '\"+block.indent+\"')\"",
-   "pos": 1342,
-   "line": 56,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "        }",
-   "pos": 1413,
-   "line": 57,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "        if(block.start && block.end){",
-   "pos": 1424,
-   "line": 59,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
    "content": "          res += \"(\"+lcont+\")\"",
-   "pos": 1462,
-   "line": 60,
+   "pos": 1337,
+   "line": 54,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else if(block.start){",
-   "pos": 1493,
-   "line": 61,
+   "pos": 1368,
+   "line": 55,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += \"(\"+lcont",
-   "pos": 1525,
-   "line": 62,
+   "pos": 1400,
+   "line": 56,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else if(block.end){",
-   "pos": 1552,
-   "line": 63,
+   "pos": 1427,
+   "line": 57,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += lcont+\")\"",
-   "pos": 1582,
-   "line": 64,
+   "pos": 1457,
+   "line": 58,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else {",
-   "pos": 1609,
-   "line": 65,
+   "pos": 1484,
+   "line": 59,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += lcont",
-   "pos": 1626,
-   "line": 66,
+   "pos": 1501,
+   "line": 60,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        }",
-   "pos": 1649,
-   "line": 67,
+   "pos": 1524,
+   "line": 61,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        //here always textQuote == true",
-   "pos": 1660,
-   "line": 69,
+   "pos": 1535,
+   "line": 63,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        if (!block.eol) {",
-   "pos": 1700,
-   "line": 70,
+   "pos": 1575,
+   "line": 64,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          out.push(res)",
-   "pos": 1726,
-   "line": 71,
+   "pos": 1601,
+   "line": 65,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else {",
+   "pos": 1625,
+   "line": 66,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
+   "pos": 1642,
+   "line": 67,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = false",
+   "pos": 1692,
+   "line": 68,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 1720,
+   "line": 69,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 1730,
+   "line": 70,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 1738,
+   "line": 71,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'expression': {",
    "pos": 1750,
    "line": 72,
    "column": 1,
@@ -465,255 +473,255 @@
    "eol": true
   },
   {
-   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
-   "pos": 1767,
+   "content": "        let res = ''",
+   "pos": 1775,
    "line": 73,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          textQuote = false",
-   "pos": 1817,
+   "content": "        if (!textQuote) {",
+   "pos": 1796,
    "line": 74,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        }",
-   "pos": 1845,
+   "content": "          textQuote = true",
+   "pos": 1822,
    "line": 75,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      }",
-   "pos": 1855,
+   "content": "          res = 'out.push('",
+   "pos": 1849,
    "line": 76,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      break",
-   "pos": 1863,
+   "content": "        } else {",
+   "pos": 1877,
    "line": 77,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    case 'expression': {",
-   "pos": 1875,
+   "content": "          if(block.start){",
+   "pos": 1894,
    "line": 78,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        let res = ''",
-   "pos": 1900,
+   "content": "            let lasItem = out.pop()",
+   "pos": 1921,
    "line": 79,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        if (!textQuote) {",
-   "pos": 1921,
+   "content": "            res = lasItem+\" + \"",
+   "pos": 1957,
    "line": 80,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          textQuote = true",
-   "pos": 1947,
+   "content": "          }",
+   "pos": 1989,
    "line": 81,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          res = 'out.push('",
-   "pos": 1974,
+   "content": "        }",
+   "pos": 2001,
    "line": 82,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        } else {",
-   "pos": 2002,
-   "line": 83,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "          if(block.start){",
-   "pos": 2019,
+   "content": "        if(block.indent) {",
+   "pos": 2012,
    "line": 84,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "            let lasItem = out.pop()",
-   "pos": 2046,
+   "content": "          cont = \"options.applyIndent(\"+cont+\", '\"+block.indent+\"')\"",
+   "pos": 2039,
    "line": 85,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "            res = lasItem+\" + \"",
-   "pos": 2082,
+   "content": "        }",
+   "pos": 2108,
    "line": 86,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "          }",
-   "pos": 2114,
-   "line": 87,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "        }",
-   "pos": 2126,
+   "content": "        if(block.start && block.end){",
+   "pos": 2119,
    "line": 88,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        if(block.indent) {",
-   "pos": 2137,
-   "line": 90,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "          cont = \"options.applyIndent(\"+cont+\", '\"+block.indent+\"')\"",
-   "pos": 2164,
-   "line": 91,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "        }",
-   "pos": 2233,
-   "line": 92,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "        if(block.start && block.end){",
-   "pos": 2244,
-   "line": 94,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
    "content": "          res += \"(\"+cont+\")\"",
-   "pos": 2282,
-   "line": 95,
+   "pos": 2157,
+   "line": 89,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else if(block.start){",
-   "pos": 2312,
-   "line": 96,
+   "pos": 2187,
+   "line": 90,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += \"(\"+cont",
-   "pos": 2344,
-   "line": 97,
+   "pos": 2219,
+   "line": 91,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else if(block.end){",
-   "pos": 2370,
-   "line": 98,
+   "pos": 2245,
+   "line": 92,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += cont+\")\"",
-   "pos": 2400,
-   "line": 99,
+   "pos": 2275,
+   "line": 93,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else {",
-   "pos": 2426,
-   "line": 100,
+   "pos": 2301,
+   "line": 94,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          res += cont",
-   "pos": 2443,
-   "line": 101,
+   "pos": 2318,
+   "line": 95,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        }",
-   "pos": 2465,
-   "line": 102,
+   "pos": 2340,
+   "line": 96,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        //here always textQuote == true",
-   "pos": 2476,
-   "line": 104,
+   "pos": 2351,
+   "line": 98,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        if (!block.eol) {",
-   "pos": 2516,
-   "line": 105,
+   "pos": 2391,
+   "line": 99,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "          out.push(res)",
-   "pos": 2542,
-   "line": 106,
+   "pos": 2417,
+   "line": 100,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
    "content": "        } else {",
+   "pos": 2441,
+   "line": 101,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
+   "pos": 2458,
+   "line": 102,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "          textQuote = false",
+   "pos": 2508,
+   "line": 103,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "        }",
+   "pos": 2536,
+   "line": 104,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      }",
+   "pos": 2546,
+   "line": 105,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "      break",
+   "pos": 2554,
+   "line": 106,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "    case 'code':",
    "pos": 2566,
    "line": 107,
    "column": 1,
@@ -721,7 +729,7 @@
    "eol": true
   },
   {
-   "content": "          out.push(res+\");\" + (last ? '' : '\\n'))",
+   "content": "      if (textQuote) {",
    "pos": 2583,
    "line": 108,
    "column": 1,
@@ -729,71 +737,71 @@
    "eol": true
   },
   {
-   "content": "          textQuote = false",
-   "pos": 2633,
+   "content": "        let item = out.pop()",
+   "pos": 2606,
    "line": 109,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        }",
-   "pos": 2661,
+   "content": "        out.push(item+\");\\n\")",
+   "pos": 2635,
    "line": 110,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      }",
-   "pos": 2671,
+   "content": "        textQuote = false",
+   "pos": 2665,
    "line": 111,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      break",
-   "pos": 2679,
+   "content": "      }",
+   "pos": 2691,
    "line": 112,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "    case 'code':",
-   "pos": 2691,
+   "content": "      out.push(cont + ((block.eol || next?.type != 'code') ? '\\n' : ''))",
+   "pos": 2699,
    "line": 113,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      if (textQuote) {",
-   "pos": 2708,
+   "content": "      break",
+   "pos": 2772,
    "line": 114,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        let item = out.pop()",
-   "pos": 2731,
+   "content": "  }",
+   "pos": 2784,
    "line": 115,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        out.push(item+\");\\n\")",
-   "pos": 2760,
+   "content": "}",
+   "pos": 2788,
    "line": 116,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "        textQuote = false",
+   "content": "if (textQuote) {",
    "pos": 2790,
    "line": 117,
    "column": 1,
@@ -801,76 +809,43 @@
    "eol": true
   },
   {
-   "content": "      }",
-   "pos": 2816,
+   "content": "  let lasItem = out.pop()",
+   "pos": 2807,
    "line": 118,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      out.push(cont + ((block.eol || next?.type != 'code') ? '\\n' : ''))",
-   "pos": 2824,
+   "content": "  out.push(lasItem+\");\")",
+   "pos": 2833,
    "line": 119,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "      break",
-   "pos": 2897,
+   "content": "}",
+   "pos": 2858,
    "line": 120,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  }",
-   "pos": 2909,
+   "content": "",
+   "pos": 2862,
    "line": 121,
-   "column": 1,
-   "type": "code",
-   "eol": true
+   "column": 3,
+   "type": "empty",
+   "eol": false
   },
   {
-   "content": "}",
-   "pos": 2913,
-   "line": 122,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "if (textQuote) {",
-   "pos": 2915,
-   "line": 123,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "  let lasItem = out.pop()",
-   "pos": 2932,
-   "line": 124,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "  out.push(lasItem+\");\")",
-   "pos": 2958,
-   "line": 125,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 2983,
-   "line": 126,
-   "column": 1,
-   "type": "code",
-   "eol": true
+   "content": "",
+   "pos": 2862,
+   "line": 121,
+   "column": 3,
+   "type": "empty"
   }
  ],
  "directives": {

@@ -21,7 +21,7 @@ module.exports = {
     out.push("\n");
     out.push("module.exports = (context, name) => {\n");
     out.push("  return F.run( context, name )\n");
-    out.push("}\n");
+    out.push("}");
     return out.join("");
   },
   compile: function() {

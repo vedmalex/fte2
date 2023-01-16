@@ -3,7 +3,7 @@ module.exports = {
   script: function(blockList, _content, partial, slot, options) {
     var out = [];
     var textQuote = false;
-    blockList = blockList.filter((block2) => block2);
+    blockList = blockList.filter((block2) => block2 && block2.type != "empty");
     for (var i = 0, len = blockList.length; i < len; i++) {
       var last = i === blockList.length - 1;
       var block = blockList[i];

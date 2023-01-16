@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
    "pos": 73,
    "line": 4,
@@ -17,17 +25,33 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 129,
+   "line": 6,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
    "content": " for (let i = 0; i < files.length; i+=1){ ",
    "pos": 129,
    "line": 6,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 176,
+   "line": 6,
+   "column": 48,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "import ",
+   "content": "  import ",
    "pos": 177,
    "line": 7,
    "column": 1,
@@ -71,26 +95,34 @@
    "eol": true
   },
   {
-   "content": "}",
+   "content": "",
    "pos": 253,
    "line": 8,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 253,
+   "line": 8,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 258,
+   "pos": 260,
    "line": 8,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 259,
+   "pos": 261,
    "line": 9,
    "column": 1,
    "type": "text",
@@ -98,25 +130,41 @@
   },
   {
    "content": "const templates = {",
-   "pos": 260,
+   "pos": 262,
    "line": 10,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 280,
+   "content": "",
+   "pos": 282,
    "line": 11,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 282,
+   "line": 11,
+   "column": 1,
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 329,
+   "line": 11,
+   "column": 48,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "'",
-   "pos": 328,
+   "content": "  '",
+   "pos": 330,
    "line": 12,
    "column": 1,
    "type": "text",
@@ -124,7 +172,7 @@
   },
   {
    "content": "files[i].name",
-   "pos": 331,
+   "pos": 333,
    "line": 12,
    "column": 4,
    "start": "#{",
@@ -134,7 +182,7 @@
   },
   {
    "content": "': ",
-   "pos": 347,
+   "pos": 349,
    "line": 12,
    "column": 20,
    "type": "text",
@@ -142,7 +190,7 @@
   },
   {
    "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 350,
+   "pos": 352,
    "line": 12,
    "column": 23,
    "start": "#{",
@@ -152,33 +200,41 @@
   },
   {
    "content": ",",
-   "pos": 392,
+   "pos": 394,
    "line": 12,
    "column": 65,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 394,
+   "content": "",
+   "pos": 396,
    "line": 13,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 396,
+   "line": 13,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 399,
+   "pos": 403,
    "line": 13,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "}",
-   "pos": 400,
+   "pos": 404,
    "line": 14,
    "column": 1,
    "type": "text",
@@ -186,7 +242,7 @@
   },
   {
    "content": "",
-   "pos": 402,
+   "pos": 406,
    "line": 15,
    "column": 1,
    "type": "text",
@@ -194,7 +250,7 @@
   },
   {
    "content": "const F = new Factory(templates)",
-   "pos": 403,
+   "pos": 407,
    "line": 16,
    "column": 1,
    "type": "text",
@@ -202,7 +258,7 @@
   },
   {
    "content": "",
-   "pos": 436,
+   "pos": 440,
    "line": 17,
    "column": 1,
    "type": "text",
@@ -210,7 +266,7 @@
   },
   {
    "content": "module.exports = (context, name) => {",
-   "pos": 437,
+   "pos": 441,
    "line": 18,
    "column": 1,
    "type": "text",
@@ -218,7 +274,7 @@
   },
   {
    "content": "  return F.run( context, name )",
-   "pos": 475,
+   "pos": 479,
    "line": 19,
    "column": 1,
    "type": "text",
@@ -226,11 +282,26 @@
   },
   {
    "content": "}",
-   "pos": 507,
+   "pos": 511,
    "line": 20,
    "column": 1,
    "type": "text",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 513,
+   "line": 21,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 513,
+   "line": 21,
+   "column": 1,
+   "type": "empty"
   }
  ],
  "directives": {

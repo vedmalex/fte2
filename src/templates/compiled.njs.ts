@@ -2,7 +2,7 @@ export default {
   alias: ["compiled.njs"],
   script: function(context, _content, partial, slot, options) {
     var out = [];
-    out.push("module.exports = " + partial(context, "core") + ";\n");
+    out.push("module.exports = " + partial(context, "core") + ";");
     return out.join("");
   },
   compile: function() {
