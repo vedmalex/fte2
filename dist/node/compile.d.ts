@@ -6,8 +6,8 @@ export declare function run(context: any, template: keyof typeof templates): str
     name: string;
     content: string;
 }[];
-export declare function compileLight(content: Buffer | string): string;
-export declare function compileFull(content: Buffer | string): string;
-export declare function compileTs(content: Buffer | string): string;
+export declare function compileLight(content: Buffer | string, optimize: boolean): string;
+export declare function compileFull(content: Buffer | string, optimize: boolean): string;
+export declare function compileTs(content: Buffer | string, optimize: boolean): string;
 export declare function parseFile(content: Buffer | string): import("../parser/parse").CodeBlock;
 //# sourceMappingURL=compile.d.ts.map

@@ -13,7 +13,7 @@ function parseTemplate(fileName, src, dest, compile, { typescript, format, prett
     const fn = path_1.default.resolve(fileName);
     if (fs_1.default.existsSync(fn)) {
         const content = fs_1.default.readFileSync(fn);
-        const result = compile(content);
+        const result = compile(content, false);
         if (typeof result == 'string') {
             path_1.default.relative(src, fileName);
             (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.relative(src, fileName) + (typescript ? '.ts' : '.js')), result, {

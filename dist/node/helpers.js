@@ -62,9 +62,9 @@ function makeFunction(fnDef, name) {
     }
 }
 exports.makeFunction = makeFunction;
-function makeTemplate(src) {
+function makeTemplate(src, optimize = true) {
     let result;
-    const compiled = (0, compile_1.compileLight)(src);
+    const compiled = (0, compile_1.compileLight)(src, optimize);
     try {
         result = safeEval(compiled);
     }

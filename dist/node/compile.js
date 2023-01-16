@@ -42,19 +42,22 @@ function run(context, template) {
     return exports.F.run(context, template);
 }
 exports.run = run;
-function compileLight(content) {
+function compileLight(content, optimize) {
     const compiled = parse_1.Parser.parse(content.toString());
-    return prepareCode(run(compiled, 'raw.njs'));
+    const text = run(compiled, 'raw.njs');
+    return optimize ? prepareCode(text) : text;
 }
 exports.compileLight = compileLight;
-function compileFull(content) {
+function compileFull(content, optimize) {
     const compiled = parse_1.Parser.parse(content.toString());
-    return prepareCode(run(compiled, 'compiled.njs'));
+    const text = run(compiled, 'compiled.njs');
+    return optimize ? prepareCode(text) : text;
 }
 exports.compileFull = compileFull;
-function compileTs(content) {
+function compileTs(content, optimize) {
     const compiled = parse_1.Parser.parse(content.toString());
-    return prepareCode(run(compiled, 'es6module.njs'));
+    const text = run(compiled, 'es6module.njs');
+    return optimize ? prepareCode(text) : text;
 }
 exports.compileTs = compileTs;
 function parseFile(content) {

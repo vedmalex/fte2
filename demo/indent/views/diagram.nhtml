@@ -27,7 +27,17 @@ package #{namespace.name} {}
 
 <#- diagram.things.forEach(thing => {#>
 class #{thing.thingType} {
-
+<# thing.properties.forEach(prop=> {#>
+  #{prop.propertyName}:#{prop.type ?? "String"}
+<#})#>
+__ server methods __
+<#- thing.methods.forEach(method=> {#>
+  #{method.name}()
+<#})#>
+__ client methods __
+<#- thing.clientMethods.forEach(method=> {#>
+  #{method.name}()
+<#})#>
 }
 <#- })#>
 
