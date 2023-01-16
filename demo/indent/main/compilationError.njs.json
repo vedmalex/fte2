@@ -1,6 +1,13 @@
 {
  "main": [
-  null,
+  {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
   {
    "content": "context.error.message",
    "pos": 53,
@@ -20,6 +27,14 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 79,
+   "line": 4,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
    "content": "context.compiledFile",
    "pos": 79,
    "line": 4,
@@ -36,6 +51,13 @@
    "column": 24,
    "type": "text",
    "eol": false
+  },
+  {
+   "content": "",
+   "pos": 103,
+   "line": 4,
+   "column": 25,
+   "type": "empty"
   }
  ],
  "directives": {

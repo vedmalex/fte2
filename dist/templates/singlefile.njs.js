@@ -21,7 +21,7 @@ exports.default = {
         out.push("  return F.run( context, name )\n");
         out.push("}\n");
         out.push("\n");
-        out.push("exports.run = run\n");
+        out.push("exports.run = run");
         return out.join("");
     },
     compile: function () {

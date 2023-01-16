@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "<div>",
    "pos": 89,
    "line": 5,
@@ -39,6 +47,13 @@
    "column": 1,
    "type": "text",
    "eol": false
+  },
+  {
+   "content": "",
+   "pos": 133,
+   "line": 9,
+   "column": 7,
+   "type": "empty"
   }
  ],
  "directives": {

@@ -1,17 +1,33 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": " for (let i = 0; i < files.length; i+=1){ ",
    "pos": 81,
    "line": 5,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 128,
+   "line": 5,
+   "column": 48,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "import ",
+   "content": "  import ",
    "pos": 129,
    "line": 6,
    "column": 1,
@@ -55,26 +71,34 @@
    "eol": true
   },
   {
-   "content": "}",
+   "content": "",
    "pos": 205,
    "line": 7,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 205,
+   "line": 7,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 210,
+   "pos": 212,
    "line": 7,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 211,
+   "pos": 213,
    "line": 8,
    "column": 1,
    "type": "text",
@@ -82,25 +106,41 @@
   },
   {
    "content": "const templates = {",
-   "pos": 212,
+   "pos": 214,
    "line": 9,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 232,
+   "content": "",
+   "pos": 234,
    "line": 10,
    "column": 1,
-   "start": "<#",
-   "end": "-#>",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " for (let i = 0; i < files.length; i+=1){ ",
+   "pos": 234,
+   "line": 10,
+   "column": 1,
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 281,
+   "line": 10,
+   "column": 48,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "'",
-   "pos": 280,
+   "content": "  '",
+   "pos": 282,
    "line": 11,
    "column": 1,
    "type": "text",
@@ -108,7 +148,7 @@
   },
   {
    "content": "files[i].name",
-   "pos": 283,
+   "pos": 285,
    "line": 11,
    "column": 4,
    "start": "#{",
@@ -118,7 +158,7 @@
   },
   {
    "content": "': ",
-   "pos": 299,
+   "pos": 301,
    "line": 11,
    "column": 20,
    "type": "text",
@@ -126,7 +166,7 @@
   },
   {
    "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 302,
+   "pos": 304,
    "line": 11,
    "column": 23,
    "start": "#{",
@@ -136,33 +176,41 @@
   },
   {
    "content": ",",
-   "pos": 344,
+   "pos": 346,
    "line": 11,
    "column": 65,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 346,
+   "content": "",
+   "pos": 348,
    "line": 12,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 348,
+   "line": 12,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 351,
+   "pos": 355,
    "line": 12,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "}",
-   "pos": 352,
+   "pos": 356,
    "line": 13,
    "column": 1,
    "type": "text",
@@ -170,11 +218,18 @@
   },
   {
    "content": "export default templates",
-   "pos": 354,
+   "pos": 358,
    "line": 14,
    "column": 1,
    "type": "text",
    "eol": false
+  },
+  {
+   "content": "",
+   "pos": 382,
+   "line": 14,
+   "column": 25,
+   "type": "empty"
   }
  ],
  "directives": {

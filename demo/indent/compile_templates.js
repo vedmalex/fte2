@@ -22,7 +22,7 @@ if (files.length > 0) {
     if (stat.isFile()) {
       ext = path.extname(rec)
       if (ext === '.nhtml' || ext === '.njs') {
-        load(rec, './raw', compileFull, false)
+        load(rec, './raw', compileFull, true)
       }
     }
   }

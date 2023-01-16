@@ -19,7 +19,7 @@ module.exports = {
     out.push(options.applyIndent(content(), "    ") + "\n");
     out.push("  </body>\n");
     out.push("\n");
-    out.push("</html>\n");
+    out.push("</html>");
     return out.join("");
   },
   blocks: {

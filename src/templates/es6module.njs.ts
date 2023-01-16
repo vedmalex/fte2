@@ -2,7 +2,7 @@ export default {
   alias: ["es6module.njs"],
   script: function(context, _content, partial, slot, options) {
     var out = [];
-    out.push("export default " + partial(context, "core") + ";\n");
+    out.push("export default " + partial(context, "core") + ";");
     return out.join("");
   },
   compile: function() {

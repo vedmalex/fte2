@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": " const { directives } = context ",
    "pos": 190,
    "line": 7,
@@ -19,26 +27,34 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 231,
+   "line": 9,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
    "content": " if(directives.chunks){",
    "pos": 231,
    "line": 9,
    "column": 1,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 258,
+   "pos": 259,
    "line": 9,
-   "column": 28,
+   "column": 29,
    "type": "text",
    "eol": true
   },
   {
    "content": "chunks: ",
-   "pos": 259,
+   "pos": 260,
    "line": 10,
    "column": 1,
    "type": "text",
@@ -46,7 +62,7 @@
   },
   {
    "content": "JSON.stringify(directives.chunks)",
-   "pos": 267,
+   "pos": 268,
    "line": 10,
    "column": 9,
    "start": "#{",
@@ -56,51 +72,67 @@
   },
   {
    "content": ",",
-   "pos": 303,
+   "pos": 304,
    "line": 10,
    "column": 45,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 305,
+   "content": "",
+   "pos": 306,
    "line": 11,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "}",
+   "pos": 306,
+   "line": 11,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 310,
+   "pos": 312,
    "line": 11,
-   "column": 6,
+   "column": 7,
    "type": "text",
    "eol": true
   },
   {
-   "content": " if(directives.alias){",
-   "pos": 311,
+   "content": "",
+   "pos": 313,
    "line": 12,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " if(directives.alias){",
+   "pos": 313,
+   "line": 12,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 337,
+   "pos": 340,
    "line": 12,
-   "column": 27,
+   "column": 28,
    "type": "text",
    "eol": true
   },
   {
    "content": "alias: ",
-   "pos": 338,
+   "pos": 341,
    "line": 13,
    "column": 1,
    "type": "text",
@@ -108,7 +140,7 @@
   },
   {
    "content": "JSON.stringify(directives.alias)",
-   "pos": 345,
+   "pos": 348,
    "line": 13,
    "column": 8,
    "start": "#{",
@@ -118,25 +150,57 @@
   },
   {
    "content": ",",
-   "pos": 380,
+   "pos": 383,
    "line": 13,
    "column": 43,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 382,
+   "content": "",
+   "pos": 385,
    "line": 14,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "}",
+   "pos": 385,
+   "line": 14,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 391,
+   "line": 14,
+   "column": 7,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 392,
+   "line": 15,
+   "column": 1,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 393,
+   "line": 16,
+   "column": 1,
+   "type": "empty",
    "eol": true
   },
   {
    "content": "script: function (",
-   "pos": 2182,
+   "pos": 2198,
    "line": 88,
    "column": 1,
    "type": "text",
@@ -144,7 +208,7 @@
   },
   {
    "content": "directives.context",
-   "pos": 2202,
+   "pos": 2218,
    "line": 88,
    "column": 21,
    "start": "#{",
@@ -154,7 +218,7 @@
   },
   {
    "content": ", _content, partial, slot, options){",
-   "pos": 2223,
+   "pos": 2239,
    "line": 88,
    "column": 42,
    "type": "text",
@@ -162,7 +226,7 @@
   },
   {
    "content": "content('maincontent', directives)",
-   "pos": 2264,
+   "pos": 2280,
    "line": 89,
    "column": 5,
    "start": "#{",
@@ -173,7 +237,7 @@
   },
   {
    "content": "",
-   "pos": 2301,
+   "pos": 2317,
    "line": 89,
    "column": 42,
    "type": "text",
@@ -181,7 +245,7 @@
   },
   {
    "content": "    var out = []",
-   "pos": 2302,
+   "pos": 2318,
    "line": 90,
    "column": 1,
    "type": "text",
@@ -189,7 +253,7 @@
   },
   {
    "content": "content('chunks-start', directives)",
-   "pos": 2323,
+   "pos": 2339,
    "line": 91,
    "column": 5,
    "start": "#{",
@@ -200,7 +264,7 @@
   },
   {
    "content": "",
-   "pos": 2361,
+   "pos": 2377,
    "line": 91,
    "column": 43,
    "type": "text",
@@ -208,7 +272,7 @@
   },
   {
    "content": "partial(context.main,'codeblock')",
-   "pos": 2366,
+   "pos": 2382,
    "line": 92,
    "column": 5,
    "start": "#{",
@@ -219,7 +283,7 @@
   },
   {
    "content": "",
-   "pos": 2402,
+   "pos": 2418,
    "line": 92,
    "column": 41,
    "type": "text",
@@ -227,7 +291,7 @@
   },
   {
    "content": "content('chunks-finish', directives)",
-   "pos": 2407,
+   "pos": 2423,
    "line": 93,
    "column": 5,
    "start": "#{",
@@ -237,42 +301,26 @@
    "indent": "    "
   },
   {
-   "content": "",
-   "pos": 2446,
-   "line": 93,
-   "column": 44,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "    ",
-   "pos": 2447,
-   "line": 94,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
    "content": "if(directives.chunks){",
-   "pos": 2451,
+   "pos": 2467,
    "line": 94,
    "column": 5,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 2477,
+   "pos": 2494,
    "line": 94,
-   "column": 31,
+   "column": 32,
    "type": "text",
    "eol": true
   },
   {
    "content": "    if(out.some(t=>typeof t == 'object')){",
-   "pos": 2478,
+   "pos": 2495,
    "line": 95,
    "column": 1,
    "type": "text",
@@ -280,7 +328,7 @@
   },
   {
    "content": "      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))",
-   "pos": 2521,
+   "pos": 2538,
    "line": 96,
    "column": 1,
    "type": "text",
@@ -288,7 +336,7 @@
   },
   {
    "content": "    } else {",
-   "pos": 2638,
+   "pos": 2655,
    "line": 97,
    "column": 1,
    "type": "text",
@@ -296,7 +344,7 @@
   },
   {
    "content": "      return out.join('')",
-   "pos": 2651,
+   "pos": 2668,
    "line": 98,
    "column": 1,
    "type": "text",
@@ -304,83 +352,75 @@
   },
   {
    "content": "    }",
-   "pos": 2677,
+   "pos": 2694,
    "line": 99,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "    ",
-   "pos": 2683,
-   "line": 100,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "} else {",
-   "pos": 2687,
+   "pos": 2704,
    "line": 100,
    "column": 5,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 2699,
+   "pos": 2717,
    "line": 100,
-   "column": 17,
+   "column": 18,
    "type": "text",
    "eol": true
   },
   {
    "content": "      return out.join('')",
-   "pos": 2700,
+   "pos": 2718,
    "line": 101,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "    ",
-   "pos": 2726,
-   "line": 102,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "}",
-   "pos": 2730,
+   "pos": 2748,
    "line": 102,
    "column": 5,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 2735,
+   "pos": 2754,
    "line": 102,
-   "column": 10,
+   "column": 11,
    "type": "text",
    "eol": true
   },
   {
    "content": "  },",
-   "pos": 2736,
+   "pos": 2755,
    "line": 103,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
+   "content": "",
+   "pos": 2760,
+   "line": 104,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "const blockNames = Object.keys(context.blocks)",
-   "pos": 2744,
+   "pos": 2764,
    "line": 105,
    "column": 1,
    "type": "code",
@@ -388,24 +428,40 @@
   },
   {
    "content": "if(blockNames.length > 0) {",
-   "pos": 2791,
+   "pos": 2811,
    "line": 106,
    "column": 1,
-   "end": "-#>",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 2840,
+   "line": 106,
+   "column": 30,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "blocks : {",
-   "pos": 2822,
+   "content": "  blocks : {",
+   "pos": 2841,
    "line": 107,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
+   "content": "",
+   "pos": 2854,
+   "line": 108,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "  for(let i = 0; i < blockNames.length; i+=1) {",
-   "pos": 2838,
+   "pos": 2858,
    "line": 109,
    "column": 1,
    "type": "code",
@@ -413,15 +469,23 @@
   },
   {
    "content": "    const block = context.blocks[blockNames[i]]",
-   "pos": 2886,
+   "pos": 2906,
    "line": 110,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "\"",
-   "pos": 2938,
+   "content": "",
+   "pos": 2956,
+   "line": 111,
+   "column": 3,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "    \"",
+   "pos": 2957,
    "line": 112,
    "column": 1,
    "type": "text",
@@ -429,7 +493,7 @@
   },
   {
    "content": "blockNames[i]",
-   "pos": 2943,
+   "pos": 2962,
    "line": 112,
    "column": 6,
    "start": "#{",
@@ -439,7 +503,7 @@
   },
   {
    "content": "\": function(",
-   "pos": 2959,
+   "pos": 2978,
    "line": 112,
    "column": 22,
    "type": "text",
@@ -447,7 +511,7 @@
   },
   {
    "content": "block.directives.context",
-   "pos": 2971,
+   "pos": 2990,
    "line": 112,
    "column": 34,
    "start": "#{",
@@ -457,7 +521,7 @@
   },
   {
    "content": ",  _content, partial, slot, options) {",
-   "pos": 2998,
+   "pos": 3017,
    "line": 112,
    "column": 61,
    "type": "text",
@@ -465,7 +529,7 @@
   },
   {
    "content": "content('maincontent', block.directives)",
-   "pos": 3043,
+   "pos": 3062,
    "line": 113,
    "column": 7,
    "start": "#{",
@@ -476,7 +540,7 @@
   },
   {
    "content": "",
-   "pos": 3086,
+   "pos": 3105,
    "line": 113,
    "column": 50,
    "type": "text",
@@ -484,7 +548,7 @@
   },
   {
    "content": "      var out = []",
-   "pos": 3087,
+   "pos": 3106,
    "line": 114,
    "column": 1,
    "type": "text",
@@ -492,7 +556,7 @@
   },
   {
    "content": "partial(block.main, 'codeblock')",
-   "pos": 3112,
+   "pos": 3131,
    "line": 115,
    "column": 7,
    "start": "#{",
@@ -503,7 +567,7 @@
   },
   {
    "content": "if(directives.chunks){",
-   "pos": 3154,
+   "pos": 3173,
    "line": 116,
    "column": 7,
    "start": "<#-",
@@ -513,7 +577,7 @@
   },
   {
    "content": "",
-   "pos": 3181,
+   "pos": 3200,
    "line": 116,
    "column": 34,
    "type": "text",
@@ -521,7 +585,7 @@
   },
   {
    "content": "      if(out.some(t=>typeof t == 'object')){",
-   "pos": 3182,
+   "pos": 3201,
    "line": 117,
    "column": 1,
    "type": "text",
@@ -529,7 +593,7 @@
   },
   {
    "content": "        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))",
-   "pos": 3227,
+   "pos": 3246,
    "line": 118,
    "column": 1,
    "type": "text",
@@ -537,7 +601,7 @@
   },
   {
    "content": "      } else {",
-   "pos": 3346,
+   "pos": 3365,
    "line": 119,
    "column": 1,
    "type": "text",
@@ -545,7 +609,7 @@
   },
   {
    "content": "        return out.join('')",
-   "pos": 3361,
+   "pos": 3380,
    "line": 120,
    "column": 1,
    "type": "text",
@@ -553,119 +617,135 @@
   },
   {
    "content": "      }",
-   "pos": 3389,
+   "pos": 3408,
    "line": 121,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "      ",
-   "pos": 3397,
-   "line": 122,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "} else {",
-   "pos": 3403,
+   "pos": 3422,
    "line": 122,
    "column": 7,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 3415,
+   "pos": 3435,
    "line": 122,
-   "column": 19,
+   "column": 20,
    "type": "text",
    "eol": true
   },
   {
    "content": "        return out.join('')",
-   "pos": 3416,
+   "pos": 3436,
    "line": 123,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "      ",
-   "pos": 3444,
-   "line": 124,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
-   "content": "}",
-   "pos": 3450,
+   "content": " }",
+   "pos": 3470,
    "line": 124,
    "column": 7,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 3455,
+   "pos": 3477,
    "line": 124,
-   "column": 12,
+   "column": 14,
    "type": "text",
    "eol": true
   },
   {
    "content": "    },",
-   "pos": 3456,
+   "pos": 3478,
    "line": 125,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 3463,
+   "content": "",
+   "pos": 3485,
    "line": 126,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 3485,
+   "line": 126,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 3468,
+   "pos": 3492,
    "line": 126,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "  },",
-   "pos": 3469,
+   "pos": 3493,
    "line": 127,
    "column": 1,
    "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 3498,
+   "line": 128,
+   "column": 1,
+   "type": "empty",
    "eol": false
   },
   {
-   "content": "  } ",
-   "pos": 3474,
+   "content": "}",
+   "pos": 3498,
    "line": 128,
    "column": 1,
    "start": "<#-",
-   "end": "-#>",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 3504,
+   "line": 128,
+   "column": 7,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 3505,
+   "line": 129,
+   "column": 1,
+   "type": "empty",
    "eol": true
   },
   {
    "content": "const slotNames = Object.keys(context.slots)",
-   "pos": 3488,
+   "pos": 3509,
    "line": 130,
    "column": 1,
    "type": "code",
@@ -673,24 +753,40 @@
   },
   {
    "content": "if(slotNames.length > 0) {",
-   "pos": 3533,
+   "pos": 3554,
    "line": 131,
    "column": 1,
-   "end": "-#>",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 3582,
+   "line": 131,
+   "column": 29,
+   "type": "text",
    "eol": true
   },
   {
-   "content": "slots : {",
-   "pos": 3563,
+   "content": "  slots : {",
+   "pos": 3583,
    "line": 132,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
+   "content": "",
+   "pos": 3595,
+   "line": 133,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "  for(let i = 0; i < slotNames.length; i+=1){",
-   "pos": 3578,
+   "pos": 3599,
    "line": 134,
    "column": 1,
    "type": "code",
@@ -698,15 +794,23 @@
   },
   {
    "content": "    const slot = context.blocks[slotNames[i]]",
-   "pos": 3624,
+   "pos": 3645,
    "line": 135,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "\"",
-   "pos": 3674,
+   "content": "",
+   "pos": 3693,
+   "line": 136,
+   "column": 3,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "    \"",
+   "pos": 3694,
    "line": 137,
    "column": 1,
    "type": "text",
@@ -714,7 +818,7 @@
   },
   {
    "content": "slotNames[i]",
-   "pos": 3679,
+   "pos": 3699,
    "line": 137,
    "column": 6,
    "start": "#{",
@@ -724,7 +828,7 @@
   },
   {
    "content": "\": function(",
-   "pos": 3694,
+   "pos": 3714,
    "line": 137,
    "column": 21,
    "type": "text",
@@ -732,7 +836,7 @@
   },
   {
    "content": "slot.directives.context",
-   "pos": 3706,
+   "pos": 3726,
    "line": 137,
    "column": 33,
    "start": "#{",
@@ -742,7 +846,7 @@
   },
   {
    "content": ",  _content, partial, slot, options){",
-   "pos": 3732,
+   "pos": 3752,
    "line": 137,
    "column": 59,
    "type": "text",
@@ -750,7 +854,7 @@
   },
   {
    "content": "content('maincontent', slot.directives)",
-   "pos": 3776,
+   "pos": 3796,
    "line": 138,
    "column": 7,
    "start": "#{",
@@ -761,7 +865,7 @@
   },
   {
    "content": "",
-   "pos": 3818,
+   "pos": 3838,
    "line": 138,
    "column": 49,
    "type": "text",
@@ -769,7 +873,7 @@
   },
   {
    "content": "      var out = []",
-   "pos": 3819,
+   "pos": 3839,
    "line": 139,
    "column": 1,
    "type": "text",
@@ -777,7 +881,7 @@
   },
   {
    "content": "partial(slot.main, 'codeblock')",
-   "pos": 3844,
+   "pos": 3864,
    "line": 140,
    "column": 7,
    "start": "#{",
@@ -787,8 +891,8 @@
    "indent": "      "
   },
   {
-   "content": "if(directives.chunks){",
-   "pos": 3885,
+   "content": " if(directives.chunks){",
+   "pos": 3905,
    "line": 141,
    "column": 7,
    "start": "<#-",
@@ -798,15 +902,15 @@
   },
   {
    "content": "",
-   "pos": 3912,
+   "pos": 3933,
    "line": 141,
-   "column": 34,
+   "column": 35,
    "type": "text",
    "eol": true
   },
   {
    "content": "      if(out.some(t=>typeof t == 'object')){",
-   "pos": 3913,
+   "pos": 3934,
    "line": 142,
    "column": 1,
    "type": "text",
@@ -814,7 +918,7 @@
   },
   {
    "content": "        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))",
-   "pos": 3958,
+   "pos": 3979,
    "line": 143,
    "column": 1,
    "type": "text",
@@ -822,7 +926,7 @@
   },
   {
    "content": "      } else {",
-   "pos": 4077,
+   "pos": 4098,
    "line": 144,
    "column": 1,
    "type": "text",
@@ -830,7 +934,7 @@
   },
   {
    "content": "        return out.join('')",
-   "pos": 4092,
+   "pos": 4113,
    "line": 145,
    "column": 1,
    "type": "text",
@@ -838,153 +942,161 @@
   },
   {
    "content": "      }",
-   "pos": 4120,
+   "pos": 4141,
    "line": 146,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "      ",
-   "pos": 4128,
-   "line": 147,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
-   "content": "} else {",
-   "pos": 4134,
+   "content": " } else {",
+   "pos": 4155,
    "line": 147,
    "column": 7,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4146,
+   "pos": 4169,
    "line": 147,
-   "column": 19,
+   "column": 21,
    "type": "text",
    "eol": true
   },
   {
    "content": "        return out.join('')",
-   "pos": 4147,
+   "pos": 4170,
    "line": 148,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "      ",
-   "pos": 4175,
-   "line": 149,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
-   "content": "}",
-   "pos": 4181,
+   "content": " }",
+   "pos": 4204,
    "line": 149,
    "column": 7,
-   "start": "<#",
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4186,
+   "pos": 4211,
    "line": 149,
-   "column": 12,
+   "column": 14,
    "type": "text",
    "eol": true
   },
   {
    "content": "    },",
-   "pos": 4187,
+   "pos": 4212,
    "line": 150,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 4194,
+   "content": "",
+   "pos": 4219,
    "line": 151,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "}",
+   "pos": 4219,
+   "line": 151,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4199,
+   "pos": 4225,
    "line": 151,
-   "column": 6,
+   "column": 7,
    "type": "text",
    "eol": true
   },
   {
    "content": "  },",
-   "pos": 4200,
+   "pos": 4226,
    "line": 152,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": " } ",
-   "pos": 4205,
+   "content": "",
+   "pos": 4231,
    "line": 153,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " } ",
+   "pos": 4231,
+   "line": 153,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4212,
+   "pos": 4239,
    "line": 153,
-   "column": 8,
+   "column": 9,
    "type": "text",
    "eol": true
   },
   {
    "content": "  compile: function() {",
-   "pos": 4213,
+   "pos": 4240,
    "line": 154,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": " if(directives.alias){",
-   "pos": 4237,
+   "content": "",
+   "pos": 4264,
    "line": 155,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " if(directives.alias){",
+   "pos": 4264,
+   "line": 155,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4263,
+   "pos": 4291,
    "line": 155,
-   "column": 27,
+   "column": 28,
    "type": "text",
    "eol": true
   },
   {
    "content": "    this.alias = ",
-   "pos": 4264,
+   "pos": 4292,
    "line": 156,
    "column": 1,
    "type": "text",
@@ -992,7 +1104,7 @@
   },
   {
    "content": "JSON.stringify(directives.alias)",
-   "pos": 4281,
+   "pos": 4309,
    "line": 156,
    "column": 18,
    "start": "#{",
@@ -1002,68 +1114,92 @@
   },
   {
    "content": "",
-   "pos": 4316,
+   "pos": 4344,
    "line": 156,
    "column": 53,
    "type": "text",
    "eol": true
   },
   {
-   "content": " }",
-   "pos": 4317,
+   "content": "",
+   "pos": 4345,
    "line": 157,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 4345,
+   "line": 157,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4323,
+   "pos": 4352,
    "line": 157,
-   "column": 7,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
-   "content": "  if(directives.requireAs.length > 0) { ",
-   "pos": 4324,
+   "content": "",
+   "pos": 4353,
    "line": 158,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "  if(directives.requireAs.length > 0) { ",
+   "pos": 4353,
+   "line": 158,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4368,
+   "pos": 4398,
    "line": 158,
-   "column": 45,
+   "column": 46,
    "type": "text",
    "eol": true
   },
   {
    "content": "    this.aliases={}",
-   "pos": 4369,
+   "pos": 4399,
    "line": 159,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": " var rq",
-   "pos": 4389,
+   "content": "",
+   "pos": 4419,
    "line": 160,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " var rq",
+   "pos": 4419,
+   "line": 160,
+   "column": 1,
+   "start": "<#-",
    "type": "code",
    "eol": true
   },
   {
    "content": "  for (var i = 0, len = directives.requireAs.length; i < len; i++) {",
-   "pos": 4399,
+   "pos": 4430,
    "line": 161,
    "column": 1,
    "type": "code",
@@ -1071,7 +1207,7 @@
   },
   {
    "content": "    rq = directives.requireAs[i]",
-   "pos": 4468,
+   "pos": 4499,
    "line": 162,
    "column": 1,
    "type": "code",
@@ -1079,7 +1215,7 @@
   },
   {
    "content": "",
-   "pos": 4503,
+   "pos": 4534,
    "line": 163,
    "column": 3,
    "type": "text",
@@ -1087,7 +1223,7 @@
   },
   {
    "content": "    this.aliases[\"",
-   "pos": 4504,
+   "pos": 4535,
    "line": 164,
    "column": 1,
    "type": "text",
@@ -1095,7 +1231,7 @@
   },
   {
    "content": "rq.alias",
-   "pos": 4522,
+   "pos": 4553,
    "line": 164,
    "column": 19,
    "start": "#{",
@@ -1105,7 +1241,7 @@
   },
   {
    "content": "\"] = \"",
-   "pos": 4533,
+   "pos": 4564,
    "line": 164,
    "column": 30,
    "type": "text",
@@ -1113,7 +1249,7 @@
   },
   {
    "content": "rq.name",
-   "pos": 4539,
+   "pos": 4570,
    "line": 164,
    "column": 36,
    "start": "#{",
@@ -1123,7 +1259,7 @@
   },
   {
    "content": "\"",
-   "pos": 4549,
+   "pos": 4580,
    "line": 164,
    "column": 46,
    "type": "text",
@@ -1131,7 +1267,7 @@
   },
   {
    "content": "    this.factory.ensure(\"",
-   "pos": 4551,
+   "pos": 4582,
    "line": 165,
    "column": 1,
    "type": "text",
@@ -1139,7 +1275,7 @@
   },
   {
    "content": "rq.name",
-   "pos": 4576,
+   "pos": 4607,
    "line": 165,
    "column": 26,
    "start": "#{",
@@ -1149,15 +1285,23 @@
   },
   {
    "content": "\")",
-   "pos": 4586,
+   "pos": 4617,
    "line": 165,
    "column": 36,
    "type": "text",
    "eol": true
   },
   {
+   "content": "",
+   "pos": 4620,
+   "line": 166,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "  }",
-   "pos": 4592,
+   "pos": 4624,
    "line": 167,
    "column": 1,
    "type": "code",
@@ -1165,7 +1309,7 @@
   },
   {
    "content": "}",
-   "pos": 4596,
+   "pos": 4628,
    "line": 168,
    "column": 1,
    "end": "#>",
@@ -1174,7 +1318,7 @@
   },
   {
    "content": "",
-   "pos": 4599,
+   "pos": 4631,
    "line": 168,
    "column": 4,
    "type": "text",
@@ -1182,33 +1326,41 @@
   },
   {
    "content": "",
-   "pos": 4600,
+   "pos": 4632,
    "line": 169,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": "if(directives.extend) {",
-   "pos": 4601,
+   "content": "",
+   "pos": 4633,
    "line": 170,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " if(directives.extend) {",
+   "pos": 4633,
+   "line": 170,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4628,
+   "pos": 4662,
    "line": 170,
-   "column": 28,
+   "column": 30,
    "type": "text",
    "eol": true
   },
   {
    "content": "    this.parent = ",
-   "pos": 4629,
+   "pos": 4663,
    "line": 171,
    "column": 1,
    "type": "text",
@@ -1216,7 +1368,7 @@
   },
   {
    "content": "JSON.stringify(directives.extend)",
-   "pos": 4647,
+   "pos": 4681,
    "line": 171,
    "column": 19,
    "start": "#{",
@@ -1226,7 +1378,7 @@
   },
   {
    "content": "",
-   "pos": 4683,
+   "pos": 4717,
    "line": 171,
    "column": 55,
    "type": "text",
@@ -1234,33 +1386,41 @@
   },
   {
    "content": "    this.mergeParent(this.factory.ensure(this.parent))",
-   "pos": 4684,
+   "pos": 4718,
    "line": 172,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 4739,
+   "content": "",
+   "pos": 4773,
    "line": 173,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " }",
+   "pos": 4773,
+   "line": 173,
+   "column": 1,
+   "start": "<#-",
    "end": "#>",
    "type": "code",
    "eol": false
   },
   {
    "content": "",
-   "pos": 4744,
+   "pos": 4780,
    "line": 173,
-   "column": 6,
+   "column": 8,
    "type": "text",
    "eol": true
   },
   {
    "content": "  },",
-   "pos": 4745,
+   "pos": 4781,
    "line": 174,
    "column": 1,
    "type": "text",
@@ -1268,78 +1428,87 @@
   },
   {
    "content": "  dependency: {",
-   "pos": 4750,
+   "pos": 4786,
    "line": 175,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  ",
-   "pos": 4766,
-   "line": 176,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " if(directives.extend) {",
-   "pos": 4768,
+   "pos": 4804,
    "line": 176,
    "column": 3,
-   "start": "<#",
-   "end": "-#>",
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 4833,
+   "line": 176,
+   "column": 32,
+   "type": "text",
    "eol": true
   },
   {
    "content": "JSON.stringify(directives.extend)",
-   "pos": 4802,
+   "pos": 4838,
    "line": 177,
    "column": 5,
    "start": "#{",
    "end": "}",
    "type": "expression",
-   "eol": false
+   "eol": false,
+   "indent": "    "
   },
   {
    "content": ": true,",
-   "pos": 4838,
+   "pos": 4874,
    "line": 177,
    "column": 41,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  ",
-   "pos": 4846,
-   "line": 178,
-   "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " }",
-   "pos": 4848,
+   "pos": 4884,
    "line": 178,
    "column": 3,
-   "start": "<#",
-   "end": "-#>",
+   "start": "<#-",
+   "end": "#>",
    "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 4891,
+   "line": 178,
+   "column": 10,
+   "type": "text",
    "eol": true
   },
   {
-   "content": " if(directives.requireAs.length > 0) {",
-   "pos": 4856,
+   "content": "",
+   "pos": 4892,
    "line": 179,
    "column": 1,
-   "start": "<#",
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " if(directives.requireAs.length > 0) {",
+   "pos": 4892,
+   "line": 179,
+   "column": 1,
+   "start": "<#-",
    "type": "code",
    "eol": true
   },
   {
    "content": "  for (var i = 0, len = directives.requireAs.length; i < len; i++) {",
-   "pos": 4897,
+   "pos": 4934,
    "line": 180,
    "column": 1,
    "type": "code",
@@ -1347,7 +1516,7 @@
   },
   {
    "content": "    rq = directives.requireAs[i]",
-   "pos": 4966,
+   "pos": 5003,
    "line": 181,
    "column": 1,
    "type": "code",
@@ -1355,7 +1524,7 @@
   },
   {
    "content": "",
-   "pos": 5001,
+   "pos": 5038,
    "line": 182,
    "column": 3,
    "type": "text",
@@ -1363,7 +1532,7 @@
   },
   {
    "content": "    \"",
-   "pos": 5002,
+   "pos": 5039,
    "line": 183,
    "column": 1,
    "type": "text",
@@ -1371,7 +1540,7 @@
   },
   {
    "content": "rq.name",
-   "pos": 5007,
+   "pos": 5044,
    "line": 183,
    "column": 6,
    "start": "#{",
@@ -1381,7 +1550,7 @@
   },
   {
    "content": "\": true,",
-   "pos": 5017,
+   "pos": 5054,
    "line": 183,
    "column": 16,
    "type": "text",
@@ -1389,7 +1558,7 @@
   },
   {
    "content": "    \"",
-   "pos": 5026,
+   "pos": 5063,
    "line": 184,
    "column": 1,
    "type": "text",
@@ -1397,7 +1566,7 @@
   },
   {
    "content": "rq.alias",
-   "pos": 5031,
+   "pos": 5068,
    "line": 184,
    "column": 6,
    "start": "#{",
@@ -1407,15 +1576,23 @@
   },
   {
    "content": "\": true,",
-   "pos": 5042,
+   "pos": 5079,
    "line": 184,
    "column": 17,
    "type": "text",
    "eol": true
   },
   {
+   "content": "",
+   "pos": 5088,
+   "line": 185,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "  }",
-   "pos": 5054,
+   "pos": 5092,
    "line": 186,
    "column": 1,
    "type": "code",
@@ -1423,7 +1600,7 @@
   },
   {
    "content": "}",
-   "pos": 5058,
+   "pos": 5096,
    "line": 187,
    "column": 1,
    "end": "#>",
@@ -1432,7 +1609,7 @@
   },
   {
    "content": "",
-   "pos": 5061,
+   "pos": 5099,
    "line": 187,
    "column": 4,
    "type": "text",
@@ -1440,7 +1617,7 @@
   },
   {
    "content": "  }",
-   "pos": 5062,
+   "pos": 5100,
    "line": 188,
    "column": 1,
    "type": "text",
@@ -1448,11 +1625,26 @@
   },
   {
    "content": "}",
-   "pos": 5066,
+   "pos": 5104,
    "line": 189,
    "column": 1,
    "type": "text",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 5106,
+   "line": 190,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 5106,
+   "line": 190,
+   "column": 1,
+   "type": "empty"
   }
  ],
  "directives": {
@@ -1496,7 +1688,7 @@
    "main": [
     {
      "content": "if(directives?.content){",
-     "pos": 463,
+     "pos": 467,
      "line": 19,
      "column": 3,
      "start": "<#-",
@@ -1506,7 +1698,7 @@
     },
     {
      "content": "",
-     "pos": 492,
+     "pos": 496,
      "line": 19,
      "column": 32,
      "type": "text",
@@ -1514,7 +1706,7 @@
     },
     {
      "content": "    function content(blockName, ctx) {",
-     "pos": 493,
+     "pos": 497,
      "line": 20,
      "column": 1,
      "type": "text",
@@ -1522,7 +1714,7 @@
     },
     {
      "content": "      if(ctx === undefined || ctx === null) ctx = ",
-     "pos": 532,
+     "pos": 536,
      "line": 21,
      "column": 1,
      "type": "text",
@@ -1530,7 +1722,7 @@
     },
     {
      "content": "directives.context",
-     "pos": 582,
+     "pos": 586,
      "line": 21,
      "column": 51,
      "start": "#{",
@@ -1540,7 +1732,7 @@
     },
     {
      "content": "",
-     "pos": 603,
+     "pos": 607,
      "line": 21,
      "column": 72,
      "type": "text",
@@ -1548,7 +1740,7 @@
     },
     {
      "content": "      return _content(blockName, ctx, content, partial, slot)",
-     "pos": 604,
+     "pos": 608,
      "line": 22,
      "column": 1,
      "type": "text",
@@ -1556,29 +1748,37 @@
     },
     {
      "content": "    }",
-     "pos": 666,
+     "pos": 670,
      "line": 23,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "  ",
-     "pos": 672,
-     "line": 24,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
      "content": "}",
-     "pos": 674,
+     "pos": 678,
      "line": 24,
      "column": 3,
-     "start": "<#",
-     "end": "-#>",
+     "start": "<#-",
+     "end": "#>",
      "type": "code",
+     "eol": false
+    },
+    {
+     "content": "",
+     "pos": 684,
+     "line": 24,
+     "column": 9,
+     "type": "text",
      "eol": true
+    },
+    {
+     "content": "",
+     "pos": 685,
+     "line": 25,
+     "column": 1,
+     "type": "empty",
+     "eol": false
     }
    ],
    "directives": {
@@ -1599,7 +1799,7 @@
    "main": [
     {
      "content": "if(directives.chunks){",
-     "pos": 770,
+     "pos": 774,
      "line": 29,
      "column": 3,
      "start": "<#-",
@@ -1609,7 +1809,7 @@
     },
     {
      "content": "",
-     "pos": 797,
+     "pos": 801,
      "line": 29,
      "column": 30,
      "type": "text",
@@ -1617,7 +1817,7 @@
     },
     {
      "content": "    const _partial = partial",
-     "pos": 798,
+     "pos": 802,
      "line": 30,
      "column": 1,
      "type": "text",
@@ -1625,7 +1825,7 @@
     },
     {
      "content": "    partial = function(obj, template) {",
-     "pos": 827,
+     "pos": 831,
      "line": 31,
      "column": 1,
      "type": "text",
@@ -1633,7 +1833,7 @@
     },
     {
      "content": "      const result = _partial(obj, template)",
-     "pos": 867,
+     "pos": 871,
      "line": 32,
      "column": 1,
      "type": "text",
@@ -1641,7 +1841,7 @@
     },
     {
      "content": "      if(Array.isArray(result)){",
-     "pos": 912,
+     "pos": 916,
      "line": 33,
      "column": 1,
      "type": "text",
@@ -1649,7 +1849,7 @@
     },
     {
      "content": "        result.forEach(r => {",
-     "pos": 945,
+     "pos": 949,
      "line": 34,
      "column": 1,
      "type": "text",
@@ -1657,7 +1857,7 @@
     },
     {
      "content": "          chunkEnsure(r.name, r.content)",
-     "pos": 975,
+     "pos": 979,
      "line": 35,
      "column": 1,
      "type": "text",
@@ -1665,7 +1865,7 @@
     },
     {
      "content": "        })",
-     "pos": 1016,
+     "pos": 1020,
      "line": 36,
      "column": 1,
      "type": "text",
@@ -1673,7 +1873,7 @@
     },
     {
      "content": "        return ''",
-     "pos": 1027,
+     "pos": 1031,
      "line": 37,
      "column": 1,
      "type": "text",
@@ -1681,7 +1881,7 @@
     },
     {
      "content": "      } else {",
-     "pos": 1045,
+     "pos": 1049,
      "line": 38,
      "column": 1,
      "type": "text",
@@ -1689,7 +1889,7 @@
     },
     {
      "content": "        return result",
-     "pos": 1060,
+     "pos": 1064,
      "line": 39,
      "column": 1,
      "type": "text",
@@ -1697,7 +1897,7 @@
     },
     {
      "content": "      }",
-     "pos": 1082,
+     "pos": 1086,
      "line": 40,
      "column": 1,
      "type": "text",
@@ -1705,7 +1905,7 @@
     },
     {
      "content": "    }",
-     "pos": 1090,
+     "pos": 1094,
      "line": 41,
      "column": 1,
      "type": "text",
@@ -1713,7 +1913,7 @@
     },
     {
      "content": "    const main = '",
-     "pos": 1096,
+     "pos": 1100,
      "line": 42,
      "column": 1,
      "type": "text",
@@ -1721,7 +1921,7 @@
     },
     {
      "content": "directives.chunks",
-     "pos": 1114,
+     "pos": 1118,
      "line": 42,
      "column": 19,
      "start": "#{",
@@ -1731,7 +1931,7 @@
     },
     {
      "content": "'",
-     "pos": 1134,
+     "pos": 1138,
      "line": 42,
      "column": 39,
      "type": "text",
@@ -1739,7 +1939,7 @@
     },
     {
      "content": "    var current = main",
-     "pos": 1136,
+     "pos": 1140,
      "line": 43,
      "column": 1,
      "type": "text",
@@ -1747,7 +1947,7 @@
     },
     {
      "content": "    let outStack = [current]",
-     "pos": 1159,
+     "pos": 1163,
      "line": 44,
      "column": 1,
      "type": "text",
@@ -1755,7 +1955,7 @@
     },
     {
      "content": "    let result",
-     "pos": 1188,
+     "pos": 1192,
      "line": 45,
      "column": 1,
      "type": "text",
@@ -1763,7 +1963,7 @@
     },
     {
      "content": "",
-     "pos": 1203,
+     "pos": 1207,
      "line": 46,
      "column": 1,
      "type": "text",
@@ -1771,7 +1971,7 @@
     },
     {
      "content": "    function chunkEnsure(name, content) {",
-     "pos": 1204,
+     "pos": 1208,
      "line": 47,
      "column": 1,
      "type": "text",
@@ -1779,7 +1979,7 @@
     },
     {
      "content": "      if (!result) {",
-     "pos": 1246,
+     "pos": 1250,
      "line": 48,
      "column": 1,
      "type": "text",
@@ -1787,7 +1987,7 @@
     },
     {
      "content": "        result = {}",
-     "pos": 1267,
+     "pos": 1271,
      "line": 49,
      "column": 1,
      "type": "text",
@@ -1795,7 +1995,7 @@
     },
     {
      "content": "      }",
-     "pos": 1287,
+     "pos": 1291,
      "line": 50,
      "column": 1,
      "type": "text",
@@ -1803,7 +2003,7 @@
     },
     {
      "content": "      if (!result.hasOwnProperty(name)) {",
-     "pos": 1295,
+     "pos": 1299,
      "line": 51,
      "column": 1,
      "type": "text",
@@ -1811,7 +2011,7 @@
     },
     {
      "content": "        result[name] = content ? content : []",
-     "pos": 1337,
+     "pos": 1341,
      "line": 52,
      "column": 1,
      "type": "text",
@@ -1819,7 +2019,7 @@
     },
     {
      "content": "      }",
-     "pos": 1383,
+     "pos": 1387,
      "line": 53,
      "column": 1,
      "type": "text",
@@ -1827,7 +2027,7 @@
     },
     {
      "content": "    }",
-     "pos": 1391,
+     "pos": 1395,
      "line": 54,
      "column": 1,
      "type": "text",
@@ -1835,7 +2035,7 @@
     },
     {
      "content": "    function chunkStart(name) {",
-     "pos": 1397,
+     "pos": 1401,
      "line": 55,
      "column": 1,
      "type": "text",
@@ -1843,7 +2043,7 @@
     },
     {
      "content": "      chunkEnsure(name)",
-     "pos": 1429,
+     "pos": 1433,
      "line": 56,
      "column": 1,
      "type": "text",
@@ -1851,7 +2051,7 @@
     },
     {
      "content": "      chunkEnd()",
-     "pos": 1453,
+     "pos": 1457,
      "line": 57,
      "column": 1,
      "type": "text",
@@ -1859,7 +2059,7 @@
     },
     {
      "content": "      current = name",
-     "pos": 1470,
+     "pos": 1474,
      "line": 58,
      "column": 1,
      "type": "text",
@@ -1867,7 +2067,7 @@
     },
     {
      "content": "      out = []",
-     "pos": 1491,
+     "pos": 1495,
      "line": 59,
      "column": 1,
      "type": "text",
@@ -1875,7 +2075,7 @@
     },
     {
      "content": "    }",
-     "pos": 1506,
+     "pos": 1510,
      "line": 60,
      "column": 1,
      "type": "text",
@@ -1883,7 +2083,7 @@
     },
     {
      "content": "    function chunkEnd() {",
-     "pos": 1512,
+     "pos": 1516,
      "line": 61,
      "column": 1,
      "type": "text",
@@ -1891,7 +2091,7 @@
     },
     {
      "content": "      result[current].push(...out)",
-     "pos": 1538,
+     "pos": 1542,
      "line": 62,
      "column": 1,
      "type": "text",
@@ -1899,7 +2099,7 @@
     },
     {
      "content": "      out = []",
-     "pos": 1573,
+     "pos": 1577,
      "line": 63,
      "column": 1,
      "type": "text",
@@ -1907,7 +2107,7 @@
     },
     {
      "content": "      current = outStack.pop() || main",
-     "pos": 1588,
+     "pos": 1592,
      "line": 64,
      "column": 1,
      "type": "text",
@@ -1915,7 +2115,7 @@
     },
     {
      "content": "    }",
-     "pos": 1627,
+     "pos": 1631,
      "line": 65,
      "column": 1,
      "type": "text",
@@ -1923,29 +2123,37 @@
     },
     {
      "content": "    chunkStart(main)",
-     "pos": 1633,
+     "pos": 1637,
      "line": 66,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "  ",
-     "pos": 1654,
-     "line": 67,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
      "content": "}",
-     "pos": 1656,
+     "pos": 1660,
      "line": 67,
      "column": 3,
-     "start": "<#",
-     "end": "-#>",
+     "start": "<#-",
+     "end": "#>",
      "type": "code",
+     "eol": false
+    },
+    {
+     "content": "",
+     "pos": 1666,
+     "line": 67,
+     "column": 9,
+     "type": "text",
      "eol": true
+    },
+    {
+     "content": "",
+     "pos": 1667,
+     "line": 68,
+     "column": 1,
+     "type": "empty",
+     "eol": false
     }
    ],
    "directives": {
@@ -1965,94 +2173,78 @@
   "chunks-finish": {
    "main": [
     {
-     "content": "if(directives.chunks){",
-     "pos": 1753,
+     "content": " if(directives.chunks){",
+     "pos": 1757,
      "line": 72,
      "column": 3,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 1779,
+     "pos": 1785,
      "line": 72,
-     "column": 29,
+     "column": 31,
      "type": "text",
      "eol": true
     },
     {
      "content": "    chunkEnd()",
-     "pos": 1780,
+     "pos": 1786,
      "line": 73,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "    ",
-     "pos": 1795,
-     "line": 74,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
-     "content": "if(!directives.useHash){",
-     "pos": 1799,
+     "content": " if(!directives.useHash){",
+     "pos": 1805,
      "line": 74,
      "column": 5,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 1827,
+     "pos": 1835,
      "line": 74,
-     "column": 33,
+     "column": 35,
      "type": "text",
      "eol": true
     },
     {
      "content": "    out = Object.keys(result)",
-     "pos": 1828,
+     "pos": 1836,
      "line": 75,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "      ",
-     "pos": 1858,
-     "line": 76,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
-     "content": "if(!directives.includeMainChunk){",
-     "pos": 1864,
+     "content": " if(!directives.includeMainChunk){",
+     "pos": 1872,
      "line": 76,
      "column": 7,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 1901,
+     "pos": 1911,
      "line": 76,
-     "column": 44,
+     "column": 46,
      "type": "text",
      "eol": true
     },
     {
      "content": "      .filter(i => i !== '",
-     "pos": 1902,
+     "pos": 1912,
      "line": 77,
      "column": 1,
      "type": "text",
@@ -2060,7 +2252,7 @@
     },
     {
      "content": "directives.chunks",
-     "pos": 1928,
+     "pos": 1938,
      "line": 77,
      "column": 27,
      "start": "#{",
@@ -2070,109 +2262,85 @@
     },
     {
      "content": "')",
-     "pos": 1948,
+     "pos": 1958,
      "line": 77,
      "column": 47,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "      ",
-     "pos": 1951,
-     "line": 78,
-     "column": 1,
      "type": "text",
      "eol": false
     },
     {
      "content": "}",
-     "pos": 1957,
+     "pos": 1967,
      "line": 78,
      "column": 7,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 1962,
+     "pos": 1973,
      "line": 78,
-     "column": 12,
+     "column": 13,
      "type": "text",
      "eol": true
     },
     {
      "content": "      .map(curr => ({ name: curr, content: result[curr] }))",
-     "pos": 1963,
+     "pos": 1974,
      "line": 79,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "      ",
-     "pos": 2023,
-     "line": 80,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
      "content": "} else {",
-     "pos": 2029,
+     "pos": 2040,
      "line": 80,
      "column": 7,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 2041,
+     "pos": 2053,
      "line": 80,
-     "column": 19,
+     "column": 20,
      "type": "text",
      "eol": true
     },
     {
      "content": "    out = result",
-     "pos": 2042,
+     "pos": 2054,
      "line": 81,
-     "column": 1,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "      ",
-     "pos": 2059,
-     "line": 82,
      "column": 1,
      "type": "text",
      "eol": false
     },
     {
      "content": "if(!directives.includeMainChunk){",
-     "pos": 2065,
+     "pos": 2077,
      "line": 82,
      "column": 7,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 2102,
+     "pos": 2115,
      "line": 82,
-     "column": 44,
+     "column": 45,
      "type": "text",
      "eol": true
     },
     {
      "content": "    delete out['",
-     "pos": 2103,
+     "pos": 2116,
      "line": 83,
      "column": 1,
      "type": "text",
@@ -2180,7 +2348,7 @@
     },
     {
      "content": "directives.chunks",
-     "pos": 2119,
+     "pos": 2132,
      "line": 83,
      "column": 17,
      "start": "#{",
@@ -2190,80 +2358,56 @@
     },
     {
      "content": "']",
-     "pos": 2139,
+     "pos": 2152,
      "line": 83,
      "column": 37,
      "type": "text",
-     "eol": true
-    },
-    {
-     "content": "      ",
-     "pos": 2142,
-     "line": 84,
-     "column": 1,
-     "type": "text",
      "eol": false
     },
     {
      "content": "}",
-     "pos": 2148,
+     "pos": 2161,
      "line": 84,
      "column": 7,
-     "start": "<#",
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
-     "content": "",
-     "pos": 2153,
-     "line": 84,
-     "column": 12,
-     "type": "text",
-     "eol": true
-    },
-    {
-     "content": "    ",
-     "pos": 2154,
-     "line": 85,
-     "column": 1,
-     "type": "text",
-     "eol": false
-    },
-    {
      "content": "}",
-     "pos": 2158,
+     "pos": 2172,
      "line": 85,
      "column": 5,
-     "start": "<#",
+     "start": "<#-",
+     "end": "#>",
+     "type": "code",
+     "eol": false
+    },
+    {
+     "content": "}",
+     "pos": 2181,
+     "line": 86,
+     "column": 3,
+     "start": "<#-",
      "end": "#>",
      "type": "code",
      "eol": false
     },
     {
      "content": "",
-     "pos": 2163,
-     "line": 85,
-     "column": 10,
+     "pos": 2187,
+     "line": 86,
+     "column": 9,
      "type": "text",
      "eol": true
     },
     {
-     "content": "  ",
-     "pos": 2164,
-     "line": 86,
+     "content": "",
+     "pos": 2188,
+     "line": 87,
      "column": 1,
-     "type": "text",
-     "eol": false
-    },
-    {
-     "content": "}",
-     "pos": 2166,
-     "line": 86,
-     "column": 3,
-     "start": "<#",
-     "end": "#>",
-     "type": "code",
+     "type": "empty",
      "eol": false
     }
    ],

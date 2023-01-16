@@ -1,6 +1,14 @@
 {
  "main": [
   {
+   "content": "",
+   "pos": 0,
+   "line": 1,
+   "column": 1,
+   "type": "empty",
+   "eol": true
+  },
+  {
    "content": "<!DOCTYPE html>",
    "pos": 879,
    "line": 26,
@@ -125,6 +133,21 @@
    "column": 1,
    "type": "text",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 1033,
+   "line": 39,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 1033,
+   "line": 39,
+   "column": 1,
+   "type": "empty"
   }
  ],
  "directives": {
@@ -318,6 +341,14 @@
      "line": 24,
      "column": 1,
      "type": "text",
+     "eol": true
+    },
+    {
+     "content": "",
+     "pos": 869,
+     "line": 25,
+     "column": 1,
+     "type": "empty",
      "eol": false
     }
    ],

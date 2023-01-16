@@ -19,6 +19,8 @@ exports.default = {
             out.push("\n");
             out.push("alias: " + JSON.stringify(directives.alias) + ",");
         }
+        out.push("\n");
+        out.push("\n");
         out.push("script: function (" + directives.context + ", _content, partial, slot, options){\n");
         out.push(options.applyIndent(content("maincontent", directives), "    ") + "\n");
         out.push("    var out = []\n");
@@ -136,7 +138,7 @@ exports.default = {
         }
         out.push("\n");
         out.push("  }\n");
-        out.push("}\n");
+        out.push("}");
         return out.join("");
     },
     blocks: {
@@ -149,6 +151,7 @@ exports.default = {
                 out.push("      return _content(blockName, ctx, content, partial, slot)\n");
                 out.push("    }");
             }
+            out.push("");
             return out.join("");
         },
         "chunks-start": function (directives, _content, partial, slot, options) {
@@ -193,6 +196,7 @@ exports.default = {
                 out.push("    }\n");
                 out.push("    chunkStart(main)");
             }
+            out.push("");
             return out.join("");
         },
         "chunks-finish": function (directives, _content, partial, slot, options) {
@@ -219,6 +223,7 @@ exports.default = {
                     }
                 }
             }
+            out.push("");
             return out.join("");
         }
     },

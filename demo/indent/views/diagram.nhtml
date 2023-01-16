@@ -1,0 +1,34 @@
+<#@ context "diagram" #>
+<#@ alias "model-root" #>
+<#@ chunks "$$$main$$$" #>
+
+<#- chunkStart(`root.plantuml`); -#>
+<#
+
+const association = {
+  "inheritance": ["<|","|>"],
+  "composition": "*",
+  "aggregation": "o",
+  "navigable":["<",">"]
+}
+
+const dependency = {
+  "implement":["<|", "|>"],
+  "depends":["<", ">"]
+}
+
+#>
+@startuml diagram
+!theme sketchy-outline
+
+<#- diagram.namespaces.forEach(namespace => {#>
+package #{namespace.name} {}
+<#- })#>
+
+<#- diagram.things.forEach(thing => {#>
+class #{thing.thingType} {
+
+}
+<#- })#>
+
+@enduml
