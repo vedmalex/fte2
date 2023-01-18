@@ -1,0 +1,5 @@
+  resolver: {
+    <#-
+      console.log('hellop')
+    #>
+    id: root => root._id,

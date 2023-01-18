@@ -1,17 +1,17 @@
 declare const templates: {
-    'codeblock.njs': {
+    "codeblock.njs": {
         alias: string[];
         script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
         dependency: {};
     };
-    'compilationError.njs': {
+    "compilationError.njs": {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
         dependency: {};
     };
-    'compiled.njs': {
+    "compiled.njs": {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
@@ -20,7 +20,7 @@ declare const templates: {
             core: boolean;
         };
     };
-    'es6module.njs': {
+    "es6module.njs": {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
@@ -29,7 +29,7 @@ declare const templates: {
             core: boolean;
         };
     };
-    'MainTemplate.njs': {
+    "MainTemplate.njs": {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
         blocks: {
@@ -43,7 +43,7 @@ declare const templates: {
             codeblock: boolean;
         };
     };
-    'raw.njs': {
+    "raw.njs": {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
@@ -52,7 +52,7 @@ declare const templates: {
             core: boolean;
         };
     };
-    'singlefile.es6.njs': {
+    "singlefile.es6.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
@@ -61,7 +61,7 @@ declare const templates: {
             core: boolean;
         };
     };
-    'singlefile.njs': {
+    "singlefile.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
@@ -70,25 +70,25 @@ declare const templates: {
             core: boolean;
         };
     };
-    'standalone.es6.njs': {
+    "standalone.es6.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
         dependency: {};
     };
-    'standalone.index.es6.njs': {
+    "standalone.index.es6.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
         dependency: {};
     };
-    'standalone.index.njs': {
+    "standalone.index.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;
         dependency: {};
     };
-    'standalone.njs': {
+    "standalone.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: () => void;

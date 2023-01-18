@@ -10,12 +10,13 @@ import {
   SlotFunction,
   DefaultFactoryOption,
 } from './../common/interfaces'
-import { applyIndent, escapeIt } from './helpers'
+import { applyIndent, escapeIt, applyDeindent } from './helpers'
 import { BlockRunFunction } from './interfaces'
 
 export const DefaultFactoryOptions: DefaultFactoryOption = {
   applyIndent,
   escapeIt,
+  applyDeindent,
 }
 
 export interface FactoryConfig<T> {

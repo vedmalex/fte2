@@ -7,7 +7,6 @@
 <#@ noContent #>
 <#@ context 'blockList' #>
 <#-
-
 var textQuote = false
 do {
   const cur = blockList.shift()

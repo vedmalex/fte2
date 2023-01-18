@@ -76,6 +76,7 @@ const directives = [
     'extend',
     'context',
     'alias',
+    'deindent',
     'chunks',
     'includeMainChunk',
     'useHash',
@@ -120,6 +121,9 @@ class CodeBlockDirectives {
     push(init) {
         const { name, params } = detectDirective(init.data.trim());
         switch (name) {
+            case 'deindent':
+                this.deindent = params.length > 0 ? parseInt(params[0]) : true;
+                break;
             case 'extend':
                 this.extend = params[0];
                 break;
@@ -490,31 +494,29 @@ class Parser {
                             trimEndSpaces();
                             break;
                     }
-                    if (data) {
-                        if (actual_type !== 'comments') {
-                            curr.main.push({
-                                content: data,
-                                pos,
-                                line,
-                                column,
-                                start,
-                                end,
-                                type: actual_type,
-                                eol,
-                            });
-                        }
-                        else {
-                            curr.documentation.push({
-                                content: data,
-                                pos,
-                                line,
-                                column,
-                                start,
-                                end,
-                                type: actual_type,
-                                eol,
-                            });
-                        }
+                    if (actual_type !== 'comments') {
+                        curr.main.push({
+                            content: data,
+                            pos,
+                            line,
+                            column,
+                            start,
+                            end,
+                            type: actual_type,
+                            eol,
+                        });
+                    }
+                    else {
+                        curr.documentation.push({
+                            content: data,
+                            pos,
+                            line,
+                            column,
+                            start,
+                            end,
+                            type: actual_type,
+                            eol,
+                        });
                     }
                     break;
                 case 'code':
@@ -524,23 +526,21 @@ class Parser {
                     if (end == '-#>') {
                         trimEndLines();
                     }
-                    if (data) {
-                        state = 'code';
-                        curr.main.push({
-                            content: data,
-                            pos,
-                            line,
-                            column,
-                            start,
-                            end,
-                            type,
-                            eol,
-                        });
-                    }
+                    state = 'code';
+                    curr.main.push({
+                        content: data,
+                        pos,
+                        line,
+                        column,
+                        start,
+                        end,
+                        type,
+                        eol,
+                    });
                     break;
                 case 'expression':
                 case 'expression2':
-                    if (data) {
+                    {
                         const current = {
                             content: data,
                             pos,
@@ -565,26 +565,24 @@ class Parser {
                     break;
                 case 'uexpression':
                 case 'uexpression2':
-                    if (data) {
-                        const current = {
-                            content: data,
-                            pos,
-                            line,
-                            column,
-                            start,
-                            end,
-                            type: 'uexpression',
-                            eol,
-                        };
-                        const prev = curr.main.pop();
-                        if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
-                            curr.main.push(prev);
-                        }
-                        else {
-                            current.indent = prev.content;
-                        }
-                        curr.main.push(current);
+                    const current = {
+                        content: data,
+                        pos,
+                        line,
+                        column,
+                        start,
+                        end,
+                        type: 'uexpression',
+                        eol,
+                    };
+                    const prev = curr.main.pop();
+                    if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
+                        curr.main.push(prev);
                     }
+                    else {
+                        current.indent = prev.content;
+                    }
+                    curr.main.push(current);
                     break;
                 case 'text': {
                     state = null;
@@ -604,18 +602,16 @@ class Parser {
                 case 'comments':
                     trimStartLines();
                     trimEndLines();
-                    if (data) {
-                        curr.documentation.push({
-                            content: data,
-                            pos,
-                            line,
-                            column,
-                            start,
-                            end,
-                            type,
-                            eol,
-                        });
-                    }
+                    curr.documentation.push({
+                        content: data,
+                        pos,
+                        line,
+                        column,
+                        start,
+                        end,
+                        type,
+                        eol,
+                    });
                     break;
             }
         }

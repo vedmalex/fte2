@@ -65,6 +65,22 @@ module.exports = {
     diagram.things.forEach((thing) => {
       out.push("\n");
       out.push("class " + thing.thingType + " {\n");
+      thing.properties.forEach((prop) => {
+        out.push("\n");
+        out.push(options.applyIndent(prop.propertyName, "  ") + ":" + (prop.type ?? "String") + "\n");
+      });
+      out.push("\n");
+      out.push("__ server methods __");
+      thing.methods.forEach((method) => {
+        out.push("\n");
+        out.push(options.applyIndent(method.name, "  ") + "()\n");
+      });
+      out.push("\n");
+      out.push("__ client methods __");
+      thing.clientMethods.forEach((method) => {
+        out.push("\n");
+        out.push(options.applyIndent(method.name, "  ") + "()\n");
+      });
       out.push("\n");
       out.push("}");
     });
@@ -74,9 +90,16 @@ module.exports = {
     chunkEnd();
     out = Object.keys(result).filter((i) => i !== "$$$main$$$").map((curr) => ({ name: curr, content: result[curr] }));
     if (out.some((t) => typeof t == "object")) {
-      return out.map((chunk) => ({ ...chunk, content: Array.isArray(chunk.content) ? chunk.content.join("") : chunk.content }));
+      return out.map(
+        (chunk) => ({
+          ...chunk,
+          content: options.applyDeindent(
+            Array.isArray(chunk.content) ? chunk.content.join("") : chunk.content
+          )
+        })
+      );
     } else {
-      return out.join("");
+      return options.applyDeindent(out).join("");
     }
   },
   compile: function() {

@@ -4,7 +4,8 @@
 *>
 <#@ alias 'MainTemplate.njs' #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
-<#- const { directives } = context -#>
+<#-
+const { directives } = context -#>
 {
 <#- if(directives.chunks){#>
 chunks: #{JSON.stringify(directives.chunks)},
@@ -16,55 +17,55 @@ alias: #{JSON.stringify(directives.alias)},
 <# block 'maincontent' : #>
 <#@ context 'directives'#>
 <#@ noContent #>
-  <#-if(directives?.content){#>
-    function content(blockName, ctx) {
-      if(ctx === undefined || ctx === null) ctx = #{directives.context}
-      return _content(blockName, ctx, content, partial, slot)
-    }
-  <#-}#>
+<#- if(directives?.content){ -#>
+function content(blockName, ctx) {
+  if(ctx === undefined || ctx === null) ctx = #{directives.context}
+  return _content(blockName, ctx, content, partial, slot)
+}
+<#-}#>
 <# end #>
 <# block 'chunks-start' : #>
   <#@ context 'directives'#>
   <#@ noContent #>
-  <#-if(directives.chunks){#>
-    const _partial = partial
-    partial = function(obj, template) {
-      const result = _partial(obj, template)
-      if(Array.isArray(result)){
-        result.forEach(r => {
-          chunkEnsure(r.name, r.content)
-        })
-        return ''
-      } else {
-        return result
-      }
-    }
-    const main = '#{directives.chunks}'
-    var current = main
-    let outStack = [current]
-    let result
+  <#- if(directives.chunks){#>
+const _partial = partial
+partial = function(obj, template) {
+  const result = _partial(obj, template)
+  if(Array.isArray(result)){
+    result.forEach(r => {
+      chunkEnsure(r.name, r.content)
+    })
+    return ''
+  } else {
+    return result
+  }
+}
+const main = '#{directives.chunks}'
+var current = main
+let outStack = [current]
+let result
 
-    function chunkEnsure(name, content) {
-      if (!result) {
-        result = {}
-      }
-      if (!result.hasOwnProperty(name)) {
-        result[name] = content ? content : []
-      }
-    }
-    function chunkStart(name) {
-      chunkEnsure(name)
-      chunkEnd()
-      current = name
-      out = []
-    }
-    function chunkEnd() {
-      result[current].push(...out)
-      out = []
-      current = outStack.pop() || main
-    }
-    chunkStart(main)
-  <#-}#>
+function chunkEnsure(name, content) {
+  if (!result) {
+    result = {}
+  }
+  if (!result.hasOwnProperty(name)) {
+    result[name] = content ? content : []
+  }
+}
+function chunkStart(name) {
+  chunkEnsure(name)
+  chunkEnd()
+  current = name
+  out = []
+}
+function chunkEnd() {
+  result[current].push(...out)
+  out = []
+  current = outStack.pop() || main
+}
+chunkStart(main)
+<#-}#>
 <# end #>
 <# block 'chunks-finish' : #>
   <#@ context 'directives'#>
@@ -93,12 +94,22 @@ alias: #{JSON.stringify(directives.alias)},
     #{content('chunks-finish', directives)}
     <#-if(directives.chunks){#>
     if(out.some(t=>typeof t == 'object')){
-      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+      return out.map(chunk=>(
+          {...chunk,
+            content:
+            <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
+            Array.isArray(chunk.content)
+              ? chunk.content.join('')
+              : chunk.content
+            <#-if( directives.deindent ){#>)<#}#>
+          }
+        )
+      )
     } else {
-      return out.join('')
+      return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
     }
     <#-} else {#>
-      return out.join('')
+      return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
     <#-}#>
   },
 <#-
@@ -115,12 +126,22 @@ if(blockNames.length > 0) {#>
       #{partial(block.main, 'codeblock')}
       <#-if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
-        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+        return out.map(chunk=>(
+            {...chunk,
+              content:
+              <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
+              Array.isArray(chunk.content)
+                ? chunk.content.join('')
+                : chunk.content
+              <#-if( directives.deindent ){#>)<#}#>
+            }
+          )
+        )
       } else {
-        return out.join('')
+        return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
       }
       <#-} else {#>
-        return out.join('')
+        return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
       <#- }#>
     },
 <#- }#>
@@ -140,12 +161,22 @@ if(slotNames.length > 0) {#>
       #{partial(slot.main, 'codeblock')}
       <#- if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
-        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))
+        return out.map(chunk=>(
+            {...chunk,
+              content:
+              <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
+              Array.isArray(chunk.content)
+                ? chunk.content.join('')
+                : chunk.content
+              <#-if( directives.deindent ){#>)<#}#>
+            }
+          )
+        )
       } else {
-        return out.join('')
+        return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
       }
       <#- } else {#>
-        return out.join('')
+        return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
       <#- }#>
     },
 <#-}#>

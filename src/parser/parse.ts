@@ -158,6 +158,7 @@ const directives = [
   'extend',
   'context',
   'alias',
+  'deindent',
   'chunks',
   'includeMainChunk',
   'useHash',
@@ -193,6 +194,7 @@ function detectDirective(input: string) {
 
 export class CodeBlockDirectives {
   extend: string
+  deindent: number | boolean
   context: string = 'context'
   alias: Array<string>
   chunks: string
@@ -211,6 +213,9 @@ export class CodeBlockDirectives {
   push(init: ParserResult) {
     const { name, params } = detectDirective(init.data.trim())
     switch (name) {
+      case 'deindent':
+        this.deindent = params.length > 0 ? parseInt(params[0]) : true
+        break
       case 'extend':
         this.extend = params[0]
         break
@@ -607,31 +612,31 @@ export class Parser {
               trimEndSpaces()
               break
           }
-          if (data) {
-            if (actual_type !== 'comments') {
-              curr.main.push({
-                content: data,
-                pos,
-                line,
-                column,
-                start,
-                end,
-                type: actual_type,
-                eol,
-              })
-            } else {
-              curr.documentation.push({
-                content: data,
-                pos,
-                line,
-                column,
-                start,
-                end,
-                type: actual_type,
-                eol,
-              })
-            }
+          // if (data) {
+          if (actual_type !== 'comments') {
+            curr.main.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type: actual_type,
+              eol,
+            })
+          } else {
+            curr.documentation.push({
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type: actual_type,
+              eol,
+            })
           }
+          // }
           break
         case 'code':
           if (start == '<#-') {
@@ -640,23 +645,24 @@ export class Parser {
           if (end == '-#>') {
             trimEndLines()
           }
-          if (data) {
-            state = 'code'
-            curr.main.push({
-              content: data,
-              pos,
-              line,
-              column,
-              start,
-              end,
-              type,
-              eol,
-            })
-          }
+          // if (data) {
+          state = 'code'
+          curr.main.push({
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type,
+            eol,
+          })
+          // }
           break
         case 'expression':
         case 'expression2':
-          if (data) {
+          // if (data)
+          {
             const current: Items = {
               content: data,
               pos,
@@ -684,27 +690,27 @@ export class Parser {
           break
         case 'uexpression':
         case 'uexpression2':
-          if (data) {
-            const current: Items = {
-              content: data,
-              pos,
-              line,
-              column,
-              start,
-              end,
-              type: 'uexpression',
-              eol,
-            }
-
-            const prev = curr.main.pop()
-            if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
-              curr.main.push(prev)
-            } else {
-              current.indent = prev.content
-            }
-
-            curr.main.push(current)
+          // if (data) {
+          const current: Items = {
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type: 'uexpression',
+            eol,
           }
+
+          const prev = curr.main.pop()
+          if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
+            curr.main.push(prev)
+          } else {
+            current.indent = prev.content
+          }
+
+          curr.main.push(current)
+          // }
           break
         case 'text': {
           state = null
@@ -724,18 +730,18 @@ export class Parser {
         case 'comments':
           trimStartLines()
           trimEndLines()
-          if (data) {
-            curr.documentation.push({
-              content: data,
-              pos,
-              line,
-              column,
-              start,
-              end,
-              type,
-              eol,
-            })
-          }
+          // if (data) {
+          curr.documentation.push({
+            content: data,
+            pos,
+            line,
+            column,
+            start,
+            end,
+            type,
+            eol,
+          })
+          // }
           break
       }
     }

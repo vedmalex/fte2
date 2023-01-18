@@ -16,19 +16,11 @@ function parseTemplate(fileName, src, dest, compile, { typescript, format, prett
         const result = compile(content, false);
         if (typeof result == 'string') {
             path_1.default.relative(src, fileName);
-            (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.relative(src, fileName) + (typescript ? '.ts' : '.js')), result, {
-                format,
-                pretty,
-                minify,
-            });
+            (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.relative(src, fileName) + (typescript ? '.ts' : '.js')), result, minify);
         }
         else {
             result.forEach((file) => {
-                (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.basename(file.name) + (typescript ? '.ts' : '.js')), file.content, {
-                    format,
-                    pretty,
-                    minify,
-                });
+                (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.basename(file.name) + (typescript ? '.ts' : '.js')), file.content, minify);
             });
         }
     }
@@ -44,11 +36,11 @@ function build(src, dest, options, callback) {
                 });
                 const templateFile = (0, node_1.run)(filelist, options.typescript ? 'singlefile.es6.njs' : 'singlefile.njs');
                 if (typeof templateFile == 'string') {
-                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, templateFile, options);
+                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, templateFile, options.minify);
                 }
                 else {
                     templateFile.forEach((file) => {
-                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options);
+                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options.minify);
                     });
                 }
             }
@@ -69,11 +61,11 @@ function build(src, dest, options, callback) {
                         ? 'standalone.njs'
                         : 'standalone.index.njs');
                 if (typeof indexFile == 'string') {
-                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, indexFile, options);
+                    (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, indexFile, options.minify);
                 }
                 else {
                     indexFile.forEach((file) => {
-                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options);
+                        (0, filewriter_1.writeFile)(`${dest}/${file.name}`, file.content, options.minify);
                     });
                 }
             }

@@ -3,7 +3,7 @@ export type HashType = {
     [key: string]: any;
 };
 export interface DefaultFactoryOption extends Record<string, any> {
-    applyIndent(_str: string, _indent: number | string): string;
+    applyIndent(_str: string | Array<string>, _indent: number | string): string | Array<string>;
     escapeIt(text: string): string;
 }
 export type HashTypeGeneric<T> = {

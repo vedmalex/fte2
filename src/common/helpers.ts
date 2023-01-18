@@ -23,8 +23,55 @@ export function escapeIt(text: string) {
     .replace(escapeQuotExp, '&quot;')
 }
 
-export function applyIndent(_str: string, _indent: number | string) {
-  var str = String(_str)
+export function applyDeindent(
+  str: string | Array<string>,
+  numChars: number | string,
+) {
+  if (!str) return str
+  let lines = Array.isArray(str) ? [...str] : str.split('\n')
+  // по первой строке
+  if (typeof numChars == 'string') {
+    numChars = numChars.length
+  }
+
+  if (numChars != 0) {
+    let i = 0
+    do {
+      if (lines[i].trim().length !== 0) break
+      i += 1
+      if (i >= lines.length - 1) break
+    } while (true)
+    if (i < lines.length) {
+      numChars = lines[i].length - lines[i].trimStart().length
+    }
+  }
+  if (numChars > 0) {
+    for (let i = 0; i < lines.length; i++) {
+      let spaceCount = 0
+      for (let j = 0; j < lines[i].length; j++) {
+        if (lines[i][j] === ' ') {
+          spaceCount++
+        } else {
+          break
+        }
+      }
+      if (spaceCount > 0) {
+        if (spaceCount <= numChars) {
+          lines[i] = lines[i].trimStart()
+        } else {
+          lines[i] = lines[i].substring(numChars)
+        }
+      }
+    }
+  }
+  return Array.isArray(str) ? lines : lines.join('\n')
+}
+
+export function applyIndent(
+  srt: string | Array<string>,
+  _indent: number | string,
+) {
+  if (!srt) return srt
   var indent = ''
   if (typeof _indent == 'number' && _indent > 0) {
     var res = ''
@@ -36,13 +83,12 @@ export function applyIndent(_str: string, _indent: number | string) {
   if (typeof _indent == 'string' && _indent.length > 0) {
     indent = _indent
   }
-  if (indent && str) {
-    return str
-      .split('\n')
-      .map((s) => indent + s)
-      .join('\n')
+  let lines = Array.isArray(srt) ? [...srt] : srt.split('\n')
+  if (indent && lines) {
+    let res = lines.map((s) => indent + s)
+    return Array.isArray(srt) ? res : res.join('\n')
   } else {
-    return str
+    return lines
   }
 }
 

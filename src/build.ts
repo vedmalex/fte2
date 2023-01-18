@@ -33,11 +33,7 @@ function parseTemplate(
           path.relative(src, fileName) + (typescript ? '.ts' : '.js'),
         ),
         result,
-        {
-          format,
-          pretty,
-          minify,
-        },
+        minify,
       )
     } else {
       result.forEach((file) => {
@@ -47,11 +43,7 @@ function parseTemplate(
             path.basename(file.name) + (typescript ? '.ts' : '.js'),
           ),
           file.content,
-          {
-            format,
-            pretty,
-            minify,
-          },
+          minify,
         )
       })
     }
@@ -89,11 +81,11 @@ export function build(
           writeFile(
             `${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`,
             templateFile,
-            options,
+            options.minify,
           )
         } else {
           templateFile.forEach((file) => {
-            writeFile(`${dest}/${file.name}`, file.content, options)
+            writeFile(`${dest}/${file.name}`, file.content, options.minify)
           })
         }
       } else {
@@ -127,11 +119,11 @@ export function build(
           writeFile(
             `${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`,
             indexFile,
-            options,
+            options.minify,
           )
         } else {
           indexFile.forEach((file) => {
-            writeFile(`${dest}/${file.name}`, file.content, options)
+            writeFile(`${dest}/${file.name}`, file.content, options.minify)
           })
         }
       }

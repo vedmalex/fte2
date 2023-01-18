@@ -45,6 +45,7 @@ export type RequireItem = {
 };
 export declare class CodeBlockDirectives {
     extend: string;
+    deindent: number | boolean;
     context: string;
     alias: Array<string>;
     chunks: string;

@@ -1,8 +1,10 @@
 <#@ context "diagram" #>
 <#@ alias "model-root" #>
 <#@ chunks "$$$main$$$" #>
-
-<#- chunkStart(`root.plantuml`); -#>
+<#@ deindent #>
+<#-
+chunkStart(`root.plantuml`);
+-#>
 <#
 
 const association = {
@@ -16,7 +18,6 @@ const dependency = {
   "implement":["<|", "|>"],
   "depends":["<", ">"]
 }
-
 #>
 @startuml diagram
 !theme sketchy-outline

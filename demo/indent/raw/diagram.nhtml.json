@@ -11,6 +11,23 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 116,
+   "line": 6,
+   "column": 1,
+   "start": "<#",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 119,
+   "line": 7,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
    "content": "const association = {",
    "pos": 120,
    "line": 8,
@@ -59,6 +76,14 @@
    "eol": true
   },
   {
+   "content": "",
+   "pos": 242,
+   "line": 14,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
    "content": "const dependency = {",
    "pos": 243,
    "line": 15,
@@ -89,6 +114,23 @@
    "column": 1,
    "type": "code",
    "eol": true
+  },
+  {
+   "content": "",
+   "pos": 317,
+   "line": 19,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 318,
+   "line": 20,
+   "column": 1,
+   "end": "#>",
+   "type": "code",
+   "eol": false
   },
   {
    "content": "",
@@ -217,21 +259,102 @@
    "pos": 517,
    "line": 30,
    "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": " thing.properties.forEach(prop=> {",
+   "pos": 517,
+   "line": 30,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 555,
+   "line": 30,
+   "column": 39,
    "type": "text",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 518,
+   "content": "prop.propertyName",
+   "pos": 558,
    "line": 31,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": ":",
+   "pos": 578,
+   "line": 31,
+   "column": 23,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": "prop.type ?? \"String\"",
+   "pos": 579,
+   "line": 31,
+   "column": 24,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 603,
+   "line": 31,
+   "column": 48,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 604,
+   "line": 32,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "})",
+   "pos": 604,
+   "line": 32,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 610,
+   "line": 32,
+   "column": 7,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "__ server methods __",
+   "pos": 611,
+   "line": 33,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
-   "content": " })",
-   "pos": 520,
-   "line": 32,
+   "content": " thing.methods.forEach(method=> {",
+   "pos": 632,
+   "line": 34,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -240,32 +363,174 @@
   },
   {
    "content": "",
-   "pos": 528,
-   "line": 32,
+   "pos": 670,
+   "line": 34,
+   "column": 39,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "method.name",
+   "pos": 673,
+   "line": 35,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "()",
+   "pos": 687,
+   "line": 35,
+   "column": 17,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 690,
+   "line": 36,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "})",
+   "pos": 690,
+   "line": 36,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 696,
+   "line": 36,
+   "column": 7,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "__ client methods __",
+   "pos": 697,
+   "line": 37,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": " thing.clientMethods.forEach(method=> {",
+   "pos": 718,
+   "line": 38,
+   "column": 1,
+   "start": "<#-",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 762,
+   "line": 38,
+   "column": 45,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "method.name",
+   "pos": 765,
+   "line": 39,
+   "column": 3,
+   "start": "#{",
+   "end": "}",
+   "type": "expression",
+   "eol": false,
+   "indent": "  "
+  },
+  {
+   "content": "()",
+   "pos": 779,
+   "line": 39,
+   "column": 17,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 782,
+   "line": 40,
+   "column": 1,
+   "type": "empty",
+   "eol": false
+  },
+  {
+   "content": "})",
+   "pos": 782,
+   "line": 40,
+   "column": 1,
+   "start": "<#",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 788,
+   "line": 40,
+   "column": 7,
+   "type": "text",
+   "eol": true
+  },
+  {
+   "content": "}",
+   "pos": 789,
+   "line": 41,
+   "column": 1,
+   "type": "text",
+   "eol": false
+  },
+  {
+   "content": " })",
+   "pos": 791,
+   "line": 42,
+   "column": 1,
+   "start": "<#-",
+   "end": "#>",
+   "type": "code",
+   "eol": false
+  },
+  {
+   "content": "",
+   "pos": 799,
+   "line": 42,
    "column": 9,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 529,
-   "line": 33,
+   "pos": 800,
+   "line": 43,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
    "content": "@enduml",
-   "pos": 530,
-   "line": 34,
+   "pos": 801,
+   "line": 44,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "",
-   "pos": 537,
-   "line": 34,
+   "pos": 808,
+   "line": 44,
    "column": 8,
    "type": "empty"
   }

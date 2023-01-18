@@ -1,35 +1,25 @@
 import * as memFs from 'mem-fs'
 import * as editor from 'mem-fs-editor'
-import { extname } from 'path'
+import { parse, join } from 'node:path'
 import * as esbuild from 'esbuild'
 
 const store = memFs.create()
 const fs = editor.create(store)
 
-function parseFile(
-  text: string,
-  minify: boolean = false,
-  pretty: boolean = false,
-  parser: string = 'babel',
-) {
-  // return text
-  let code: string, result: string
+function parseFile(text: string, minify: boolean = false) {
+  let result: string
   try {
     if (minify) {
       result = esbuild.transformSync(text, {
         minify: true,
       }).code
     } else {
-      if (parser == 'babel') {
-        result = esbuild.transformSync(text, {
-          minify: false,
-          // treeShaking: true,
-          // minifyIdentifiers: true,
-          // minifySyntax: true,
-        }).code
-      } else {
-        result = text
-      }
+      result = esbuild.transformSync(text, {
+        minify: minify,
+        // treeShaking: true,
+        // minifyIdentifiers: true,
+        // minifySyntax: true,
+      }).code
     }
     return result
   } catch (err) {
@@ -38,65 +28,15 @@ function parseFile(
   }
 }
 
-function getParserForFileName(fileName: string) {
-  let parser: string
-  switch (extname(fileName)) {
-    case '.jsx':
-    case '.js':
-    case '.mjs':
-      parser = 'babel'
-      break
-    case '.tsx':
-    case '.ts':
-      parser = 'typescript'
-      break
-    case '.json':
-      parser = 'json-stringify'
-      break
-    case '.css':
-      parser = 'css'
-      break
-    case '.htm':
-    case '.html':
-    case '.xhtml':
-      parser = 'html'
-      break
-    default:
-      parser = 'babel'
+export function writeFile(fn: string, data: string, minify?: boolean) {
+  try {
+    let result = parseFile(data, minify)
+    fs.write(fn, result)
+  } catch (err) {
+    const parsedFn = parse(fn)
+    fs.write(join(parsedFn.dir, `${parsedFn.name}.err${parsedFn.ext}`), data)
+    console.error(err)
   }
-  return parser
-}
-
-export function writeFile(
-  fn: string,
-  data: string,
-  {
-    format,
-    minify,
-    pretty,
-  }: { format?: boolean; minify?: boolean; pretty?: boolean } = {},
-) {
-  if (format) {
-    try {
-      const fType = fn.match(/\.js?$/)
-      let result
-      if (fType) {
-        result = parseFile(data, minify, pretty, getParserForFileName(fn))
-      } else {
-        result = data
-      }
-      fs.write(fn, result)
-    } catch (err) {
-      fs.write('err.' + fn, data)
-      console.error(err)
-    }
-  } else {
-    fs.write(fn, data)
-  }
-}
-
-export function readFile(fn) {
-  fs.read(fn)
 }
 
 export function commit() {

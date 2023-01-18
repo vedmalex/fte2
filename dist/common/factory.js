@@ -5,6 +5,7 @@ const helpers_1 = require("./helpers");
 exports.DefaultFactoryOptions = {
     applyIndent: helpers_1.applyIndent,
     escapeIt: helpers_1.escapeIt,
+    applyDeindent: helpers_1.applyDeindent,
 };
 class TemplateFactoryBase {
     constructor(config = {}) {

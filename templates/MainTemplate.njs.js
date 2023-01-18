@@ -28,20 +28,52 @@ module.exports = {
     if (directives.chunks) {
       out.push("\n");
       out.push("    if(out.some(t=>typeof t == 'object')){\n");
-      out.push("      return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+      out.push("      return out.map(chunk=>(\n");
+      out.push("          {...chunk,\n");
+      out.push("            content:");
+      if (directives.deindent) {
+        out.push(" options.applyDeindent(");
+      }
+      out.push("\n");
+      out.push("            Array.isArray(chunk.content)\n");
+      out.push("              ? chunk.content.join('')\n");
+      out.push("              : chunk.content");
+      if (directives.deindent) {
+        out.push(")");
+      }
+      out.push("\n");
+      out.push("          }\n");
+      out.push("        )\n");
+      out.push("      )\n");
       out.push("    } else {\n");
-      out.push("      return out.join('')\n");
+      out.push("      return ");
+      if (directives.deindent) {
+        out.push(" options.applyDeindent(");
+      }
+      out.push("out");
+      if (directives.deindent) {
+        out.push(")");
+      }
+      out.push(".join('')\n");
       out.push("    }");
     } else {
       out.push("\n");
-      out.push("      return out.join('')");
+      out.push("      return ");
+      if (directives.deindent) {
+        out.push(" options.applyDeindent(");
+      }
+      out.push("out");
+      if (directives.deindent) {
+        out.push(")");
+      }
+      out.push(".join('')");
     }
     out.push("\n");
-    out.push("  },\n");
+    out.push("  },");
     const blockNames = Object.keys(context.blocks);
     if (blockNames.length > 0) {
       out.push("\n");
-      out.push("  blocks : {\n");
+      out.push("  blocks : {");
       for (let i2 = 0; i2 < blockNames.length; i2 += 1) {
         const block = context.blocks[blockNames[i2]];
         out.push("\n");
@@ -52,13 +84,45 @@ module.exports = {
         if (directives.chunks) {
           out.push("\n");
           out.push("      if(out.some(t=>typeof t == 'object')){\n");
-          out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+          out.push("        return out.map(chunk=>(\n");
+          out.push("            {...chunk,\n");
+          out.push("              content:");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("\n");
+          out.push("              Array.isArray(chunk.content)\n");
+          out.push("                ? chunk.content.join('')\n");
+          out.push("                : chunk.content");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push("\n");
+          out.push("            }\n");
+          out.push("          )\n");
+          out.push("        )\n");
           out.push("      } else {\n");
-          out.push("        return out.join('')\n");
+          out.push("        return ");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("out");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push(".join('')\n");
           out.push("      }");
         } else {
           out.push("\n");
-          out.push("        return out.join('')");
+          out.push("        return ");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("out");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push(".join('')");
         }
         out.push("\n");
         out.push("    },");
@@ -69,7 +133,7 @@ module.exports = {
     const slotNames = Object.keys(context.slots);
     if (slotNames.length > 0) {
       out.push("\n");
-      out.push("  slots : {\n");
+      out.push("  slots : {");
       for (let i2 = 0; i2 < slotNames.length; i2 += 1) {
         const slot2 = context.blocks[slotNames[i2]];
         out.push("\n");
@@ -80,13 +144,45 @@ module.exports = {
         if (directives.chunks) {
           out.push("\n");
           out.push("      if(out.some(t=>typeof t == 'object')){\n");
-          out.push("        return out.map(chunk=>({...chunk, content:Array.isArray(chunk.content)?chunk.content.join(''):chunk.content}))\n");
+          out.push("        return out.map(chunk=>(\n");
+          out.push("            {...chunk,\n");
+          out.push("              content:");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("\n");
+          out.push("              Array.isArray(chunk.content)\n");
+          out.push("                ? chunk.content.join('')\n");
+          out.push("                : chunk.content");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push("\n");
+          out.push("            }\n");
+          out.push("          )\n");
+          out.push("        )\n");
           out.push("      } else {\n");
-          out.push("        return out.join('')\n");
+          out.push("        return ");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("out");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push(".join('')\n");
           out.push("      }");
         } else {
           out.push("\n");
-          out.push("        return out.join('')");
+          out.push("        return ");
+          if (directives.deindent) {
+            out.push(" options.applyDeindent(");
+          }
+          out.push("out");
+          if (directives.deindent) {
+            out.push(")");
+          }
+          out.push(".join('')");
         }
         out.push("\n");
         out.push("    },");
@@ -108,7 +204,7 @@ module.exports = {
         rq = directives.requireAs[i];
         out.push("\n");
         out.push('    this.aliases["' + rq.alias + '"] = "' + rq.name + '"\n');
-        out.push('    this.factory.ensure("' + rq.name + '")\n');
+        out.push('    this.factory.ensure("' + rq.name + '")');
       }
     }
     if (directives.extend) {
@@ -128,7 +224,7 @@ module.exports = {
         rq = directives.requireAs[i];
         out.push("\n");
         out.push('    "' + rq.name + '": true,\n');
-        out.push('    "' + rq.alias + '": true,\n');
+        out.push('    "' + rq.alias + '": true,');
       }
     }
     out.push("\n");
@@ -140,11 +236,10 @@ module.exports = {
     "maincontent": function(directives, _content, partial, slot, options) {
       var out = [];
       if (directives?.content) {
-        out.push("\n");
-        out.push("    function content(blockName, ctx) {\n");
-        out.push("      if(ctx === undefined || ctx === null) ctx = " + directives.context + "\n");
-        out.push("      return _content(blockName, ctx, content, partial, slot)\n");
-        out.push("    }");
+        out.push("function content(blockName, ctx) {\n");
+        out.push("  if(ctx === undefined || ctx === null) ctx = " + directives.context + "\n");
+        out.push("  return _content(blockName, ctx, content, partial, slot)\n");
+        out.push("}");
       }
       out.push("");
       return out.join("");
@@ -153,43 +248,43 @@ module.exports = {
       var out = [];
       if (directives.chunks) {
         out.push("\n");
-        out.push("    const _partial = partial\n");
-        out.push("    partial = function(obj, template) {\n");
-        out.push("      const result = _partial(obj, template)\n");
-        out.push("      if(Array.isArray(result)){\n");
-        out.push("        result.forEach(r => {\n");
-        out.push("          chunkEnsure(r.name, r.content)\n");
-        out.push("        })\n");
-        out.push("        return ''\n");
-        out.push("      } else {\n");
-        out.push("        return result\n");
-        out.push("      }\n");
-        out.push("    }\n");
-        out.push("    const main = '" + directives.chunks + "'\n");
-        out.push("    var current = main\n");
-        out.push("    let outStack = [current]\n");
-        out.push("    let result\n");
+        out.push("const _partial = partial\n");
+        out.push("partial = function(obj, template) {\n");
+        out.push("  const result = _partial(obj, template)\n");
+        out.push("  if(Array.isArray(result)){\n");
+        out.push("    result.forEach(r => {\n");
+        out.push("      chunkEnsure(r.name, r.content)\n");
+        out.push("    })\n");
+        out.push("    return ''\n");
+        out.push("  } else {\n");
+        out.push("    return result\n");
+        out.push("  }\n");
+        out.push("}\n");
+        out.push("const main = '" + directives.chunks + "'\n");
+        out.push("var current = main\n");
+        out.push("let outStack = [current]\n");
+        out.push("let result\n");
         out.push("\n");
-        out.push("    function chunkEnsure(name, content) {\n");
-        out.push("      if (!result) {\n");
-        out.push("        result = {}\n");
-        out.push("      }\n");
-        out.push("      if (!result.hasOwnProperty(name)) {\n");
-        out.push("        result[name] = content ? content : []\n");
-        out.push("      }\n");
-        out.push("    }\n");
-        out.push("    function chunkStart(name) {\n");
-        out.push("      chunkEnsure(name)\n");
-        out.push("      chunkEnd()\n");
-        out.push("      current = name\n");
-        out.push("      out = []\n");
-        out.push("    }\n");
-        out.push("    function chunkEnd() {\n");
-        out.push("      result[current].push(...out)\n");
-        out.push("      out = []\n");
-        out.push("      current = outStack.pop() || main\n");
-        out.push("    }\n");
-        out.push("    chunkStart(main)");
+        out.push("function chunkEnsure(name, content) {\n");
+        out.push("  if (!result) {\n");
+        out.push("    result = {}\n");
+        out.push("  }\n");
+        out.push("  if (!result.hasOwnProperty(name)) {\n");
+        out.push("    result[name] = content ? content : []\n");
+        out.push("  }\n");
+        out.push("}\n");
+        out.push("function chunkStart(name) {\n");
+        out.push("  chunkEnsure(name)\n");
+        out.push("  chunkEnd()\n");
+        out.push("  current = name\n");
+        out.push("  out = []\n");
+        out.push("}\n");
+        out.push("function chunkEnd() {\n");
+        out.push("  result[current].push(...out)\n");
+        out.push("  out = []\n");
+        out.push("  current = outStack.pop() || main\n");
+        out.push("}\n");
+        out.push("chunkStart(main)");
       }
       out.push("");
       return out.join("");

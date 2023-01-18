@@ -22,9 +22,7 @@ program
   .option('--file <filename>', ' single file output mode name', 'index')
   .option('--ext <ext>', ' extension for file', '')
   .option('--standalone', 'use standalone mode', false)
-  .option('--format', 'need to be formated', false)
   .option('--minify', 'need to be minified', false)
-  .option('--pretty', 'need to be prettied', false)
   .action(function (tempalates, dest, options) {
     if (!dest) {
       dest = tempalates
