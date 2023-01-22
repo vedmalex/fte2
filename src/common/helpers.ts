@@ -28,7 +28,7 @@ export function applyDeindent(
   numChars: number | string,
 ) {
   if (!str) return str
-  let lines = Array.isArray(str) ? [...str] : str.split('\n')
+  let lines = Array.isArray(str) ? [...str] : String(str).split('\n')
   // по первой строке
   if (typeof numChars == 'string') {
     numChars = numChars.length
@@ -68,10 +68,10 @@ export function applyDeindent(
 }
 
 export function applyIndent(
-  srt: string | Array<string>,
+  str: any | Array<string>,
   _indent: number | string,
 ) {
-  if (!srt) return srt
+  let lines = Array.isArray(str) ? [...str] : String(str).split('\n')
   var indent = ''
   if (typeof _indent == 'number' && _indent > 0) {
     var res = ''
@@ -83,10 +83,9 @@ export function applyIndent(
   if (typeof _indent == 'string' && _indent.length > 0) {
     indent = _indent
   }
-  let lines = Array.isArray(srt) ? [...srt] : srt.split('\n')
   if (indent && lines) {
     let res = lines.map((s) => indent + s)
-    return Array.isArray(srt) ? res : res.join('\n')
+    return Array.isArray(str) ? res : res.join('\n')
   } else {
     return lines
   }
