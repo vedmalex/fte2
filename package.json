@@ -2,14 +2,6 @@
   "name": "fte.js",
   "version": "3.0.0-rc.5",
   "description": "fast template engine that is reborn",
-  "bin": {
-    "fte.js": "./bin/fte.js"
-  },
-  "main": "./dist/node/index.js",
-  "module": "./dist/index.module.js",
-  "browser": "./dist/index.browser.js",
-  "types": "./dist/node/index.d.ts",
-  "prettier": "./.prettierrc.js",
   "scripts": {
     "test": "tslint --config tslint.json ./src/**/*.ts",
     "compile": "tsc --build tsconfig.json",

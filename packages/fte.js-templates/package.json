@@ -1,6 +1,6 @@
 {
   "name": "fte.js-templates",
-  "version": "3.0.0",
+  "version": "3.0.0-rc.5",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.module.js",

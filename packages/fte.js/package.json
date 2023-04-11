@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0",
+  "version": "3.0.0-rc.5",
   "description": "",
   "main": "index.js",
   "prettier": "../../.prettierrc.js",
