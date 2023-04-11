@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    alias: ["codeblock.njs"],
+    alias: [
+        "codeblock.njs"
+    ],
     script: function (blockList, _content, partial, slot, options) {
         var out = [];
         var textQuote = false;
         do {
             const cur = blockList.shift();
-            if (cur.type !== "empty" || cur.type === "text" && cur.content.trim()) {
+            if (cur.type !== "empty" || (cur.type === "text" && cur.content.trim())) {
                 blockList.unshift(cur);
                 break;
             }
@@ -16,7 +18,7 @@ exports.default = {
         } while (true);
         do {
             const cur = blockList.pop();
-            if (cur.type !== "empty" || cur.type === "text" && cur.content.trim()) {
+            if (cur.type !== "empty" || (cur.type === "text" && cur.content.trim())) {
                 blockList.push(cur);
                 break;
             }
@@ -27,7 +29,7 @@ exports.default = {
         for (var i = 0, len = blockList.length; i < len; i++) {
             var last = i === blockList.length - 1;
             var block = blockList[i];
-            var next = i + 1 < len ? blockList[i + 1] : null;
+            var next = (i + 1) < len ? blockList[i + 1] : null;
             var cont = block?.content;
             switch (block.type) {
                 case "text":
@@ -131,7 +133,7 @@ exports.default = {
                         out.push(item + ");\n");
                         textQuote = false;
                     }
-                    out.push(cont + (block.eol || next?.type != "code" ? "\n" : ""));
+                    out.push(cont + ((block.eol || next?.type != "code") ? "\n" : ""));
                     break;
             }
         }
@@ -141,9 +143,7 @@ exports.default = {
         }
         return out.join("");
     },
-    compile: function () {
-        this.alias = ["codeblock.njs"];
-    },
+    compile: function () { },
     dependency: {}
 };
 //# sourceMappingURL=codeblock.njs.js.map

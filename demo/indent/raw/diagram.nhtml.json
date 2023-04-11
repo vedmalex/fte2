@@ -1,19 +1,35 @@
 {
  "main": [
   {
-   "content": " chunkStart(`root.plantuml`); ",
-   "pos": 79,
+   "content": "",
+   "pos": 94,
    "line": 5,
    "column": 1,
    "start": "<#-",
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "chunkStart(`root.plantuml`);",
+   "pos": 98,
+   "line": 6,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 127,
+   "line": 7,
+   "column": 1,
    "end": "-#>",
    "type": "code",
    "eol": true
   },
   {
    "content": "",
-   "pos": 116,
-   "line": 6,
+   "pos": 131,
+   "line": 8,
    "column": 1,
    "start": "<#",
    "type": "code",
@@ -21,112 +37,104 @@
   },
   {
    "content": "",
-   "pos": 119,
-   "line": 7,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "const association = {",
-   "pos": 120,
-   "line": 8,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "  \"inheritance\": [\"<|\",\"|>\"],",
-   "pos": 142,
+   "pos": 134,
    "line": 9,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  \"composition\": \"*\",",
-   "pos": 172,
+   "content": "const association = {",
+   "pos": 135,
    "line": 10,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  \"aggregation\": \"o\",",
-   "pos": 194,
+   "content": "  \"inheritance\": [\"<|\",\"|>\"],",
+   "pos": 157,
    "line": 11,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  \"navigable\":[\"<\",\">\"]",
-   "pos": 216,
+   "content": "  \"composition\": \"*\",",
+   "pos": 187,
    "line": 12,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 240,
+   "content": "  \"aggregation\": \"o\",",
+   "pos": 209,
    "line": 13,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "",
-   "pos": 242,
+   "content": "  \"navigable\":[\"<\",\">\"]",
+   "pos": 231,
    "line": 14,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "const dependency = {",
-   "pos": 243,
+   "content": "}",
+   "pos": 255,
    "line": 15,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  \"implement\":[\"<|\", \"|>\"],",
-   "pos": 264,
+   "content": "",
+   "pos": 257,
    "line": 16,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "  \"depends\":[\"<\", \">\"]",
-   "pos": 292,
+   "content": "const dependency = {",
+   "pos": 258,
    "line": 17,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "}",
-   "pos": 315,
+   "content": "  \"implement\":[\"<|\", \"|>\"],",
+   "pos": 279,
    "line": 18,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "",
-   "pos": 317,
+   "content": "  \"depends\":[\"<\", \">\"]",
+   "pos": 307,
    "line": 19,
    "column": 1,
    "type": "code",
    "eol": true
   },
   {
-   "content": "",
-   "pos": 318,
+   "content": "}",
+   "pos": 330,
    "line": 20,
+   "column": 1,
+   "type": "code",
+   "eol": true
+  },
+  {
+   "content": "",
+   "pos": 332,
+   "line": 21,
    "column": 1,
    "end": "#>",
    "type": "code",
@@ -134,32 +142,32 @@
   },
   {
    "content": "",
-   "pos": 320,
-   "line": 20,
+   "pos": 334,
+   "line": 21,
    "column": 3,
    "type": "text",
    "eol": true
   },
   {
    "content": "@startuml diagram",
-   "pos": 321,
-   "line": 21,
+   "pos": 335,
+   "line": 22,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
    "content": "!theme sketchy-outline",
-   "pos": 339,
-   "line": 22,
+   "pos": 353,
+   "line": 23,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " diagram.namespaces.forEach(namespace => {",
-   "pos": 363,
-   "line": 24,
+   "pos": 377,
+   "line": 25,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -168,24 +176,24 @@
   },
   {
    "content": "",
-   "pos": 410,
-   "line": 24,
+   "pos": 424,
+   "line": 25,
    "column": 48,
    "type": "text",
    "eol": true
   },
   {
    "content": "package ",
-   "pos": 411,
-   "line": 25,
+   "pos": 425,
+   "line": 26,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "namespace.name",
-   "pos": 419,
-   "line": 25,
+   "pos": 433,
+   "line": 26,
    "column": 9,
    "start": "#{",
    "end": "}",
@@ -194,16 +202,16 @@
   },
   {
    "content": " {}",
-   "pos": 436,
-   "line": 25,
+   "pos": 450,
+   "line": 26,
    "column": 26,
    "type": "text",
    "eol": false
   },
   {
    "content": " })",
-   "pos": 440,
-   "line": 26,
+   "pos": 454,
+   "line": 27,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -212,8 +220,8 @@
   },
   {
    "content": " diagram.things.forEach(thing => {",
-   "pos": 450,
-   "line": 28,
+   "pos": 464,
+   "line": 29,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -222,24 +230,24 @@
   },
   {
    "content": "",
-   "pos": 489,
-   "line": 28,
+   "pos": 503,
+   "line": 29,
    "column": 40,
    "type": "text",
    "eol": true
   },
   {
    "content": "class ",
-   "pos": 490,
-   "line": 29,
+   "pos": 504,
+   "line": 30,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "thing.thingType",
-   "pos": 496,
-   "line": 29,
+   "pos": 510,
+   "line": 30,
    "column": 7,
    "start": "#{",
    "end": "}",
@@ -248,24 +256,24 @@
   },
   {
    "content": " {",
-   "pos": 514,
-   "line": 29,
+   "pos": 528,
+   "line": 30,
    "column": 25,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 517,
-   "line": 30,
+   "pos": 531,
+   "line": 31,
    "column": 1,
    "type": "empty",
    "eol": false
   },
   {
    "content": " thing.properties.forEach(prop=> {",
-   "pos": 517,
-   "line": 30,
+   "pos": 531,
+   "line": 31,
    "column": 1,
    "start": "<#",
    "end": "#>",
@@ -274,16 +282,16 @@
   },
   {
    "content": "",
-   "pos": 555,
-   "line": 30,
+   "pos": 569,
+   "line": 31,
    "column": 39,
    "type": "text",
    "eol": true
   },
   {
    "content": "prop.propertyName",
-   "pos": 558,
-   "line": 31,
+   "pos": 572,
+   "line": 32,
    "column": 3,
    "start": "#{",
    "end": "}",
@@ -293,16 +301,16 @@
   },
   {
    "content": ":",
-   "pos": 578,
-   "line": 31,
+   "pos": 592,
+   "line": 32,
    "column": 23,
    "type": "text",
    "eol": false
   },
   {
    "content": "prop.type ?? \"String\"",
-   "pos": 579,
-   "line": 31,
+   "pos": 593,
+   "line": 32,
    "column": 24,
    "start": "#{",
    "end": "}",
@@ -311,24 +319,24 @@
   },
   {
    "content": "",
-   "pos": 603,
-   "line": 31,
+   "pos": 617,
+   "line": 32,
    "column": 48,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 604,
-   "line": 32,
+   "pos": 618,
+   "line": 33,
    "column": 1,
    "type": "empty",
    "eol": false
   },
   {
    "content": "})",
-   "pos": 604,
-   "line": 32,
+   "pos": 618,
+   "line": 33,
    "column": 1,
    "start": "<#",
    "end": "#>",
@@ -337,24 +345,24 @@
   },
   {
    "content": "",
-   "pos": 610,
-   "line": 32,
+   "pos": 624,
+   "line": 33,
    "column": 7,
    "type": "text",
    "eol": true
   },
   {
    "content": "__ server methods __",
-   "pos": 611,
-   "line": 33,
+   "pos": 625,
+   "line": 34,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " thing.methods.forEach(method=> {",
-   "pos": 632,
-   "line": 34,
+   "pos": 646,
+   "line": 35,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -363,16 +371,16 @@
   },
   {
    "content": "",
-   "pos": 670,
-   "line": 34,
+   "pos": 684,
+   "line": 35,
    "column": 39,
    "type": "text",
    "eol": true
   },
   {
    "content": "method.name",
-   "pos": 673,
-   "line": 35,
+   "pos": 687,
+   "line": 36,
    "column": 3,
    "start": "#{",
    "end": "}",
@@ -382,24 +390,24 @@
   },
   {
    "content": "()",
-   "pos": 687,
-   "line": 35,
+   "pos": 701,
+   "line": 36,
    "column": 17,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 690,
-   "line": 36,
+   "pos": 704,
+   "line": 37,
    "column": 1,
    "type": "empty",
    "eol": false
   },
   {
    "content": "})",
-   "pos": 690,
-   "line": 36,
+   "pos": 704,
+   "line": 37,
    "column": 1,
    "start": "<#",
    "end": "#>",
@@ -408,24 +416,24 @@
   },
   {
    "content": "",
-   "pos": 696,
-   "line": 36,
+   "pos": 710,
+   "line": 37,
    "column": 7,
    "type": "text",
    "eol": true
   },
   {
    "content": "__ client methods __",
-   "pos": 697,
-   "line": 37,
+   "pos": 711,
+   "line": 38,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " thing.clientMethods.forEach(method=> {",
-   "pos": 718,
-   "line": 38,
+   "pos": 732,
+   "line": 39,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -434,16 +442,16 @@
   },
   {
    "content": "",
-   "pos": 762,
-   "line": 38,
+   "pos": 776,
+   "line": 39,
    "column": 45,
    "type": "text",
    "eol": true
   },
   {
    "content": "method.name",
-   "pos": 765,
-   "line": 39,
+   "pos": 779,
+   "line": 40,
    "column": 3,
    "start": "#{",
    "end": "}",
@@ -453,24 +461,24 @@
   },
   {
    "content": "()",
-   "pos": 779,
-   "line": 39,
+   "pos": 793,
+   "line": 40,
    "column": 17,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 782,
-   "line": 40,
+   "pos": 796,
+   "line": 41,
    "column": 1,
    "type": "empty",
    "eol": false
   },
   {
    "content": "})",
-   "pos": 782,
-   "line": 40,
+   "pos": 796,
+   "line": 41,
    "column": 1,
    "start": "<#",
    "end": "#>",
@@ -479,24 +487,24 @@
   },
   {
    "content": "",
-   "pos": 788,
-   "line": 40,
+   "pos": 802,
+   "line": 41,
    "column": 7,
    "type": "text",
    "eol": true
   },
   {
    "content": "}",
-   "pos": 789,
-   "line": 41,
+   "pos": 803,
+   "line": 42,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": " })",
-   "pos": 791,
-   "line": 42,
+   "pos": 805,
+   "line": 43,
    "column": 1,
    "start": "<#-",
    "end": "#>",
@@ -505,32 +513,32 @@
   },
   {
    "content": "",
-   "pos": 799,
-   "line": 42,
+   "pos": 813,
+   "line": 43,
    "column": 9,
    "type": "text",
    "eol": true
   },
   {
    "content": "",
-   "pos": 800,
-   "line": 43,
+   "pos": 814,
+   "line": 44,
    "column": 1,
    "type": "text",
    "eol": true
   },
   {
    "content": "@enduml",
-   "pos": 801,
-   "line": 44,
+   "pos": 815,
+   "line": 45,
    "column": 1,
    "type": "text",
    "eol": false
   },
   {
    "content": "",
-   "pos": 808,
-   "line": 44,
+   "pos": 822,
+   "line": 45,
    "column": 8,
    "type": "empty"
   }
@@ -546,7 +554,8 @@
   "alias": [
    "model-root"
   ],
-  "chunks": "$$$main$$$"
+  "chunks": "$$$main$$$",
+  "deindent": true
  },
  "documentation": [],
  "slots": {},

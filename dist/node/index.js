@@ -1,29 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parse = exports.parseFile = exports.compileTs = exports.run = exports.Parser = exports.compileFull = exports.compileLight = exports.Template = exports.Factory = void 0;
-const factory_1 = require("./factory");
-Object.defineProperty(exports, "Factory", { enumerable: true, get: function () { return factory_1.TemplateFactory; } });
-const template_1 = require("./template");
-Object.defineProperty(exports, "Template", { enumerable: true, get: function () { return template_1.Template; } });
-const compile_1 = require("./compile");
-Object.defineProperty(exports, "compileFull", { enumerable: true, get: function () { return compile_1.compileFull; } });
-Object.defineProperty(exports, "compileLight", { enumerable: true, get: function () { return compile_1.compileLight; } });
-Object.defineProperty(exports, "compileTs", { enumerable: true, get: function () { return compile_1.compileTs; } });
-Object.defineProperty(exports, "run", { enumerable: true, get: function () { return compile_1.run; } });
-Object.defineProperty(exports, "parseFile", { enumerable: true, get: function () { return compile_1.parseFile; } });
-const parse_1 = require("../parser/parse");
+exports.TemplateBase = exports.parse = exports.parseFile = exports.compileTs = exports.run = exports.Parser = exports.compileFull = exports.compileLight = exports.Template = exports.Factory = void 0;
+global.browser = false;
+var TemplateFactory_1 = require("./TemplateFactory");
+Object.defineProperty(exports, "Factory", { enumerable: true, get: function () { return TemplateFactory_1.TemplateFactory; } });
+var Template_1 = require("./Template");
+Object.defineProperty(exports, "Template", { enumerable: true, get: function () { return Template_1.Template; } });
+var compileLight_1 = require("../common/utils/compileLight");
+Object.defineProperty(exports, "compileLight", { enumerable: true, get: function () { return compileLight_1.compileLight; } });
+var compileFull_1 = require("../common/utils/compileFull");
+Object.defineProperty(exports, "compileFull", { enumerable: true, get: function () { return compileFull_1.compileFull; } });
+var parse_1 = require("../parser/parse");
 Object.defineProperty(exports, "Parser", { enumerable: true, get: function () { return parse_1.Parser; } });
-function parse(source, context) {
-    const ONLY_ONE = 'ONLY_ONE';
-    const factory = new factory_1.TemplateFactory({});
-    const tpl = new template_1.Template({
-        source: source,
-        name: ONLY_ONE,
-        factory,
-    });
-    tpl.compile();
-    factory.cache[ONLY_ONE] = tpl;
-    return tpl.factory.run(context, ONLY_ONE);
-}
-exports.parse = parse;
+var run_1 = require("../common/utils/run");
+Object.defineProperty(exports, "run", { enumerable: true, get: function () { return run_1.run; } });
+var compileTs_1 = require("../common/utils/compileTs");
+Object.defineProperty(exports, "compileTs", { enumerable: true, get: function () { return compileTs_1.compileTs; } });
+var parseFile_1 = require("../common/utils/parseFile");
+Object.defineProperty(exports, "parseFile", { enumerable: true, get: function () { return parseFile_1.parseFile; } });
+var parse_2 = require("./parse");
+Object.defineProperty(exports, "parse", { enumerable: true, get: function () { return parse_2.parse; } });
+var TemplateBase_1 = require("../common/types/TemplateBase");
+Object.defineProperty(exports, "TemplateBase", { enumerable: true, get: function () { return TemplateBase_1.TemplateBase; } });
 //# sourceMappingURL=index.js.map

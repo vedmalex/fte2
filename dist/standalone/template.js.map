@@ -1,1 +1,0 @@
-{"version":3,"file":"template.js","sourceRoot":"","sources":["../../src/standalone/template.ts"],"names":[],"mappings":";;;AACA,iDAAiD;AAEjD,MAAa,eAEX,SAAQ,uBAAe;IACP,OAAO;QACrB,IAAI,IAAI,CAAC,MAAM,EAAE;YACf,IAAI,CAAC,WAAW,CAAC,IAAI,CAAC,OAAO,CAAC,MAAM,CAAC,IAAI,CAAC,MAAM,CAAC,CAAC,CAAA;SACnD;IACH,CAAC;CACF;AARD,0CAQC"}

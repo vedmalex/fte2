@@ -1,0 +1,1 @@
+{"version":3,"file":"TemplateBrowser.js","sourceRoot":"","sources":["../../src/browser/TemplateBrowser.ts"],"names":[],"mappings":";;;AACA,+DAA2D;AAE3D,MAAa,eAAsD,SAAQ,2BAAqB;IAC9E,OAAO;QACrB,IAAI,IAAI,CAAC,MAAM,EAAE;YACf,IAAI,CAAC,WAAW,CAAC,IAAI,CAAC,OAAO,CAAC,MAAM,CAAC,IAAI,CAAC,MAAM,CAAC,CAAC,CAAA;SACnD;IACH,CAAC;CACF;AAND,0CAMC"}

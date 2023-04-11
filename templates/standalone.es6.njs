@@ -15,6 +15,7 @@ const templates = {
 
 const F = new Factory(templates)
 
-module.exports = (context, name) => {
-  return F.run( context, name )
+function run<T>(context:T, name:string) => {
+  return F.run(context, name)
 }
+export default run

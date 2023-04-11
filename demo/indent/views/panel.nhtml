@@ -6,6 +6,7 @@
 <#@ noContent #>
 <#@ noEscape #>
 <div class="panel-heading">
+  <#{'p'}> text </#{'p'}>
   <h3 class="panel-title">#{title}</h3>
 </div>
 <# end #>

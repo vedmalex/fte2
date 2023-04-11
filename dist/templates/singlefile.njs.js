@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    alias: ["singlefile.njs"],
+    alias: [
+        "singlefile.njs"
+    ],
+    aliases: {
+        "core": "MainTemplate.njs"
+    },
     script: function (files, _content, partial, slot, options) {
         var out = [];
         out.push("const { Factory } = require('fte.js/lib/standalone.fte.js')\n");
@@ -9,7 +14,7 @@ exports.default = {
         out.push("const templates = {");
         files.forEach((file) => {
             out.push("\n");
-            out.push("  ['" + (file.template.alias || file.name) + "']: " + partial(file.template, "core") + ",");
+            out.push("  ['" + ((file.template.alias || file.name)) + "']: " + (partial(file.template, "core")) + ",");
         });
         out.push("\n");
         out.push("}\n");
@@ -25,9 +30,6 @@ exports.default = {
         return out.join("");
     },
     compile: function () {
-        this.alias = ["singlefile.njs"];
-        this.aliases = {};
-        this.aliases["core"] = "MainTemplate.njs";
         this.factory.ensure("MainTemplate.njs");
     },
     dependency: {

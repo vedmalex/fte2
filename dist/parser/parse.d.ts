@@ -24,12 +24,12 @@ export interface ParserResult {
     line: number;
     column: number;
     type: ResultTypes;
-    start?: string;
-    end?: string;
-    eol?: boolean;
+    start: string;
+    end: string;
+    eol: boolean;
 }
 export interface Items {
-    content?: string;
+    content: string;
     indent?: string;
     pos: number;
     line: number;
@@ -62,14 +62,14 @@ export declare class CodeBlockDirectives {
     push(init: ParserResult): void;
 }
 export declare class CodeBlock {
-    name?: string;
+    name: string;
     main: Array<Items>;
     directives: CodeBlockDirectives;
     documentation: Array<Items>;
-    slots?: {
+    slots: {
         [slot: string]: CodeBlock;
     };
-    blocks?: {
+    blocks: {
         [block: string]: CodeBlock;
     };
     constructor(init?: ParserResult);

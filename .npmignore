@@ -14,3 +14,4 @@ utils
 .eslintrc.js
 .prettierrc
 tsconfig.json
+res.json

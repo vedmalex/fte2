@@ -1,6 +1,6 @@
-import { TemplateBase } from './../common/template'
-import { makeTemplate } from './helpers'
-import { DefaultFactoryOption } from '../common/interfaces'
+import { DefaultFactoryOption } from '../common/types/DefaultFactoryOption'
+import { TemplateBase } from '../common/types/TemplateBase'
+import { makeTemplate } from '../common/utils/makeTemplate'
 
 export class Template<T extends DefaultFactoryOption> extends TemplateBase<T> {
   public override compile() {

@@ -12,7 +12,7 @@ export const templates = {
 
 const F = new Factory(templates)
 
-export function run (context, name) {
+export function run(context, name) {
   return F.run(context, name)
 }
 

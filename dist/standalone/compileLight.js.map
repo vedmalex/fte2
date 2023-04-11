@@ -1,0 +1,1 @@
+{"version":3,"file":"compileLight.js","sourceRoot":"","sources":["../../src/standalone/compileLight.ts"],"names":[],"mappings":";;;AAAA,2CAAwC;AACxC,+BAA2B;AAE3B,SAAgB,YAAY,CAAC,OAAwB;IACnD,MAAM,QAAQ,GAAG,cAAM,CAAC,KAAK,CAAC,OAAO,CAAC,QAAQ,EAAE,CAAC,CAAA;IACjD,OAAO,IAAA,SAAG,EAAC,QAAQ,EAAE,SAAS,CAAC,CAAA;AACjC,CAAC;AAHD,oCAGC"}

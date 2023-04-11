@@ -1,7 +1,11 @@
-import { TemplateFactory as Factory } from './factory';
-import { Template } from './template';
-import { compileFull, compileLight, compileTs, run, parseFile } from './compile';
-import { Parser } from '../parser/parse';
-export { Factory, Template, compileLight, compileFull, Parser, run, compileTs, parseFile, };
-export declare function parse(source: string, context: any): string | object[];
+export { TemplateFactory as Factory } from './TemplateFactory';
+export { Template } from './Template';
+export { compileLight } from '../common/utils/compileLight';
+export { compileFull } from '../common/utils/compileFull';
+export { Parser } from '../parser/parse';
+export { run } from '../common/utils/run';
+export { compileTs } from '../common/utils/compileTs';
+export { parseFile } from '../common/utils/parseFile';
+export { parse } from './parse';
+export { TemplateBase } from '../common/types/TemplateBase';
 //# sourceMappingURL=index.d.ts.map

@@ -40,14 +40,7 @@ export type ResultTypes =
   | 'skip'
   | 'empty'
 
-export type SystemBlocksType =
-  | 'directive'
-  | 'comments'
-  | 'slotStart'
-  | 'blockStart'
-  | 'blockEnd'
-  | 'code'
-  | null
+export type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null
 
 const globalStates: { [key: string]: StateDefinition } = {
   /*
@@ -132,13 +125,13 @@ export interface ParserResult {
   line: number
   column: number
   type: ResultTypes
-  start?: string
-  end?: string
-  eol?: boolean
+  start: string
+  end: string
+  eol: boolean
 }
 
 export interface Items {
-  content?: string
+  content: string
   indent?: string
   pos: number
   line: number
@@ -193,22 +186,22 @@ function detectDirective(input: string) {
 }
 
 export class CodeBlockDirectives {
-  extend: string
-  deindent: number | boolean
+  extend!: string
+  deindent!: number | boolean
   context: string = 'context'
-  alias: Array<string>
-  chunks: string
-  includeMainChunk: boolean
-  useHash: boolean
+  alias!: Array<string>
+  chunks!: string
+  includeMainChunk!: boolean
+  useHash!: boolean
   content: boolean = true
   slots: boolean = true
   blocks: boolean = true
   partial: boolean = true
   options: boolean = true
   // return promise
-  promise: boolean
+  promise!: boolean
   // return callback
-  callback: boolean
+  callback!: boolean
   requireAs: Array<RequireItem> = []
   push(init: ParserResult) {
     const { name, params } = detectDirective(init.data.trim())
@@ -265,14 +258,14 @@ export class CodeBlockDirectives {
 }
 
 export class CodeBlock {
-  name?: string
+  name!: string
   main: Array<Items> = []
   // сделать все необходимые проверки для более чистого кода
   //
   directives: CodeBlockDirectives = new CodeBlockDirectives()
   documentation: Array<Items> = []
-  slots?: { [slot: string]: CodeBlock } = {}
-  blocks?: { [block: string]: CodeBlock } = {}
+  slots: { [slot: string]: CodeBlock } = {}
+  blocks: { [block: string]: CodeBlock } = {}
   constructor(init?: ParserResult) {
     if (init) {
       this.name = UNQUOTE(init.data)
@@ -311,35 +304,26 @@ const UNPARAM = (str?: string) => {
 export class Parser {
   private buffer: string
   private size: number
-  public INDENT: number
+  public INDENT!: number
   private static INITIAL_STATE: ResultTypes = 'text'
   private static DEFAULT_TAB_SIZE = 2
   private globalState: ResultTypes
-  private actualState?: ResultTypes
-  private globalToken: ParserResult
+  private actualState?: ResultTypes | null
+  private globalToken!: ParserResult
   private pos: number = 0
   private line: number = 1
   private column: number = 1
-  private curlyAware: 0 | 1 | 2 = 0
+  private curlyAware: 0 | 1 | 2 | undefined = 0
   private curlyBalance: Array<number> = []
   private result: Array<ParserResult> = []
-  public static parse(
-    text: string | Buffer,
-    options: { indent?: string | number } = {},
-  ) {
-    const parser = new Parser(
-      typeof text == 'string' ? text : text.toString(),
-      options,
-    )
+  public static parse(text: string | Buffer, options: { indent?: string | number } = {}) {
+    const parser = new Parser(typeof text == 'string' ? text : text.toString(), options)
     parser.parse()
     return parser.process()
   }
   private constructor(value: string, options: { indent?: string | number }) {
     if (options.indent) {
-      this.INDENT =
-        typeof options.indent === 'string'
-          ? options.indent.length
-          : options.indent
+      this.INDENT = typeof options.indent === 'string' ? options.indent.length : options.indent
     }
     this.globalState = Parser.INITIAL_STATE
     this.buffer = value.toString()
@@ -454,7 +438,6 @@ export class Parser {
 
     const resultSize = this.result.length
     let curr = content
-    let state: SystemBlocksType = null
     for (let i = 0; i < resultSize; i += 1) {
       let r = this.result[i]
       let { type, pos, line, column, start, end, data, eol } = r
@@ -464,10 +447,7 @@ export class Parser {
         do {
           if (curr.main.length > 0) {
             let prev = curr.main[curr.main.length - 1]
-            if (
-              prev?.type == 'text' ||
-              (prev?.type == 'empty' && type === 'code')
-            ) {
+            if (prev?.type == 'text' || (prev?.type == 'empty' && type === 'code')) {
               prev.content = prev.content.trimEnd()
               if (!prev.content) {
                 if (prev.eol) newLine = true
@@ -553,27 +533,23 @@ export class Parser {
       }
       switch (type) {
         case 'directive':
-          state = 'directive'
           trimStartLines()
           trimEndLines()
           curr.directives.push(r)
           break
         case 'blockStart':
-          state = 'blockStart'
           trimStartLines()
           trimEndLines()
           curr = new CodeBlock(r)
           content.addBlock(curr)
           break
         case 'slotStart':
-          state = 'slotStart'
           trimStartLines()
           trimEndLines()
           curr = new CodeBlock(r)
           content.addSlot(curr)
           break
         case 'blockEnd':
-          state = 'blockEnd'
           trimStartLines()
           curr = content
           trimEndLines()
@@ -585,7 +561,7 @@ export class Parser {
             <%= Outputs the value into the template (HTML escaped)
             <%- Outputs the unescaped value into the template
              */
-          let actual_type: ResultTypes
+          let actual_type: ResultTypes = 'unknown'
           switch (r.start) {
             case '<%':
               actual_type = 'code'
@@ -646,7 +622,6 @@ export class Parser {
             trimEndLines()
           }
           // if (data) {
-          state = 'code'
           curr.main.push({
             content: data,
             pos,
@@ -674,7 +649,7 @@ export class Parser {
               eol,
             }
 
-            const prev = curr.main.pop()
+            const prev = curr.main.pop() as Items
             if (
               prev?.type !== 'text' ||
               (prev?.type === 'text' && prev?.content.trim().length > 0) ||
@@ -702,7 +677,7 @@ export class Parser {
             eol,
           }
 
-          const prev = curr.main.pop()
+          const prev = curr.main.pop() as Items
           if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
             curr.main.push(prev)
           } else {
@@ -713,7 +688,6 @@ export class Parser {
           // }
           break
         case 'text': {
-          state = null
           let actualType: ResultTypes = data || eol ? type : 'empty'
           curr.main.push({
             content: data,
@@ -780,12 +754,7 @@ export class Parser {
     const { INDENT } = this
     let eol = false
     if (term.length == 1) {
-      if (
-        term == '\n' ||
-        term == '\r' ||
-        term == '\u2028' ||
-        term == '\u2029'
-      ) {
+      if (term == '\n' || term == '\r' || term == '\u2028' || term == '\u2029') {
         if (term == '\r' && this.SUB('\r\n') == '\r\n') {
           term = '\r\n'
         }
@@ -821,6 +790,9 @@ export class Parser {
       line,
       column,
       type: actualState || globalState,
+      start: '',
+      end: '',
+      eol: false,
       ...extra,
     }
   }

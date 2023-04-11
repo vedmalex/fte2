@@ -1,25 +1,30 @@
 import * as memFs from 'mem-fs'
 import * as editor from 'mem-fs-editor'
 import { parse, join } from 'node:path'
-import * as esbuild from 'esbuild'
+import * as swc from '@swc/core'
 
 const store = memFs.create()
-const fs = editor.create(store)
+const fs = editor.create(store as any)
 
 function parseFile(text: string, minify: boolean = false) {
   let result: string
   try {
     if (minify) {
-      result = esbuild.transformSync(text, {
-        minify: true,
-      }).code
+      result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: true }).code
+
+      // result = swc.transformSync(text, {
+      //   jsc: { parser: { syntax: 'typescript' }},
+      //   // minify: true,
+      // }).code
     } else {
-      result = esbuild.transformSync(text, {
-        minify: minify,
-        // treeShaking: true,
-        // minifyIdentifiers: true,
-        // minifySyntax: true,
-      }).code
+      result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: false }).code
+      // result = swc.transformSync(text, {
+      //   jsc: { parser: { syntax: 'typescript' }},
+      //   // minify: minify,
+      //   // treeShaking: true,
+      //   // minifyIdentifiers: true,
+      //   // minifySyntax: true,
+      // }).code
     }
     return result
   } catch (err) {

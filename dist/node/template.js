@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Template = void 0;
-const template_1 = require("./../common/template");
-const helpers_1 = require("./helpers");
-class Template extends template_1.TemplateBase {
+const TemplateBase_1 = require("../common/types/TemplateBase");
+const makeTemplate_1 = require("../common/utils/makeTemplate");
+class Template extends TemplateBase_1.TemplateBase {
     compile() {
         if (this.srcCode) {
-            const result = (0, helpers_1.makeTemplate)(this.srcCode, false);
+            const result = (0, makeTemplate_1.makeTemplate)(this.srcCode, false);
             if (!result.error) {
                 this.script = result.script;
                 this.blocks = result.blocks;
@@ -26,4 +26,4 @@ class Template extends template_1.TemplateBase {
     }
 }
 exports.Template = Template;
-//# sourceMappingURL=template.js.map
+//# sourceMappingURL=Template.js.map

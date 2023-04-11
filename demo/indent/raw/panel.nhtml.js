@@ -18,6 +18,7 @@ module.exports = {
     "title": function(title, _content, partial, slot, options) {
       var out = [];
       out.push('<div class="panel-heading">\n');
+      out.push("  <p> text </p>\n");
       out.push('  <h3 class="panel-title">' + title + "</h3>\n");
       out.push("</div>");
       return out.join("");

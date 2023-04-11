@@ -1,0 +1,1 @@
+{"version":3,"file":"compileFull.js","sourceRoot":"","sources":["../../src/standalone/compileFull.ts"],"names":[],"mappings":";;;AAAA,2CAAwC;AACxC,+BAA2B;AAE3B,SAAgB,WAAW,CAAC,OAAwB;IAClD,MAAM,QAAQ,GAAG,cAAM,CAAC,KAAK,CAAC,OAAO,CAAC,QAAQ,EAAE,CAAC,CAAA;IACjD,OAAO,IAAA,SAAG,EAAC,QAAQ,EAAE,cAAc,CAAC,CAAA;AACtC,CAAC;AAHD,kCAGC"}

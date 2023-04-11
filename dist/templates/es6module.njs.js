@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    alias: ["es6module.njs"],
+    alias: [
+        "es6module.njs"
+    ],
+    aliases: {
+        "core": "MainTemplate.njs"
+    },
     script: function (context, _content, partial, slot, options) {
         var out = [];
-        out.push("export default " + partial(context, "core") + ";");
+        out.push("export default " + (partial(context, "core")) + ";");
         return out.join("");
     },
     compile: function () {
-        this.alias = ["es6module.njs"];
-        this.aliases = {};
-        this.aliases["core"] = "MainTemplate.njs";
         this.factory.ensure("MainTemplate.njs");
     },
     dependency: {

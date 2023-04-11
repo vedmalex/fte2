@@ -1,19 +1,25 @@
 export default {
-  alias: ["standalone.index.njs"],
-  script: function(files, _content, partial, slot, options) {
-    var out = [];
-    out.push("const templates = {");
-    for (let i = 0; i < files.length; i += 1) {
-      out.push("\n");
-      out.push("  '" + files[i].name + "': require('" + files[i].path + "'),");
-    }
-    out.push("\n");
-    out.push("}\n");
-    out.push("module.exports = templates");
-    return out.join("");
-  },
-  compile: function() {
-    this.alias = ["standalone.index.njs"];
-  },
-  dependency: {}
+    alias: [
+        "standalone.index.njs"
+    ],
+    script: function(files, _content, partial, slot, options) {
+        var out: Array<string> = [];
+        out.push("const templates = {");
+        for(let i = 0; i < files.length; i += 1){
+            out.push("\n");
+            out.push("  '" + (files[i].name) + "': require('" + (files[i].path) + "'),");
+        }
+        out.push("\n");
+        out.push("}\n");
+        out.push("module.exports = templates");
+        return out.join("");
+    },
+    compile: function(this: {
+        factory: {
+            ensure: (template: string) => any;
+        };
+        parent: string;
+        mergeParent: (template: any) => void;
+    }) {},
+    dependency: {}
 };

@@ -27,21 +27,17 @@ exports.commit = exports.writeFile = void 0;
 const memFs = __importStar(require("mem-fs"));
 const editor = __importStar(require("mem-fs-editor"));
 const node_path_1 = require("node:path");
-const esbuild = __importStar(require("esbuild"));
+const swc = __importStar(require("@swc/core"));
 const store = memFs.create();
 const fs = editor.create(store);
 function parseFile(text, minify = false) {
     let result;
     try {
         if (minify) {
-            result = esbuild.transformSync(text, {
-                minify: true,
-            }).code;
+            result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: true }).code;
         }
         else {
-            result = esbuild.transformSync(text, {
-                minify: minify,
-            }).code;
+            result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: false }).code;
         }
         return result;
     }

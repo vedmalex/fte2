@@ -226,10 +226,7 @@ class Parser {
         this.curlyBalance = [];
         this.result = [];
         if (options.indent) {
-            this.INDENT =
-                typeof options.indent === 'string'
-                    ? options.indent.length
-                    : options.indent;
+            this.INDENT = typeof options.indent === 'string' ? options.indent.length : options.indent;
         }
         this.globalState = Parser.INITIAL_STATE;
         this.buffer = value.toString();
@@ -338,7 +335,6 @@ class Parser {
         const content = new CodeBlock();
         const resultSize = this.result.length;
         let curr = content;
-        let state = null;
         for (let i = 0; i < resultSize; i += 1) {
             let r = this.result[i];
             let { type, pos, line, column, start, end, data, eol } = r;
@@ -347,8 +343,7 @@ class Parser {
                 do {
                     if (curr.main.length > 0) {
                         let prev = curr.main[curr.main.length - 1];
-                        if (prev?.type == 'text' ||
-                            (prev?.type == 'empty' && type === 'code')) {
+                        if (prev?.type == 'text' || (prev?.type == 'empty' && type === 'code')) {
                             prev.content = prev.content.trimEnd();
                             if (!prev.content) {
                                 if (prev.eol)
@@ -441,33 +436,29 @@ class Parser {
             }
             switch (type) {
                 case 'directive':
-                    state = 'directive';
                     trimStartLines();
                     trimEndLines();
                     curr.directives.push(r);
                     break;
                 case 'blockStart':
-                    state = 'blockStart';
                     trimStartLines();
                     trimEndLines();
                     curr = new CodeBlock(r);
                     content.addBlock(curr);
                     break;
                 case 'slotStart':
-                    state = 'slotStart';
                     trimStartLines();
                     trimEndLines();
                     curr = new CodeBlock(r);
                     content.addSlot(curr);
                     break;
                 case 'blockEnd':
-                    state = 'blockEnd';
                     trimStartLines();
                     curr = content;
                     trimEndLines();
                     break;
                 case 'unknown':
-                    let actual_type;
+                    let actual_type = 'unknown';
                     switch (r.start) {
                         case '<%':
                             actual_type = 'code';
@@ -526,7 +517,6 @@ class Parser {
                     if (end == '-#>') {
                         trimEndLines();
                     }
-                    state = 'code';
                     curr.main.push({
                         content: data,
                         pos,
@@ -585,7 +575,6 @@ class Parser {
                     curr.main.push(current);
                     break;
                 case 'text': {
-                    state = null;
                     let actualType = data || eol ? type : 'empty';
                     curr.main.push({
                         content: data,
@@ -651,10 +640,7 @@ class Parser {
         const { INDENT } = this;
         let eol = false;
         if (term.length == 1) {
-            if (term == '\n' ||
-                term == '\r' ||
-                term == '\u2028' ||
-                term == '\u2029') {
+            if (term == '\n' || term == '\r' || term == '\u2028' || term == '\u2029') {
                 if (term == '\r' && this.SUB('\r\n') == '\r\n') {
                     term = '\r\n';
                 }
@@ -690,6 +676,9 @@ class Parser {
             line,
             column,
             type: actualState || globalState,
+            start: '',
+            end: '',
+            eol: false,
             ...extra,
         };
     }
@@ -702,9 +691,9 @@ class Parser {
         this.result.push(this.globalToken);
     }
 }
-exports.Parser = Parser;
 Parser.INITIAL_STATE = 'text';
 Parser.DEFAULT_TAB_SIZE = 2;
+exports.Parser = Parser;
 function SUB(buffer, str, pos = 0, size = 0) {
     if (!size) {
         size = buffer.length;
