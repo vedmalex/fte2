@@ -1,0 +1,63 @@
+./TemplateFactoryStandalone:
+  - src/compile.ts
+./templates:
+  - src/compile.ts
+  - src/run.ts
+../../fte.js-parser/src:
+  - src/compileFull.ts
+  - src/compileLight.ts
+  - src/compileTs.ts
+  - src/parseFile.ts
+./run:
+  - src/compileFull.ts
+  - src/compileLight.ts
+  - src/compileTs.ts
+./compile:
+  - src/run.ts
+../common/types/DefaultFactoryOption:
+  - src/StandaloneTemplate.ts
+  - src/TemplateFactoryStandalone.ts
+../common/types/TemplateBase:
+  - src/StandaloneTemplate.ts
+../common/types/SlotsHash:
+  - src/TemplateFactoryStandalone.ts
+../common/types/TemplateConfig:
+  - src/TemplateFactoryStandalone.ts
+../common/types/TemplateFactoryBase:
+  - src/TemplateFactoryStandalone.ts
+./StandaloneTemplate:
+  - src/TemplateFactoryStandalone.ts
+./codeblock.njs:
+  - src/templates/index.ts
+./compilationError.njs:
+  - src/templates/index.ts
+./compiled.njs:
+  - src/templates/index.ts
+./es6module.njs:
+  - src/templates/index.ts
+./es6module.ts.njs:
+  - src/templates/index.ts
+./MainTemplate.njs:
+  - src/templates/index.ts
+./MainTemplate.ts.njs:
+  - src/templates/index.ts
+./raw.njs:
+  - src/templates/index.ts
+./singlefile.es6.njs:
+  - src/templates/index.ts
+./singlefile.njs:
+  - src/templates/index.ts
+./singlefile.ts.njs:
+  - src/templates/index.ts
+./standalone.es6.njs:
+  - src/templates/index.ts
+./standalone.index.es6.njs:
+  - src/templates/index.ts
+./standalone.index.njs:
+  - src/templates/index.ts
+./standalone.index.ts.njs:
+  - src/templates/index.ts
+./standalone.njs:
+  - src/templates/index.ts
+./standalone.ts.njs:
+  - src/templates/index.ts

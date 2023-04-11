@@ -1,0 +1,18 @@
+{
+  "name": "fte.js-base",
+  "version": "3.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "types": "dist/index.d.ts",
+  "prettier": "../../.prettierrc.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "prepublish": "rollup -c",
+    "build": "rollup -c",
+    "watch": "tsc -w --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
