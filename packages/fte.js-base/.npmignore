@@ -1,16 +1,8 @@
 node_modules
 src
-demo
-www
-.vscode
-*.tsbuildinfo
-todo.md
-build.md
 *.tsbuildinfo
 *.log
 *.lock
-utils
-/templates
 .eslintrc.js
 .prettierrc
 tsconfig.json
