@@ -1,1 +1,0 @@
-{"version":3,"file":"index.module.d.ts","sourceRoot":"","sources":["../src/index.ts","../src/StandaloneTemplate.ts","../src/TemplateFactoryStandalone.ts","../src/compile.ts","../src/run.ts","../src/compileFull.ts","../src/compileLight.ts","../src/compileTs.ts","../src/parseFile.ts"],"names":[],"mappings":""}

@@ -1,3 +1,3 @@
 # fte.js - fast template engine that is reborn
 
-internal templates
+internal module
