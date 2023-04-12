@@ -1,0 +1,21 @@
+{
+  "name": "fte.js-templates",
+  "version": "3.0.0-rc.10",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "prettier": "../../.prettierrc.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "prepublish": "tsc -b",
+    "build": "tsc -b",
+    "watch": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fte.js-base": "^3.0.0-rc.10"
+  },
+  "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82"
+}

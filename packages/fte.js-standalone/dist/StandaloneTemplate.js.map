@@ -1,0 +1,1 @@
+{"version":3,"file":"StandaloneTemplate.js","sourceRoot":"","sources":["../src/StandaloneTemplate.ts"],"names":[],"mappings":";;;AAAA,6CAAgE;AAEhE,MAAa,kBAAmD,SAAQ,0BAAe;IACrE,OAAO;QACrB,IAAI,IAAI,CAAC,MAAM,EAAE;YACf,IAAI,CAAC,WAAW,CAAC,IAAI,CAAC,OAAO,CAAC,MAAM,CAAC,IAAI,CAAC,MAAM,CAAC,CAAC,CAAA;SACnD;IACH,CAAC;CACF;AAND,gDAMC"}

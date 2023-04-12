@@ -1,0 +1,19 @@
+../../../src/common/types/DefaultFactoryOption:
+  - src/factory.ts
+  - src/TemplateBrowser.ts
+  - src/TemplateFactoryBrowser.ts
+../../../src/common/types/TemplateConfig:
+  - src/factory.ts
+  - src/TemplateFactoryBrowser.ts
+../../../src/common/types/TemplateBase:
+  - src/TemplateBrowser.ts
+../../../src/common/types/RunPartialContext:
+  - src/TemplateFactoryBrowser.ts
+../../../src/common/types/TemplateFactoryBase:
+  - src/TemplateFactoryBrowser.ts
+./TemplateBrowser:
+  - src/TemplateFactoryBrowser.ts
+../../../src/common/types/ChunkContent:
+  - src/TemplateFactoryBrowser.ts
+./factory:
+  - src/TemplateFactoryBrowser.ts

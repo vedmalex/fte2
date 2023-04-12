@@ -1,0 +1,65 @@
+path:
+  - src/build.ts
+  - src/filewriter.ts
+  - src/TemplateFactory.ts
+glob:
+  - src/build.ts
+  - src/TemplateFactory.ts
+fs:
+  - src/build.ts
+  - src/safeEval.ts
+  - src/TemplateFactory.ts
+./filewriter:
+  - src/build.ts
+./compileTs:
+  - src/build.ts
+./compileFull:
+  - src/build.ts
+./parseFile:
+  - src/build.ts
+./run:
+  - src/build.ts
+  - src/compileFull.ts
+  - src/compileLight.ts
+  - src/compileTs.ts
+fte.js-templates:
+  - src/compile.ts
+  - src/run.ts
+fte.js-standalone:
+  - src/compile.ts
+fte.js-parser:
+  - src/compileFull.ts
+  - src/compileLight.ts
+  - src/compileTs.ts
+  - src/parseFile.ts
+./prepareCode:
+  - src/compileFull.ts
+  - src/compileLight.ts
+  - src/compileTs.ts
+mem-fs:
+  - src/filewriter.ts
+mem-fs-editor:
+  - src/filewriter.ts
+"@swc/core":
+  - src/filewriter.ts
+  - src/prepareCode.ts
+./safeEval:
+  - src/makeFunction.ts
+  - src/makeTemplate.ts
+  - src/TemplateFactory.ts
+./compileLight:
+  - src/makeTemplate.ts
+./TemplateFactory:
+  - src/parse.ts
+./Template:
+  - src/parse.ts
+  - src/TemplateFactory.ts
+./compile:
+  - src/run.ts
+fte.js-base:
+  - src/Template.ts
+  - src/TemplateFactory.ts
+./makeTemplate:
+  - src/Template.ts
+chokidar:
+  - src/TemplateFactory.ts

@@ -1,26 +1,10 @@
 {
-  "name": "fte.js",
+  "name": "fte.js-project",
   "version": "3.0.0-rc.5",
   "description": "fast template engine that is reborn",
-  "bin": {
-    "fte.js": "./bin/fte.js"
-  },
-  "main": "./dist/node/index.js",
-  "module": "./dist/index.module.js",
-  "browser": "./dist/index.browser.js",
-  "types": "./dist/node/index.d.ts",
-  "prettier": "./.prettierrc.js",
   "scripts": {
-    "test": "tslint --config tslint.json ./src/**/*.ts",
-    "compile": "tsc --build tsconfig.json",
-    "compile:clean": "tsc --build tsconfig.json --clean",
-    "prepublish": "tsc --build tsconfig.json && npm run templates && npm run build && npm run make",
-    "templates": "node ./bin/fte.js bundle templates templates",
-    "build": "node ./bin/fte.js bundle templates src/templates --typescript",
-    "rollup": "rollup -c",
-    "watchOnly": "tsc -w --noEmit",
-    "watch": "tsc -w -p tsconfig.old.json",
-    "make": "node utils/browser.mjs && node utils/node.mjs && node utils/standalone.mjs"
+    "clean": "git clean -dfqX -- ./node_modules **/{dist,build,node_modules,yarn-error.log,yarn.lock,tsconfig.tsbuildinfo,package-lock.json}/",
+    "templates": "node ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/src packages/fte.js-templates/src --typescript"
   },
   "repository": {
     "type": "git",
@@ -33,14 +17,6 @@
   },
   "homepage": "https://github.com/vedmalex/fte2#readme",
   "devDependencies": {
-    "fte.js": "file://.",
-    "@esbuild-plugins/node-resolve": "^0.1.4",
-    "@rollup/plugin-alias": "^4.0.3",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "@total-typescript/ts-reset": "^0.3.7",
     "@types/glob": "^8.0.0",
     "@types/jest": "^29.2.5",
     "@types/lodash": "^4.14.191",
@@ -49,34 +25,25 @@
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "5.52.0",
     "@typescript-eslint/parser": "5.52.0",
-    "esbuild": "^0.17.10",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-unicorn": "^45.0.2",
-    "glob": "^8.0.3",
     "jest": "^29.3.1",
     "jest-config": "^29.4.3",
-    "mem-fs": "^2.2.1",
-    "mem-fs-editor": "^9.5.0",
-    "memfs": "^3.4.13",
     "prettier": "^2.8.4",
-    "rollup": "^3.17.3",
-    "rollup-plugin-ts": "^3.2.0",
-    "rollup-plugin-tsconfig-paths": "^1.4.0",
     "ts-jest": "^29.0.4",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
-    "typescript": "next",
-    "unionfs": "^4.4.0"
+    "typescript": "next"
   },
   "dependencies": {
-    "@swc/core": "^1.3.46",
-    "chokidar": "^3.5.3",
-    "commander": "^9.5.0",
-    "detect-indent": "^6.1.0",
-    "prettier": "^2.8.3"
+    "lerna": "^6.6.1",
+    "nx": "^15.9.2"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "gitHead": "ef0fa33d54101ca9c7c7a450fc6b7fc802a2c327"
 }
