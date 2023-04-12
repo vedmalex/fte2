@@ -1,3 +1,4 @@
+import { TemplateBase } from "fte.js-base";
 export default {
     alias: [
         "es6module.njs"
@@ -7,16 +8,12 @@ export default {
     },
     script: function(context, _content, partial, slot, options) {
         var out: Array<string> = [];
+        out.push("import { TemplateBase } from 'fte.js-base'\n");
+        out.push("\n");
         out.push("export default " + (partial(context, "core")) + ";");
         return out.join("");
     },
-    compile: function(this: {
-        factory: {
-            ensure: (template: string) => any;
-        };
-        parent: string;
-        mergeParent: (template: any) => void;
-    }) {
+    compile: function(this: TemplateBase) {
         this.factory.ensure("MainTemplate.ts.njs");
     },
     dependency: {

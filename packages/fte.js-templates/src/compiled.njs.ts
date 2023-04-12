@@ -1,3 +1,4 @@
+import { TemplateBase } from "fte.js-base";
 export default {
     alias: [
         "compiled.njs"
@@ -10,13 +11,7 @@ export default {
         out.push("module.exports = " + (partial(context, "core")) + ";");
         return out.join("");
     },
-    compile: function(this: {
-        factory: {
-            ensure: (template: string) => any;
-        };
-        parent: string;
-        mergeParent: (template: any) => void;
-    }) {
+    compile: function(this: TemplateBase) {
         this.factory.ensure("MainTemplate.njs");
     },
     dependency: {

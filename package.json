@@ -3,16 +3,8 @@
   "version": "3.0.0-rc.5",
   "description": "fast template engine that is reborn",
   "scripts": {
-    "test": "tslint --config tslint.json ./src/**/*.ts",
-    "compile": "tsc --build tsconfig.json",
-    "compile:clean": "tsc --build tsconfig.json --clean",
-    "prepublish": "tsc --build tsconfig.json && npm run templates && npm run build && npm run make",
-    "templates": "node ./bin/fte.js bundle templates templates",
-    "build": "node ./bin/fte.js bundle templates src/templates --typescript",
-    "rollup": "rollup -c",
-    "watchOnly": "tsc -w --noEmit",
-    "watch": "tsc -w -p tsconfig.old.json",
-    "make": "node utils/browser.mjs && node utils/node.mjs && node utils/standalone.mjs"
+    "clean": "git clean -dfqX -- ./node_modules **/{dist,build,node_modules,yarn-error.log,yarn.lock,tsconfig.tsbuildinfo,package-lock.json}/",
+    "templates": "node ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/src packages/fte.js-templates/src --typescript"
   },
   "repository": {
     "type": "git",
@@ -25,13 +17,6 @@
   },
   "homepage": "https://github.com/vedmalex/fte2#readme",
   "devDependencies": {
-    "@esbuild-plugins/node-resolve": "^0.1.4",
-    "@rollup/plugin-alias": "^4.0.3",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "@total-typescript/ts-reset": "^0.3.7",
     "@types/glob": "^8.0.0",
     "@types/jest": "^29.2.5",
     "@types/lodash": "^4.14.191",
@@ -48,9 +33,6 @@
     "jest": "^29.3.1",
     "jest-config": "^29.4.3",
     "prettier": "^2.8.4",
-    "rollup": "^3.17.3",
-    "rollup-plugin-ts": "^3.2.0",
-    "rollup-plugin-tsconfig-paths": "^1.4.0",
     "ts-jest": "^29.0.4",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",

@@ -20,7 +20,7 @@
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,

@@ -192,7 +192,7 @@ if(slotNames.length > 0) {#>
 <#-}#>
   },
 <#- } #>
-  compile: function(this: {factory: {ensure:(template: string)=>any}, parent: string, mergeParent: (template: any)=>void}) {
+  compile: function(this: TemplateBase) {
 <#-  if(directives.requireAs.length > 0) { #>
 <#- var rq
   for (var i = 0, len = directives.requireAs.length; i < len; i++) {

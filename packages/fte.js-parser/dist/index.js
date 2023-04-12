@@ -1,13 +1,8 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var detectIndent = require('detect-indent');
-
-function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
-
-var detectIndent__default = /*#__PURE__*/_interopDefault(detectIndent);
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Parser = exports.CodeBlock = exports.CodeBlockDirectives = void 0;
+const tslib_1 = require("tslib");
+const detect_indent_1 = tslib_1.__importDefault(require("detect-indent"));
 const globalStates = {
     text: {
         states: [
@@ -74,6 +69,7 @@ const globalStates = {
         start: ['<# end #>', '<#- end #>', '<# end -#>', '<#- end -#>'],
     },
 };
+exports.default = globalStates;
 const directives = [
     'extend',
     'context',
@@ -168,9 +164,11 @@ class CodeBlockDirectives {
             case 'requireAs':
                 this.requireAs.push({ name: params[0], alias: params[1] });
                 break;
+            default:
         }
     }
 }
+exports.CodeBlockDirectives = CodeBlockDirectives;
 class CodeBlock {
     constructor(init) {
         this.main = [];
@@ -191,6 +189,7 @@ class CodeBlock {
         this.blocks[slot.name] = slot;
     }
 }
+exports.CodeBlock = CodeBlock;
 const UNQUOTE = (str) => {
     var _a, _b;
     if (str) {
@@ -630,7 +629,7 @@ class Parser {
     }
     DETECT_INDENT() {
         const { buffer } = this;
-        const indent = detectIndent__default.default(buffer).indent;
+        const indent = (0, detect_indent_1.default)(buffer).indent;
         if (~indent.indexOf('\t')) {
             this.INDENT = Parser.DEFAULT_TAB_SIZE;
         }
@@ -695,6 +694,7 @@ class Parser {
 }
 Parser.INITIAL_STATE = 'text';
 Parser.DEFAULT_TAB_SIZE = 2;
+exports.Parser = Parser;
 function SUB(buffer, str, pos = 0, size = 0) {
     if (!size) {
         size = buffer.length;
@@ -713,9 +713,4 @@ function SUB(buffer, str, pos = 0, size = 0) {
         return '';
     }
 }
-
-exports.CodeBlock = CodeBlock;
-exports.CodeBlockDirectives = CodeBlockDirectives;
-exports.Parser = Parser;
-exports.default = globalStates;
 //# sourceMappingURL=index.js.map

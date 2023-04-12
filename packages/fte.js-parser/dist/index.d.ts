@@ -1,4 +1,5 @@
-type StateDefinition = {
+/// <reference types="node" />
+export type StateDefinition = {
     start?: Array<string>;
     end?: Array<string>;
     skip?: {
@@ -11,12 +12,13 @@ type StateDefinition = {
         [key: string]: ResultTypes;
     };
 };
-type ResultTypes = 'unknown' | 'expression' | 'uexpression' | 'expression2' | 'uexpression2' | 'code' | 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'text' | 'skip' | 'empty';
-type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null;
+export type ResultTypes = 'unknown' | 'expression' | 'uexpression' | 'expression2' | 'uexpression2' | 'code' | 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'text' | 'skip' | 'empty';
+export type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null;
 declare const globalStates: {
     [key: string]: StateDefinition;
 };
-interface ParserResult {
+export default globalStates;
+export interface ParserResult {
     data: string;
     pos: number;
     line: number;
@@ -26,7 +28,7 @@ interface ParserResult {
     end: string;
     eol: boolean;
 }
-interface Items {
+export interface Items {
     content: string;
     indent?: string;
     pos: number;
@@ -37,11 +39,11 @@ interface Items {
     eol: boolean;
     type: ResultTypes;
 }
-type RequireItem = {
+export type RequireItem = {
     name: string;
     alias: string;
 };
-declare class CodeBlockDirectives {
+export declare class CodeBlockDirectives {
     extend: string;
     deindent: number | boolean;
     context: string;
@@ -59,7 +61,7 @@ declare class CodeBlockDirectives {
     requireAs: Array<RequireItem>;
     push(init: ParserResult): void;
 }
-declare class CodeBlock {
+export declare class CodeBlock {
     name: string;
     main: Array<Items>;
     directives: CodeBlockDirectives;
@@ -74,7 +76,7 @@ declare class CodeBlock {
     addBlock(block: CodeBlock): void;
     addSlot(slot: CodeBlock): void;
 }
-declare class Parser {
+export declare class Parser {
     private buffer;
     private size;
     INDENT: number;
@@ -104,5 +106,4 @@ declare class Parser {
     private SUB;
     private term;
 }
-export { globalStates as default, StateDefinition, ResultTypes, SystemBlocksType, ParserResult, Items, RequireItem, CodeBlockDirectives, CodeBlock, Parser };
 //# sourceMappingURL=index.d.ts.map

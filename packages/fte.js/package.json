@@ -1,14 +1,18 @@
 {
   "name": "fte.js",
   "version": "3.0.0-rc.5",
+  "bin": {
+    "fte.js": "./bin/fte.js"
+  },
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "prettier": "../../.prettierrc.js",
   "scripts": {
     "test": "jest --coverage",
-    "prepublish": "rollup -c",
-    "build": "rollup -c",
-    "watch": "tsc -w --noEmit"
+    "prepublish": "tsc -b",
+    "build": "tsc -b",
+    "watch": "tsc -w"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +23,9 @@
     "commander": "^9.5.0",
     "fte.js-base": "workspace:^",
     "fte.js-parser": "workspace:^",
+    "fte.js-standalone": "workspace:3.0.0-rc.5",
+    "fte.js-templates": "workspace:3.0.0-rc.5",
+    "glob": "^10.0.0",
     "mem-fs": "^2.2.1",
     "mem-fs-editor": "^9.5.0"
   }

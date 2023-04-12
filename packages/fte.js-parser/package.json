@@ -3,14 +3,14 @@
   "version": "3.0.0-rc.5",
   "description": "",
   "main": "dist/index.js",
-  "module": "dist/index.module.js",
+  "module": "module/index.module.js",
   "types": "dist/index.d.ts",
   "prettier": "../../.prettierrc.js",
   "scripts": {
     "test": "jest --coverage",
-    "prepublish": "rollup -c",
-    "build": "rollup -c",
-    "watch": "tsc -w --noEmit"
+    "prepublish": "tsc -b",
+    "build": "tsc -b",
+    "watch": "tsc -w"
   },
   "keywords": [],
   "author": "",

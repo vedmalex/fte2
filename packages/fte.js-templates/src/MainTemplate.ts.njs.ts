@@ -1,3 +1,4 @@
+import { TemplateBase } from "fte.js-base";
 export default {
     alias: [
         "MainTemplate.ts.njs"
@@ -207,7 +208,7 @@ export default {
             out.push("  },");
         }
         out.push("\n");
-        out.push("  compile: function(this: {factory: {ensure:(template: string)=>any}, parent: string, mergeParent: (template: any)=>void}) {");
+        out.push("  compile: function(this: TemplateBase) {");
         if (directives.requireAs.length > 0) {
             var rq;
             for(var i = 0, len = directives.requireAs.length; i < len; i++){
@@ -326,13 +327,7 @@ export default {
             return out.join("");
         }
     },
-    compile: function(this: {
-        factory: {
-            ensure: (template: string) => any;
-        };
-        parent: string;
-        mergeParent: (template: any) => void;
-    }) {
+    compile: function(this: TemplateBase) {
         this.factory.ensure("codeblock.njs");
     },
     dependency: {

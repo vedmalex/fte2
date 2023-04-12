@@ -27,7 +27,7 @@
 добавить в `package.json`
 
   "main": "./dist/index.js",
-  "module": "./dist/index.module.js",
+  "module": "./module/index.module.js",
   "types": "./dist/index.d.ts",
   "prettier": "../../.prettierrc.js",
 

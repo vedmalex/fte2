@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const path = require('path')
 const fs = require('fs')
-const { build } = require('../src/build')
+const { build } = require('../dist/utils/build')
 const { Command } = require('commander')
 const program = new Command()
 

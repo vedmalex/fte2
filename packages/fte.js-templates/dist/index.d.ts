@@ -1,53 +1,83 @@
 declare const templates: {
-    "codeblock.njs": {
+    "standalone.ts.njs": {
         alias: string[];
-        script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
-    "compilationError.njs": {
+    "standalone.njs": {
         alias: string[];
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
-    "compiled.njs": {
+    "standalone.index.ts.njs": {
+        alias: string[];
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
+    "standalone.index.njs": {
+        alias: string[];
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
+    "standalone.index.es6.njs": {
+        alias: string[];
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
+    "standalone.es6.njs": {
+        alias: string[];
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
+    "singlefile.ts.njs": {
         alias: string[];
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {
+            "MainTemplate.ts.njs": boolean;
+            core: boolean;
+        };
+    };
+    "singlefile.njs": {
+        alias: string[];
+        aliases: {
+            core: string;
+        };
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
             core: boolean;
         };
     };
-    "es6module.njs": {
+    "singlefile.es6.njs": {
+        alias: string[];
+        aliases: {
+            core: string;
+        };
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {
+            "MainTemplate.njs": boolean;
+            core: boolean;
+        };
+    };
+    "raw.njs": {
         alias: string[];
         aliases: {
             core: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
             core: boolean;
@@ -59,34 +89,47 @@ declare const templates: {
             core: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.ts.njs": boolean;
             core: boolean;
         };
     };
-    "MainTemplate.njs": {
+    "es6module.njs": {
         alias: string[];
         aliases: {
-            codeblock: string;
+            core: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        blocks: {
-            maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-start': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-finish': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-        };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
-            'codeblock.njs': boolean;
-            codeblock: boolean;
+            "MainTemplate.njs": boolean;
+            core: boolean;
         };
+    };
+    "compiled.njs": {
+        alias: string[];
+        aliases: {
+            core: string;
+        };
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {
+            "MainTemplate.njs": boolean;
+            core: boolean;
+        };
+    };
+    "compilationError.njs": {
+        alias: string[];
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
+    "codeblock.njs": {
+        alias: string[];
+        script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
     };
     "MainTemplate.ts.njs": {
         alias: string[];
@@ -99,162 +142,29 @@ declare const templates: {
             "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
             "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
         };
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "codeblock.njs": boolean;
             codeblock: boolean;
         };
     };
-    "raw.njs": {
+    "MainTemplate.njs": {
         alias: string[];
         aliases: {
-            core: string;
+            codeblock: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
+        blocks: {
+            maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+            "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+            "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+        };
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
-            "MainTemplate.njs": boolean;
-            core: boolean;
+            "codeblock.njs": boolean;
+            codeblock: boolean;
         };
-    };
-    "singlefile.es6.njs": {
-        alias: string[];
-        aliases: {
-            core: string;
-        };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {
-            "MainTemplate.njs": boolean;
-            core: boolean;
-        };
-    };
-    "singlefile.njs": {
-        alias: string[];
-        aliases: {
-            core: string;
-        };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {
-            "MainTemplate.njs": boolean;
-            core: boolean;
-        };
-    };
-    "singlefile.ts.njs": {
-        alias: string[];
-        aliases: {
-            core: string;
-        };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {
-            "MainTemplate.ts.njs": boolean;
-            core: boolean;
-        };
-    };
-    "standalone.es6.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
-    };
-    "standalone.index.es6.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
-    };
-    "standalone.index.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
-    };
-    "standalone.index.ts.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
-    };
-    "standalone.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
-    };
-    "standalone.ts.njs": {
-        alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: {
-            factory: {
-                ensure: (template: string) => any;
-            };
-            parent: string;
-            mergeParent: (template: any) => void;
-        }) => void;
-        dependency: {};
     };
 };
-export { templates as default };
+export default templates;
 //# sourceMappingURL=index.d.ts.map
