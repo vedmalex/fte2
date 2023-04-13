@@ -1,12 +1,5 @@
 import * as ts from 'typescript'
 
-// function nodeToString(node: ts.Node, sourceFile: ts.SourceFile) {
-//   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
-//   const result = printer.printNode(ts.EmitHint.Unspecified, node, sourceFile)
-//   console.log(result, ts.SyntaxKind[node.kind])
-//   return result
-// }
-
 export type FunctionDefinition = {
   /**
    * name of the function
@@ -47,7 +40,7 @@ export function inferTypesFromFunction(funcCode: string): Array<FunctionDefiniti
         if (param.type) {
           return [{ name: paramName, type: param.type.getText(sourceFile) } as Info, [] as Info[]]
         } else {
-          return findUsage(param, sourceFile, paramName, node)
+          return findUsage(sourceFile, paramName, node)
         }
       })
       list.forEach(([param, types]) => {
@@ -62,64 +55,11 @@ export function inferTypesFromFunction(funcCode: string): Array<FunctionDefiniti
   return result
 }
 
-// const funcCode = `
-// import { TemplateBase } from "fte.js-base";
-// export default {
-//     alias: [
-//         "standalone.ts.njs"
-//     ],
-//     script: function(files, _content, partial, slot, options) {
-//         var out: Array<string> = [];
-//         out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'");
-//         for(let i = 0; i < files.length; i += 1){
-//             out.push("\n");
-//             out.push("  import " + (files[i].name.replaceAll(/[\s\.]/g, "_")) + " from '" + (files[i].path) + "'");
-//         }
-//         out.push("\n");
-//         out.push("\n");
-//         out.push("const templates = {");
-//         for(let i = 0; i < files.length; i += 1){
-//             out.push("\n");
-//             out.push("  '" + (files[i].name) + "': " + (files[i].name.replaceAll(/[\s\.]/g, "_")) + ",");
-//         }
-//         out.push("\n");
-//         out.push("}\n");
-//         out.push("\n");
-//         out.push("const F = new Factory(templates)\n");
-//         out.push("\n");
-//         out.push("function run<T>(context:T, name:string) => {\n");
-//         out.push("  return F.run(context, name)\n");
-//         out.push("}\n");
-//         out.push("export default run");
-//         return out.join("");
-//     },
-//     compile: function(this: TemplateBase) {},
-//     dependency: {}
-// };
-
-// `
-
-// console.log(
-//   JSON.stringify(
-//     inferTypesFromFunction(funcCode),
-//     (_, value: unknown) => {
-//       if (value instanceof Set) {
-//         return [...value]
-//       }
-//       return value
-//     },
-//     2,
-//   ),
-// )
-
 function findUsage(
-  param: ts.ParameterDeclaration,
   sourceFile: ts.SourceFile,
   paramName: string,
   node: ts.FunctionDeclaration | ts.FunctionExpression,
 ): [Info, Info[]] {
-  // nodeToString(param, sourceFile)
-
   const props = new Map<string, Info>()
   props.set(paramName, { name: paramName, parent: '', type: 'primitive', properties: new Set() })
   function findUsages(node: ts.Node) {
@@ -130,11 +70,6 @@ function findUsage(
         item.properties.add(node.name.getText(sourceFile))
       } else {
         if (ts.isElementAccessExpression(node.expression)) {
-          // дать название параметра
-          // пометить что поле это объект
-          // node.name == название поля
-          // node.expression == доступ к полю
-          // node.expression.expression =
           const obj = node.expression.expression.getText()
           debugger
           if (props.has(obj)) {
@@ -165,15 +100,12 @@ function findUsage(
           // пометить что объект это массив
           debugger
         }
-        // nodeToString(node, sourceFile)
       }
     } else if (ts.isVariableDeclaration(node) && node.initializer && props.has(node.initializer.getText(sourceFile))) {
       const property = node.initializer.getText(sourceFile)
-      // nodeToString(node, sourceFile)
       ts.forEachChild(node.name, element => {
         if (ts.isBindingElement(element)) {
           const subProp = element.name.getText()
-          // nodeToString(element, sourceFile)
           const prop = props.get(property) as Info
           prop.properties.add(subProp)
           props.set(subProp, {
