@@ -1,15 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    alias: [
-        "codeblock.njs"
-    ],
+    alias: ['codeblock.njs'],
     script: function (blockList, _content, partial, slot, options) {
         var out = [];
         var textQuote = false;
         do {
             const cur = blockList.shift();
-            if (cur.type !== "empty" || (cur.type === "text" && cur.content.trim())) {
+            if ((cur.type === 'text' && cur.content.trim()) || cur.type !== 'empty') {
                 blockList.unshift(cur);
                 break;
             }
@@ -18,7 +16,7 @@ exports.default = {
         } while (true);
         do {
             const cur = blockList.pop();
-            if (cur.type !== "empty" || (cur.type === "text" && cur.content.trim())) {
+            if ((cur.type === 'text' && cur.content.trim()) || cur.type !== 'empty') {
                 blockList.push(cur);
                 break;
             }
@@ -29,54 +27,54 @@ exports.default = {
         for (var i = 0, len = blockList.length; i < len; i++) {
             var last = i === blockList.length - 1;
             var block = blockList[i];
-            var next = (i + 1) < len ? blockList[i + 1] : null;
+            var next = i + 1 < len ? blockList[i + 1] : null;
             var cont = block === null || block === void 0 ? void 0 : block.content;
             switch (block.type) {
-                case "text":
+                case 'text':
                     {
-                        let res = "";
+                        let res = '';
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(";
+                            res = 'out.push(';
                         }
                         else {
                             let lasItem = out.pop();
-                            res = lasItem + " + ";
+                            res = lasItem + ' + ';
                         }
                         if (!block.eol) {
                             res += JSON.stringify(cont);
                         }
                         else {
-                            res += JSON.stringify(cont + "\n");
-                            res += ");" + (last ? "" : "\n");
+                            res += JSON.stringify(cont + '\n');
+                            res += ');' + (last ? '' : '\n');
                             textQuote = false;
                         }
                         out.push(res);
                     }
                     break;
-                case "uexpression":
+                case 'uexpression':
                     {
-                        let res = "";
+                        let res = '';
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(";
+                            res = 'out.push(';
                         }
                         else {
                             let lasItem = out.pop();
-                            res = lasItem + " + ";
+                            res = lasItem + ' + ';
                         }
-                        let lcont = "options.escapeIt(" + cont + ")";
+                        let lcont = 'options.escapeIt(' + cont + ')';
                         if (block.indent) {
-                            lcont = "options.applyIndent(" + lcont + ", '" + block.indent + "')";
+                            lcont = 'options.applyIndent(' + lcont + ", '" + block.indent + "')";
                         }
                         if (block.start && block.end) {
-                            res += "(" + lcont + ")";
+                            res += '(' + lcont + ')';
                         }
                         else if (block.start) {
-                            res += "(" + lcont;
+                            res += '(' + lcont;
                         }
                         else if (block.end) {
-                            res += lcont + ")";
+                            res += lcont + ')';
                         }
                         else {
                             res += lcont;
@@ -85,35 +83,35 @@ exports.default = {
                             out.push(res);
                         }
                         else {
-                            out.push(res + ");" + (last ? "" : "\n"));
+                            out.push(res + ');' + (last ? '' : '\n'));
                             textQuote = false;
                         }
                     }
                     break;
-                case "expression":
+                case 'expression':
                     {
-                        let res = "";
+                        let res = '';
                         if (!textQuote) {
                             textQuote = true;
-                            res = "out.push(";
+                            res = 'out.push(';
                         }
                         else {
                             if (block.start) {
                                 let lasItem = out.pop();
-                                res = lasItem + " + ";
+                                res = lasItem + ' + ';
                             }
                         }
                         if (block.indent) {
-                            cont = "options.applyIndent(" + cont + ", '" + block.indent + "')";
+                            cont = 'options.applyIndent(' + cont + ", '" + block.indent + "')";
                         }
                         if (block.start && block.end) {
-                            res += "(" + cont + ")";
+                            res += '(' + cont + ')';
                         }
                         else if (block.start) {
-                            res += "(" + cont;
+                            res += '(' + cont;
                         }
                         else if (block.end) {
-                            res += cont + ")";
+                            res += cont + ')';
                         }
                         else {
                             res += cont;
@@ -122,28 +120,28 @@ exports.default = {
                             out.push(res);
                         }
                         else {
-                            out.push(res + ");" + (last ? "" : "\n"));
+                            out.push(res + ');' + (last ? '' : '\n'));
                             textQuote = false;
                         }
                     }
                     break;
-                case "code":
+                case 'code':
                     if (textQuote) {
                         let item = out.pop();
-                        out.push(item + ");\n");
+                        out.push(item + ');\n');
                         textQuote = false;
                     }
-                    out.push(cont + ((block.eol || (next === null || next === void 0 ? void 0 : next.type) != "code") ? "\n" : ""));
+                    out.push(cont + (block.eol || (next === null || next === void 0 ? void 0 : next.type) != 'code' ? '\n' : ''));
                     break;
             }
         }
         if (textQuote) {
             let lasItem = out.pop();
-            out.push(lasItem + ");");
+            out.push(lasItem + ');');
         }
-        return out.join("");
+        return out.join('');
     },
     compile: function () { },
-    dependency: {}
+    dependency: {},
 };
 //# sourceMappingURL=codeblock.njs.js.map

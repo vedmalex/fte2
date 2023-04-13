@@ -1,4 +1,4 @@
-import { TemplateBase } from "fte.js-base";
+import { TemplateBase } from 'fte.js-base';
 declare const _default: {
     alias: string[];
     aliases: {
@@ -6,13 +6,22 @@ declare const _default: {
     };
     script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
     blocks: {
-        maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-        "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-        "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+        maincontent: (directives: {
+            content: any;
+            context: any;
+        }, _content: any, partial: any, slot: any, options: any) => string;
+        'chunks-start': (directives: {
+            chunks: any;
+        }, _content: any, partial: any, slot: any, options: any) => string;
+        'chunks-finish': (directives: {
+            chunks: any;
+            useHash: any;
+            includeMainChunk: any;
+        }, _content: any, partial: any, slot: any, options: any) => string;
     };
     compile: (this: TemplateBase) => void;
     dependency: {
-        "codeblock.njs": boolean;
+        'codeblock.njs': boolean;
         codeblock: boolean;
     };
 };

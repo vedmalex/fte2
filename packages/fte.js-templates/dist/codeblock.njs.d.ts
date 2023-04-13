@@ -1,7 +1,15 @@
-import { TemplateBase } from "fte.js-base";
+import { TemplateBase } from 'fte.js-base';
+type Block = {
+    type: 'empty' | 'text' | 'code' | 'uexpression' | 'expression';
+    content: string;
+    eol: boolean;
+    indent: string;
+    start: boolean;
+    end: boolean;
+};
 declare const _default: {
     alias: string[];
-    script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
+    script: (blockList: Array<Block>, _content: any, partial: any, slot: any, options: any) => string;
     compile: (this: TemplateBase) => void;
     dependency: {};
 };
