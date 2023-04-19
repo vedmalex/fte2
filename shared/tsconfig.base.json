@@ -27,6 +27,8 @@
     "target": "es2018",
     "moduleResolution": "node",
     "importHelpers": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM", "DOM.Iterable"],
     "types": ["node", "jest"]
   }

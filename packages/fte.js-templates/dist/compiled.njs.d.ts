@@ -1,13 +1,13 @@
-import { TemplateBase } from 'fte.js-base';
+import { TemplateBase } from "fte.js-base";
 declare const _default: {
     alias: string[];
     aliases: {
         core: string;
     };
-    script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+    script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
     compile: (this: TemplateBase) => void;
     dependency: {
-        'MainTemplate.njs': boolean;
+        "MainTemplate.njs": boolean;
         core: boolean;
     };
 };

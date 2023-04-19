@@ -1,0 +1,31 @@
+function:
+  name: traverseTs
+  input: a text of TypeScript file
+  output: a list of TypeScript files
+  action:
+    - parse the text into a tree
+    - traverse the tree
+    - for each node, if it is a function:
+        - get the function name
+        - get parameters:
+            - for each parameter:
+                - function:
+                    name: getParameterType
+                    input: a parameter
+                    output: a type for the parameter
+                    action:
+                      - find the usage of the parameter in the function body:
+                          - if the usage is a function:
+                              - get the list of parameters of the function with types
+                              - return the type for the parameter as (list of parameters) => any
+                          - if the usage is destructuring:
+                              - get the list of parameter fields in destructuring
+                              - for each parameter, collect its usage with getParameterType
+                              - return the type for the parameter as {list of parameters}
+                          - if the usage is an assignment:
+                              - get the type of the assignment
+                              - return the type for the parameter as type
+                          - if the usage is an array:
+                              - mark the parameter as array
+                              - get the type of the array
+                              - return the type for the parameter as type[]

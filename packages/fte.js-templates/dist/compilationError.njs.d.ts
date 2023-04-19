@@ -1,11 +1,7 @@
-import { TemplateBase } from 'fte.js-base';
-type ContextType = {
-    error: Error;
-    compiledFile: string;
-};
+import { TemplateBase } from "fte.js-base";
 declare const _default: {
     alias: string[];
-    script: (context: ContextType, _content: any, partial: any, slot: any, options: any) => string;
+    script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
     compile: (this: TemplateBase) => void;
     dependency: {};
 };

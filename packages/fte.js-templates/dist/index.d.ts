@@ -1,37 +1,46 @@
 declare const templates: {
+    "typedefinitions.njs": {
+        alias: string[];
+        script: (typedefs: any, _content: any, partial: any, slot: any, options: any) => any;
+        blocks: {
+            info: (info: any, _content: any, partial: any, slot: any, options: any) => any;
+        };
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
     "standalone.ts.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "standalone.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "standalone.index.ts.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "standalone.index.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "standalone.index.es6.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "standalone.es6.njs": {
         alias: string[];
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
@@ -40,7 +49,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.ts.njs": boolean;
@@ -52,7 +61,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -64,7 +73,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (files: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -76,7 +85,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -88,7 +97,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.ts.njs": boolean;
@@ -100,7 +109,7 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -112,32 +121,22 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
-            'MainTemplate.njs': boolean;
+            "MainTemplate.njs": boolean;
             core: boolean;
         };
     };
     "compilationError.njs": {
         alias: string[];
-        script: (context: {
-            error: Error;
-            compiledFile: string;
-        }, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
     "codeblock.njs": {
         alias: string[];
-        script: (blockList: {
-            type: "empty" | "text" | "code" | "uexpression" | "expression";
-            content: string;
-            eol: boolean;
-            indent: string;
-            start: boolean;
-            end: boolean;
-        }[], _content: any, partial: any, slot: any, options: any) => string;
+        script: (blockList: any, _content: any, partial: any, slot: any, options: any) => any;
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
@@ -146,24 +145,15 @@ declare const templates: {
         aliases: {
             codeblock: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         blocks: {
-            maincontent: (directives: {
-                content: any;
-                context: any;
-            }, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-start': (directives: {
-                chunks: any;
-            }, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-finish': (directives: {
-                chunks: any;
-                useHash: any;
-                includeMainChunk: any;
-            }, _content: any, partial: any, slot: any, options: any) => string;
+            maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => any;
+            "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
+            "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
         };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
-            'codeblock.njs': boolean;
+            "codeblock.njs": boolean;
             codeblock: boolean;
         };
     };
@@ -172,15 +162,15 @@ declare const templates: {
         aliases: {
             codeblock: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
         blocks: {
-            maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-start': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
-            'chunks-finish': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+            maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => any;
+            "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
+            "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
         };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
-            'codeblock.njs': boolean;
+            "codeblock.njs": boolean;
             codeblock: boolean;
         };
     };

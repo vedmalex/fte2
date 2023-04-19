@@ -1,0 +1,1 @@
+{"version":3,"file":"TSPrimitive.js","sourceRoot":"","sources":["../../../src/utils/inferer/TSPrimitive.ts"],"names":[],"mappings":";;;AAAA,6CAAyC;AAEzC,MAAa,WAAY,SAAQ,uBAAU;IACzC,YAAmB,IAAY;QAC7B,KAAK,CAAC,WAAW,CAAC,CAAA;QADD,SAAI,GAAJ,IAAI,CAAQ;IAE/B,CAAC;IACQ,QAAQ;QACf,OAAO,GAAG,IAAI,CAAC,IAAI,OAAO,CAAA;IAC5B,CAAC;CACF;AAPD,kCAOC"}
