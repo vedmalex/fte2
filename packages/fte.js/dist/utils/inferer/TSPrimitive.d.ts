@@ -1,4 +1,4 @@
-import { TSBaseType } from './TSBaseType';
+import { TSBaseType } from './utils/TSBaseType';
 export declare class TSPrimitive extends TSBaseType {
     name: string;
     constructor(name: string);

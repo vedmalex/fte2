@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TSPrimitive = void 0;
-const TSBaseType_1 = require("./TSBaseType");
+const TSBaseType_1 = require("./utils/TSBaseType");
 class TSPrimitive extends TSBaseType_1.TSBaseType {
     constructor(name) {
         super('primitive');

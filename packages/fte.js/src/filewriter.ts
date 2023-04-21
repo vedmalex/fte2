@@ -11,20 +11,8 @@ function parseFile(text: string, minify: boolean = false) {
   try {
     if (minify) {
       result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: true }).code
-
-      // result = swc.transformSync(text, {
-      //   jsc: { parser: { syntax: 'typescript' }},
-      //   // minify: true,
-      // }).code
     } else {
       result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: false }).code
-      // result = swc.transformSync(text, {
-      //   jsc: { parser: { syntax: 'typescript' }},
-      //   // minify: minify,
-      //   // treeShaking: true,
-      //   // minifyIdentifiers: true,
-      //   // minifySyntax: true,
-      // }).code
     }
     return result
   } catch (err) {

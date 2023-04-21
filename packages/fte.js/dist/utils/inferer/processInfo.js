@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processInfo = void 0;
-const TSPrimitive_1 = require("./TSPrimitive");
-const TSFunction_1 = require("./TSFunction");
-const TSArray_1 = require("./TSArray");
-const TSObject_1 = require("./TSObject");
+const TSPrimitive_1 = require("./utils/TSPrimitive");
+const TSFunction_1 = require("./utils/TSFunction");
+const TSArray_1 = require("./utils/TSArray");
+const TSObject_1 = require("./utils/TSObject");
 function processInfo(info) {
     if (info.type === 'function') {
         return new TSFunction_1.TSFunction(info.name, [...info.properties.values()].map(processInfo));

@@ -2,185 +2,177 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.inferTypesFromFunction = void 0;
 const tslib_1 = require("tslib");
-const ts = tslib_1.__importStar(require("typescript"));
 const createInfo_1 = require("./createInfo");
-function isFunctionNode(node) {
-    return ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node) || ts.isArrowFunction(node);
-}
+const t = tslib_1.__importStar(require("@babel/types"));
+const traverse_1 = tslib_1.__importDefault(require("@babel/traverse"));
+const parser = tslib_1.__importStar(require("@babel/parser"));
 function inferTypesFromFunction(funcCode) {
-    const sourceFile = ts.createSourceFile('temp.ts', funcCode, ts.ScriptTarget.ES2015, true);
+    const code = funcCode.trim();
+    const sourceFile = parser.parse(code, { plugins: ['typescript'], sourceType: 'script' });
+    console.log(JSON.stringify(sourceFile, null, 2));
     const result = new Map();
-    visitAllFunctions(result, sourceFile, sourceFile);
+    VisitAllFunctions(result, sourceFile);
     return result;
 }
 exports.inferTypesFromFunction = inferTypesFromFunction;
-function processFunctionParams(funcDef, paramName, props) {
-    props.forEach((prop, name) => {
-        if (prop.name === paramName) {
-            funcDef.properties.set(name, prop);
+function VisitAllFunctions(result, ast) {
+    const extractFunction = {
+        FunctionDeclaration(path, context) {
+            const name = extractName(path.node.id)[0];
+            createFunction(context, name, path.node, path.scope);
+        },
+        VariableDeclarator(path, context) {
+            const name = extractName(path.node.id)[0];
+            if (name) {
+                const init = path.node.init;
+                if (t.isArrowFunctionExpression(init) || t.isFunctionExpression(init)) {
+                    createFunction(context, name, init, path.scope);
+                }
+                else if (t.isCallExpression(init)) {
+                    const extractor = {
+                        FunctionExpression(path) {
+                            createFunction(context, name, path.node, path.scope);
+                        },
+                        ArrowFunctionExpression(path) {
+                            createFunction(context, name, path.node, path.scope);
+                        },
+                    };
+                    (0, traverse_1.default)(init, extractor, path.scope, path.state, path.parentPath);
+                }
+            }
+        },
+        ObjectMethod(path, context) {
+            const name = extractName(path.node.key)[0];
+            if (name) {
+                createFunction(context, name, path.node, path.scope);
+            }
+        },
+        ClassMethod(path, context) {
+            const name = extractName(path.node.key)[0];
+            if (name) {
+                createFunction(context, name, path.node, path.scope);
+            }
+        },
+        ClassPrivateMethod(path, context) {
+            const name = extractName(path.node.key)[0];
+            if (name) {
+                createFunction(context, name, path.node, path.scope);
+            }
+        },
+    };
+    (0, traverse_1.default)(ast, extractFunction, undefined, result);
+    return result;
+}
+function extractName(n) {
+    if (t.isIdentifier(n)) {
+        return [n.name];
+    }
+    else if (t.isPrivateName(n)) {
+        return [n.id.name];
+    }
+    else if (t.isObjectProperty(n)) {
+        return extractName(n.key);
+    }
+    else if (t.isStringLiteral(n)) {
+        return [n.value];
+    }
+    else if (t.isAssignmentExpression(n)) {
+        return extractName(n.left);
+    }
+    else if (t.isMemberExpression(n)) {
+        const property = extractName(n.property);
+        if (t.isIdentifier(n.object)) {
+            return [...extractName(n.object), ...property];
         }
-        else {
-            funcDef.children.set(name, prop);
-        }
+        else
+            return property;
+    }
+    else if (t.isRestElement(n)) {
+        return extractName(n.argument);
+    }
+    else if (t.isAssignmentPattern(n)) {
+        return extractName(n.left);
+    }
+    else if (t.isArrayPattern(n)) {
+        return n.elements.flatMap(element => extractName(element));
+    }
+    else if (t.isObjectPattern(n)) {
+        return n.properties.flatMap(property => extractName(property));
+    }
+    else if (t.isTSParameterProperty(n)) {
+        return extractName(n.parameter);
+    }
+    else if (t.isTSAsExpression(n)) {
+        return extractName(n.expression);
+    }
+    else if (t.isTSTypeAssertion(n)) {
+        return extractName(n.expression);
+    }
+    else if (t.isTSNonNullExpression(n)) {
+        return extractName(n.expression);
+    }
+    else
+        return ['anonymous'];
+}
+function createFunction(context, name, func, scope) {
+    const info = (0, createInfo_1.createInfo)(context, name, name, '', 'function', scope);
+    context.set(info.name, info);
+    func.params.forEach((p, index) => {
+        processPattern(index, p, context, info, scope);
     });
 }
-function visitAllFunctions(result, sourceFile, node) {
-    var _a, _b, _c;
-    if (isFunctionNode(node)) {
-        let name;
-        if (ts.isFunctionExpression(node) && ts.isPropertyAssignment(node.parent)) {
-            name = node.parent.name.getText();
-        }
-        else if (ts.isFunctionDeclaration(node)) {
-            name = (_b = (_a = node.name) === null || _a === void 0 ? void 0 : _a.getText()) !== null && _b !== void 0 ? _b : '';
-        }
-        else {
-            name = `${(_c = node.parent) === null || _c === void 0 ? void 0 : _c.getText()}.anonymous`;
-        }
-        const funcDef = (0, createInfo_1.createInfo)(result, name, name, '', 'function');
-        const scopeResult = new Map();
-        node.parameters.forEach((param, index) => {
-            if (ts.isIdentifier(param.name)) {
-                const paramName = param.name.getText(sourceFile);
-                findParemeterUsage(scopeResult, sourceFile, paramName, node);
-                processFunctionParams(funcDef, paramName, scopeResult);
-            }
-            else if (ts.isObjectBindingPattern(param.name)) {
-                const arg = (0, createInfo_1.createInfo)(scopeResult, `param${index}`, `param${index}`, '', 'object');
-                ts.forEachChild(param.name, field => {
-                    if (ts.isBindingElement(field)) {
-                        const name = field.name.getText(sourceFile);
-                        arg.properties.set(name, (0, createInfo_1.createInfo)(scopeResult, name, name, arg.name, 'primitive'));
-                        findParemeterUsage(scopeResult, sourceFile, field.name.getText(sourceFile), node);
-                    }
-                });
-                processFunctionParams(funcDef, arg.name, scopeResult);
-            }
-            else {
-                throw new Error('unknown parameter type');
-            }
+function processPattern(index, node, result, func, scope) {
+    if (t.isIdentifier(node)) {
+        const name = extractName(node)[0];
+        const param = (0, createInfo_1.createInfo)(result, name, name, '', 'primitive', scope);
+        func.properties.set(param.name, param);
+        result.set(param.name, param);
+    }
+    else if (t.isTSParameterProperty(node)) {
+        const parameters = extractName(node.parameter);
+        parameters.forEach(name => {
+            const param = (0, createInfo_1.createInfo)(result, name, name, '', 'primitive', scope);
+            func.properties.set(param.name, param);
+            result.set(param.name, param);
         });
     }
-    ts.forEachChild(node, visiting => visitAllFunctions(result, sourceFile, visiting));
-}
-function findParemeterUsage(props, sourceFile, paramName, node) {
-    (0, createInfo_1.createInfo)(props, paramName, paramName, '', 'primitive');
-    if (node.body) {
-        ts.forEachChild(node.body, visitingNode => findUsages(sourceFile, props, visitingNode));
+    else if (t.isRestElement(node)) {
+        const parameters = extractName(node.argument);
+        parameters.forEach(name => {
+            const param = (0, createInfo_1.createInfo)(result, name, name, '', 'array', scope);
+            func.properties.set(param.name, param);
+            result.set(param.name, param);
+        });
     }
-}
-function findUsages(sourceFile, props, node) {
-    if (ts.isPropertyAccessExpression(node)) {
-        processPropertyAccessExpression(sourceFile, props, node);
-    }
-    else if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
-        processForEach(sourceFile, props, node);
-    }
-    else if (ts.isVariableDeclaration(node) && node.initializer && props.has(node.initializer.getText(sourceFile))) {
-        processVariableDeclaration(sourceFile, props, node);
-    }
-    ts.forEachChild(node, visitingNode => findUsages(sourceFile, props, visitingNode));
-}
-function processPropertyAccessExpression(sourceFile, props, node) {
-    const expression = node.expression.getText(sourceFile);
-    if (props.has(expression)) {
-        const item = props.get(expression);
-        const propertyName = node.name.getText(sourceFile);
-        const current = (0, createInfo_1.createInfo)(props, propertyName, `${item.typeName}.${propertyName}`, item.typeName, 'primitive');
-        item.properties.set(propertyName, current);
-    }
-    else {
-        if (ts.isElementAccessExpression(node.expression)) {
-            const obj = node.expression.expression.getText();
-            if (props.has(obj)) {
-                const item = props.get(obj);
-                item.type = 'array';
-                const subProp = node.name.getText();
-                const containmentType = props.has(`${item.typeName}Containment`)
-                    ? props.get(`${item.typeName}Containment`)
-                    : (0, createInfo_1.createInfo)(props, item.typeName, `${item.typeName}Containment`, item.typeName, 'object');
-                const current = (0, createInfo_1.createInfo)(props, subProp, `${item.typeName}.${subProp}`, item.typeName, 'primitive');
-                containmentType.properties.set(subProp, current);
-            }
+    else if (t.isPattern(node)) {
+        if (t.isObjectPattern(node)) {
+            const paramName = `param${index}`;
+            const paramObj = (0, createInfo_1.createInfo)(result, paramName, paramName, '', 'object', scope);
+            func.properties.set(paramObj.name, paramObj);
+            node.properties.forEach(p => {
+                const parameter = extractName(p)[0];
+                const param = (0, createInfo_1.createInfo)(result, parameter, parameter, paramName, 'primitive', scope);
+                paramObj.properties.set(param.name, param);
+                result.set(param.name, param);
+            });
         }
-        else if (ts.isPropertyAccessExpression(node.expression)) {
-            const obj = node.expression.expression.getText();
-            if (props.has(obj)) {
-                const item = props.get(obj);
-                item.type = 'object';
-                const subProp = node.name.getText();
-                const current = (0, createInfo_1.createInfo)(props, item.typeName, `${item.typeName}.${subProp}`, item.typeName, 'primitive');
-                item.properties.set(subProp, current);
-            }
+        else if (t.isArrayPattern(node)) {
+            const paramName = `param${index}`;
+            const paramObj = (0, createInfo_1.createInfo)(result, paramName, paramName, '', 'object', scope);
+            func.properties.set(paramObj.name, paramObj);
+            node.elements.forEach(p => {
+                const parameter = extractName(p)[0];
+                const param = (0, createInfo_1.createInfo)(result, parameter, parameter, paramName, 'primitive', scope);
+                paramObj.properties.set(param.name, param);
+                result.set(param.name, param);
+            });
+        }
+        else if (t.isAssignmentPattern(node)) {
+            const parameter = extractName(node.left)[0];
+            const param = (0, createInfo_1.createInfo)(result, parameter, parameter, parameter, 'primitive', scope);
+            func.properties.set(param.name, param);
+            result.set(param.name, param);
         }
     }
-}
-function extractPathParts(path) {
-    const parts = path.getText().split('.');
-    return parts;
-}
-function processForEach(sourceFile, props, node) {
-    const expression = node.expression;
-    const forEachCalledOn = expression.expression;
-    const forEachMethodName = expression.name.getText(sourceFile);
-    if (forEachMethodName === 'forEach' && node.arguments.length > 0) {
-        const pathParts = extractPathParts(forEachCalledOn);
-        let property;
-        let prev;
-        do {
-            const part = pathParts.shift();
-            if (props.has(part)) {
-                property = props.get(part);
-                property.type = 'object';
-            }
-            else {
-                if (property) {
-                    prev = property;
-                    property = (0, createInfo_1.createInfo)(props, part, `${property.typeName}.${part}`, property.typeName, 'primitive');
-                    prev.properties.set(part, property);
-                }
-                else {
-                    break;
-                }
-            }
-        } while (pathParts.length > 0);
-        if (property) {
-            property.type = 'array';
-        }
-        const callback = node.arguments[0];
-        if (ts.isArrayTypeNode(forEachCalledOn) ||
-            (ts.isIdentifier(forEachCalledOn) && property) ||
-            (ts.isPropertyAccessExpression(forEachCalledOn) && property)) {
-            if (ts.isArrowFunction(callback) || ts.isFunctionExpression(callback)) {
-                const param = callback.parameters[0];
-                if (ts.isIdentifier(param.name)) {
-                    const paramName = param.name.getText(sourceFile);
-                    (0, createInfo_1.createInfo)(props, paramName, `${property.typeName}Containment`, property.typeName, 'object');
-                }
-                else if (ts.isObjectBindingPattern(param.name)) {
-                    const subtype = (0, createInfo_1.createInfo)(props, `${property.typeName}Containment`, `${property.typeName}Containment`, property.typeName, 'object');
-                    ts.forEachChild(param.name, element => {
-                        if (ts.isBindingElement(element)) {
-                            const subProp = element.name.getText();
-                            const current = (0, createInfo_1.createInfo)(props, subProp, `${subtype.typeName}.${subProp}`, subtype.typeName, 'primitive');
-                            subtype.properties.set(subProp, current);
-                        }
-                    });
-                }
-                ts.forEachChild(callback.body, (visitingNode) => findUsages(sourceFile, props, visitingNode));
-            }
-        }
-    }
-}
-function processVariableDeclaration(sourceFile, props, node) {
-    const property = node.initializer.getText(sourceFile);
-    ts.forEachChild(node.name, element => {
-        if (ts.isBindingElement(element)) {
-            const subProp = element.name.getText();
-            const prop = props.get(property);
-            const current = (0, createInfo_1.createInfo)(props, prop.typeName, `${prop.typeName}.${subProp}`, prop.typeName, 'primitive');
-            prop.properties.set(subProp, current);
-        }
-    });
 }
 //# sourceMappingURL=typeinfer%20copy.js.map

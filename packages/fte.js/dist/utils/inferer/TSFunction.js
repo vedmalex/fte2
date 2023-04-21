@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TSFunction = void 0;
-const TSBaseType_1 = require("./TSBaseType");
+const TSBaseType_1 = require("./utils/TSBaseType");
 class TSFunction extends TSBaseType_1.TSBaseType {
     constructor(name, params) {
         super('function');

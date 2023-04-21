@@ -1,4 +1,4 @@
-import { TSBaseType } from './TSBaseType';
+import { TSBaseType } from './utils/TSBaseType';
 export declare class TSFunction extends TSBaseType {
     name: string;
     params: Array<TSBaseType>;

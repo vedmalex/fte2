@@ -1,4 +1,4 @@
-import { TSBaseType } from './TSBaseType';
+import { TSBaseType } from './utils/TSBaseType';
 export declare class TSObject extends TSBaseType {
     name: string;
     properties: Array<TSBaseType>;
