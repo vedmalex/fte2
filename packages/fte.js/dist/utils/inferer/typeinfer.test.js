@@ -137,7 +137,12 @@ describe('inferTypesFromFunction', () => {
     });
     it('process ObjectPattern parameters', () => {
         const code = `
-      function name1(a, {b, c, ...rest}) {}
+      function name1(a, {b, c, d, ...rest}) {
+        c.push(a + b)
+        d.last = rest
+        d.name.extract(a)
+        return {a, b, c, other: rest}
+      }
     `;
         debugger;
         const result = visitor.inferTypesFromFunction(code);
@@ -280,8 +285,9 @@ describe('inferTypesFromFunction', () => {
     });
     it('should take usage of primitive types into account', () => {
         const code = `
-      function name001(a, b, c, ...rest) {
+      function name001(a, b, c, param, ...rest) {
         rest[0].some.push(a + b + c)
+        param?.some?.[1]?.['super name']?.nice(a + b + c);
         return rest
       }`;
         debugger;

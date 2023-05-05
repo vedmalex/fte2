@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.21.4",
+    "@babel/generator": "^7.21.5",
     "@babel/parser": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
@@ -41,6 +42,7 @@
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82",
   "devDependencies": {
     "@types/babel__core": "^7.20.0",
+    "@types/babel__generator": "^7.6.4",
     "@types/babel__preset-env": "^7.9.2",
     "@types/babel__traverse": "^7.18.3"
   }

@@ -9,7 +9,7 @@ export function createInfo(
   typeName: string,
   parent: string,
   type: Info['type'],
-  scope: Scope,
+  scope?: Scope,
 ): Info {
   console.log('createInfo', name, typeName, parent, type)
   const parentInfo = props.get(parent)

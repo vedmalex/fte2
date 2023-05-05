@@ -1,5 +1,5 @@
 import * as t from '@babel/types';
-import { Scope } from '@babel/traverse';
-import { FunctionType } from '../FunctionType';
-export declare function visitAllFunctions(context: Map<FunctionType, Scope>, ast: t.File): Map<FunctionType, Scope>;
+import { NodePath } from '@babel/traverse';
+import { FunctionType } from '../types/FunctionType';
+export declare function visitAllFunctions(ast: t.File): NodePath<FunctionType>[];
 //# sourceMappingURL=visitAllFunctions.d.ts.map

@@ -1,26 +1,27 @@
 import * as t from '@babel/types'
 import traverse, { NodePath, Scope } from '@babel/traverse'
-import { FunctionType } from '../FunctionType'
+import { FunctionType } from '../types/FunctionType'
 
-export function visitAllFunctions(context: Map<FunctionType, Scope>, ast: t.File) {
+export function visitAllFunctions(ast: t.File) {
+  const context: Array<NodePath<FunctionType>> = []
   const extractFunction = {
     FunctionDeclaration(path: NodePath<t.FunctionDeclaration>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
     FunctionExpression(path: NodePath<t.FunctionExpression>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
     ArrowFunctionExpression(path: NodePath<t.ArrowFunctionExpression>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
     ObjectMethod(path: NodePath<t.ObjectMethod>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
     ClassMethod(path: NodePath<t.ClassMethod>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
     ClassPrivateMethod(path: NodePath<t.ClassPrivateMethod>) {
-      context.set(path.node, path.scope)
+      context.push(path)
     },
   }
   traverse(ast, extractFunction)

@@ -1,1 +1,1 @@
-{"version":3,"file":"typeinfer.d.ts","sourceRoot":"","sources":["../../../src/utils/inferer/typeinfer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,cAAc,CAAA;AAUnC,wBAAgB,sBAAsB,CAAC,QAAQ,EAAE,MAAM,GAAG,GAAG,CAAC,MAAM,EAAE,IAAI,CAAC,CAyB1E"}
+{"version":3,"file":"typeinfer.d.ts","sourceRoot":"","sources":["../../../src/utils/inferer/typeinfer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,cAAc,CAAA;AAOnC,wBAAgB,sBAAsB,CAAC,QAAQ,EAAE,MAAM,GAAG,GAAG,CAAC,MAAM,EAAE,IAAI,CAAC,CAU1E"}

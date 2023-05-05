@@ -1,14 +1,34 @@
 // info about a parameter
 
 import { Scope } from '@babel/traverse'
-import { FunctionType } from '../FunctionType'
+import _ from 'lodash'
 
 export type Info = {
-  parent: Info
-  scope: Scope
-  children: Map<string, Info>
-  typeName: string
+  type: 'object' | 'array' | 'primitive' | 'function' | 'min'
   name: string
-  type: 'object' | 'array' | 'primitive' | 'function'
+  typeName: string
   properties: Map<string, Info>
+  children: Map<string, Info>
+  parent?: Info
+  optional?: boolean
+  args?: number
+  scope?: Scope
+}
+
+export function createMinInfo({
+  name,
+  typeName,
+  type,
+}: {
+  name: string
+  typeName?: string
+  type?: Info['type']
+}): Info {
+  return {
+    name,
+    type: type ?? 'min',
+    properties: new Map<string, Info>(),
+    children: new Map<string, Info>(),
+    typeName: typeName ?? _.upperFirst(name),
+  }
 }
