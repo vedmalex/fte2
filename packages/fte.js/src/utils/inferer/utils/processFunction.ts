@@ -16,6 +16,10 @@ export function processFunction(context: Map<string, Info>, path: NodePath<Funct
     } else if (t.isObjectProperty(path.parent)) {
       name = extractName(path.parent, anonynmous)
     } else {
+      // тут нужно как-то выяснить, а не является ли эта функция итератором
+      // и дать ей имя
+      // название| вызова | (арг1 / арг2 / арг3)
+      // param|forEach|arg0 --- например
       name = anonynmous()
     }
   } else if (t.isFunctionDeclaration(func) || t.isFunctionExpression(func)) {

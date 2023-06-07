@@ -4,7 +4,7 @@ declare const _default: {
     aliases: {
         core: string;
     };
-    script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
+    script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
     compile: (this: TemplateBase) => void;
     dependency: {
         "MainTemplate.ts.njs": boolean;

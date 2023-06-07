@@ -111,16 +111,16 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       fte.js-base:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-base
       fte.js-parser:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-parser
       fte.js-standalone:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-standalone
       fte.js-templates:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-templates
       glob:
         specifier: ^10.0.0
@@ -156,7 +156,7 @@ importers:
   packages/fte.js-browser:
     dependencies:
       fte.js-base:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-base
 
   packages/fte.js-parser:
@@ -196,19 +196,19 @@ importers:
   packages/fte.js-standalone:
     dependencies:
       fte.js-base:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-base
       fte.js-parser:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-parser
       fte.js-templates:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-templates
 
   packages/fte.js-templates:
     dependencies:
       fte.js-base:
-        specifier: ^3.0.0-rc.11
+        specifier: ^3.0.0-rc.12
         version: link:../fte.js-base
 
 packages:

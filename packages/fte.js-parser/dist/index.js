@@ -696,9 +696,9 @@ class Parser {
         this.result.push(this.globalToken);
     }
 }
+exports.Parser = Parser;
 Parser.INITIAL_STATE = 'text';
 Parser.DEFAULT_TAB_SIZE = 2;
-exports.Parser = Parser;
 function SUB(buffer, str, pos = 0, size = 0) {
     if (!size) {
         size = buffer.length;

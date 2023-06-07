@@ -1,9 +1,9 @@
 import { TemplateBase } from "fte.js-base";
 declare const _default: {
     alias: string[];
-    script: (typedefs: any, _content: any, partial: any, slot: any, options: any) => any;
+    script: (typedefs: any, _content: any, partial: any, slot: any, options: any) => string;
     blocks: {
-        info: (info: any, _content: any, partial: any, slot: any, options: any) => any;
+        info: (info: any, _content: any, partial: any, slot: any, options: any) => string;
     };
     compile: (this: TemplateBase) => void;
     dependency: {};

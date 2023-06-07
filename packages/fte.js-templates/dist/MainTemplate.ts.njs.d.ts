@@ -4,11 +4,11 @@ declare const _default: {
     aliases: {
         codeblock: string;
     };
-    script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
+    script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
     blocks: {
-        maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => any;
-        "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
-        "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => any;
+        maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+        "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
+        "chunks-finish": (directives: any, _content: any, partial: any, slot: any, options: any) => string;
     };
     compile: (this: TemplateBase) => void;
     dependency: {
