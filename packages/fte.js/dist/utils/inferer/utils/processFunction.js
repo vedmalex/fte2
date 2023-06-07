@@ -1,21 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.processFucntion = void 0;
+exports.processFunction = void 0;
 const tslib_1 = require("tslib");
 const createInfo_1 = require("./createInfo");
 const t = tslib_1.__importStar(require("@babel/types"));
 const processArgument_1 = require("./processArgument");
 const extractName_1 = require("./extractName");
 const makeAST_1 = require("../types/makeAST");
-function processFucntion(context, path, anonynmous) {
+function processFunction(context, path, anonynmous) {
     let name = '';
     const { node: func, scope } = path;
     if (t.isArrowFunctionExpression(func) || t.isFunctionExpression(func)) {
-        if (t.isVariableDeclarator(scope.parentBlock)) {
-            name = (0, extractName_1.extractName)(scope.parentBlock.id, anonynmous);
+        if (t.isVariableDeclarator(path.parent)) {
+            name = (0, extractName_1.extractName)(path.parent.id, anonynmous);
         }
-        else
+        else if (t.isObjectProperty(path.parent)) {
+            name = (0, extractName_1.extractName)(path.parent, anonynmous);
+        }
+        else {
             name = anonynmous();
+        }
     }
     else if (t.isFunctionDeclaration(func) || t.isFunctionExpression(func)) {
         name = (0, extractName_1.extractName)(func.id, anonynmous);
@@ -40,17 +44,17 @@ function processFucntion(context, path, anonynmous) {
             const refPath = binding.referencePaths[j];
             const expression = refPath.getStatementParent();
             if (expression) {
-                const astExpression = (0, makeAST_1.makeAST)(expression.node);
-                console.log(astExpression.ids[refPath.toString()]);
-                const itemUsage = astExpression.infos.get(refPath.toString());
+                const infos = (0, makeAST_1.makeAST)(expression.node);
+                const itemUsage = infos.get(refPath.toString());
                 if (itemUsage)
                     mergeInfo(info, itemUsage);
             }
         }
     });
 }
-exports.processFucntion = processFucntion;
+exports.processFunction = processFunction;
 function mergeInfo(info, itemUsage) {
+    console.log('mergeInfo', info.type, itemUsage.type);
     info.type = itemUsage.type;
     itemUsage.properties.forEach((value, key) => {
         if (info.properties.has(key)) {

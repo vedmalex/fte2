@@ -1,6 +1,6 @@
 {
   "name": "fte.js-browser",
-  "version": "3.0.0-rc.10",
+  "version": "3.0.0-rc.11",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-rc.10"
+    "fte.js-base": "^3.0.0-rc.11"
   },
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82"
 }

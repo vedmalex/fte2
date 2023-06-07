@@ -5,15 +5,19 @@ import { NodePath, Scope } from '@babel/traverse'
 import { processArgument } from './processArgument'
 import { FunctionType } from '../types/FunctionType'
 import { extractName } from './extractName'
-import { IdentifierInfo, makeAST } from '../types/makeAST'
+import { makeAST } from '../types/makeAST'
 
-export function processFucntion(context: Map<string, Info>, path: NodePath<FunctionType>, anonynmous: () => string) {
+export function processFunction(context: Map<string, Info>, path: NodePath<FunctionType>, anonynmous: () => string) {
   let name = ''
   const { node: func, scope } = path
   if (t.isArrowFunctionExpression(func) || t.isFunctionExpression(func)) {
-    if (t.isVariableDeclarator(scope.parentBlock)) {
-      name = extractName(scope.parentBlock.id, anonynmous)
-    } else name = anonynmous()
+    if (t.isVariableDeclarator(path.parent)) {
+      name = extractName(path.parent.id, anonynmous)
+    } else if (t.isObjectProperty(path.parent)) {
+      name = extractName(path.parent, anonynmous)
+    } else {
+      name = anonynmous()
+    }
   } else if (t.isFunctionDeclaration(func) || t.isFunctionExpression(func)) {
     name = extractName(func.id, anonynmous)
   } else if (t.isObjectMethod(func) || t.isClassMethod(func) || t.isClassPrivateMethod(func)) {
@@ -44,18 +48,20 @@ export function processFucntion(context: Map<string, Info>, path: NodePath<Funct
       // нужно найти все обращения к параметру
       // и посмотреть, какие свойства у него используются
       if (expression) {
-        const astExpression = makeAST(expression.node)
-        console.log(astExpression.ids[refPath.toString()])
-
-        const itemUsage = astExpression.infos.get(refPath.toString())
+        const infos = makeAST(expression.node)
+        const itemUsage = infos.get(refPath.toString())
         if (itemUsage) mergeInfo(info, itemUsage)
       }
     }
   })
 }
 
+// сливает информацию об использовании параметра внутри функции
 function mergeInfo(info: Info, itemUsage: Info) {
+  //
+  console.log('mergeInfo', info.type, itemUsage.type)
   info.type = itemUsage.type
+  //
   itemUsage.properties.forEach((value, key) => {
     if (info.properties.has(key)) {
       const prop = info.properties.get(key)!

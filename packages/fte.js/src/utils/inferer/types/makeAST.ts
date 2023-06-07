@@ -1,6 +1,7 @@
 import * as t from '@babel/types'
 import { Info, createMinInfo } from './Info'
 
+// хранит информацию о выражении
 export type Expression = {
   nodeId: number
   type: string
@@ -9,6 +10,7 @@ export type Expression = {
   children: Array<Expression>
 }
 
+// хранит информацию о типе
 export type TypeInfo = {
   id: number
   type: string
@@ -19,6 +21,7 @@ export type TypeInfo = {
   callee?: Array<TypeInfo>
 }
 
+// хранит информацию о идентификаторе
 export type IdentifierInfo = {
   id: number
   type:
@@ -47,6 +50,7 @@ export type IdentifierInfo = {
   name: string
 }
 
+// хранит информацию о вызове функции
 export type FunctionInfo = {
   id: number
   type: 'call' | 'new'
@@ -56,6 +60,7 @@ export type FunctionInfo = {
   callee: Array<TypeInfo>
 }
 
+// создает выражение из ast узла
 function cExpression(ast: t.Node, nodeId: number): Expression {
   const node: Expression = {
     nodeId,
@@ -90,6 +95,7 @@ function cExpression(ast: t.Node, nodeId: number): Expression {
   return node
 }
 
+// приводит информацию о типе к нужному виду
 function fixType(type: string): string {
   let result = type
   switch (result) {
@@ -119,6 +125,7 @@ function fixType(type: string): string {
   return result
 }
 
+// создает информацию о типе из ast узла необходимую для построения дерева
 function getParamsFromNode(ast: t.Node): {
   term: boolean
   keys: Array<string | { property: string; term: boolean; type?: string; separate?: boolean; hoist?: boolean }>
@@ -333,6 +340,8 @@ function getParamsFromNode(ast: t.Node): {
   return { term, keys, type: fixType(type), hoist }
 }
 
+// выполняет рекурсивный обход узла и извлекает из него все идентификаторы
+// используется для поиска полного пути в выражении
 function convertMember(ast: Expression, visited?: (ast: Expression) => void) {
   const result: IdentifierInfo[] = []
   visited?.(ast)
@@ -348,6 +357,7 @@ function convertMember(ast: Expression, visited?: (ast: Expression) => void) {
   return result
 }
 
+// преобразует узел в информацию об идентификаторе
 function convertExpressionToTypeInfo(v: Expression): IdentifierInfo {
   return {
     type: v.type as any,
@@ -359,9 +369,12 @@ function convertExpressionToTypeInfo(v: Expression): IdentifierInfo {
 }
 
 export function makeAST(ast: t.Node) {
+  //инициализируем дерево с нулевым элементом
   let nodeId = 0
+  // здесь хранятся все узлы
   const nodes: Record<number, Expression> = {}
 
+  // формирование дерева выражения необходимой структуры
   function traverse(ast: any, parent: Expression) {
     const { keys, term, type, hoist } = getParamsFromNode(ast)
     if (term && !hoist) {
@@ -377,7 +390,6 @@ export function makeAST(ast: t.Node) {
       const propType = typeof key === 'object' ? key.type : ast.type
       let createExpression = typeof key === 'object' ? key.term : false
       let separate = typeof key === 'object' ? key.separate ?? false : false
-      console.log(`${prop} ${createExpression} ${separate}`)
       // const property = createExpression ? prop : parentProp
       let value = ast[prop]
       let node: Expression
@@ -466,15 +478,30 @@ export function makeAST(ast: t.Node) {
     }
   }
 
+  // создаем корневой узел
   const root = cExpression({ ...ast }, nodeId++)
+  // добавляем его в список узлов
   nodes[root.nodeId] = root
+
+  // запускаем обход
   traverse(ast, root)
+
+  // после того как обход завершен
+  // начинаем обработку вызовов функций
+
+  // здесь хранятся все вызовы функций
+  // нам нужно знать всю цепочку, чтобы последнему элементу поставить тип 'call' или 'new'
 
   const calls: FunctionInfo[] = []
 
+  // здесь хранятся все цепочки обращений к свойствам
   const members: Array<IdentifierInfo[]> = []
+  // здесь хранятся все идентификаторы по которым будем искать вхождение
   const identifiers: Map<number, IdentifierInfo> = new Map()
+  // при обходе узлов, мы не должны обрабатывать дважды один и тот же узел
   const processed = { member: new Set<number>(), call: new Set<number>(), identifier: new Set<number>() }
+
+  // обход дерева и формирование всех необходимых артефактов для выражения
   function traverseExpression(root: Expression) {
     switch (root.type) {
       case 'member': {
@@ -536,29 +563,41 @@ export function makeAST(ast: t.Node) {
     }
   }
 
+  // запускаем обход по нашему дереву
   traverseExpression(root)
 
+  // обход цепочек обращений к свойствам
   for (const member of members) {
+    // используем копию, чтобы не изменять исходные данные
     const memberCpy = [...member]
     let prev: IdentifierInfo | null = null
     for (const m of memberCpy) {
+      // если идентификатор еще не был добавлен, то добавляем его
       if (!identifiers.has(m.id)) {
         const tmp = convertExpressionToTypeInfo(nodes[m.id])
         identifiers.set(tmp.id, tmp)
       }
+      // получаем текущий идентификатор
       const curr = identifiers.get(m.id)!
+      // если предыдущий идентификатор в цепочки последовательности существует
       if (prev) {
+        // если значение текущего элемента строка, то скорее всего речь идет об объекте
+        // если нет, то скорее всего речь идет об массиве
         prev.type = typeof curr.value === 'string' ? 'object' : 'array'
         if (!prev.properties) {
           prev.properties = new Set()
         }
+        // добавляем текущий идентификатор в список свойств parent
         prev.properties.add(curr.id)
+        // добавляем ссылку на предыдущий идентификатор
         curr.root = prev.id
       }
+      // сохраняем текущий идентификатор как предыдущий
       prev = curr
     }
   }
 
+  // помечаем вызов функции как вызов функции
   for (const call of calls) {
     let func = [...call.callee!].pop()
     const item = identifiers.get(func!.id)!
@@ -566,10 +605,11 @@ export function makeAST(ast: t.Node) {
     item.args = call.args
   }
 
+  // хранилище всех найденных в выражении типов
   const types = new Map<string, IdentifierInfo>()
 
-  const idsProcessed = new Set<number>()
-
+  // функция для получения пути до идентификатора
+  // используется для поиска вхождения и для получения типа
   function getPath(v: IdentifierInfo) {
     if (v.root) {
       return `${getPath(identifiers.get(v.root) ?? convertExpressionToTypeInfo(nodes[v.id])!)}|${v.value}`
@@ -577,33 +617,53 @@ export function makeAST(ast: t.Node) {
     return v.value
   }
 
+  // обработанные ids
+  const idsProcessed = new Set<number>()
+  // функция для обработки идентификаторов
   function processIds(v: IdentifierInfo) {
+    // если идентификатор уже был обработан, то выходим
     if (idsProcessed.has(v.id)) return
+    // помечаем идентификатор как обработанный
     idsProcessed.add(v.id)
+    // получаем путь до идентификатора
     const path = getPath(v)
+    // если тип не был найден, то добавляем его в список
     v.typeName = path
+
     if (!types.has(path)) {
+      // если идентификатор не имеет родителя, то добавляем его в список
       types.set(path, v)
     } else {
+      // если идентификатор имеет родителя, то добавляем его в список
+      // добавляем как свойство родителя
       if (v.properties && v.properties.size > 0) {
+        // ищем такой же идентификатор в parent свойствах
         const same = types.get(path)!
+        // проверяем а есть ли свойства у него, если нет создаем
         if (!same.properties) same.properties = new Set()
+        // добавляем все свойства в parent
         for (const id of v.properties) {
           same.properties.add(id)
           identifiers.get(id)!.root = same.id
         }
       }
+      // удаляем идентификатор из списка
+      // поскольку это обращение к свойству объекта
       identifiers.delete(v.id)
     }
   }
 
+  // вычищаем все идентификаторы от обращений к свойствам
   identifiers.forEach((v, k) => {
     processIds(v)
   })
 
+  // конечный продукт
   const infos = new Map<string, Info>()
 
+  //
   types.forEach(id => {
+    // создаем минимальную информацию о типе
     const tmp = createMinInfo({
       name: id.name,
       type:
@@ -614,27 +674,41 @@ export function makeAST(ast: t.Node) {
           : 'primitive',
       typeName: id.typeName,
     })
+    // если у идентификатора есть свойства, то добавляем их в список
     const props = [...(id.properties?.values() ?? [])]
+    // обрабатываем все свойства
     props
-      .map(item => identifiers.get(item)!)
-      .map(v => createMinInfo({ name: v.name, typeName: v.typeName! }))
+      // получаем информацию о свойстве
+      .map(item => identifiers.get(item) ?? convertExpressionToTypeInfo(nodes[item]))
+      // создаем минимальную информацию о свойстве
+      .map(v =>
+        createMinInfo({
+          name: v.name,
+          typeName: v.typeName!,
+          type:
+            v.type == 'array' || v.type == 'object'
+              ? v.type
+              : v.type == 'call' || v.type == 'new'
+              ? 'function'
+              : 'primitive',
+        }),
+      )
+      // добавляем в список свойств для Info
       .forEach(v => tmp.properties.set(v.name, v))
+
+    // берем путь до идентификатора
     const parts = tmp.typeName.split('|')
+    // если путь состоит из одного элемента
     if (parts.length === 1) {
+      // добавляем Info в корень
       infos.set(tmp.typeName, tmp)
     } else if (parts.length > 1) {
+      // если путь состоит из нескольких элементов
       const parent = infos.get(parts[0])!
+      // добавляем Info в children родителя
       parent.children.set(tmp.typeName, tmp)
     }
-    return tmp
   })
 
-  return {
-    root,
-    calls,
-    members,
-    ids: [...identifiers.values()].map(v => ({ ...v, properties: [...(v.properties?.values() ?? [])] })),
-    identifiers,
-    infos,
-  }
+  return infos
 }

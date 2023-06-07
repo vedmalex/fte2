@@ -6,7 +6,7 @@ function processFunctions(result, context) {
     let anonymousCount = 0;
     const anonynmous = () => `anonymous${anonymousCount++}`;
     result.forEach(path => {
-        (0, processFunction_1.processFucntion)(context, path, anonynmous);
+        (0, processFunction_1.processFunction)(context, path, anonynmous);
     });
 }
 exports.processFunctions = processFunctions;

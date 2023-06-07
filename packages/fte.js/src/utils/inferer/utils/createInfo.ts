@@ -11,7 +11,6 @@ export function createInfo(
   type: Info['type'],
   scope?: Scope,
 ): Info {
-  console.log('createInfo', name, typeName, parent, type)
   const parentInfo = props.get(parent)
   const info = {
     name,

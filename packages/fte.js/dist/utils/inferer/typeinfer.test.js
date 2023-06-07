@@ -299,5 +299,17 @@ describe('inferTypesFromFunction', () => {
         expect(func1 === null || func1 === void 0 ? void 0 : func1.properties.get('c')).not.toBeUndefined();
         expect(func1 === null || func1 === void 0 ? void 0 : func1.properties.get('rest')).not.toBeUndefined();
     });
+    it('should teke care of arrays', () => {
+        const code = `function name001(param) {
+        param.push([])
+        param.push([0])
+        param.forEach((item, index) => {
+          item.push(index)
+        })
+      }`;
+        debugger;
+        const result = visitor.inferTypesFromFunction(code);
+        expect(result.size).toBe(1);
+    });
 });
 //# sourceMappingURL=typeinfer.test.js.map

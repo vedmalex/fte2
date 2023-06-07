@@ -36,23 +36,5 @@ export type FunctionInfo = {
     args: number;
     callee: Array<TypeInfo>;
 };
-export declare function makeAST(ast: t.Node): {
-    root: Expression;
-    calls: FunctionInfo[];
-    members: IdentifierInfo[][];
-    ids: {
-        properties: number[];
-        id: number;
-        type: "object" | "call" | "new" | "array" | "Identifier" | "NumericLiteral" | "BooleanLiteral" | "BigIntLiteral" | "StringLiteral" | "NullLiteral" | "RegexLiteral" | "RegExpLiteral" | "TemplateLiteral" | "ThisExpression";
-        optional?: boolean | undefined;
-        value: string | number | boolean;
-        args?: number | undefined;
-        callee?: TypeInfo[] | undefined;
-        root?: number | undefined;
-        typeName?: string | undefined;
-        name: string;
-    }[];
-    identifiers: Map<number, IdentifierInfo>;
-    infos: Map<string, Info>;
-};
+export declare function makeAST(ast: t.Node): Map<string, Info>;
 //# sourceMappingURL=makeAST.d.ts.map

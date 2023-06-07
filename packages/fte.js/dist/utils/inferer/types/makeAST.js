@@ -297,7 +297,6 @@ function makeAST(ast) {
             const propType = typeof key === 'object' ? key.type : ast.type;
             let createExpression = typeof key === 'object' ? key.term : false;
             let separate = typeof key === 'object' ? (_a = key.separate) !== null && _a !== void 0 ? _a : false : false;
-            console.log(`${prop} ${createExpression} ${separate}`);
             let value = ast[prop];
             let node;
             let children;
@@ -479,7 +478,6 @@ function makeAST(ast) {
         item.args = call.args;
     }
     const types = new Map();
-    const idsProcessed = new Set();
     function getPath(v) {
         var _a;
         if (v.root) {
@@ -487,6 +485,7 @@ function makeAST(ast) {
         }
         return v.value;
     }
+    const idsProcessed = new Set();
     function processIds(v) {
         if (idsProcessed.has(v.id))
             return;
@@ -526,8 +525,16 @@ function makeAST(ast) {
         });
         const props = [...((_b = (_a = id.properties) === null || _a === void 0 ? void 0 : _a.values()) !== null && _b !== void 0 ? _b : [])];
         props
-            .map(item => identifiers.get(item))
-            .map(v => (0, Info_1.createMinInfo)({ name: v.name, typeName: v.typeName }))
+            .map(item => { var _a; return (_a = identifiers.get(item)) !== null && _a !== void 0 ? _a : convertExpressionToTypeInfo(nodes[item]); })
+            .map(v => (0, Info_1.createMinInfo)({
+            name: v.name,
+            typeName: v.typeName,
+            type: v.type == 'array' || v.type == 'object'
+                ? v.type
+                : v.type == 'call' || v.type == 'new'
+                    ? 'function'
+                    : 'primitive',
+        }))
             .forEach(v => tmp.properties.set(v.name, v));
         const parts = tmp.typeName.split('|');
         if (parts.length === 1) {
@@ -537,16 +544,8 @@ function makeAST(ast) {
             const parent = infos.get(parts[0]);
             parent.children.set(tmp.typeName, tmp);
         }
-        return tmp;
     });
-    return {
-        root,
-        calls,
-        members,
-        ids: [...identifiers.values()].map(v => { var _a, _b; return ({ ...v, properties: [...((_b = (_a = v.properties) === null || _a === void 0 ? void 0 : _a.values()) !== null && _b !== void 0 ? _b : [])] }); }),
-        identifiers,
-        infos,
-    };
+    return infos;
 }
 exports.makeAST = makeAST;
 //# sourceMappingURL=makeAST.js.map

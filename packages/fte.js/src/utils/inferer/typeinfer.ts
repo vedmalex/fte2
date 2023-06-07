@@ -1,18 +1,28 @@
 import { Info } from './types/Info'
 
-import { Scope } from '@babel/traverse'
 import * as parser from '@babel/parser'
 import { visitAllFunctions } from './utils/visitAllFunctions'
-import { processFunctions } from './utils/processFunctions'
+import { processInfo } from './utils/processInfo'
+import { TSBaseType } from './types/TSBaseType'
+import { processFunction } from './utils/processFunction'
 
 export function inferTypesFromFunction(funcCode: string): Map<string, Info> {
   // create source file
   const code = funcCode.trim()
-  const sourceFile = parser.parse(code, { plugins: ['typescript'], sourceType: 'script' })
+  const sourceFile = parser.parse(code, { plugins: ['typescript'], sourceType: 'module' })
   // reserver result array
-  console.log(JSON.stringify(sourceFile, null, 2))
   const result = visitAllFunctions(sourceFile)
   const context = new Map<string, Info>()
-  processFunctions(result, context)
+
+  let anonymousCount = 0
+  const anonynmous = () => `anonymous${anonymousCount++}`
+  result.forEach(path => {
+    processFunction(context, path, anonynmous)
+  })
+
+  const res: TSBaseType[] = []
+  context.forEach(value => {
+    res.push(processInfo(value))
+  })
   return context
 }

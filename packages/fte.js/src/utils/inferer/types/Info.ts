@@ -15,15 +15,7 @@ export type Info = {
   scope?: Scope
 }
 
-export function createMinInfo({
-  name,
-  typeName,
-  type,
-}: {
-  name: string
-  typeName?: string
-  type?: Info['type']
-}): Info {
+export function createMinInfo({ name, typeName, type }: { name: string; typeName?: string; type: Info['type'] }): Info {
   return {
     name,
     type: type ?? 'min',

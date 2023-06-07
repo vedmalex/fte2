@@ -4,7 +4,6 @@ exports.createInfo = void 0;
 const tslib_1 = require("tslib");
 const lodash_1 = tslib_1.__importDefault(require("lodash"));
 function createInfo(props, name, typeName, parent, type, scope) {
-    console.log('createInfo', name, typeName, parent, type);
     const parentInfo = props.get(parent);
     const info = {
         name,

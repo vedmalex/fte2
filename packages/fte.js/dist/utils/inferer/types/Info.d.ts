@@ -10,9 +10,9 @@ export type Info = {
     args?: number;
     scope?: Scope;
 };
-export declare function createMinInfo({ name, typeName, type, }: {
+export declare function createMinInfo({ name, typeName, type }: {
     name: string;
     typeName?: string;
-    type?: Info['type'];
+    type: Info['type'];
 }): Info;
 //# sourceMappingURL=Info.d.ts.map
