@@ -4,7 +4,7 @@
 <#@ requireAs ('MainTemplate.ts.njs','core') #>
 
 import { TemplateBase } from 'fte.js-base'
-import { Factory } from 'fte.js/lib/standalone.fte.js'
+import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";
 
 export const templates = {
 <#- files.forEach(file=>{ #>

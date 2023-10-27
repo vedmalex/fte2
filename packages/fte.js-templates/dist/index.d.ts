@@ -1,4 +1,13 @@
 declare const templates: {
+    "typedefinitions.njs": {
+        alias: string[];
+        script: (typedefs: any, _content: any, partial: any, slot: any, options: any) => string;
+        blocks: {
+            info: (info: any, _content: any, partial: any, slot: any, options: any) => string;
+        };
+        compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
+        dependency: {};
+    };
     "standalone.ts.njs": {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;

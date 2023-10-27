@@ -1,7 +1,8 @@
 <#@ alias 'standalone.ts.njs'#>
 <#@ noContent #>
 <#@ context 'files' #>
-import { Factory } from 'fte.js/lib/standalone.fte.js'
+
+import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";
 
 <#- for (let i = 0; i < files.length; i+=1){ #>
   import #{files[i].name.replaceAll(/[\s\.]/g,'_')} from '#{files[i].path}'

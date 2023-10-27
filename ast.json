@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "type": "expression",
+  "optional": false,
+  "children": [
+    {
+      "name": "rest",
+      "type": "property",
+      "optional": false
+    },
+    {
+      "name": "length",
+      "type": "property",
+      "optional": false
+    }
+  ]
+}

@@ -5,7 +5,7 @@ export default {
     ],
     script: function(files, _content, partial, slot, options) {
         var out: Array<string> = [];
-        out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'");
+        out.push('import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";');
         for(let i = 0; i < files.length; i += 1){
             out.push("\n");
             out.push("  import " + (files[i].name.replaceAll(/[\s\.]/g, "_")) + " from '" + (files[i].path) + "'");
@@ -22,7 +22,7 @@ export default {
         out.push("\n");
         out.push("const F = new Factory(templates)\n");
         out.push("\n");
-        out.push("function run<T>(context:T, name:string) => {\n");
+        out.push("function run(context, name:string) => {\n");
         out.push("  return F.run(context, name)\n");
         out.push("}\n");
         out.push("export default run");

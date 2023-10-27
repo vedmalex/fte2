@@ -8,7 +8,7 @@ export default {
     },
     script: function(files, _content, partial, slot, options) {
         var out: Array<string> = [];
-        out.push("import { Factory } from 'fte.js/lib/standalone.fte.js'\n");
+        out.push('import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";\n');
         out.push("\n");
         out.push("export const templates = {");
         files.forEach((file)=>{

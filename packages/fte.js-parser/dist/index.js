@@ -543,13 +543,15 @@ class Parser {
                             eol,
                         };
                         const prev = curr.main.pop();
-                        if ((prev === null || prev === void 0 ? void 0 : prev.type) !== 'text' ||
-                            ((prev === null || prev === void 0 ? void 0 : prev.type) === 'text' && (prev === null || prev === void 0 ? void 0 : prev.content.trim().length) > 0) ||
-                            ((prev === null || prev === void 0 ? void 0 : prev.type) === 'text' && (prev === null || prev === void 0 ? void 0 : prev.eol))) {
-                            curr.main.push(prev);
-                        }
-                        else {
-                            current.indent = prev.content;
+                        if (prev) {
+                            if (prev.type !== 'text' ||
+                                (prev.type === 'text' && prev.content.trim().length > 0) ||
+                                (prev.type === 'text' && prev.eol)) {
+                                curr.main.push(prev);
+                            }
+                            else {
+                                current.indent = prev.content;
+                            }
                         }
                         curr.main.push(current);
                     }
@@ -567,11 +569,13 @@ class Parser {
                         eol,
                     };
                     const prev = curr.main.pop();
-                    if ((prev === null || prev === void 0 ? void 0 : prev.type) !== 'text' || ((prev === null || prev === void 0 ? void 0 : prev.type) === 'text' && (prev === null || prev === void 0 ? void 0 : prev.eol))) {
-                        curr.main.push(prev);
-                    }
-                    else {
-                        current.indent = prev.content;
+                    if (prev) {
+                        if ((prev === null || prev === void 0 ? void 0 : prev.type) !== 'text' || ((prev === null || prev === void 0 ? void 0 : prev.type) === 'text' && (prev === null || prev === void 0 ? void 0 : prev.eol))) {
+                            curr.main.push(prev);
+                        }
+                        else {
+                            current.indent = prev.content;
+                        }
                     }
                     curr.main.push(current);
                     break;
@@ -692,9 +696,9 @@ class Parser {
         this.result.push(this.globalToken);
     }
 }
+exports.Parser = Parser;
 Parser.INITIAL_STATE = 'text';
 Parser.DEFAULT_TAB_SIZE = 2;
-exports.Parser = Parser;
 function SUB(buffer, str, pos = 0, size = 0) {
     if (!size) {
         size = buffer.length;

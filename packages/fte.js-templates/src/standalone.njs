@@ -2,7 +2,7 @@
 <#@ noContent #>
 <#@ context 'files' #>
 
-const { Factory } = require('fte.js/lib/standalone.fte.js')
+const Factory = require("fte.js-standalone").TemplateFactoryStandalone;
 
 const templates = {
 <#- for (let i = 0; i < files.length; i+=1){ #>

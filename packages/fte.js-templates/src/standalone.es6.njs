@@ -1,7 +1,7 @@
 <#@ alias 'standalone.es6.njs'#>
 <#@ noContent #>
 <#@ context 'files' #>
-import { Factory } from 'fte.js/lib/standalone.fte.js'
+import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";
 
 <#- for (let i = 0; i < files.length; i+=1){ #>
   import #{files[i].name.replaceAll(/[\s\.]/g,'_')} from '#{files[i].path}'
@@ -15,7 +15,7 @@ const templates = {
 
 const F = new Factory(templates)
 
-function run<T>(context:T, name:string) => {
+function run(context, name:string) => {
   return F.run(context, name)
 }
 export default run

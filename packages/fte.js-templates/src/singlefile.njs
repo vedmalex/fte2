@@ -2,7 +2,7 @@
 <#@ context 'files' #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
-const { Factory } = require('fte.js/lib/standalone.fte.js')
+const Factory = require("fte.js-standalone").TemplateFactoryStandalone;
 
 const templates = {
 <#- files.forEach(file=>{ #>

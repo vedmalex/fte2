@@ -1,6 +1,6 @@
 {
   "name": "fte.js-standalone",
-  "version": "3.0.0-rc.10",
+  "version": "3.0.0-rc.12",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,9 +15,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-rc.10",
-    "fte.js-parser": "^3.0.0-rc.10",
-    "fte.js-templates": "^3.0.0-rc.10"
+    "fte.js-base": "^3.0.0-rc.12",
+    "fte.js-parser": "^3.0.0-rc.12",
+    "fte.js-templates": "^3.0.0-rc.12"
   },
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82"
 }

@@ -1,0 +1,77 @@
+{
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "empty",
+      "eol": true
+    }
+  ],
+  "directives": {
+    "context": "typedefs",
+    "content": true,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": [
+      "typedefs.ts.njs"
+    ]
+  },
+  "documentation": [],
+  "slots": {},
+  "blocks": {
+    "info": {
+      "main": [
+        {
+          "content": "JSON.stringify({})",
+          "pos": 120,
+          "line": 8,
+          "column": 3,
+          "start": "#{",
+          "end": "}",
+          "type": "expression",
+          "eol": false
+        },
+        {
+          "content": "",
+          "pos": 141,
+          "line": 8,
+          "column": 24,
+          "start": "",
+          "end": "",
+          "type": "text",
+          "eol": true
+        },
+        {
+          "content": "",
+          "pos": 142,
+          "line": 9,
+          "column": 1,
+          "start": "",
+          "end": "",
+          "type": "empty",
+          "eol": false
+        }
+      ],
+      "directives": {
+        "context": "info",
+        "content": false,
+        "slots": true,
+        "blocks": true,
+        "partial": true,
+        "options": true,
+        "requireAs": []
+      },
+      "documentation": [],
+      "slots": {},
+      "blocks": {},
+      "name": "info"
+    }
+  }
+}

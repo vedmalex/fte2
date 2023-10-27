@@ -1,0 +1,1 @@
+{"version":3,"file":"TSBaseType.d.ts","sourceRoot":"","sources":["../../../../src/utils/inferer/types/TSBaseType.ts"],"names":[],"mappings":"AAAA,qBAAa,UAAU;IACF,IAAI,EAAE,QAAQ,GAAG,OAAO,GAAG,WAAW,GAAG,UAAU;gBAAnD,IAAI,EAAE,QAAQ,GAAG,OAAO,GAAG,WAAW,GAAG,UAAU;IACtE,QAAQ,IAAI,MAAM;CAGnB"}

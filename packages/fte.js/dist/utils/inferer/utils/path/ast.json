@@ -1,0 +1,90 @@
+{
+  "type": "File",
+  "program": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "expression": {
+          "type": "OptionalCallExpression",
+          "callee": {
+            "type": "OptionalMemberExpression",
+            "object": {
+              "type": "OptionalMemberExpression",
+              "object": {
+                "type": "OptionalCallExpression",
+                "callee": {
+                  "type": "OptionalMemberExpression",
+                  "object": {
+                    "type": "OptionalMemberExpression",
+                    "object": {
+                      "type": "OptionalMemberExpression",
+                      "object": {
+                        "type": "Identifier",
+                        "value": "param"
+                      },
+                      "optional": true,
+                      "property": {
+                        "type": "Identifier",
+                        "value": "some"
+                      }
+                    },
+                    "property": {
+                      "type": "BooleanLiteral",
+                      "value": true
+                    }
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "value": "name"
+                  }
+                },
+                "optional": true,
+                "arguments": [
+                  {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "Identifier",
+                      "value": "m"
+                    },
+                    "arguments": [
+                      {
+                        "type": "RegExpLiteral",
+                        "value": "/some!/ig"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "CallExpression",
+                    "callee": {
+                      "type": "MemberExpression",
+                      "object": {
+                        "type": "Identifier",
+                        "value": "e"
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "value": "name"
+                      }
+                    },
+                    "arguments": []
+                  }
+                ]
+              },
+              "property": {
+                "type": "StringLiteral",
+                "value": "super name"
+              }
+            },
+            "optional": true,
+            "property": {
+              "type": "Identifier",
+              "value": "nice"
+            }
+          },
+          "arguments": []
+        }
+      }
+    ]
+  }
+}

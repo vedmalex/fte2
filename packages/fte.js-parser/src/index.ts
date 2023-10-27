@@ -649,15 +649,17 @@ export class Parser {
               eol,
             }
 
-            const prev = curr.main.pop() as Items
-            if (
-              prev?.type !== 'text' ||
-              (prev?.type === 'text' && prev?.content.trim().length > 0) ||
-              (prev?.type === 'text' && prev?.eol)
-            ) {
-              curr.main.push(prev)
-            } else {
-              current.indent = prev.content
+            const prev = curr.main.pop()
+            if (prev) {
+              if (
+                prev.type !== 'text' ||
+                (prev.type === 'text' && prev.content.trim().length > 0) ||
+                (prev.type === 'text' && prev.eol)
+              ) {
+                curr.main.push(prev)
+              } else {
+                current.indent = prev.content
+              }
             }
 
             curr.main.push(current)
@@ -677,11 +679,13 @@ export class Parser {
             eol,
           }
 
-          const prev = curr.main.pop() as Items
-          if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
-            curr.main.push(prev)
-          } else {
-            current.indent = prev.content
+          const prev = curr.main.pop()
+          if (prev) {
+            if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
+              curr.main.push(prev)
+            } else {
+              current.indent = prev.content
+            }
           }
 
           curr.main.push(current)

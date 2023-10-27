@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const typedefinitions_njs_1 = tslib_1.__importDefault(require("./typedefinitions.njs"));
 const standalone_ts_njs_1 = tslib_1.__importDefault(require("./standalone.ts.njs"));
 const standalone_njs_1 = tslib_1.__importDefault(require("./standalone.njs"));
 const standalone_index_ts_njs_1 = tslib_1.__importDefault(require("./standalone.index.ts.njs"));
@@ -19,6 +20,7 @@ const codeblock_njs_1 = tslib_1.__importDefault(require("./codeblock.njs"));
 const MainTemplate_ts_njs_1 = tslib_1.__importDefault(require("./MainTemplate.ts.njs"));
 const MainTemplate_njs_1 = tslib_1.__importDefault(require("./MainTemplate.njs"));
 const templates = {
+    "typedefinitions.njs": typedefinitions_njs_1.default,
     "standalone.ts.njs": standalone_ts_njs_1.default,
     "standalone.njs": standalone_njs_1.default,
     "standalone.index.ts.njs": standalone_index_ts_njs_1.default,

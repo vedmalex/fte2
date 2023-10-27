@@ -1,0 +1,1 @@
+{"version":3,"file":"TSFunction.d.ts","sourceRoot":"","sources":["../../../../src/utils/inferer/utils/TSFunction.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,qBAAqB,CAAA;AAEhD,qBAAa,UAAW,SAAQ,UAAU;IACrB,IAAI,EAAE,MAAM;IAAS,MAAM,EAAE,KAAK,CAAC,UAAU,CAAC;gBAA9C,IAAI,EAAE,MAAM,EAAS,MAAM,EAAE,KAAK,CAAC,UAAU,CAAC;IAGxD,QAAQ;CAGlB"}

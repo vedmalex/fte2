@@ -6,7 +6,7 @@ const prepareCode_1 = require("./prepareCode");
 const run_1 = require("./run");
 function compileTs(content, optimize) {
     const compiled = fte_js_parser_1.Parser.parse(content.toString());
-    const text = (0, run_1.run)(compiled, 'es6module.ts.njs');
+    const text = (0, run_1.run)(compiled, 'es6module.njs');
     return optimize ? (0, prepareCode_1.prepareCode)(text) : text;
 }
 exports.compileTs = compileTs;
