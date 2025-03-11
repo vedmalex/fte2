@@ -1,7 +1,7 @@
 import { Parser } from 'fte.js-parser'
 import { prepareCode } from './prepareCode'
 import { run } from './run'
-import { inferTypesFromFunction } from './utils/inferer/typeinfer'
+// import { inferTypesFromFunction } from './utils/inferer/typeinfer'
 
 export function compileTs(content: Buffer | string, optimize?: boolean) {
   const compiled = Parser.parse(content.toString())
