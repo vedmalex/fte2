@@ -1,4 +1,5 @@
-import detectIndent from 'detect-indent'
+import detectIndent from "detect-indent";
+import type { SourceLocation, SourceMapOptions } from "fte.js-base/dist/types/source-map";
 
 export type StateDefinition = {
   start?: Array<string>
@@ -13,7 +14,7 @@ export type StateDefinition = {
 }
 /**
  <% 'Scriptlet' tag, for control-flow, no output
- <%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
+ <%_ 'Whitespace Slurping' Scriptlet tag, strips all whitespace before it
  <%= Outputs the value into the template (HTML escaped)
  <%- Outputs the unescaped value into the template
  <%# Comment tag, no execution, no output
@@ -22,7 +23,7 @@ export type StateDefinition = {
  %> Plain ending tag
  removes/cleans whitespases after
  -%> Trim-mode ('newline slurp') tag, trims following newline
- _%> ‘Whitespace Slurping’ ending tag, removes all whitespace after it
+ _%> 'Whitespace Slurping' ending tag, removes all whitespace after it
  */
 export type ResultTypes =
   | 'unknown'
@@ -128,6 +129,10 @@ export interface ParserResult {
   start: string
   end: string
   eol: boolean
+  sourceFile?: string
+  originalStart?: SourceLocation
+  originalEnd?: SourceLocation
+  sourceContent?: string
 }
 
 export interface Items {
@@ -140,6 +145,10 @@ export interface Items {
   end: string
   eol: boolean
   type: ResultTypes
+  sourceFile?: string
+  originalStart?: SourceLocation
+  originalEnd?: SourceLocation
+  sourceContent?: string
 }
 
 export type RequireItem = {
@@ -188,16 +197,16 @@ function detectDirective(input: string) {
 export class CodeBlockDirectives {
   extend!: string
   deindent!: number | boolean
-  context: string = 'context'
+  context = 'context'
   alias!: Array<string>
   chunks!: string
   includeMainChunk!: boolean
   useHash!: boolean
-  content: boolean = true
-  slots: boolean = true
-  blocks: boolean = true
-  partial: boolean = true
-  options: boolean = true
+  content = true
+  slots = true
+  blocks = true
+  partial = true
+  options = true
   // return promise
   promise!: boolean
   // return callback
@@ -207,7 +216,7 @@ export class CodeBlockDirectives {
     const { name, params } = detectDirective(init.data.trim())
     switch (name) {
       case 'deindent':
-        this.deindent = params.length > 0 ? parseInt(params[0]) : true
+        this.deindent = params.length > 0 ? Number.parseInt(params[0]) : true
         break
       case 'extend':
         this.extend = params[0]
@@ -301,6 +310,14 @@ const UNPARAM = (str?: string) => {
   }
 }
 
+export interface ParserOptions {
+  indent?: string | number
+  sourceMap?: boolean
+  sourceFile?: string
+  sourceContent?: string
+  sourceRoot?: string
+}
+
 export class Parser {
   private buffer: string
   private size: number
@@ -310,21 +327,34 @@ export class Parser {
   private globalState: ResultTypes
   private actualState?: ResultTypes | null
   private globalToken!: ParserResult
-  private pos: number = 0
-  private line: number = 1
-  private column: number = 1
+  private pos = 0
+  private line = 1
+  private column = 1
   private curlyAware: 0 | 1 | 2 | undefined = 0
   private curlyBalance: Array<number> = []
   private result: Array<ParserResult> = []
-  public static parse(text: string | Buffer, options: { indent?: string | number } = {}) {
+
+  private sourceFile?: string
+  private sourceContent?: string
+  private sourceRoot?: string
+  private sourceMapEnabled: boolean = false
+
+  public static parse(text: string | Buffer, options: ParserOptions = {}) {
     const parser = new Parser(typeof text == 'string' ? text : text.toString(), options)
     parser.parse()
     return parser.process()
   }
-  private constructor(value: string, options: { indent?: string | number }) {
+
+  private constructor(value: string, options: ParserOptions) {
     if (options.indent) {
       this.INDENT = typeof options.indent === 'string' ? options.indent.length : options.indent
     }
+
+    this.sourceMapEnabled = options.sourceMap ?? false
+    this.sourceFile = options.sourceFile
+    this.sourceContent = options.sourceContent
+    this.sourceRoot = options.sourceRoot
+
     this.globalState = Parser.INITIAL_STATE
     this.buffer = value.toString()
     this.size = this.buffer.length
@@ -435,102 +465,61 @@ export class Parser {
 
   private process() {
     const content = new CodeBlock()
-
     const resultSize = this.result.length
     let curr = content
+    let data = ''
+    let pos = 0
+    let line = 1
+    let column = 1
+    let start = ''
+    let end = ''
+    let eol = false
+    let type: ResultTypes = 'unknown'
+
+    const updateSourceMap = (item: Items) => {
+      if (this.sourceMapEnabled && item.sourceFile && item.originalStart) {
+        item.originalEnd = {
+          source: item.sourceFile,
+          line: this.line,
+          column: this.column
+        }
+      }
+    }
+
     for (let i = 0; i < resultSize; i += 1) {
       let r = this.result[i]
-      let { type, pos, line, column, start, end, data, eol } = r
+      data = r.data
+      pos = r.pos
+      line = r.line
+      column = r.column
+      start = r.start
+      end = r.end
+      eol = r.eol
+      type = r.type
 
-      const trimStartLines = (lines?: number) => {
-        let newLine = false
-        do {
-          if (curr.main.length > 0) {
-            let prev = curr.main[curr.main.length - 1]
-            if (prev?.type == 'text' || (prev?.type == 'empty' && type === 'code')) {
-              prev.content = prev.content.trimEnd()
-              if (!prev.content) {
-                if (prev.eol) newLine = true
-                curr.main.pop()
-                if (lines) {
-                  lines -= 1
-                  if (!lines) {
-                    break
-                  }
-                }
-              } else {
-                prev.eol = false
-                break
-              }
-            } else {
-              if (newLine && prev.type === 'code') prev.eol = true
-              break
-            }
-          } else {
-            break
-          }
-        } while (true)
-      }
-      const trimEndLines = (lines?: number) => {
-        let nextline = 0
-        do {
-          nextline += 1
-          if (i + nextline < resultSize) {
-            let next = this.result[i + nextline]
-            if (next.type == 'text') {
-              next.data = next.data.trimStart()
-              if (!next.data) {
-                next.type = 'skip'
-                if (lines) {
-                  lines -= 1
-                  if (!lines) {
-                    break
-                  }
-                }
-              } else {
-                next.eol = false
-                break
-              }
-            } else {
-              break
-            }
-          } else {
-            break
-          }
-        } while (true)
-      }
       const trimStartSpases = () => {
-        if (curr.main.length > 0) {
-          let prev = curr.main[curr.main.length - 1]
-          if (prev.type == 'text') {
-            prev.content = prev.content.replaceAll(' ', '')
-            if (!prev.content) {
-              curr.main.pop()
-            }
-          }
-        }
+        data = data.replace(/^\s+/, '')
       }
 
       const trimEndSpaces = () => {
-        if (i + 1 < resultSize) {
-          let next = this.result[i + 1]
-          if (next.type == 'text') {
-            next.data = next.data.replaceAll(' ', '')
-            if (!next.data) {
-              next.type = 'skip'
-            }
+        data = data.replace(/\s+$/, '')
+      }
+
+      const trimStartLines = () => {
+        data = data.replace(/^[\r\n]+/, '')
+      }
+
+      const trimEndLines = (count = 0) => {
+        if (count > 0) {
+          const lines = data.match(/[\r\n]/g)
+          if (lines && lines.length > count) {
+            data = data.replace(/[\r\n]+$/, '')
           }
+        } else {
+          data = data.replace(/[\r\n]+$/, '')
         }
       }
 
-      if (curr.main.length > 0) {
-        let prev = curr.main[curr.main.length - 1]
-        if (prev.line != line) {
-          curr.main[curr.main.length - 1].eol = true
-        } else {
-          curr.main[curr.main.length - 1].eol = false
-        }
-      }
       switch (type) {
         case 'directive':
           trimStartLines()
@@ -555,14 +544,8 @@ export class Parser {
           trimEndLines()
           break
         case 'unknown':
-          /**
-            <% 'Scriptlet' tag, for control-flow, no output
-            <%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
-            <%= Outputs the value into the template (HTML escaped)
-            <%- Outputs the unescaped value into the template
-             */
           let actual_type: ResultTypes = 'unknown'
-          switch (r.start) {
+          switch (start) {
             case '<%':
               actual_type = 'code'
               break
@@ -580,7 +563,7 @@ export class Parser {
               actual_type = 'comments'
               break
           }
-          switch (r.end) {
+          switch (end) {
             case '-%>':
               trimEndLines(1)
               break
@@ -588,9 +571,8 @@ export class Parser {
               trimEndSpaces()
               break
           }
-          // if (data) {
           if (actual_type !== 'comments') {
-            curr.main.push({
+            const item: Items = {
               content: data,
               pos,
               line,
@@ -599,9 +581,14 @@ export class Parser {
               end,
               type: actual_type,
               eol,
-            })
+              sourceFile: r.sourceFile,
+              originalStart: r.originalStart,
+              sourceContent: r.sourceContent
+            }
+            updateSourceMap(item)
+            curr.main.push(item)
           } else {
-            curr.documentation.push({
+            const item: Items = {
               content: data,
               pos,
               line,
@@ -610,19 +597,25 @@ export class Parser {
               end,
               type: actual_type,
               eol,
-            })
+              sourceFile: r.sourceFile,
+              originalStart: r.originalStart,
+              sourceContent: r.sourceContent
+            }
+            updateSourceMap(item)
+            curr.documentation.push(item)
           }
-          // }
           break
         case 'code':
-          if (start == '<#-') {
-            trimStartLines()
+          if (start === '<%_') {
+            trimStartSpases()
           }
-          if (end == '-#>') {
+          if (end === '_%>') {
+            trimEndSpaces()
+          }
+          if (end === '-%>') {
             trimEndLines()
           }
-          // if (data) {
-          curr.main.push({
+          const codeItem: Items = {
             content: data,
             pos,
             line,
@@ -631,14 +624,17 @@ export class Parser {
             end,
             type,
             eol,
-          })
-          // }
+            sourceFile: r.sourceFile,
+            originalStart: r.originalStart,
+            sourceContent: r.sourceContent
+          }
+          updateSourceMap(codeItem)
+          curr.main.push(codeItem)
           break
         case 'expression':
         case 'expression2':
-          // if (data)
           {
-            const current: Items = {
+            const expressionItem: Items = {
               content: data,
               pos,
               line,
@@ -647,53 +643,50 @@ export class Parser {
               end,
               type: 'expression',
               eol,
+              sourceFile: r.sourceFile,
+              originalStart: r.originalStart,
+              sourceContent: r.sourceContent
             }
-
-            const prev = curr.main.pop()
-            if (prev) {
-              if (
-                prev.type !== 'text' ||
-                (prev.type === 'text' && prev.content.trim().length > 0) ||
-                (prev.type === 'text' && prev.eol)
-              ) {
-                curr.main.push(prev)
-              } else {
-                current.indent = prev.content
-              }
-            }
-
-            curr.main.push(current)
+            updateSourceMap(expressionItem)
+            curr.main.push(expressionItem)
           }
           break
         case 'uexpression':
         case 'uexpression2':
-          // if (data) {
-          const current: Items = {
-            content: data,
-            pos,
-            line,
-            column,
-            start,
-            end,
-            type: 'uexpression',
-            eol,
-          }
-
-          const prev = curr.main.pop()
-          if (prev) {
-            if (prev?.type !== 'text' || (prev?.type === 'text' && prev?.eol)) {
-              curr.main.push(prev)
-            } else {
-              current.indent = prev.content
+          {
+            const uexpressionItem: Items = {
+              content: data,
+              pos,
+              line,
+              column,
+              start,
+              end,
+              type: 'uexpression',
+              eol,
+              sourceFile: r.sourceFile,
+              originalStart: r.originalStart,
+              sourceContent: r.sourceContent
             }
+            updateSourceMap(uexpressionItem)
+            const prev = curr.main.pop()
+            if (prev) {
+              if (prev.type !== 'text' || (prev.type === 'text' && prev.eol)) {
+                curr.main.push(prev)
+              } else {
+                uexpressionItem.indent = prev.content
+              }
+            }
+            curr.main.push(uexpressionItem)
           }
-
-          curr.main.push(current)
-          // }
           break
         case 'text': {
-          let actualType: ResultTypes = data || eol ? type : 'empty'
-          curr.main.push({
+          const actualType: ResultTypes = data || eol ? type : 'empty'
+          if (actualType === 'empty' &&
+              curr.main.length > 0 &&
+              curr.main[curr.main.length - 1].type === 'empty') {
+            break
+          }
+          const textItem: Items = {
             content: data,
             pos,
             line,
@@ -702,14 +695,18 @@ export class Parser {
             end,
             type: actualType,
             eol,
-          })
+            sourceFile: r.sourceFile,
+            originalStart: r.originalStart,
+            sourceContent: r.sourceContent
+          }
+          updateSourceMap(textItem)
+          curr.main.push(textItem)
           break
         }
         case 'comments':
           trimStartLines()
           trimEndLines()
-          // if (data) {
-          curr.documentation.push({
+          const commentItem: Items = {
             content: data,
             pos,
             line,
@@ -718,8 +715,12 @@ export class Parser {
             end,
             type,
             eol,
-          })
-          // }
+            sourceFile: r.sourceFile,
+            originalStart: r.originalStart,
+            sourceContent: r.sourceContent
+          }
+          updateSourceMap(commentItem)
+          curr.documentation.push(commentItem)
           break
       }
     }
@@ -787,8 +788,8 @@ export class Parser {
     return { term, eol }
   }
   private block(extra: Partial<ParserResult> = {}): ParserResult {
-    const { pos, line, column, globalState, actualState } = this
-    return {
+    const { pos, line, column, globalState, actualState, sourceFile, sourceMapEnabled } = this
+    const result: ParserResult = {
       data: '',
       pos,
       line,
@@ -799,6 +800,20 @@ export class Parser {
       eol: false,
       ...extra,
     }
+
+    // Добавляем информацию для source maps если они включены
+    if (sourceMapEnabled && sourceFile) {
+      result.sourceFile = sourceFile
+      result.sourceContent = this.sourceContent
+      result.originalStart = {
+        source: sourceFile,
+        line,
+        column
+      }
+      // originalEnd будет установлен позже, когда мы будем знать конечную позицию
+    }
+
+    return result
   }
   private SUB(str) {
     const { pos, size, buffer } = this
@@ -810,7 +825,7 @@ export class Parser {
   }
 }
 
-function SUB(buffer: string, str: string, pos: number = 0, size: number = 0) {
+export function SUB(buffer: string, str: string, pos:number = 0, size?: number) {
   if (!size) {
     size = buffer.length
   }

@@ -1,7 +1,18 @@
 import { Parser } from 'fte.js-parser'
 import { run } from './run'
 
-export function compileTs(content: Buffer | string) {
-  const compiled = Parser.parse(content.toString())
+export function compileTs(
+  content: Buffer | string,
+  fileName?: string,
+  sourceRoot?: string,
+  inlineMap: boolean = true,
+  sourcemap: boolean = true,
+) {
+  const compiled = Parser.parse(content.toString(), {
+    sourceMap: sourcemap,
+    sourceFile: fileName,
+    sourceContent: typeof content === 'string' ? content : content.toString(),
+    sourceRoot,
+  })
   return run(compiled, 'es6module.ts.njs')
 }

@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import type { SourceLocation } from "fte.js-base/dist/types/source-map";
 export type StateDefinition = {
     start?: Array<string>;
     end?: Array<string>;
@@ -27,6 +28,10 @@ export interface ParserResult {
     start: string;
     end: string;
     eol: boolean;
+    sourceFile?: string;
+    originalStart?: SourceLocation;
+    originalEnd?: SourceLocation;
+    sourceContent?: string;
 }
 export interface Items {
     content: string;
@@ -38,6 +43,10 @@ export interface Items {
     end: string;
     eol: boolean;
     type: ResultTypes;
+    sourceFile?: string;
+    originalStart?: SourceLocation;
+    originalEnd?: SourceLocation;
+    sourceContent?: string;
 }
 export type RequireItem = {
     name: string;
@@ -76,6 +85,13 @@ export declare class CodeBlock {
     addBlock(block: CodeBlock): void;
     addSlot(slot: CodeBlock): void;
 }
+export interface ParserOptions {
+    indent?: string | number;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceContent?: string;
+    sourceRoot?: string;
+}
 export declare class Parser {
     private buffer;
     private size;
@@ -91,9 +107,11 @@ export declare class Parser {
     private curlyAware;
     private curlyBalance;
     private result;
-    static parse(text: string | Buffer, options?: {
-        indent?: string | number;
-    }): CodeBlock;
+    private sourceFile?;
+    private sourceContent?;
+    private sourceRoot?;
+    private sourceMapEnabled;
+    static parse(text: string | Buffer, options?: ParserOptions): CodeBlock;
     private constructor();
     collect(): void;
     private run;
@@ -106,4 +124,5 @@ export declare class Parser {
     private SUB;
     private term;
 }
+export declare function SUB(buffer: string, str: string, pos?: number, size?: number): string;
 //# sourceMappingURL=index.d.ts.map

@@ -8,5 +8,7 @@ exports.DefaultFactoryOptions = {
     applyIndent: applyIndent_1.applyIndent,
     escapeIt: escapeIt_1.escapeIt,
     applyDeindent: applyDeindent_1.applyDeindent,
+    sourceMap: false,
+    inline: true,
 };
 //# sourceMappingURL=DefaultFactoryOptions.js.map

@@ -7,4 +7,7 @@ export const DefaultFactoryOptions = {
   applyIndent,
   escapeIt,
   applyDeindent,
+  // Defaults for source maps (off by default)
+  sourceMap: false,
+  inline: true,
 } satisfies DefaultFactoryOption

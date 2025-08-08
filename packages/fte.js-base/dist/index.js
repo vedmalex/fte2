@@ -21,4 +21,6 @@ tslib_1.__exportStar(require("./types/SlotsHash"), exports);
 tslib_1.__exportStar(require("./TemplateBase"), exports);
 tslib_1.__exportStar(require("./types/TemplateConfig"), exports);
 tslib_1.__exportStar(require("./TemplateFactoryBase"), exports);
+tslib_1.__exportStar(require("./types/source-map"), exports);
+tslib_1.__exportStar(require("./utils/source-map"), exports);
 //# sourceMappingURL=index.js.map

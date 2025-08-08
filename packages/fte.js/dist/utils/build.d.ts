@@ -7,5 +7,7 @@ export declare function build(src: string, dest: string, options: {
     single: boolean;
     ext: string;
     file: string;
+    sourcemap?: boolean;
+    inlineMap?: boolean;
 }, callback: (err?: unknown) => void): void;
 //# sourceMappingURL=build.d.ts.map

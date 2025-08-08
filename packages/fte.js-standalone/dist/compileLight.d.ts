@@ -1,5 +1,5 @@
 /// <reference types="node" />
-export declare function compileLight(content: Buffer | string): string | {
+export declare function compileLight(content: Buffer | string, fileName?: string, sourceRoot?: string, inlineMap?: boolean, sourcemap?: boolean): string | {
     name: string;
     content: string;
 }[];

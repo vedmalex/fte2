@@ -18,4 +18,6 @@ export * from './types/SlotsHash';
 export * from './TemplateBase';
 export * from './types/TemplateConfig';
 export * from './TemplateFactoryBase';
+export * from './types/source-map';
+export * from './utils/source-map';
 //# sourceMappingURL=index.d.ts.map

@@ -1,10 +1,23 @@
 import { TemplateBase } from "fte.js-base";
+export interface MainTemplateOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    applyDeindent: (str: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
+export interface MainTemplateResult {
+    code: string;
+    map?: any;
+}
 declare const _default: {
     alias: string[];
     aliases: {
         codeblock: string;
     };
-    script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+    script: (context: any, _content: any, partial: any, slot: any, options: MainTemplateOptions) => MainTemplateResult;
     blocks: {
         maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
         "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;

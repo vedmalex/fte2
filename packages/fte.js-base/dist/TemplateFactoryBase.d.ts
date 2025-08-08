@@ -1,5 +1,6 @@
 import { TemplateBase } from './TemplateBase';
 import { FactoryConfig } from './types/FactoryConfig';
+import type { SourceMapOptions } from './types/source-map';
 import { BlockContent } from './types/BlockContent';
 import { DefaultFactoryOption } from './types/DefaultFactoryOption';
 import { HashTypeGeneric } from './types/HashTypeGeneric';
@@ -9,7 +10,7 @@ export declare abstract class TemplateFactoryBase<OPTIONS extends DefaultFactory
     ext: Array<string>;
     cache: HashTypeGeneric<TemplateBase<OPTIONS>>;
     root?: Array<string>;
-    options: OPTIONS;
+    options: OPTIONS & SourceMapOptions;
     watch: boolean;
     constructor(config?: Partial<FactoryConfig<OPTIONS>>);
     register(tpl: TemplateBase<OPTIONS>, fileName?: string): TemplateBase<OPTIONS>;

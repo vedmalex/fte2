@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = exports.CodeBlock = exports.CodeBlockDirectives = void 0;
+exports.SUB = exports.Parser = exports.CodeBlock = exports.CodeBlockDirectives = void 0;
 const tslib_1 = require("tslib");
 const detect_indent_1 = tslib_1.__importDefault(require("detect-indent"));
 const globalStates = {
@@ -120,7 +120,7 @@ class CodeBlockDirectives {
         const { name, params } = detectDirective(init.data.trim());
         switch (name) {
             case 'deindent':
-                this.deindent = params.length > 0 ? parseInt(params[0]) : true;
+                this.deindent = params.length > 0 ? Number.parseInt(params[0]) : true;
                 break;
             case 'extend':
                 this.extend = params[0];
@@ -219,15 +219,21 @@ class Parser {
         return parser.process();
     }
     constructor(value, options) {
+        var _a;
         this.pos = 0;
         this.line = 1;
         this.column = 1;
         this.curlyAware = 0;
         this.curlyBalance = [];
         this.result = [];
+        this.sourceMapEnabled = false;
         if (options.indent) {
             this.INDENT = typeof options.indent === 'string' ? options.indent.length : options.indent;
         }
+        this.sourceMapEnabled = (_a = options.sourceMap) !== null && _a !== void 0 ? _a : false;
+        this.sourceFile = options.sourceFile;
+        this.sourceContent = options.sourceContent;
+        this.sourceRoot = options.sourceRoot;
         this.globalState = Parser.INITIAL_STATE;
         this.buffer = value.toString();
         this.size = this.buffer.length;
@@ -336,105 +342,53 @@ class Parser {
         const content = new CodeBlock();
         const resultSize = this.result.length;
         let curr = content;
+        let data = '';
+        let pos = 0;
+        let line = 1;
+        let column = 1;
+        let start = '';
+        let end = '';
+        let eol = false;
+        let type = 'unknown';
+        const updateSourceMap = (item) => {
+            if (this.sourceMapEnabled && item.sourceFile && item.originalStart) {
+                item.originalEnd = {
+                    source: item.sourceFile,
+                    line: this.line,
+                    column: this.column
+                };
+            }
+        };
         for (let i = 0; i < resultSize; i += 1) {
             let r = this.result[i];
-            let { type, pos, line, column, start, end, data, eol } = r;
-            const trimStartLines = (lines) => {
-                let newLine = false;
-                do {
-                    if (curr.main.length > 0) {
-                        let prev = curr.main[curr.main.length - 1];
-                        if ((prev === null || prev === void 0 ? void 0 : prev.type) == 'text' || ((prev === null || prev === void 0 ? void 0 : prev.type) == 'empty' && type === 'code')) {
-                            prev.content = prev.content.trimEnd();
-                            if (!prev.content) {
-                                if (prev.eol)
-                                    newLine = true;
-                                curr.main.pop();
-                                if (lines) {
-                                    lines -= 1;
-                                    if (!lines) {
-                                        break;
-                                    }
-                                }
-                            }
-                            else {
-                                prev.eol = false;
-                                break;
-                            }
-                        }
-                        else {
-                            if (newLine && prev.type === 'code')
-                                prev.eol = true;
-                            break;
-                        }
-                    }
-                    else {
-                        break;
-                    }
-                } while (true);
-            };
-            const trimEndLines = (lines) => {
-                let nextline = 0;
-                do {
-                    nextline += 1;
-                    if (i + nextline < resultSize) {
-                        let next = this.result[i + nextline];
-                        if (next.type == 'text') {
-                            next.data = next.data.trimStart();
-                            if (!next.data) {
-                                next.type = 'skip';
-                                if (lines) {
-                                    lines -= 1;
-                                    if (!lines) {
-                                        break;
-                                    }
-                                }
-                            }
-                            else {
-                                next.eol = false;
-                                break;
-                            }
-                        }
-                        else {
-                            break;
-                        }
-                    }
-                    else {
-                        break;
-                    }
-                } while (true);
-            };
+            data = r.data;
+            pos = r.pos;
+            line = r.line;
+            column = r.column;
+            start = r.start;
+            end = r.end;
+            eol = r.eol;
+            type = r.type;
             const trimStartSpases = () => {
-                if (curr.main.length > 0) {
-                    let prev = curr.main[curr.main.length - 1];
-                    if (prev.type == 'text') {
-                        prev.content = prev.content.replaceAll(' ', '');
-                        if (!prev.content) {
-                            curr.main.pop();
-                        }
-                    }
-                }
+                data = data.replace(/^\s+/, '');
             };
             const trimEndSpaces = () => {
-                if (i + 1 < resultSize) {
-                    let next = this.result[i + 1];
-                    if (next.type == 'text') {
-                        next.data = next.data.replaceAll(' ', '');
-                        if (!next.data) {
-                            next.type = 'skip';
-                        }
+                data = data.replace(/\s+$/, '');
+            };
+            const trimStartLines = () => {
+                data = data.replace(/^[\r\n]+/, '');
+            };
+            const trimEndLines = (count = 0) => {
+                if (count > 0) {
+                    const lines = data.match(/[\r\n]/g);
+                    if (lines && lines.length > count) {
+                        data = data.replace(/[\r\n]+$/, '');
                     }
                 }
-            };
-            if (curr.main.length > 0) {
-                let prev = curr.main[curr.main.length - 1];
-                if (prev.line != line) {
-                    curr.main[curr.main.length - 1].eol = true;
-                }
                 else {
-                    curr.main[curr.main.length - 1].eol = false;
+                    data = data.replace(/[\r\n]+$/, '');
                 }
-            }
+            };
             switch (type) {
                 case 'directive':
                     trimStartLines();
@@ -460,7 +414,7 @@ class Parser {
                     break;
                 case 'unknown':
                     let actual_type = 'unknown';
-                    switch (r.start) {
+                    switch (start) {
                         case '<%':
                             actual_type = 'code';
                             break;
@@ -478,7 +432,7 @@ class Parser {
                             actual_type = 'comments';
                             break;
                     }
-                    switch (r.end) {
+                    switch (end) {
                         case '-%>':
                             trimEndLines(1);
                             break;
@@ -487,7 +441,7 @@ class Parser {
                             break;
                     }
                     if (actual_type !== 'comments') {
-                        curr.main.push({
+                        const item = {
                             content: data,
                             pos,
                             line,
@@ -496,10 +450,15 @@ class Parser {
                             end,
                             type: actual_type,
                             eol,
-                        });
+                            sourceFile: r.sourceFile,
+                            originalStart: r.originalStart,
+                            sourceContent: r.sourceContent
+                        };
+                        updateSourceMap(item);
+                        curr.main.push(item);
                     }
                     else {
-                        curr.documentation.push({
+                        const item = {
                             content: data,
                             pos,
                             line,
@@ -508,17 +467,25 @@ class Parser {
                             end,
                             type: actual_type,
                             eol,
-                        });
+                            sourceFile: r.sourceFile,
+                            originalStart: r.originalStart,
+                            sourceContent: r.sourceContent
+                        };
+                        updateSourceMap(item);
+                        curr.documentation.push(item);
                     }
                     break;
                 case 'code':
-                    if (start == '<#-') {
-                        trimStartLines();
+                    if (start === '<%_') {
+                        trimStartSpases();
                     }
-                    if (end == '-#>') {
+                    if (end === '_%>') {
+                        trimEndSpaces();
+                    }
+                    if (end === '-%>') {
                         trimEndLines();
                     }
-                    curr.main.push({
+                    const codeItem = {
                         content: data,
                         pos,
                         line,
@@ -527,12 +494,17 @@ class Parser {
                         end,
                         type,
                         eol,
-                    });
+                        sourceFile: r.sourceFile,
+                        originalStart: r.originalStart,
+                        sourceContent: r.sourceContent
+                    };
+                    updateSourceMap(codeItem);
+                    curr.main.push(codeItem);
                     break;
                 case 'expression':
                 case 'expression2':
                     {
-                        const current = {
+                        const expressionItem = {
                             content: data,
                             pos,
                             line,
@@ -541,47 +513,51 @@ class Parser {
                             end,
                             type: 'expression',
                             eol,
+                            sourceFile: r.sourceFile,
+                            originalStart: r.originalStart,
+                            sourceContent: r.sourceContent
                         };
-                        const prev = curr.main.pop();
-                        if (prev) {
-                            if (prev.type !== 'text' ||
-                                (prev.type === 'text' && prev.content.trim().length > 0) ||
-                                (prev.type === 'text' && prev.eol)) {
-                                curr.main.push(prev);
-                            }
-                            else {
-                                current.indent = prev.content;
-                            }
-                        }
-                        curr.main.push(current);
+                        updateSourceMap(expressionItem);
+                        curr.main.push(expressionItem);
                     }
                     break;
                 case 'uexpression':
                 case 'uexpression2':
-                    const current = {
-                        content: data,
-                        pos,
-                        line,
-                        column,
-                        start,
-                        end,
-                        type: 'uexpression',
-                        eol,
-                    };
-                    const prev = curr.main.pop();
-                    if (prev) {
-                        if ((prev === null || prev === void 0 ? void 0 : prev.type) !== 'text' || ((prev === null || prev === void 0 ? void 0 : prev.type) === 'text' && (prev === null || prev === void 0 ? void 0 : prev.eol))) {
-                            curr.main.push(prev);
+                    {
+                        const uexpressionItem = {
+                            content: data,
+                            pos,
+                            line,
+                            column,
+                            start,
+                            end,
+                            type: 'uexpression',
+                            eol,
+                            sourceFile: r.sourceFile,
+                            originalStart: r.originalStart,
+                            sourceContent: r.sourceContent
+                        };
+                        updateSourceMap(uexpressionItem);
+                        const prev = curr.main.pop();
+                        if (prev) {
+                            if (prev.type !== 'text' || (prev.type === 'text' && prev.eol)) {
+                                curr.main.push(prev);
+                            }
+                            else {
+                                uexpressionItem.indent = prev.content;
+                            }
                         }
-                        else {
-                            current.indent = prev.content;
-                        }
+                        curr.main.push(uexpressionItem);
                     }
-                    curr.main.push(current);
                     break;
                 case 'text': {
-                    let actualType = data || eol ? type : 'empty';
-                    curr.main.push({
+                    const actualType = data || eol ? type : 'empty';
+                    if (actualType === 'empty' &&
+                        curr.main.length > 0 &&
+                        curr.main[curr.main.length - 1].type === 'empty') {
+                        break;
+                    }
+                    const textItem = {
                         content: data,
                         pos,
                         line,
@@ -590,13 +566,18 @@ class Parser {
                         end,
                         type: actualType,
                         eol,
-                    });
+                        sourceFile: r.sourceFile,
+                        originalStart: r.originalStart,
+                        sourceContent: r.sourceContent
+                    };
+                    updateSourceMap(textItem);
+                    curr.main.push(textItem);
                     break;
                 }
                 case 'comments':
                     trimStartLines();
                     trimEndLines();
-                    curr.documentation.push({
+                    const commentItem = {
                         content: data,
                         pos,
                         line,
@@ -605,7 +586,12 @@ class Parser {
                         end,
                         type,
                         eol,
-                    });
+                        sourceFile: r.sourceFile,
+                        originalStart: r.originalStart,
+                        sourceContent: r.sourceContent
+                    };
+                    updateSourceMap(commentItem);
+                    curr.documentation.push(commentItem);
                     break;
             }
         }
@@ -674,8 +660,8 @@ class Parser {
         return { term, eol };
     }
     block(extra = {}) {
-        const { pos, line, column, globalState, actualState } = this;
-        return {
+        const { pos, line, column, globalState, actualState, sourceFile, sourceMapEnabled } = this;
+        const result = {
             data: '',
             pos,
             line,
@@ -686,6 +672,16 @@ class Parser {
             eol: false,
             ...extra,
         };
+        if (sourceMapEnabled && sourceFile) {
+            result.sourceFile = sourceFile;
+            result.sourceContent = this.sourceContent;
+            result.originalStart = {
+                source: sourceFile,
+                line,
+                column
+            };
+        }
+        return result;
     }
     SUB(str) {
         const { pos, size, buffer } = this;
@@ -699,7 +695,7 @@ class Parser {
 exports.Parser = Parser;
 Parser.INITIAL_STATE = 'text';
 Parser.DEFAULT_TAB_SIZE = 2;
-function SUB(buffer, str, pos = 0, size = 0) {
+function SUB(buffer, str, pos = 0, size) {
     if (!size) {
         size = buffer.length;
     }
@@ -717,4 +713,5 @@ function SUB(buffer, str, pos = 0, size = 0) {
         return '';
     }
 }
+exports.SUB = SUB;
 //# sourceMappingURL=index.js.map

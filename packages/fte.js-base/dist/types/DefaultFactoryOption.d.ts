@@ -4,5 +4,9 @@ export interface DefaultFactoryOption {
     applyDeindent(str: string, numChars: number | string): string;
     applyDeindent(str: Array<string>, numChars: number | string): Array<string>;
     escapeIt(text: string): string;
+    sourceMap?: boolean;
+    inline?: boolean;
+    sourceRoot?: string;
+    sourceFile?: string;
 }
 //# sourceMappingURL=DefaultFactoryOption.d.ts.map

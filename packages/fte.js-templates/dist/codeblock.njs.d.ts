@@ -1,7 +1,18 @@
 import { TemplateBase } from "fte.js-base";
+export interface CodeBlockOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
 declare const _default: {
     alias: string[];
-    script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
+    script: (blockList: any, _content: any, partial: any, slot: any, options: CodeBlockOptions) => {
+        code: string;
+        map: import("fte.js-base").TemplateSourceMap | undefined;
+    };
     compile: (this: TemplateBase) => void;
     dependency: {};
 };

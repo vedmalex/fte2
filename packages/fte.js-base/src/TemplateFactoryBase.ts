@@ -3,6 +3,7 @@ import { TemplateBase } from './TemplateBase'
 import { BlockRunFunction } from './types/BlockRunFunction'
 import { FactoryConfig } from './types/FactoryConfig'
 import { DefaultFactoryOptions } from './types/DefaultFactoryOptions'
+import type { SourceMapOptions } from './types/source-map'
 import { BlockContent } from './types/BlockContent'
 import { ContentFunction } from './types/ContentFunction'
 import { DefaultFactoryOption } from './types/DefaultFactoryOption'
@@ -20,14 +21,14 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
   public ext: Array<string> = []
   public cache: HashTypeGeneric<TemplateBase<OPTIONS>>
   public root?: Array<string> = undefined
-  public options: OPTIONS
+  public options: OPTIONS & SourceMapOptions
   public watch = false
 
   constructor(config?: Partial<FactoryConfig<OPTIONS>>) {
     if (config?.options) {
-      this.options = { ...config.options, ...DefaultFactoryOptions }
+      this.options = { ...(DefaultFactoryOptions as OPTIONS), ...config.options }
     } else {
-      this.options = { ...DefaultFactoryOptions } as OPTIONS
+      this.options = { ...(DefaultFactoryOptions as OPTIONS) } as OPTIONS
     }
     this.watch = config?.watch ?? false
 

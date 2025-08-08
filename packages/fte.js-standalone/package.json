@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "prettier": "../../.prettierrc.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "prepublish": "tsc -b",
     "build": "tsc -b",
     "watch": "tsc -w"

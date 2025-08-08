@@ -4,7 +4,7 @@
   "description": "fast template engine that was reborn",
   "scripts": {
     "clean": "git clean -dfqX -- ./node_modules **/{dist,build,node_modules,yarn-error.log,yarn.lock,tsconfig.tsbuildinfo,package-lock.json}/",
-    "templates": "node ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/src packages/fte.js-templates/src --typescript",
+    "templates": "node ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/templates packages/fte.js-templates/src --typescript",
     "templates_debug": "node --inspect-brk ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/templ packages/fte.js-templates/templ --typescript"
   },
   "repository": {

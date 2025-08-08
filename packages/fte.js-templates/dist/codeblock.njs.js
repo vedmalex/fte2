@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const fte_js_base_1 = require("fte.js-base");
 exports.default = {
     alias: [
         "codeblock.njs"
@@ -7,6 +8,34 @@ exports.default = {
     script: function (blockList, _content, partial, slot, options) {
         var out = [];
         var textQuote = false;
+        const sourceMapGenerator = options.sourceMap ? new fte_js_base_1.TemplateSourceMapGenerator({
+            file: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline
+        }) : null;
+        let generatedLine = 1;
+        let generatedColumn = 0;
+        const addMapping = (block, content) => {
+            if (sourceMapGenerator && block.sourceFile && block.originalStart) {
+                sourceMapGenerator.addSegment({
+                    generatedLine,
+                    generatedColumn,
+                    originalLine: block.originalStart.line,
+                    originalColumn: block.originalStart.column,
+                    source: block.sourceFile,
+                    content: block.sourceContent,
+                    name: block.type
+                });
+                const lines = content.split('\n');
+                if (lines.length > 1) {
+                    generatedLine += lines.length - 1;
+                    generatedColumn = lines[lines.length - 1].length;
+                }
+                else {
+                    generatedColumn += content.length;
+                }
+            }
+        };
         do {
             if (blockList.length == 0)
                 break;
@@ -44,14 +73,18 @@ exports.default = {
                                 let lasItem = out.pop();
                                 res = lasItem + " + ";
                             }
+                            let content;
                             if (!block.eol) {
-                                res += JSON.stringify(cont);
+                                content = JSON.stringify(cont);
+                                res += content;
                             }
                             else {
-                                res += JSON.stringify(cont + "\n");
+                                content = JSON.stringify(cont + "\n");
+                                res += content;
                                 res += ");" + (last ? "" : "\n");
                                 textQuote = false;
                             }
+                            addMapping(block, content);
                             out.push(res);
                         }
                         break;
@@ -70,17 +103,22 @@ exports.default = {
                             if (block.indent) {
                                 lcont = "options.applyIndent(" + lcont + ", '" + block.indent + "')";
                             }
+                            let content;
                             if (block.start && block.end) {
-                                res += "(" + lcont + ")";
+                                content = "(" + lcont + ")";
+                                res += content;
                             }
                             else if (block.start) {
-                                res += "(" + lcont;
+                                content = "(" + lcont;
+                                res += content;
                             }
                             else if (block.end) {
-                                res += lcont + ")";
+                                content = lcont + ")";
+                                res += content;
                             }
                             else {
-                                res += lcont;
+                                content = lcont;
+                                res += content;
                             }
                             if (!block.eol) {
                                 out.push(res);
@@ -100,6 +138,7 @@ exports.default = {
                                     out.push(res + "\n");
                                 }
                             }
+                            addMapping(block, content);
                         }
                         break;
                     case "expression":
@@ -118,17 +157,22 @@ exports.default = {
                             if (block.indent) {
                                 cont = "options.applyIndent(" + cont + ", '" + block.indent + "')";
                             }
+                            let content;
                             if (block.start && block.end) {
-                                res += "(" + cont + ")";
+                                content = "(" + cont + ")";
+                                res += content;
                             }
                             else if (block.start) {
-                                res += "(" + cont;
+                                content = "(" + cont;
+                                res += content;
                             }
                             else if (block.end) {
-                                res += cont + ")";
+                                content = cont + ")";
+                                res += content;
                             }
                             else {
-                                res += cont;
+                                content = cont;
+                                res += content;
                             }
                             if (!block.eol) {
                                 out.push(res);
@@ -148,6 +192,7 @@ exports.default = {
                                     out.push(res + "\n");
                                 }
                             }
+                            addMapping(block, content);
                         }
                         break;
                     case "code":
@@ -156,7 +201,9 @@ exports.default = {
                             out.push(item + ");\n");
                             textQuote = false;
                         }
-                        out.push(cont + ((block.eol || (next === null || next === void 0 ? void 0 : next.type) != "code") ? "\n" : ""));
+                        const content = cont + ((block.eol || (next === null || next === void 0 ? void 0 : next.type) != "code") ? "\n" : "");
+                        addMapping(block, content);
+                        out.push(content);
                         break;
                 }
             }
@@ -165,7 +212,19 @@ exports.default = {
             let lasItem = out.pop();
             out.push(lasItem + ");");
         }
-        return out.join("");
+        let result = out.join("");
+        if (sourceMapGenerator && options.sourceMap) {
+            if (options.inline) {
+                result += "\n" + sourceMapGenerator.toInlineSourceMap();
+            }
+            else if (options.sourceFile) {
+                result += "\n//# sourceMappingURL=" + options.sourceFile + ".map";
+            }
+        }
+        return {
+            code: result,
+            map: sourceMapGenerator === null || sourceMapGenerator === void 0 ? void 0 : sourceMapGenerator.toJSON()
+        };
     },
     compile: function () { },
     dependency: {}

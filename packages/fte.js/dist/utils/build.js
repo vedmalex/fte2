@@ -10,19 +10,27 @@ const compileTs_1 = require("../compileTs");
 const compileFull_1 = require("../compileFull");
 const parseFile_1 = require("../parseFile");
 const run_1 = require("../run");
-function parseTemplate(fileName, src, dest, compile, { typescript, format, pretty, minify }) {
+function parseTemplate(fileName, src, dest, compile, { typescript, format, pretty, minify, sourcemap, inlineMap }) {
     const fn = path_1.default.resolve(fileName);
     if (fs_1.default.existsSync(fn)) {
         const content = fs_1.default.readFileSync(fn);
-        const result = compile(content, false);
-        if (typeof result == 'string') {
-            path_1.default.relative(src, fileName);
-            (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.relative(src, fileName) + (typescript ? '.ts' : '.js')), result, minify);
+        const relativeName = path_1.default.relative(src, fileName) + (typescript ? '.ts' : '.js');
+        const result = compile(content, false, relativeName, src, inlineMap, sourcemap);
+        const outPath = path_1.default.join(dest, relativeName);
+        if (typeof result === 'string') {
+            (0, filewriter_1.writeFile)(outPath, result, minify);
         }
-        else {
+        else if (Array.isArray(result)) {
             result.forEach(file => {
                 (0, filewriter_1.writeFile)(path_1.default.join(dest, path_1.default.basename(file.name) + (typescript ? '.ts' : '.js')), file.content, minify);
             });
+        }
+        else if (result && typeof result === 'object' && 'code' in result) {
+            (0, filewriter_1.writeFile)(outPath, result.code, minify);
+            if (sourcemap && inlineMap === false && result.map) {
+                const mapPath = outPath + '.map';
+                (0, filewriter_1.writeRaw)(mapPath, JSON.stringify(result.map));
+            }
         }
     }
 }
@@ -47,7 +55,7 @@ function build(src, dest, options, callback) {
         }
         else {
             files.forEach(file => {
-                parseTemplate(file, src, dest, options.typescript ? compileTs_1.compileTs : compileFull_1.compileFull, options);
+                parseTemplate(file, src, dest, (content, optimize, fileName, sourceRoot) => (options.typescript ? compileTs_1.compileTs : compileFull_1.compileFull)(content, optimize, fileName, sourceRoot, options.inlineMap, options.sourcemap), options);
             });
             const indexFile = (0, run_1.run)(files.map(f => {
                 return {

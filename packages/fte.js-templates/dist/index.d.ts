@@ -1,3 +1,18 @@
+export interface TemplateOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    applyDeindent: (str: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
+export interface TemplateResult {
+    code: string;
+    map?: any;
+}
+export type { CodeBlockOptions } from "./codeblock.njs";
+export type { MainTemplateOptions, MainTemplateResult } from "./MainTemplate.njs";
 declare const templates: {
     "typedefinitions.njs": {
         alias: string[];
@@ -109,7 +124,10 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => string | {
+            code: string;
+            map: any;
+        };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -121,7 +139,10 @@ declare const templates: {
         aliases: {
             core: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: any) => string | {
+            code: string;
+            map: any;
+        };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {
             "MainTemplate.njs": boolean;
@@ -136,7 +157,10 @@ declare const templates: {
     };
     "codeblock.njs": {
         alias: string[];
-        script: (blockList: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (blockList: any, _content: any, partial: any, slot: any, options: import("./codeblock.njs").CodeBlockOptions) => {
+            code: string;
+            map: import("fte.js-base").TemplateSourceMap | undefined;
+        };
         compile: (this: import("fte.js-base").TemplateBase<import("fte.js-base").DefaultFactoryOption>) => void;
         dependency: {};
     };
@@ -162,7 +186,7 @@ declare const templates: {
         aliases: {
             codeblock: string;
         };
-        script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+        script: (context: any, _content: any, partial: any, slot: any, options: import("./MainTemplate.njs").MainTemplateOptions) => import("./MainTemplate.njs").MainTemplateResult;
         blocks: {
             maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
             "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;

@@ -8,9 +8,16 @@ exports.default = {
         "core": "MainTemplate.njs"
     },
     script: function (context, _content, partial, slot, options) {
-        var out = [];
-        out.push("export default " + (partial(context, "core")) + ";");
-        return out.join("");
+        const core = partial(context, "core");
+        if (typeof core === 'string') {
+            return "export default " + core + ";";
+        }
+        else {
+            return {
+                code: "export default " + core.code + ";",
+                map: core.map
+            };
+        }
     },
     compile: function () {
         this.factory.ensure("MainTemplate.njs");

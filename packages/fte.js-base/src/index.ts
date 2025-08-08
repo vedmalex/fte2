@@ -18,3 +18,9 @@ export * from './types/SlotsHash'
 export * from './TemplateBase'
 export * from './types/TemplateConfig'
 export * from './TemplateFactoryBase'
+
+// Source Map Types
+export * from './types/source-map';
+
+// Source Map Utils
+export * from './utils/source-map';

@@ -9,6 +9,288 @@
       "end": "",
       "type": "empty",
       "eol": true
+    },
+    {
+      "content": " typedefs.forEach(({params, types, name})=>{",
+      "pos": 216,
+      "line": 13,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 264,
+      "line": 13,
+      "column": 49,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": " // function ",
+      "pos": 265,
+      "line": 14,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "name",
+      "pos": 278,
+      "line": 14,
+      "column": 14,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 285,
+      "line": 14,
+      "column": 21,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": " ",
+      "pos": 286,
+      "line": 15,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "params.forEach(param=>{",
+      "pos": 287,
+      "line": 15,
+      "column": 2,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 314,
+      "line": 15,
+      "column": 29,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "content('info',param)",
+      "pos": 317,
+      "line": 16,
+      "column": 3,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false,
+      "indent": "  "
+    },
+    {
+      "content": "",
+      "pos": 341,
+      "line": 16,
+      "column": 27,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": " ",
+      "pos": 342,
+      "line": 17,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "})",
+      "pos": 343,
+      "line": 17,
+      "column": 2,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 349,
+      "line": 17,
+      "column": 8,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 350,
+      "line": 18,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": " ",
+      "pos": 351,
+      "line": 19,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "types.forEach(param=>{",
+      "pos": 352,
+      "line": 19,
+      "column": 2,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 378,
+      "line": 19,
+      "column": 28,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "content('info',param)",
+      "pos": 381,
+      "line": 20,
+      "column": 3,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false,
+      "indent": "  "
+    },
+    {
+      "content": "",
+      "pos": 405,
+      "line": 20,
+      "column": 27,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": " ",
+      "pos": 406,
+      "line": 21,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "})",
+      "pos": 407,
+      "line": 21,
+      "column": 2,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 413,
+      "line": 21,
+      "column": 8,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 414,
+      "line": 22,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": "})",
+      "pos": 414,
+      "line": 22,
+      "column": 1,
+      "start": "<#",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 420,
+      "line": 22,
+      "column": 7,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 421,
+      "line": 23,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 422,
+      "line": 24,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 422,
+      "line": 24,
+      "column": 1,
+      "start": "",
+      "end": "",
+      "type": "empty",
+      "eol": false
     }
   ],
   "directives": {
@@ -29,10 +311,40 @@
     "info": {
       "main": [
         {
-          "content": "JSON.stringify({})",
-          "pos": 120,
-          "line": 8,
-          "column": 3,
+          "content": "info.name",
+          "pos": 116,
+          "line": 6,
+          "column": 1,
+          "start": "#{",
+          "end": "}",
+          "type": "expression",
+          "eol": false
+        },
+        {
+          "content": "",
+          "pos": 128,
+          "line": 6,
+          "column": 13,
+          "start": "",
+          "end": "",
+          "type": "text",
+          "eol": true
+        },
+        {
+          "content": "",
+          "pos": 129,
+          "line": 7,
+          "column": 1,
+          "start": "",
+          "end": "",
+          "type": "empty",
+          "eol": false
+        },
+        {
+          "content": "info.type",
+          "pos": 129,
+          "line": 7,
+          "column": 1,
           "start": "#{",
           "end": "}",
           "type": "expression",
@@ -41,8 +353,8 @@
         {
           "content": "",
           "pos": 141,
-          "line": 8,
-          "column": 24,
+          "line": 7,
+          "column": 13,
           "start": "",
           "end": "",
           "type": "text",
@@ -51,7 +363,88 @@
         {
           "content": "",
           "pos": 142,
+          "line": 8,
+          "column": 1,
+          "start": "",
+          "end": "",
+          "type": "empty",
+          "eol": false
+        },
+        {
+          "content": "info.properties.forEach(prop=>{",
+          "pos": 142,
+          "line": 8,
+          "column": 1,
+          "start": "<#",
+          "end": "#>",
+          "type": "code",
+          "eol": false
+        },
+        {
+          "content": "",
+          "pos": 177,
+          "line": 8,
+          "column": 36,
+          "start": "",
+          "end": "",
+          "type": "text",
+          "eol": true
+        },
+        {
+          "content": "prop.name",
+          "pos": 180,
           "line": 9,
+          "column": 3,
+          "start": "#{",
+          "end": "}",
+          "type": "expression",
+          "eol": false,
+          "indent": "  "
+        },
+        {
+          "content": ": any",
+          "pos": 192,
+          "line": 9,
+          "column": 15,
+          "start": "",
+          "end": "",
+          "type": "text",
+          "eol": true
+        },
+        {
+          "content": "",
+          "pos": 198,
+          "line": 10,
+          "column": 1,
+          "start": "",
+          "end": "",
+          "type": "empty",
+          "eol": false
+        },
+        {
+          "content": "})",
+          "pos": 198,
+          "line": 10,
+          "column": 1,
+          "start": "<#",
+          "end": "#>",
+          "type": "code",
+          "eol": false
+        },
+        {
+          "content": "",
+          "pos": 204,
+          "line": 10,
+          "column": 7,
+          "start": "",
+          "end": "",
+          "type": "text",
+          "eol": true
+        },
+        {
+          "content": "",
+          "pos": 205,
+          "line": 11,
           "column": 1,
           "start": "",
           "end": "",

@@ -20,6 +20,8 @@ program
   .option('--ext <ext>', ' extension for file', '')
   .option('--standalone', 'use standalone mode', false)
   .option('--minify', 'need to be minified', false)
+  .option('--sourcemap', 'generate source maps', false)
+  .option('--no-inline-map', 'emit external .map instead of inline')
   .action(function (tempalates, dest, options) {
     if (!dest) {
       dest = tempalates

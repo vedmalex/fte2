@@ -1,4 +1,20 @@
 import { TemplateBase } from "fte.js-base";
+
+export interface MainTemplateOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    applyDeindent: (str: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
+
+export interface MainTemplateResult {
+    code: string;
+    map?: any;
+}
+
 export default {
     alias: [
         "MainTemplate.njs"
@@ -6,13 +22,28 @@ export default {
     aliases: {
         "codeblock": "codeblock.njs"
     },
-    script: function(context, _content, partial, slot, options) {
+    script: function(context, _content, partial, slot, options: MainTemplateOptions): MainTemplateResult {
         function content<T>(blockName: string, ctx: T) {
             if (ctx === undefined || ctx === null) ctx = context;
             return _content(blockName, ctx, content, partial, slot);
         }
         var out: Array<string> = [];
-        const { directives  } = context;
+        const { directives } = context;
+
+        // Передаем опции source map в partial
+        const partialOptions = {
+            ...options,
+            sourceMap: options.sourceMap,
+            sourceFile: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline
+        };
+
+        // Обрабатываем результат из partial, который теперь может содержать source map
+        const mainResult = partial(context.main, "codeblock", partialOptions);
+        const mainCode = typeof mainResult === 'string' ? mainResult : mainResult.code;
+        const mainMap = typeof mainResult === 'string' ? undefined : mainResult.map;
+
         out.push("{");
         if (directives.chunks) {
             out.push("\n");
@@ -28,7 +59,7 @@ export default {
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out = []\n");
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        out.push((options.applyIndent(partial(context.main, "codeblock"), "    ")) + "\n");
+        out.push((options.applyIndent(mainCode, "    ")) + "\n");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -85,7 +116,12 @@ export default {
                 out.push('    "' + (blockNames[i]) + '": function(' + (block.directives.context) + ",  _content, partial, slot, options) {\n");
                 out.push((options.applyIndent(content("maincontent", block.directives), "      ")) + "\n");
                 out.push("      var out = []\n");
-                out.push((options.applyIndent(partial(block.main, "codeblock"), "      ")));
+
+                // Обрабатываем результат из partial для блока
+                const blockResult = partial(block.main, "codeblock", partialOptions);
+                const blockCode = typeof blockResult === 'string' ? blockResult : blockResult.code;
+                out.push((options.applyIndent(blockCode, "      ")));
+
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -145,7 +181,12 @@ export default {
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
                 out.push("      var out = []\n");
-                out.push((options.applyIndent(partial(slot.main, "codeblock"), "      ")));
+
+                // Обрабатываем результат из partial для слота
+                const slotResult = partial(slot.main, "codeblock", partialOptions);
+                const slotCode = typeof slotResult === 'string' ? slotResult : slotResult.code;
+                out.push((options.applyIndent(slotCode, "      ")));
+
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -235,7 +276,20 @@ export default {
         out.push("\n");
         out.push("  }\n");
         out.push("}");
-        return out.join("");
+
+        const result = out.join("");
+
+        // Если у нас есть source map от основного контента, возвращаем его
+        if (mainMap) {
+            return {
+                code: result,
+                map: mainMap
+            };
+        }
+
+        return {
+            code: result
+        };
     },
     blocks: {
         "maincontent": function(directives, _content, partial, slot, options) {

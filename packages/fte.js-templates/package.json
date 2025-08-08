@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "prettier": "../../.prettierrc.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "prepublish": "tsc -b",
     "build": "tsc -b",
     "watch": "tsc -w"
@@ -15,7 +15,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-rc.12"
+    "fte.js-base": "workspace:3.0.0-rc.12"
   },
-  "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82"
+  "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82",
+  "devDependencies": {
+    "fte.js-standalone": "workspace:3.0.0-rc.12"
+  }
 }

@@ -1,4 +1,6 @@
-//@ts-ignore
-const config = require('../../shared/jest.config.base')
-
-module.exports = Object.assign(Object.create(null), config)
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/__tests__/**/*.ts'],
+};

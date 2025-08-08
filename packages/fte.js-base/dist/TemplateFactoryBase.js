@@ -9,7 +9,7 @@ class TemplateFactoryBase {
         this.root = undefined;
         this.watch = false;
         if (config === null || config === void 0 ? void 0 : config.options) {
-            this.options = { ...config.options, ...DefaultFactoryOptions_1.DefaultFactoryOptions };
+            this.options = { ...DefaultFactoryOptions_1.DefaultFactoryOptions, ...config.options };
         }
         else {
             this.options = { ...DefaultFactoryOptions_1.DefaultFactoryOptions };

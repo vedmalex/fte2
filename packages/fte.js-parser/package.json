@@ -15,7 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "detect-indent": "^6.1.0"
+    "detect-indent": "^6.1.0",
+    "fte.js-base": "workspace:3.0.0-rc.12"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",

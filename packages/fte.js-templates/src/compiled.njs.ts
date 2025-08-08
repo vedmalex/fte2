@@ -7,9 +7,15 @@ export default {
         "core": "MainTemplate.njs"
     },
     script: function(context, _content, partial, slot, options) {
-        var out: Array<string> = [];
-        out.push("module.exports = " + (partial(context, "core")) + ";");
-        return out.join("");
+        const core: any = partial(context, "core") as any;
+        if (typeof core === 'string') {
+            return "module.exports = " + core + ";";
+        } else {
+            return {
+                code: "module.exports = " + core.code + ";",
+                map: core.map
+            };
+        }
     },
     compile: function(this: TemplateBase) {
         this.factory.ensure("MainTemplate.njs");

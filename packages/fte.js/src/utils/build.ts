@@ -1,7 +1,7 @@
 import path from 'path'
 import { globSync } from 'glob'
 import fs from 'fs'
-import { writeFile, commit } from '../filewriter'
+import { writeFile, writeRaw, commit } from '../filewriter'
 import { compileTs } from '../compileTs'
 import { compileFull } from '../compileFull'
 import { parseFile } from '../parseFile'
@@ -13,20 +13,34 @@ function parseTemplate(
   fileName: string,
   src: string,
   dest: string,
-  compile: (content: Buffer | string, optimize?: boolean) => string | Array<{ name: string; content: string }>,
-  { typescript, format, pretty, minify }: { typescript: boolean; format: boolean; pretty: boolean; minify: boolean },
+  compile: (
+    content: Buffer | string,
+    optimize?: boolean,
+    outRelativeName?: string,
+    sourceRoot?: string,
+    inlineMap?: boolean,
+    sourcemap?: boolean,
+  ) => string | { code: string; map?: any } | Array<{ name: string; content: string }>,
+  { typescript, format, pretty, minify, sourcemap, inlineMap }: { typescript: boolean; format: boolean; pretty: boolean; minify: boolean; sourcemap?: boolean; inlineMap?: boolean },
 ) {
   const fn = path.resolve(fileName)
   if (fs.existsSync(fn)) {
     const content = fs.readFileSync(fn)
-    const result = compile(content, false)
-    if (typeof result == 'string') {
-      path.relative(src, fileName)
-      writeFile(path.join(dest, path.relative(src, fileName) + (typescript ? '.ts' : '.js')), result, minify)
-    } else {
+    const relativeName = path.relative(src, fileName) + (typescript ? '.ts' : '.js')
+    const result = compile(content, false, relativeName, src, inlineMap, sourcemap)
+    const outPath = path.join(dest, relativeName)
+    if (typeof result === 'string') {
+      writeFile(outPath, result, minify)
+    } else if (Array.isArray(result)) {
       result.forEach(file => {
         writeFile(path.join(dest, path.basename(file.name) + (typescript ? '.ts' : '.js')), file.content, minify)
       })
+    } else if (result && typeof result === 'object' && 'code' in result) {
+      writeFile(outPath, result.code, minify)
+      if (sourcemap && inlineMap === false && result.map) {
+        const mapPath = outPath + '.map'
+        writeRaw(mapPath, JSON.stringify(result.map))
+      }
     }
   }
 }
@@ -43,6 +57,8 @@ export function build(
     single: boolean
     ext: string
     file: string
+    sourcemap?: boolean
+    inlineMap?: boolean
   },
   callback: (err?: unknown) => void,
 ) {
@@ -65,7 +81,22 @@ export function build(
       }
     } else {
       files.forEach(file => {
-        parseTemplate(file, src, dest, options.typescript ? compileTs : compileFull, options)
+        parseTemplate(file, src, dest, (
+          content: Buffer | string,
+          optimize?: boolean,
+          fileName?: string,
+          sourceRoot?: string,
+        ) =>
+          (options.typescript ? compileTs : compileFull)(
+            content,
+            optimize,
+            fileName,
+            sourceRoot,
+            options.inlineMap,
+            options.sourcemap,
+          ),
+        options,
+        )
       })
       const indexFile = run(
         files.map(f => {

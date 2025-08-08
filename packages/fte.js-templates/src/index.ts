@@ -16,6 +16,27 @@ import compilationError_njs from "./compilationError.njs";
 import codeblock_njs from "./codeblock.njs";
 import MainTemplate_ts_njs from "./MainTemplate.ts.njs";
 import MainTemplate_njs from "./MainTemplate.njs";
+
+// Экспортируем интерфейсы для source maps
+export interface TemplateOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    applyDeindent: (str: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
+
+export interface TemplateResult {
+    code: string;
+    map?: any;
+}
+
+// Реэкспортируем типы из других модулей
+export type { CodeBlockOptions } from "./codeblock.njs";
+export type { MainTemplateOptions, MainTemplateResult } from "./MainTemplate.njs";
+
 const templates = {
     "typedefinitions.njs": typedefinitions_njs,
     "standalone.ts.njs": standalone_ts_njs,
@@ -36,4 +57,5 @@ const templates = {
     "MainTemplate.ts.njs": MainTemplate_ts_njs,
     "MainTemplate.njs": MainTemplate_njs
 };
+
 export default templates;
