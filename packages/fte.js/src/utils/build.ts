@@ -91,7 +91,9 @@ export function build(
           : 'singlefile.njs',
       )
       if (typeof templateFile == 'string') {
-        writeFile(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, templateFile, options.minify)
+        const desiredExt = options.typescript ? '.ts' : '.js'
+        const outName = options.file && options.file.endsWith(desiredExt) ? options.file : `${options.file}${desiredExt}`
+        writeFile(`${dest}/${outName}`, templateFile, options.minify)
       } else {
         templateFile.forEach(file => {
           writeFile(`${dest}/${file.name}`, file.content, options.minify)
@@ -136,7 +138,9 @@ export function build(
           : 'standalone.index.njs',
       )
       if (typeof indexFile == 'string') {
-        writeFile(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, indexFile, options.minify)
+        const desiredExt = options.typescript ? '.ts' : '.js'
+        const outName = options.file && options.file.endsWith(desiredExt) ? options.file : `${options.file}${desiredExt}`
+        writeFile(`${dest}/${outName}`, indexFile, options.minify)
       } else {
         indexFile.forEach(file => {
           writeFile(`${dest}/${file.name}`, file.content, options.minify)
