@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install deps
+        run: pnpm install --frozen-lockfile=false
+      - name: Lint (if configured)
+        run: |
+          if [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ]; then
+            pnpm exec eslint . || true
+          else
+            echo 'eslint config not found, skipping'
+          fi
+      - name: Build templates
+        run: pnpm --filter fte.js-templates build
+      - name: Run tests
+        run: pnpm -r test
