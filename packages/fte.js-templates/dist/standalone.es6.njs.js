@@ -23,10 +23,9 @@ exports.default = {
         out.push("\n");
         out.push("const F = new Factory(templates)\n");
         out.push("\n");
-        out.push("function run(context, name:string) => {\n");
+        out.push("export function run(context, name) {\n");
         out.push("  return F.run(context, name)\n");
         out.push("}\n");
-        out.push("export default run");
         return out.join("");
     },
     compile: function () { },
