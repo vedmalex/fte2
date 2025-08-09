@@ -1,4 +1,12 @@
 <#@ alias 'compiled.njs' #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
-module.exports = #{(() => { const __core = partial(context, 'core'); return typeof __core === 'string' ? __core : __core.code })()};
+const core: any = #{partial(context, 'core')} as any;
+if (typeof core === 'string') {
+  return "module.exports = " + core + ";";
+} else {
+  return {
+    code: "module.exports = " + core.code + ";",
+    map: core.map
+  };
+}

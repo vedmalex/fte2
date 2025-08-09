@@ -1,5 +1,12 @@
 <#@ alias 'es6module.njs' #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
-
-export default #{(() => { const __core = partial(context, 'core'); return typeof __core === 'string' ? __core : __core.code })()};
+const core: any = #{partial(context, 'core')} as any;
+if (typeof core === 'string') {
+  return "export default " + core + ";";
+} else {
+  return {
+    code: "export default " + core.code + ";",
+    map: core.map
+  };
+}

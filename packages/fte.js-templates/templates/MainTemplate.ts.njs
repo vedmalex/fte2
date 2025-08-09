@@ -24,6 +24,21 @@ aliases: {
 },
 <#}#>
 
+export interface MainTemplateOptions {
+  escapeIt: (str: string) => string;
+  applyIndent: (str: string, indent: string) => string;
+  applyDeindent: (str: string) => string;
+  sourceMap?: boolean;
+  sourceFile?: string;
+  sourceRoot?: string;
+  inline?: boolean;
+}
+
+export interface MainTemplateResult {
+  code: string;
+  map?: any;
+}
+
 <# block 'maincontent' : #>
 <#@ context 'directives'#>
 <#@ noContent #>
@@ -96,32 +111,44 @@ chunkStart(main)
     <#-}#>
   <#-}#>
 <# end #>
-  script: function (#{directives.context}, _content, partial, slot, options){
+  script: function (#{directives.context}, _content, partial, slot, options: MainTemplateOptions): MainTemplateResult{
     #{content('maincontent', directives)}
     var out: Array<string> = []
+
+    // sourcemap options passthrough for partials
+    const partialOptions = {
+      ...options,
+      sourceMap: options.sourceMap,
+      sourceFile: options.sourceFile,
+      sourceRoot: options.sourceRoot,
+      inline: options.inline,
+    }
+
     #{content('chunks-start', directives)}
-    <# const __main = partial(context.main,'codeblock') #>
+    <# const __main = partial(context.main,'codeblock', partialOptions) #>
     #{ typeof __main === 'string' ? __main : __main.code }
     #{content('chunks-finish', directives)}
     <#-if(directives.chunks){#>
     if(out.some(t=>typeof t == 'object')){
-      return out.map(chunk=>(
-          {...chunk,
+      return out.map(chunk=>
+          ({...chunk,
             content:
             <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
             Array.isArray(chunk.content)
               ? chunk.content.join('')
               : chunk.content
             <#-if( directives.deindent ){#>)<#}#>
-          }
-        )
-      )
-    } else {
-      return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
+          })
+      ) as any
     }
-    <#-} else {#>
-      return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
     <#-}#>
+
+    const __mainMap = typeof __main === 'string' ? undefined : __main.map
+    const __result = out.join('')
+    if (__mainMap) {
+      return { code: __result, map: __mainMap }
+    }
+    return { code: __result }
   },
 <#-
 const blockNames = Object.keys(context.blocks)
@@ -134,20 +161,19 @@ if(blockNames.length > 0) {#>
     "#{blockNames[i]}": function(#{block.directives.context},  _content, partial, slot, options) {
       #{content('maincontent', block.directives)}
       var out: Array<string> = []
-      <# const __block = partial(block.main,'codeblock') #>
+      <# const __block = partial(block.main, 'codeblock', partialOptions) #>
       #{ typeof __block === 'string' ? __block : __block.code }
       <#-if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
-        return out.map(chunk=>(
-            {...chunk,
+        return out.map(chunk=>
+            ({...chunk,
               content:
               <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
               Array.isArray(chunk.content)
                 ? chunk.content.join('')
                 : chunk.content
               <#-if( directives.deindent ){#>)<#}#>
-            }
-          )
+            })
         )
       } else {
         return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')
@@ -170,20 +196,19 @@ if(slotNames.length > 0) {#>
     "#{slotNames[i]}": function(#{slot.directives.context},  _content, partial, slot, options){
       #{content('maincontent', slot.directives)}
       var out: Array<string> = []
-      <# const __slot = partial(slot.main,'codeblock') #>
+      <# const __slot = partial(slot.main, 'codeblock', partialOptions) #>
       #{ typeof __slot === 'string' ? __slot : __slot.code }
       <#- if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
-        return out.map(chunk=>(
-            {...chunk,
+        return out.map(chunk=>
+            ({...chunk,
               content:
               <#- if( directives.deindent ){#> options.applyDeindent(<#}#>
               Array.isArray(chunk.content)
                 ? chunk.content.join('')
                 : chunk.content
               <#-if( directives.deindent ){#>)<#}#>
-            }
-          )
+            })
         )
       } else {
         return <# if( directives.deindent ){#> options.applyDeindent(<#}#>out<#-if( directives.deindent ){#>)<#}#>.join('')

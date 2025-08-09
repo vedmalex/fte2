@@ -1,7 +1,12 @@
 <#@ alias 'raw.njs' #>
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
-(function(){
-  const __core = #{partial(context, 'core')};
-  return #{typeof __core === 'string' ? '__core' : '__core.code'};
-})();
+const core: any = #{partial(context, 'core')} as any;
+if (typeof core === 'string') {
+  return "(function(){\n  return " + core + ";\n})();";
+} else {
+  return {
+    code: "(function(){\n  return " + core.code + ";\n})();",
+    map: core.map
+  };
+}

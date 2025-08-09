@@ -6,8 +6,40 @@
 <#@ alias 'codeblock.njs' #>
 <#@ noContent #>
 <#@ context 'blockList' #>
-<#-
+import { TemplateSourceMapGenerator, SourceMapOptions } from "fte.js-base";
+
 var textQuote = false
+const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({
+  file: options.sourceFile,
+  sourceRoot: options.sourceRoot,
+  inline: options.inline
+}) : null
+
+let generatedLine = 1
+let generatedColumn = 0
+
+function addMapping(block, content){
+  if (sourceMapGenerator && block.sourceFile && block.originalStart) {
+    sourceMapGenerator.addSegment({
+      generatedLine,
+      generatedColumn,
+      originalLine: block.originalStart.line,
+      originalColumn: block.originalStart.column,
+      source: block.sourceFile,
+      content: block.sourceContent,
+      name: block.type
+    })
+
+    const lines = content.split('\n')
+    if (lines.length > 1) {
+      generatedLine += lines.length - 1
+      generatedColumn = lines[lines.length - 1].length
+    } else {
+      generatedColumn += content.length
+    }
+  }
+}
+
 do {
   if(blockList.length == 0) break
   const cur = blockList.shift()
@@ -45,13 +77,17 @@ if(blockList.length > 0){
               res = lasItem + " + "
             }
 
+            let content
             if (!block.eol) {
-              res += JSON.stringify(cont)
+              content = JSON.stringify(cont)
+              res += content
             } else {
-              res += JSON.stringify(cont + '\n')
+              content = JSON.stringify(cont + '\n')
+              res += content
               res += ');' + (last ? '' : '\n')
               textQuote = false
             }
+            addMapping(block, content)
             out.push(res)
         }
         break
@@ -71,14 +107,19 @@ if(blockList.length > 0){
             lcont = "options.applyIndent("+lcont+", '"+block.indent+"')"
           }
 
+          let content
           if(block.start && block.end){
-            res += "("+lcont+")"
+            content = "("+lcont+")"
+            res += content
           } else if(block.start){
-            res += "("+lcont
+            content = "("+lcont
+            res += content
           } else if(block.end){
-            res += lcont+")"
+            content = lcont+")"
+            res += content
           } else {
-            res += lcont
+            content = lcont
+            res += content
           }
 
           //here always textQuote == true
@@ -96,6 +137,7 @@ if(blockList.length > 0){
               out.push(res + '\n')
             }
           }
+          addMapping(block, content)
         }
         break
       case 'expression': {
@@ -114,14 +156,19 @@ if(blockList.length > 0){
             cont = "options.applyIndent("+cont+", '"+block.indent+"')"
           }
 
+          let content
           if(block.start && block.end){
-            res += "("+cont+")"
+            content = "("+cont+")"
+            res += content
           } else if(block.start){
-            res += "("+cont
+            content = "("+cont
+            res += content
           } else if(block.end){
-            res += cont+")"
+            content = cont+")"
+            res += content
           } else {
-            res += cont
+            content = cont
+            res += content
           }
 
           //here always textQuote == true
@@ -139,6 +186,7 @@ if(blockList.length > 0){
               out.push(res + '\n')
             }
           }
+          addMapping(block, content)
         }
         break
       case 'code':
@@ -147,7 +195,9 @@ if(blockList.length > 0){
           out.push(item+");\n")
           textQuote = false
         }
-        out.push(cont + ((block.eol || next?.type != 'code') ? '\n' : ''))
+        const content = cont + ((block.eol || next?.type != 'code') ? '\n' : '')
+        addMapping(block, content)
+        out.push(content)
         break
     }
   }
@@ -156,5 +206,20 @@ if(blockList.length > 0){
 if (textQuote) {
   let lasItem = out.pop()
   out.push(lasItem+");")
+}
+
+let result = out.join("")
+
+if (sourceMapGenerator && options.sourceMap) {
+  if (options.inline) {
+    result += "\n" + sourceMapGenerator.toInlineSourceMap()
+  } else if (options.sourceFile) {
+    result += "\n//# sourceMappingURL=" + options.sourceFile + ".map"
+  }
+}
+
+return {
+  code: result,
+  map: sourceMapGenerator?.toJSON()
 }
 #>

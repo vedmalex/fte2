@@ -3,4 +3,12 @@
 <#@ requireAs ('MainTemplate.ts.njs','core') #>
 import { TemplateBase } from 'fte.js-base'
 
-export default #{(() => { const __core = partial(context, 'core'); return typeof __core === 'string' ? __core : __core.code })()};
+const core: any = #{partial(context, 'core')} as any;
+if (typeof core === 'string') {
+  return "export default " + core + ";";
+} else {
+  return {
+    code: "export default " + core.code + ";",
+    map: core.map
+  };
+}
