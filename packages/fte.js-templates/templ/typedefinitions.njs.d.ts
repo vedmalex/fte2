@@ -1,0 +1,11 @@
+declare function content(blockName: string, ctx: undefined | null | any): any;
+declare function _content(arg0: any, arg1: any, arg2: any, arg3: any, arg4: any): any;
+declare const ctx: undefined | null;
+declare const out: any[] | string[] | Record<string, any> | number[];
+declare const typedefs: Record<string, any>;
+declare const name: string;
+declare const params: Record<string, any>;
+declare const options: Record<string, any>;
+declare const types: Record<string, any>;
+declare const info: Record<string, any>;
+declare const prop: Record<string, any>;

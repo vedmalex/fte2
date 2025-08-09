@@ -2,5 +2,6 @@
 <#@ noContent #>
 <#@ requireAs ('MainTemplate.njs','core') #>
 (function(){
-  return #{partial(context, 'core')};
+  const __core = #{partial(context, 'core')};
+  return #{typeof __core === 'string' ? '__core' : '__core.code'};
 })();

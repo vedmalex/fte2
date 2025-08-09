@@ -1,18 +1,3 @@
-export interface TemplateOptions {
-    escapeIt: (str: string) => string;
-    applyIndent: (str: string, indent: string) => string;
-    applyDeindent: (str: string) => string;
-    sourceMap?: boolean;
-    sourceFile?: string;
-    sourceRoot?: string;
-    inline?: boolean;
-}
-export interface TemplateResult {
-    code: string;
-    map?: any;
-}
-export type { CodeBlockOptions } from "./codeblock.njs";
-export type { MainTemplateOptions, MainTemplateResult } from "./MainTemplate.njs";
 declare const templates: {
     "typedefinitions.njs": {
         alias: string[];

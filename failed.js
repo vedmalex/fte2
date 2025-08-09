@@ -1,0 +1,3 @@
+(function(){
+  return [object Object];
+})();

@@ -40,9 +40,7 @@ export default {
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out: Array<string> = []\n");
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        const __mainResult = partial(context.main, "codeblock");
-        const __mainCode = typeof __mainResult === 'string' ? __mainResult : __mainResult.code;
-        out.push((options.applyIndent(__mainCode, "    ")) + "\n");
+        out.push((options.applyIndent(partial(context.main, "codeblock"), "    ")) + "\n");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -99,9 +97,7 @@ export default {
                 out.push('    "' + (blockNames[i]) + '": function(' + (block.directives.context) + ",  _content, partial, slot, options) {\n");
                 out.push((options.applyIndent(content("maincontent", block.directives), "      ")) + "\n");
                 out.push("      var out: Array<string> = []\n");
-                const __blockResult = partial(block.main, "codeblock");
-                const __blockCode = typeof __blockResult === 'string' ? __blockResult : __blockResult.code;
-                out.push((options.applyIndent(__blockCode, "      ")));
+                out.push((options.applyIndent(partial(block.main, "codeblock"), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -161,9 +157,7 @@ export default {
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
                 out.push("      var out: Array<string> = []\n");
-                const __slotResult = partial(slot.main, "codeblock");
-                const __slotCode = typeof __slotResult === 'string' ? __slotResult : __slotResult.code;
-                out.push((options.applyIndent(__slotCode, "      ")));
+                out.push((options.applyIndent(partial(slot.main, "codeblock"), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");

@@ -6,7 +6,7 @@ import { TemplateFactoryStandalone as Factory } from "fte.js-standalone";
 
 export const templates = {
 <#- files.forEach(file=>{ #>
-  ['#{(file.template.alias || file.name)}']: #{partial(file.template, 'core')},
+  ['#{(file.template.alias || file.name)}']: #{(() => { const __core = partial(file.template, 'core'); return typeof __core === 'string' ? __core : __core.code })()},
 <#-}) #>
 }
 

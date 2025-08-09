@@ -90,7 +90,8 @@ chunkStart(main)
     #{content('maincontent', directives)}
     var out = []
     #{content('chunks-start', directives)}
-    #{partial(context.main,'codeblock')}
+    <# const __main = partial(context.main,'codeblock') #>
+    #{ typeof __main === 'string' ? __main : __main.code }
     #{content('chunks-finish', directives)}
     <#-if(directives.chunks){#>
     if(out.some(t=>typeof t == 'object')){
@@ -123,7 +124,8 @@ if(blockNames.length > 0) {#>
     "#{blockNames[i]}": function(#{block.directives.context},  _content, partial, slot, options) {
       #{content('maincontent', block.directives)}
       var out = []
-      #{partial(block.main, 'codeblock')}
+      <# const __block = partial(block.main,'codeblock') #>
+      #{ typeof __block === 'string' ? __block : __block.code }
       <#-if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
         return out.map(chunk=>(
@@ -158,7 +160,8 @@ if(slotNames.length > 0) {#>
     "#{slotNames[i]}": function(#{slot.directives.context},  _content, partial, slot, options){
       #{content('maincontent', slot.directives)}
       var out = []
-      #{partial(slot.main, 'codeblock')}
+      <# const __slot = partial(slot.main,'codeblock') #>
+      #{ typeof __slot === 'string' ? __slot : __slot.code }
       <#- if(directives.chunks){#>
       if(out.some(t=>typeof t == 'object')){
         return out.map(chunk=>(

@@ -1,18 +1,49 @@
 import { TemplateBase } from "fte.js-base";
+
+export interface MainTemplateOptions {
+    escapeIt: (str: string) => string;
+    applyIndent: (str: string, indent: string) => string;
+    applyDeindent: (str: string) => string;
+    sourceMap?: boolean;
+    sourceFile?: string;
+    sourceRoot?: string;
+    inline?: boolean;
+}
+
+export interface MainTemplateResult {
+    code: string;
+    map?: any;
+}
+
 export default {
     alias: [
-        "MainTemplate.ts.njs"
+        "MainTemplate.njs"
     ],
     aliases: {
         "codeblock": "codeblock.njs"
     },
-    script: function(context, _content, partial, slot, options) {
+    script: function(context, _content, partial, slot, options: MainTemplateOptions): MainTemplateResult {
         function content<T>(blockName: string, ctx: T) {
             if (ctx === undefined || ctx === null) ctx = context;
             return _content(blockName, ctx, content, partial, slot);
         }
         var out: Array<string> = [];
-        const { directives  } = context;
+        const { directives } = context;
+
+        // Передаем опции source map в partial
+        const partialOptions = {
+            ...options,
+            sourceMap: options.sourceMap,
+            sourceFile: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline
+        };
+
+        // Обрабатываем результат из partial, который теперь может содержать source map
+        const mainResult = partial(context.main, "codeblock", partialOptions);
+        const mainCode = typeof mainResult === 'string' ? mainResult : mainResult.code;
+        const mainMap = typeof mainResult === 'string' ? undefined : mainResult.map;
+
         out.push("{");
         if (directives.chunks) {
             out.push("\n");
@@ -22,27 +53,13 @@ export default {
             out.push("\n");
             out.push("alias: " + (JSON.stringify(directives.alias)) + ",");
         }
-        if (directives.requireAs.length > 0) {
-            out.push("\n");
-            out.push("aliases: {");
-            var rq;
-            for(var i = 0, len = directives.requireAs.length; i < len; i++){
-                rq = directives.requireAs[i];
-                out.push("\n");
-                out.push('    "' + (rq.alias) + '": "' + (rq.name) + '",');
-            }
-            out.push("\n");
-            out.push("},\n");
-        }
         out.push("\n");
         out.push("\n");
         out.push("script: function (" + (directives.context) + ", _content, partial, slot, options){\n");
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
-        out.push("    var out: Array<string> = []\n");
+        out.push("    var out = []\n");
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        const __mainResult = partial(context.main, "codeblock");
-        const __mainCode = typeof __mainResult === 'string' ? __mainResult : __mainResult.code;
-        out.push((options.applyIndent(__mainCode, "    ")) + "\n");
+        out.push((options.applyIndent(mainCode, "    ")) + "\n");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -98,10 +115,13 @@ export default {
                 out.push("\n");
                 out.push('    "' + (blockNames[i]) + '": function(' + (block.directives.context) + ",  _content, partial, slot, options) {\n");
                 out.push((options.applyIndent(content("maincontent", block.directives), "      ")) + "\n");
-                out.push("      var out: Array<string> = []\n");
-                const __blockResult = partial(block.main, "codeblock");
-                const __blockCode = typeof __blockResult === 'string' ? __blockResult : __blockResult.code;
-                out.push((options.applyIndent(__blockCode, "      ")));
+                out.push("      var out = []\n");
+
+                // Обрабатываем результат из partial для блока
+                const blockResult = partial(block.main, "codeblock", partialOptions);
+                const blockCode = typeof blockResult === 'string' ? blockResult : blockResult.code;
+                out.push((options.applyIndent(blockCode, "      ")));
+
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -160,10 +180,13 @@ export default {
                 out.push("\n");
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
-                out.push("      var out: Array<string> = []\n");
-                const __slotResult = partial(slot.main, "codeblock");
-                const __slotCode = typeof __slotResult === 'string' ? __slotResult : __slotResult.code;
-                out.push((options.applyIndent(__slotCode, "      ")));
+                out.push("      var out = []\n");
+
+                // Обрабатываем результат из partial для слота
+                const slotResult = partial(slot.main, "codeblock", partialOptions);
+                const slotCode = typeof slotResult === 'string' ? slotResult : slotResult.code;
+                out.push((options.applyIndent(slotCode, "      ")));
+
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -214,15 +237,21 @@ export default {
             out.push("  },");
         }
         out.push("\n");
-        out.push("  compile: function(this: TemplateBase) {");
+        out.push("  compile: function() {");
+        if (directives.alias) {
+            out.push("\n");
+            out.push("    this.alias = " + (JSON.stringify(directives.alias)));
+        }
         if (directives.requireAs.length > 0) {
+            out.push("\n");
+            out.push("    this.aliases={}");
             var rq;
             for(var i = 0, len = directives.requireAs.length; i < len; i++){
                 rq = directives.requireAs[i];
                 out.push("\n");
+                out.push('    this.aliases["' + (rq.alias) + '"] = "' + (rq.name) + '"\n');
                 out.push('    this.factory.ensure("' + (rq.name) + '")');
             }
-            out.push("\n");
         }
         if (directives.extend) {
             out.push("\n");
@@ -247,13 +276,26 @@ export default {
         out.push("\n");
         out.push("  }\n");
         out.push("}");
-        return out.join("");
+
+        const result = out.join("");
+
+        // Если у нас есть source map от основного контента, возвращаем его
+        if (mainMap) {
+            return {
+                code: result,
+                map: mainMap
+            };
+        }
+
+        return {
+            code: result
+        };
     },
     blocks: {
         "maincontent": function(directives, _content, partial, slot, options) {
             var out: Array<string> = [];
             if (directives?.content) {
-                out.push("function content<T>(blockName:string, ctx:T) {\n");
+                out.push("function content(blockName, ctx) {\n");
                 out.push("  if(ctx === undefined || ctx === null) ctx = " + (directives.context) + "\n");
                 out.push("  return _content(blockName, ctx, content, partial, slot)\n");
                 out.push("}");
@@ -266,7 +308,7 @@ export default {
             if (directives.chunks) {
                 out.push("\n");
                 out.push("const _partial = partial\n");
-                out.push("partial = function(obj, template:string) {\n");
+                out.push("partial = function(obj, template) {\n");
                 out.push("  const result = _partial(obj, template)\n");
                 out.push("  if(Array.isArray(result)){\n");
                 out.push("    result.forEach(r => {\n");
@@ -280,7 +322,7 @@ export default {
                 out.push("const main = '" + (directives.chunks) + "'\n");
                 out.push("var current = main\n");
                 out.push("let outStack = [current]\n");
-                out.push("let result: Record<string, string[]>\n");
+                out.push("let result\n");
                 out.push("\n");
                 out.push("function chunkEnsure(name, content) {\n");
                 out.push("  if (!result) {\n");

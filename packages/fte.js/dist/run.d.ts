@@ -1,5 +1,4 @@
-import templates from 'fte.js-templates';
-export declare function run<T>(context: T, template: keyof typeof templates): string | {
+export declare function run<T>(context: T, template: string): string | {
     name: string;
     content: string;
 }[];
