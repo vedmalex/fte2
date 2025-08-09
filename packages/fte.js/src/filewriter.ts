@@ -17,7 +17,12 @@ function parseFile(text: string, minify: boolean = false) {
     }
     return result
   } catch (err) {
-    console.error(text)
+    try {
+      const snippet = text.split(/\r?\n/).slice(0, 40).join('\n')
+      console.error(snippet)
+    } catch {
+      console.error(text)
+    }
     throw err
   }
 }
