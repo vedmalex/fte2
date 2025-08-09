@@ -74,6 +74,10 @@ describe('E2E sourcemaps (compile → bundle → run)', () => {
           // mappings string should be non-empty
           expect(typeof map.mappings).toBe('string')
           expect(map.mappings.length).toBeGreaterThan(0)
+          // mapping lines should roughly track generated code lines
+          const codeLines = code.split(/\r?\n/).length
+          const mappingLines = String(map.mappings).split(';').length
+          expect(mappingLines).toBeGreaterThanOrEqual(Math.max(1, Math.floor(codeLines * 0.7)))
           done()
         } catch (e) {
           done(e)
