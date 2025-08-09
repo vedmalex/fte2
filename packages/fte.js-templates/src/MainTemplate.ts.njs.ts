@@ -269,7 +269,7 @@ export default {
         if (mainResult && typeof mainResult !== 'string' && mainResult.map) {
             return { code: result, map: mainResult.map } as any;
         }
-        return result as any;
+        return { code: result } as any;
     },
     blocks: {
         "maincontent": function(directives, _content, partial, slot, options) {

@@ -46,21 +46,23 @@ function parseTemplate(
   }
 }
 
+export type BuildOptions = {
+  typescript: boolean
+  format: any
+  pretty: boolean
+  minify: boolean
+  standalone: boolean
+  single: boolean
+  ext: string
+  file: string
+  sourcemap?: boolean
+  inlineMap?: boolean
+}
+
 export function build(
   src: string,
   dest: string,
-  options: {
-    typescript: boolean
-    format: any
-    pretty: boolean
-    minify: boolean
-    standalone: boolean
-    single: boolean
-    ext: string
-    file: string
-    sourcemap?: boolean
-    inlineMap?: boolean
-  },
+  options: BuildOptions,
   callback: (err?: unknown) => void,
 ) {
   try {

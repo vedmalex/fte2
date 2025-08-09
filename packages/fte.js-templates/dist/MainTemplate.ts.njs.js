@@ -276,7 +276,7 @@ exports.default = {
         if (mainResult && typeof mainResult !== 'string' && mainResult.map) {
             return { code: result, map: mainResult.map };
         }
-        return result;
+        return { code: result };
     },
     blocks: {
         "maincontent": function (directives, _content, partial, slot, options) {
