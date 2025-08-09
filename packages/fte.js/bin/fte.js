@@ -23,6 +23,10 @@ program
   .option('--sourcemap', 'generate source maps', false)
   .option('--no-inline-map', 'emit external .map instead of inline')
   .option('--format <format>', 'module format: cjs|esm', 'cjs')
+  .addHelpText(
+    'after',
+    `\nExamples:\n  $ fte.js bundle ./templates ./dist\n  $ fte.js bundle ./templates ./dist --single --file bundle --format esm --sourcemap\n  $ fte.js bundle ./templates ./dist --standalone --format esm --sourcemap --no-inline-map\n\nNotes:\n  --format esm routes bundling to ES module templates for JS output.\n  With --sourcemap and --no-inline-map external .map files are emitted.\n`,
+  )
   .action(function (tempalates, dest, options) {
     if (!dest) {
       dest = tempalates
