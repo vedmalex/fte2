@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>FTE.js ESM Browser Example</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import templates from '../packages/fte.js-templates/dist/index.js'
+      import { TemplateFactoryStandalone as Factory } from '../packages/fte.js-standalone/dist/TemplateFactoryStandalone.js'
+
+      const tpls = {
+        'hello.njs': templates['compiled.njs'].script({
+          name: 'hello.njs',
+          main: [ { type: 'text', content: 'Hello ', eol: false }, { type: 'expression', content: 'name', start: true, end: true, eol: true } ],
+          blocks: {},
+          slots: {},
+          directives: { context: 'context', requireAs: [], require: [] }
+        }, null, (obj, name) => templates[name], null, { applyIndent: s => s, applyDeindent: s => s, escapeIt: s => s })
+      }
+
+      const F = new Factory(tpls)
+      const html = F.run({ name: 'world' }, 'hello.njs')
+      document.getElementById('app').textContent = html
+    </script>
+  </body>
+</html>
