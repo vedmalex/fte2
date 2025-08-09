@@ -14,7 +14,12 @@ exports.default = {
         out.push("export const templates = {");
         files.forEach((file) => {
             out.push("\n");
-            out.push("  ['" + ((file.template.alias || file.name)) + "']: " + (partial(file.template, "core")) + ",");
+            const core = partial(file.template, "core");
+            const coreCode = (typeof core === 'string') ? core : (core && core.code);
+            if (typeof coreCode !== 'string') {
+                throw new Error('singlefile.es6.njs: core template returned invalid result for ' + (file.name));
+            }
+            out.push("  ['" + ((file.template.alias || file.name)) + "']: " + (coreCode) + ",");
         });
         out.push("\n");
         out.push("}\n");
