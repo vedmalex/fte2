@@ -66,3 +66,45 @@ fte.js bundle ./templates ./dist --standalone --format esm --sourcemap --no-inli
 ## Status
 
 See `MUST_HAVE.md` for roadmap and prioritized improvements.
+
+## Examples
+
+### Node (CJS)
+
+```js
+// compile-time: use CLI to bundle first
+// runtime:
+const { TemplateFactoryStandalone: Factory } = require('fte.js-standalone/dist/TemplateFactoryStandalone.js')
+const templates = require('./dist/index.js') // bundle produced by CLI
+
+const F = new Factory(templates)
+const html = F.run({ name: 'world' }, 'a/t.njs')
+console.log(html)
+```
+
+### Node (ESM)
+
+```js
+import templates from './dist/index.js'
+import { TemplateFactoryStandalone as Factory } from 'fte.js-standalone/dist/TemplateFactoryStandalone.js'
+
+const F = new Factory(templates)
+console.log(F.run({ name: 'world' }, 'a/t.njs'))
+```
+
+### Browser (ESM)
+
+See `examples/browser-esm/index.html` for a minimal wiring example using `<script type="module">`.
+
+## Sourcemaps
+
+- Generation is controlled per compile/build via options: `sourceMap`, `inline`, `sourceFile`, `sourceRoot`.
+- CLI: `--sourcemap` enables maps, `--no-inline-map` emits external `.map` files; otherwise an inline `//# sourceMappingURL=` is appended.
+- Mapping coverage:
+  - `codeblock.njs` emits segments for text, expressions (escaped and raw), and code blocks; newlines update generated positions.
+  - `MainTemplate.*` passes sourcemap options to `codeblock` and carries through `map` to the final artifact when available.
+  - Chunked rendering collects content and preserves `sourceMappingURL` comments.
+- Guarantees/limitations:
+  - Original source file name (`sourceFile`) is included in `map.sources`.
+  - Mappings are best-effort for template-generated JS; custom transforms outside templates are not mapped.
+  - Combining/minifying after build may alter positions; prefer disabling minify during debugging.
