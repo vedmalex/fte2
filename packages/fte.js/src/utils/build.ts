@@ -51,7 +51,7 @@ export function build(
   dest: string,
   options: {
     typescript: boolean
-    format: boolean
+    format: any
     pretty: boolean
     minify: boolean
     standalone: boolean
@@ -66,6 +66,8 @@ export function build(
   try {
     const files = globSync(`${src}/**/*${options.ext ? options.ext : '.njs'}`)
 
+    const moduleFormat: 'cjs' | 'esm' = (options as any).format === 'esm' ? 'esm' : 'cjs'
+
     if (options.single) {
       const filelist = files.map(file => {
         const name = path.relative(src, file)
@@ -78,7 +80,14 @@ export function build(
         } catch {}
         return { name, template }
       })
-      const templateFile = run(filelist, options.typescript ? 'singlefile.ts.njs' : 'singlefile.njs')
+      const templateFile = run(
+        filelist,
+        options.typescript
+          ? 'singlefile.ts.njs'
+          : moduleFormat === 'esm'
+          ? 'singlefile.es6.njs'
+          : 'singlefile.njs',
+      )
       if (typeof templateFile == 'string') {
         writeFile(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, templateFile, options.minify)
       } else {
@@ -117,7 +126,11 @@ export function build(
             ? 'standalone.ts.njs'
             : 'standalone.index.ts.njs'
           : options.standalone
-          ? 'standalone.njs'
+          ? moduleFormat === 'esm'
+            ? 'standalone.es6.njs'
+            : 'standalone.njs'
+          : moduleFormat === 'esm'
+          ? 'standalone.index.es6.njs'
           : 'standalone.index.njs',
       )
       if (typeof indexFile == 'string') {

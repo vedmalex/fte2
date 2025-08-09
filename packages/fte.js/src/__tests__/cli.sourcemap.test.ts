@@ -71,4 +71,33 @@ describe('CLI build sourcemap', () => {
       },
     )
   })
+
+  test('should support esm format for singlefile bundle', done => {
+    build(
+      tmpAbs,
+      outAbs,
+      {
+        typescript: false,
+        format: 'esm' as any,
+        pretty: false,
+        minify: false,
+        standalone: false,
+        single: true,
+        ext: '.njs',
+        file: 'bundle.esm',
+        sourcemap: false,
+        inlineMap: true,
+      },
+      err => {
+        try {
+          expect(err).toBeUndefined()
+          const out = fs.readFileSync(path.join(outAbs, 'bundle.esm.js'), 'utf8')
+          expect(out).toMatch(/export const templates =/)
+          done()
+        } catch (e) {
+          done(e)
+        }
+      },
+    )
+  })
 })

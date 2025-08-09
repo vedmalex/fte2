@@ -22,6 +22,7 @@ program
   .option('--minify', 'need to be minified', false)
   .option('--sourcemap', 'generate source maps', false)
   .option('--no-inline-map', 'emit external .map instead of inline')
+  .option('--format <format>', 'module format: cjs|esm', 'cjs')
   .action(function (tempalates, dest, options) {
     if (!dest) {
       dest = tempalates
