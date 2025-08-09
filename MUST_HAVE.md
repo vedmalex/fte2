@@ -1,20 +1,37 @@
 ### MUST HAVE improvements
 
+#### Completed
+
 - **Consistent return contracts**
-  - `codeblock.njs`: always return `{ code, map? }` with strong typing
-  - `MainTemplate.*.njs`: keep `{code,map?}` for TS and JS templates uniformly
-  - Normalize singlefile/compiled templates to embed only stringified, validated code
+  - `codeblock.njs`: always returns `{ code, map? }` (stringified code; map when enabled)
+  - `MainTemplate.*.njs`: unified to `{ code, map? }` for TS and JS
+  - `singlefile.*` and `compiled.njs`: validate and embed only stringified, validated code
+
+- **Bundling and formats**
+  - ESM/CJS selectable targets via CLI `--format cjs|esm` (with tests for singlefile/standalone)
+  - Fixed ESM standalone template export; added tests
+
+- **CLI and build UX**
+  - Sourcemap flags supported and tested: `--sourcemap`, `--no-inline-map`
+  - README and `--help` synced with examples/notes
+  - Failed output persisted for debugging in `packages/fte.js/tmp` (plus `.err` files in mem-fs)
+  - Output filename logic respects provided extension (no double suffix)
+
+- **Type safety and DX**
+  - Exported stable template runtime types: `TemplateOptions`, `TemplateResult`
+  - Exported `BuildOptions` from `fte.js`
+
+#### Remaining
 
 - **Source maps quality**
   - End-to-end sourcemap validation tests (compile → bundle → run → map positions)
   - Map chunk boundaries and slot/block origins; stress tests with nested blocks
-  - CLI flags to toggle `inline`/external maps; document behavior in README
+  - Document mapping guarantees/limitations per template
 
 - **Type safety and DX**
   - Strengthen public typings in `fte.js-base`, `fte.js-templates`, `fte.js-standalone`
-  - Export stable template runtime types (`TemplateOptions`, `{code,map}` contracts)
   - Strict null checks across packages; remove `any` in signatures where feasible
-  - Improve inference: expose stable API to get inferred context types programmatically
+  - Improve inference API surface (friendly helpers over raw `Inferer`)
 
 - **Chunking and partials**
   - Unify chunk API across templates (hash vs array); add guards when used as partials
@@ -22,12 +39,10 @@
   - Option to include/exclude main chunk consistently in both hash/array modes
 
 - **Bundling and formats**
-  - Output ESM/CJS selectable targets (including `singlefile.*`) with tests
-  - Add `standalone.esm` bundles and verify browser usage (`globalThis`) paths
+  - Verify browser usage paths for ESM (e.g. `globalThis`), provide example
   - Verify SWC/TS transpilation pipeline for both modes; avoid syntax regressions
 
 - **CLI and build UX**
-  - CLI flags for sourcemaps, minify, pretty, target (cjs/esm), single/standalone
   - Helpful error output with snippet + original location when SWC parse fails
   - Write last failed output to a known location (already started) with path hint
 
@@ -52,9 +67,8 @@
   - Examples (browser/node/esm) + troubleshooting guide
 
 - **Roadmap (short-term)**
-  - Stabilize `{code,map}` return everywhere and update typings
-  - Finish sourcemap E2E tests and CLI flags
-  - Ship ESM builds for standalone/singlefile
+  - Finish sourcemap E2E tests and position validation
+  - Ship browser-facing ESM examples and docs
 
 - **Roadmap (mid-term)**
   - Plugin system for custom code transforms pre/post codeblock
