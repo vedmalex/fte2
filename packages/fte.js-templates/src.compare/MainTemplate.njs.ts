@@ -32,6 +32,13 @@ export default {
         out.push("}\n");
         out.push("\n");
         const { directives  } = context;
+        const partialOptions = {
+            ...options,
+            sourceMap: options.sourceMap,
+            sourceFile: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline
+        };
         out.push("\n");
         out.push("{\n");
         if (directives.chunks) {
@@ -52,7 +59,6 @@ export default {
         out.push("    " + (content("maincontent", directives)) + "\n");
         out.push("    var out = []\n");
         out.push("\n");
-        out.push("    // sourcemap options passthrough for partials\n");
         out.push("    const partialOptions = {\n");
         out.push("      ...options,\n");
         out.push("      sourceMap: options.sourceMap,\n");

@@ -5,7 +5,15 @@
 <#@ alias 'MainTemplate.ts.njs' #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
 <#-
-const { directives } = context -#>
+const { directives } = context
+const partialOptions = {
+  ...options,
+  sourceMap: options.sourceMap,
+  sourceFile: options.sourceFile,
+  sourceRoot: options.sourceRoot,
+  inline: options.inline,
+}
+-#>
 {
 <#- if(directives.chunks){#>
 chunks: #{JSON.stringify(directives.chunks)},
@@ -24,98 +32,10 @@ aliases: {
 },
 <#}#>
 
-export interface MainTemplateOptions {
-  escapeIt: (str: string) => string;
-  applyIndent: (str: string, indent: string) => string;
-  applyDeindent: (str: string) => string;
-  sourceMap?: boolean;
-  sourceFile?: string;
-  sourceRoot?: string;
-  inline?: boolean;
-}
-
-export interface MainTemplateResult {
-  code: string;
-  map?: any;
-}
-
-<# block 'maincontent' : #>
-<#@ context 'directives'#>
-<#@ noContent #>
-<#- if(directives?.content){ -#>
-function content<T>(blockName:string, ctx:T) {
-  if(ctx === undefined || ctx === null) ctx = #{directives.context}
-  return _content(blockName, ctx, content, partial, slot)
-}
-<#-}#>
-<# end #>
-<# block 'chunks-start' : #>
-  <#@ context 'directives'#>
-  <#@ noContent #>
-  <#- if(directives.chunks){#>
-const _partial = partial
-partial = function(obj, template:string) {
-  const result = _partial(obj, template)
-  if(Array.isArray(result)){
-    result.forEach(r => {
-      chunkEnsure(r.name, r.content)
-    })
-    return ''
-  } else {
-    return result
-  }
-}
-const main = '#{directives.chunks}'
-var current = main
-let outStack = [current]
-let result: Record<string, string[]>
-
-function chunkEnsure(name, content) {
-  if (!result) {
-    result = {}
-  }
-  if (!result.hasOwnProperty(name)) {
-    result[name] = content ? content : []
-  }
-}
-function chunkStart(name) {
-  chunkEnsure(name)
-  chunkEnd()
-  current = name
-  out = []
-}
-function chunkEnd() {
-  result[current].push(...out)
-  out = []
-  current = outStack.pop() || main
-}
-chunkStart(main)
-<#-}#>
-<# end #>
-<# block 'chunks-finish' : #>
-  <#@ context 'directives'#>
-  <#@ noContent #>
-  <#- if(directives.chunks){#>
-    chunkEnd()
-    <#- if(!directives.useHash){#>
-    out = Object.keys(result)
-      <#- if(!directives.includeMainChunk){#>
-      .filter(i => i !== '#{directives.chunks}')
-      <#-}#>
-      .map(curr => ({ name: curr, content: result[curr] }))
-      <#-} else {#>
-    out = result
-      <#-if(!directives.includeMainChunk){#>
-    delete out['#{directives.chunks}']
-      <#-}#>
-    <#-}#>
-  <#-}#>
-<# end #>
-  script: function (#{directives.context}, _content, partial, slot, options: MainTemplateOptions): MainTemplateResult{
+  script: function (#{directives.context}, _content, partial, slot, options){
     #{content('maincontent', directives)}
     var out: Array<string> = []
 
-    // sourcemap options passthrough for partials
     const partialOptions = {
       ...options,
       sourceMap: options.sourceMap,
@@ -139,16 +59,16 @@ chunkStart(main)
               : chunk.content
             <#-if( directives.deindent ){#>)<#}#>
           })
-      ) as any
+      )
     }
     <#-}#>
 
     const __mainMap = typeof __main === 'string' ? undefined : __main.map
     const __result = out.join('')
     if (__mainMap) {
-      return { code: __result, map: __mainMap }
+      return { code: __result, map: __mainMap } as any
     }
-    return { code: __result }
+    return { code: __result } as any
   },
 <#-
 const blockNames = Object.keys(context.blocks)

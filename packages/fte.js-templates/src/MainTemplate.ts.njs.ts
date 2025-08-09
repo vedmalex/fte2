@@ -13,6 +13,19 @@ export default {
         }
         var out: Array<string> = [];
         const { directives  } = context;
+
+        // Pass sourcemap options to partial
+        const partialOptions = {
+            ...options,
+            sourceMap: options.sourceMap,
+            sourceFile: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline
+        } as any;
+
+        // Unwrap partial result which can be string or {code,map}
+        const mainResult: any = partial(context.main, "codeblock", partialOptions);
+        const mainCode: string = typeof mainResult === 'string' ? mainResult : mainResult.code;
         out.push("{");
         if (directives.chunks) {
             out.push("\n");
@@ -40,9 +53,8 @@ export default {
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out: Array<string> = []\n");
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        const __mainResult = partial(context.main, "codeblock");
-        const __mainCode = typeof __mainResult === 'string' ? __mainResult : __mainResult.code;
-        out.push((options.applyIndent(__mainCode, "    ")) + "\n");
+        if (typeof mainCode !== 'string') { throw new Error("MainTemplate.ts.njs: codeblock returned non-string for main"); }
+        out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -99,9 +111,10 @@ export default {
                 out.push('    "' + (blockNames[i]) + '": function(' + (block.directives.context) + ",  _content, partial, slot, options) {\n");
                 out.push((options.applyIndent(content("maincontent", block.directives), "      ")) + "\n");
                 out.push("      var out: Array<string> = []\n");
-                const __blockResult = partial(block.main, "codeblock");
-                const __blockCode = typeof __blockResult === 'string' ? __blockResult : __blockResult.code;
-                out.push((options.applyIndent(__blockCode, "      ")));
+                const blockResult: any = partial(block.main, "codeblock", partialOptions);
+                const blockCode: string = typeof blockResult === 'string' ? blockResult : blockResult.code;
+                if (typeof blockCode !== 'string') { throw new Error("MainTemplate.ts.njs: codeblock returned non-string for block '" + (blockNames[i]) + "'"); }
+                out.push((options.applyIndent(String(blockCode), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -161,9 +174,10 @@ export default {
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
                 out.push("      var out: Array<string> = []\n");
-                const __slotResult = partial(slot.main, "codeblock");
-                const __slotCode = typeof __slotResult === 'string' ? __slotResult : __slotResult.code;
-                out.push((options.applyIndent(__slotCode, "      ")));
+                const slotResult: any = partial(slot.main, "codeblock", partialOptions);
+                const slotCode: string = typeof slotResult === 'string' ? slotResult : slotResult.code;
+                if (typeof slotCode !== 'string') { throw new Error("MainTemplate.ts.njs: codeblock returned non-string for slot '" + (slotNames[i]) + "'"); }
+                out.push((options.applyIndent(String(slotCode), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -215,6 +229,10 @@ export default {
         }
         out.push("\n");
         out.push("  compile: function(this: TemplateBase) {");
+        if (directives.chunks) {
+            out.push("\n");
+            out.push("    this.chunks = " + (JSON.stringify(directives.chunks)));
+        }
         if (directives.requireAs.length > 0) {
             var rq;
             for(var i = 0, len = directives.requireAs.length; i < len; i++){
@@ -247,7 +265,11 @@ export default {
         out.push("\n");
         out.push("  }\n");
         out.push("}");
-        return out.join("");
+        const result = out.join("");
+        if (mainResult && typeof mainResult !== 'string' && mainResult.map) {
+            return { code: result, map: mainResult.map } as any;
+        }
+        return result as any;
     },
     blocks: {
         "maincontent": function(directives, _content, partial, slot, options) {

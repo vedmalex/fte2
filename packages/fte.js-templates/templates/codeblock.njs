@@ -6,7 +6,7 @@
 <#@ alias 'codeblock.njs' #>
 <#@ noContent #>
 <#@ context 'blockList' #>
-import { TemplateSourceMapGenerator, SourceMapOptions } from "fte.js-base";
+const { TemplateSourceMapGenerator } = require("fte.js-base")
 
 var textQuote = false
 const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({

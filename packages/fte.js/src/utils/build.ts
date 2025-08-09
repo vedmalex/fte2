@@ -6,6 +6,7 @@ import { compileTs } from '../compileTs'
 import { compileFull } from '../compileFull'
 import { parseFile } from '../parseFile'
 import { run } from '../run'
+import { generateContextTypes } from './contextTypes'
 
 // берет файл из реальной fs
 // записывает во временное хранилище
@@ -69,7 +70,13 @@ export function build(
       const filelist = files.map(file => {
         const name = path.relative(src, file)
         const content = fs.readFileSync(file)
-        return { name, template: parseFile(content) }
+        const template: any = parseFile(content)
+        try {
+          const ctxTypes = generateContextTypes(template)
+          template.directives = template.directives || {}
+          ;(template.directives as any).contextTypes = ctxTypes
+        } catch {}
+        return { name, template }
       })
       const templateFile = run(filelist, options.typescript ? 'singlefile.ts.njs' : 'singlefile.njs')
       if (typeof templateFile == 'string') {

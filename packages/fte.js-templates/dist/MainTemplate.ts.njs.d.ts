@@ -4,7 +4,7 @@ declare const _default: {
     aliases: {
         codeblock: string;
     };
-    script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
+    script: (context: any, _content: any, partial: any, slot: any, options: any) => any;
     blocks: {
         maincontent: (directives: any, _content: any, partial: any, slot: any, options: any) => string;
         "chunks-start": (directives: any, _content: any, partial: any, slot: any, options: any) => string;

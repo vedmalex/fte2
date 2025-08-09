@@ -215,12 +215,16 @@ export default {
             } else if (options.sourceFile) {
                 result += "\n//# sourceMappingURL=" + options.sourceFile + ".map";
             }
+            return {
+                code: result,
+                map: sourceMapGenerator.toJSON()
+            } as any;
         }
 
+        // Без карт исходников возвращаем объект-обертку для обратной совместимости
         return {
-            code: result,
-            map: sourceMapGenerator?.toJSON()
-        };
+            code: result
+        } as any;
     },
     compile: function(this: TemplateBase) {},
     dependency: {}

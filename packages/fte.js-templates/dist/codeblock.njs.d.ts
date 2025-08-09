@@ -9,10 +9,7 @@ export interface CodeBlockOptions {
 }
 declare const _default: {
     alias: string[];
-    script: (blockList: any, _content: any, partial: any, slot: any, options: CodeBlockOptions) => {
-        code: string;
-        map: import("fte.js-base").TemplateSourceMap | undefined;
-    };
+    script: (blockList: any, _content: any, partial: any, slot: any, options: CodeBlockOptions) => any;
     compile: (this: TemplateBase) => void;
     dependency: {};
 };

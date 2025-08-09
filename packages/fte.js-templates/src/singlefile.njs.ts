@@ -10,10 +10,26 @@ export default {
         var out: Array<string> = [];
         out.push('const Factory = require("fte.js-standalone").TemplateFactoryStandalone;\n');
         out.push("\n");
+        // JSDoc typedef for context if provided
+        {
+            let injected = false;
+            for(let i = 0; i < files.length; i += 1){
+                const t = (files[i].template && files[i].template.directives && (files[i].template.directives as any).contextTypes);
+                if (t && t.jsTypedef && !injected) {
+                    out.push((t.jsTypedef) + "\n");
+                    injected = true;
+                }
+            }
+        }
         out.push("const templates = {");
         files.forEach((file)=>{
             out.push("\n");
-            out.push("  ['" + ((file.template.alias || file.name)) + "']: " + (partial(file.template, "core")) + ",");
+            const core: any = partial(file.template, "core") as any;
+            const coreCode: any = (typeof core === 'string') ? core : (core && core.code);
+            if (typeof coreCode !== 'string') {
+                throw new Error('singlefile.njs: core template returned invalid result for ' + (file.name));
+            }
+            out.push("  ['" + ((file.template.alias || file.name)) + "']: " + (coreCode) + ",");
         });
         out.push("\n");
         out.push("}\n");
@@ -28,6 +44,7 @@ export default {
         out.push("exports.run = run");
         return out.join("");
     },
+    blocks: {},
     compile: function(this: TemplateBase) {
         this.factory.ensure("MainTemplate.njs");
     },

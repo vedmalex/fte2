@@ -24,6 +24,9 @@ exports.default = {
         };
         const mainResult = partial(context.main, "codeblock", partialOptions);
         const mainCode = typeof mainResult === 'string' ? mainResult : mainResult.code;
+        if (typeof mainCode !== 'string') {
+            throw new Error("MainTemplate.njs: codeblock returned non-string for main");
+        }
         const mainMap = typeof mainResult === 'string' ? undefined : mainResult.map;
         out.push("{");
         if (directives.chunks) {
@@ -40,7 +43,7 @@ exports.default = {
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out = []\n");
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        out.push((options.applyIndent(mainCode, "    ")) + "\n");
+        out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -100,7 +103,10 @@ exports.default = {
                 out.push("      var out = []\n");
                 const blockResult = partial(block.main, "codeblock", partialOptions);
                 const blockCode = typeof blockResult === 'string' ? blockResult : blockResult.code;
-                out.push((options.applyIndent(blockCode, "      ")));
+                if (typeof blockCode !== 'string') {
+                    throw new Error("MainTemplate.njs: codeblock returned non-string for block '" + (blockNames[i]) + "'");
+                }
+                out.push((options.applyIndent(String(blockCode), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -163,7 +169,10 @@ exports.default = {
                 out.push("      var out = []\n");
                 const slotResult = partial(slot.main, "codeblock", partialOptions);
                 const slotCode = typeof slotResult === 'string' ? slotResult : slotResult.code;
-                out.push((options.applyIndent(slotCode, "      ")));
+                if (typeof slotCode !== 'string') {
+                    throw new Error("MainTemplate.njs: codeblock returned non-string for slot '" + (slotNames[i]) + "'");
+                }
+                out.push((options.applyIndent(String(slotCode), "      ")));
                 if (directives.chunks) {
                     out.push("\n");
                     out.push("      if(out.some(t=>typeof t == 'object')){\n");
@@ -216,6 +225,10 @@ exports.default = {
         }
         out.push("\n");
         out.push("  compile: function() {");
+        if (directives.chunks) {
+            out.push("\n");
+            out.push("    this.chunks = " + (JSON.stringify(directives.chunks)));
+        }
         if (directives.alias) {
             out.push("\n");
             out.push("    this.alias = " + (JSON.stringify(directives.alias)));

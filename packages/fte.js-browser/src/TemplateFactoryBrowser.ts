@@ -1,12 +1,8 @@
 import { RunPartialContext, DefaultFactoryOption, TemplateConfig, TemplateFactoryBase, ChunkContent } from 'fte.js-base'
 import { TemplateBrowser } from './TemplateBrowser'
-
-export declare let global: {
-  fte<OPTIONS extends DefaultFactoryOption>(filename): TemplateConfig<OPTIONS>
-}
 export class TemplateFactoryBrowser<OPTIONS extends DefaultFactoryOption> extends TemplateFactoryBase<OPTIONS> {
   public resolveTemplateConfig(fileName: string): TemplateConfig<OPTIONS> {
-    const result = global.fte<OPTIONS>(fileName)
+    const result = (globalThis as any).fte<OPTIONS>(fileName)
     result.factory = this
     result.name = fileName
     return result

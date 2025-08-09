@@ -5,23 +5,9 @@
 <#@ alias 'MainTemplate.njs' #>
 <#@ requireAs ('codeblock.njs','codeblock') #>
 
-export interface MainTemplateOptions {
-  escapeIt: (str: string) => string;
-  applyIndent: (str: string, indent: string) => string;
-  applyDeindent: (str: string) => string;
-  sourceMap?: boolean;
-  sourceFile?: string;
-  sourceRoot?: string;
-  inline?: boolean;
-}
-
-export interface MainTemplateResult {
-  code: string;
-  map?: any;
-}
-
 <#-
-const { directives } = context -#>
+const { directives } = context
+-#>
 {
 <#- if(directives.chunks){#>
 chunks: #{JSON.stringify(directives.chunks)},
@@ -102,11 +88,10 @@ chunkStart(main)
     <#-}#>
   <#-}#>
 <# end #>
-  script: function (#{directives.context}, _content, partial, slot, options: MainTemplateOptions): MainTemplateResult{
+  script: function (#{directives.context}, _content, partial, slot, options){
     #{content('maincontent', directives)}
     var out = []
 
-    // sourcemap options passthrough for partials
     const partialOptions = {
       ...options,
       sourceMap: options.sourceMap,
@@ -130,7 +115,7 @@ chunkStart(main)
               : chunk.content
             <#-if( directives.deindent ){#>)<#}#>
           })
-      ) as any
+      )
     }
     <#-}#>
 

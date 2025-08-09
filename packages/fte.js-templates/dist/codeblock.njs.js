@@ -220,10 +220,13 @@ exports.default = {
             else if (options.sourceFile) {
                 result += "\n//# sourceMappingURL=" + options.sourceFile + ".map";
             }
+            return {
+                code: result,
+                map: sourceMapGenerator.toJSON()
+            };
         }
         return {
-            code: result,
-            map: sourceMapGenerator === null || sourceMapGenerator === void 0 ? void 0 : sourceMapGenerator.toJSON()
+            code: result
         };
     },
     compile: function () { },

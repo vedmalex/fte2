@@ -2,6 +2,7 @@ import * as memFs from 'mem-fs'
 import * as editor from 'mem-fs-editor'
 import { parse, join } from 'path'
 import * as swc from '@swc/core'
+import * as realFs from 'fs'
 
 const store = memFs.create()
 const fs = editor.create(store as any)
@@ -42,6 +43,15 @@ export function writeFile(fn: string, data: string, minify?: boolean) {
   } catch (err) {
     const parsedFn = parse(fn)
     fs.write(join(parsedFn.dir, `${parsedFn.name}.err${parsedFn.ext}`), data)
+    try {
+      // Also persist latest error to workspace for easier debugging during tests
+      const debugDir = join(process.cwd(), 'packages', 'fte.js', 'tmp')
+      if (!realFs.existsSync(debugDir)) {
+        realFs.mkdirSync(debugDir, { recursive: true })
+      }
+      const safeName = parsedFn.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+      realFs.writeFileSync(join(debugDir, `${safeName}.err${parsedFn.ext}`), data)
+    } catch {}
     console.error(err)
   }
 }
