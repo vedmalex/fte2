@@ -100,4 +100,47 @@ describe('CLI build sourcemap', () => {
       },
     )
   })
+
+  test('should support esm format for standalone index bundle', done => {
+    build(
+      tmpAbs,
+      outAbs,
+      {
+        typescript: false,
+        format: 'esm' as any,
+        pretty: false,
+        minify: false,
+        standalone: true,
+        single: false,
+        ext: '.njs',
+        file: 'index',
+        sourcemap: false,
+        inlineMap: true,
+      },
+      err => {
+        try {
+          expect(err).toBeUndefined()
+          function list(dir: string): string[] {
+            const entries = fs.readdirSync(dir)
+            let acc: string[] = []
+            for (const e of entries) {
+              const p = path.join(dir, e)
+              const st = fs.statSync(p)
+              if (st.isDirectory()) acc = acc.concat(list(p))
+              else acc.push(p)
+            }
+            return acc
+          }
+          const files = list(outAbs)
+          const hasImports = files
+            .filter(f => f.endsWith('.js'))
+            .some(f => /import\s+.*from\s+['"]/m.test(fs.readFileSync(f, 'utf8')))
+          expect(hasImports).toBeTruthy()
+          done()
+        } catch (e) {
+          done(e)
+        }
+      },
+    )
+  })
 })
