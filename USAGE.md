@@ -150,6 +150,66 @@ export const sum = (a, b) => a + b
 - Старайтесь не полагаться на лишние аргументы у `partial` — рантайм учитывает только `(obj, name)`, остальные игнорируются.
 - Не дублируйте значения в одном и том же слоте: рантайм сам предотвращает дублирование.
 
+### Асинхронный режим (`options.promise`)
+
+- Если передать в фабрику/в рантайм `options.promise: true`, сгенерированный код аккуратно «дождётся» всех значений выражений/partials/слотов, которые могут быть `Promise`.
+- В sync‑АПИ ничего не меняется, но для удобства доступны новые методы фабрики:
+  - `runAsync(context, name): Promise<string | Chunk[]>`
+  - `runPartialAsync({ context, name, options?, slots? }): Promise<string>`
+
+Пример:
+
+```ts
+const F = new TemplateFactoryStandalone(templates as any)
+F.options = { ...F.options, promise: true } as any
+
+const html = await F.runAsync({ x: Promise.resolve('X') }, 'view.njs')
+```
+
+### Стриминг (`options.stream`)
+
+- Экспериментальная возможность. При `options.stream: true` результат шаблона можно потреблять как `AsyncIterable<string>`.
+- Для не-чанковых шаблонов возвращается асинхронный генератор, который эмитит кусочки строки по мере их готовности. Для чанков — содержимое каждого чанка формируется как `AsyncIterable`.
+- В фабриках добавлен метод:
+  - `runStream(context, name): AsyncIterable<string> | string | Chunk[]`
+    - В потоковом режиме вернёт `AsyncIterable<string>` (не-чанковый шаблон) или массив чанков, где `chunk.content` — `AsyncIterable<string>`.
+- Поддерживается ранняя остановка через `options.abort` (совместимо с `AbortController`).
+- При включённом `deindent` в потоке деиндентация применяется к целому собранному блоку (в потоковом пути — буферизуется и отдается одним куском).
+
+Пример (не-чанковый шаблон):
+
+```ts
+const F = new TemplateFactoryStandalone(templates as any)
+F.options = { ...F.options, stream: true } as any
+
+const it = (F as any).runStream({ x: Promise.resolve('X') }, 'view.njs') as AsyncIterable<string>
+let acc = ''
+for await (const chunk of it) acc += chunk
+```
+
+Пример (чанковый шаблон):
+
+```ts
+const res = (F as any).runStream(ctx, 'project.njs') as Array<{name: string, content: AsyncIterable<string>}> | any
+if (Array.isArray(res)) {
+  for (const ch of res) {
+    let acc = ''
+    for await (const s of ch.content) acc += s
+    // write acc to ch.name file
+  }
+}
+```
+
+Пример отмены:
+
+```ts
+const ac = new AbortController()
+F.options = { ...F.options, stream: true, abort: ac.signal } as any
+const it = (F as any).runStream(ctx, 'long.njs') as AsyncIterable<string>
+setTimeout(() => ac.abort(), 100) // stop after 100ms
+for await (const _ of it) { /* ... */ }
+```
+
 ### Частые паттерны
 - Сбор импортов через слоты:
 
@@ -204,6 +264,9 @@ if (f.type === 'JSON') {
 - `inline?: boolean` — встроить карту как data‑URL; иначе наружный `.map` (при сборке).
 - `sourceRoot?: string` — корень исходников для карт.
 - `sourceFile?: string` — имя результирующего файла (используется в карте и `//# sourceMappingURL`).
+- `promise?: boolean` — задействовать асинхронную склейку значений (`runAsync`).
+- `stream?: boolean` — включить потоковую выдачу (`runStream`).
+- `abort?: AbortSignal` — опциональный сигнал отмены для потокового режима.
 
 Примеры использования:
 
