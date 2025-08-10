@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>fte.js stream example</title>
+  </head>
+  <body>
+    <pre id="out"></pre>
+    <script type="module">
+      import { TemplateFactoryBrowser } from '../../packages/fte.js-browser/dist'
+      import tpl from '../../packages/fte.js-templates/dist/index.js'
+      async function run() {
+        const F = new TemplateFactoryBrowser()
+        F.options = { ...F.options, stream: true }
+        // register
+        Object.keys(tpl).forEach(k => (globalThis.fteTemplates = tpl))
+        globalThis.fte = (name) => tpl[name]
+
+        const res = F.run({
+          directives: { context: 'context', content: false, chunks: undefined, alias: undefined, deindent: false, requireAs: [], blocks: {}, slots: {} },
+          blocks: {},
+          slots: {},
+          main: [
+            { type: 'text', content: 'Hi ', eol: false },
+            { type: 'expression', content: 'context.name', start: true, end: true, eol: false },
+          ],
+        }, 'MainTemplate.njs')
+        const code = typeof res === 'string' ? res : res.code
+        const cfg = eval('(' + code + ')')
+        const Local = new TemplateFactoryBrowser()
+        Local.register(new (await import('../../packages/fte.js-browser/dist/TemplateBrowser')).TemplateBrowser(cfg), 'x.njs')
+        Local.options = { ...Local.options, stream: true }
+        const out = document.getElementById('out')
+        const it = Local.runStream({ name: Promise.resolve('ESM') }, 'x.njs')
+        for await (const s of it) out.textContent += s
+      }
+      run()
+    </script>
+  </body>
+</html>
