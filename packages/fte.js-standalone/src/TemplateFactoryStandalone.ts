@@ -40,6 +40,16 @@ export class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOption> ext
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
+  public async runAsync<T>(context: T, name: string): Promise<string | Array<{ name: string; content: string }>> {
+    const templ = this.ensure(name)
+    const bc: any = this.blockContent(templ)
+    if (typeof bc.runAsync === 'function') {
+      return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options)
+    }
+    // Fallback to sync path if template is purely sync
+    return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+  }
+
   public override runPartial<T, OPTIONS extends DefaultFactoryOption>({
     context,
     name,
@@ -57,7 +67,31 @@ export class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOption> ext
       const bc = this.blockContent(templ, slots)
       return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options }) as string
     } else {
-      throw new Error("cant't use template with chunks as partial")
+      throw new Error(`can't use chunked template as partial: ${name}`)
+    }
+  }
+
+  public async runPartialAsync<T, OPTIONS extends DefaultFactoryOption>({
+    context,
+    name,
+    slots,
+    options,
+  }: {
+    context: T
+    name: string
+    absPath?: boolean
+    options?: OPTIONS
+    slots?: SlotsHash
+  }): Promise<string> {
+    const templ = this.ensure(name)
+    if (!templ.chunks) {
+      const bc: any = this.blockContent(templ, slots)
+      if (typeof bc.runAsync === 'function') {
+        return (await bc.runAsync(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options })) as string
+      }
+      return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options }) as string
+    } else {
+      throw new Error(`can't use chunked template as partial: ${name}`)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { BlockRunFunction } from './BlockRunFunction';
+import { BlockRunFunction, BlockRunFunctionAsync } from './BlockRunFunction';
 import { ContentFunction } from './ContentFunction';
 import { DefaultFactoryOption } from './DefaultFactoryOption';
 import { PartialFunction } from './PartialFunction';
@@ -8,6 +8,7 @@ export type BlockContent<OPTIONS extends DefaultFactoryOption = DefaultFactoryOp
     partial: PartialFunction;
     content: ContentFunction;
     run: BlockRunFunction;
+    runAsync?: BlockRunFunctionAsync;
     slots: SlotsHash;
     slot: SlotFunction;
     options: OPTIONS;

@@ -10,11 +10,9 @@ const fs = editor.create(store as any)
 function parseFile(text: string, minify: boolean = false) {
   let result: string
   try {
-    if (minify) {
-      result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: true }).code
-    } else {
-      result = swc.printSync(swc.parseSync(text, { syntax: 'typescript' }), { minify: false }).code
-    }
+    const ast = swc.parseSync(text, { syntax: 'typescript', comments: true } as any)
+    // Preserve comments on print. swc attaches comments to ast; printSync keeps them by default.
+    result = swc.printSync(ast, { minify }).code
     return result
   } catch (err) {
     try {
@@ -32,6 +30,8 @@ export function writeFile(fn: string, data: string, minify?: boolean) {
     // Preserve sourceMappingURL comments removed by SWC
     const inlineMatch = data.match(/\/\/\#\s*sourceMappingURL=data:application\/json;base64,[^\n\r]+/)
     const externalMatch = data.match(/\/\/\#\s*sourceMappingURL=[^\n\r]+\.map/)
+    // Capture typedef block comments which SWC may drop on print
+    const typedefBlocks = (data.match(/\/\*\*[\s\S]*?\*\//g) || []).filter(b => /@typedef/.test(b))
 
     let result = parseFile(data, minify)
 
@@ -42,6 +42,11 @@ export function writeFile(fn: string, data: string, minify?: boolean) {
       } else if (externalMatch) {
         result += `\n${externalMatch[0]}`
       }
+    }
+
+    // Re-inject typedef block if missing after print
+    if (!/@typedef/.test(result) && typedefBlocks.length > 0) {
+      result = `${typedefBlocks[0]}\n${result}`
     }
 
     fs.write(fn, result)

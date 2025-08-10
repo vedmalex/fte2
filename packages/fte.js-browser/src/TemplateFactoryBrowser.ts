@@ -2,7 +2,7 @@ import { RunPartialContext, DefaultFactoryOption, TemplateConfig, TemplateFactor
 import { TemplateBrowser } from './TemplateBrowser'
 export class TemplateFactoryBrowser<OPTIONS extends DefaultFactoryOption> extends TemplateFactoryBase<OPTIONS> {
   public resolveTemplateConfig(fileName: string): TemplateConfig<OPTIONS> {
-    const result = (globalThis as any).fte<OPTIONS>(fileName)
+    const result = ((globalThis as any).fte)(fileName) as TemplateConfig<OPTIONS>
     result.factory = this
     result.name = fileName
     return result
@@ -22,13 +22,29 @@ export class TemplateFactoryBrowser<OPTIONS extends DefaultFactoryOption> extend
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
+  public async runAsync<T>(context: T, name: string): Promise<string | Array<ChunkContent>> {
+    const templ = this.ensure(name)
+    const bc: any = this.blockContent(templ)
+    return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options)
+  }
+
   public override runPartial<T>({ context, name, options, slots }: RunPartialContext<T, OPTIONS>): string {
     const templ = this.ensure(name)
     if (!templ.chunks) {
       const bc = this.blockContent(templ, slots)
       return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...(options ?? {}) }) as string
     } else {
-      throw new Error("cant't use template with chunks as partial")
+      throw new Error(`can't use chunked template as partial: ${name}`)
+    }
+  }
+
+  public async runPartialAsync<T>({ context, name, options, slots }: RunPartialContext<T, OPTIONS>): Promise<string> {
+    const templ = this.ensure(name)
+    if (!templ.chunks) {
+      const bc: any = this.blockContent(templ, slots)
+      return (await bc.runAsync(context, bc.content, bc.partial, bc.slot, { ...this.options, ...(options ?? {}) })) as string
+    } else {
+      throw new Error(`can't use chunked template as partial: ${name}`)
     }
   }
 }

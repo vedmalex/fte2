@@ -85,4 +85,52 @@ describe('E2E sourcemaps (compile → bundle → run)', () => {
       },
     )
   })
+
+  test('map contains sourcesContent with original template', done => {
+    const tpl = [
+      "Alpha ",
+      "<% const y = 2; %>",
+      "<%= who %>\n",
+      "Beta\n",
+    ].join('')
+    const subdir = path.join(src, 'b')
+    fs.mkdirSync(subdir, { recursive: true })
+    const inFile = path.join(subdir, 'orig.njs')
+    fs.writeFileSync(inFile, tpl)
+
+    build(
+      src,
+      dest,
+      {
+        typescript: false,
+        format: 'cjs' as any,
+        pretty: false,
+        minify: false,
+        standalone: false,
+        single: false,
+        ext: '.njs',
+        file: 'index',
+        sourcemap: true,
+        inlineMap: false,
+      },
+      err => {
+        try {
+          expect(err).toBeUndefined()
+          const outJs = path.join(dest, 'b', 'orig.njs.js')
+          const outMap = outJs + '.map'
+          const code = fs.readFileSync(outJs, 'utf8')
+          expect(code).toMatch(/sourceMappingURL=.*\.map\s*$/m)
+          const map = JSON.parse(fs.readFileSync(outMap, 'utf8'))
+          expect(Array.isArray(map.sourcesContent)).toBeTruthy()
+          const sc = (map.sourcesContent || []).join('\n')
+          expect(sc).toContain('Alpha ')
+          expect(sc).toContain('<% const y = 2; %>')
+          expect(sc).toContain('<%= who %>')
+          done()
+        } catch (e) {
+          done(e)
+        }
+      },
+    )
+  })
 })

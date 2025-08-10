@@ -9,7 +9,7 @@ export type TemplateConfig<OPTIONS extends DefaultFactoryOption = DefaultFactory
   name?: string
   absPath?: string
   parent?: string
-  options?: Record<string, any>
+  options?: OPTIONS
   blocks?: BlocksHash
   slots?: BlocksHash
   aliases?: HashTypeGeneric<string>

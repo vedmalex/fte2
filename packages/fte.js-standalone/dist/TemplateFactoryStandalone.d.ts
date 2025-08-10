@@ -10,6 +10,10 @@ export declare class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOpt
         name: string;
         content: string;
     }>;
+    runAsync<T>(context: T, name: string): Promise<string | Array<{
+        name: string;
+        content: string;
+    }>>;
     runPartial<T, OPTIONS extends DefaultFactoryOption>({ context, name, slots, options, }: {
         context: T;
         name: string;
@@ -17,5 +21,12 @@ export declare class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOpt
         options?: OPTIONS;
         slots?: SlotsHash;
     }): string;
+    runPartialAsync<T, OPTIONS extends DefaultFactoryOption>({ context, name, slots, options, }: {
+        context: T;
+        name: string;
+        absPath?: boolean;
+        options?: OPTIONS;
+        slots?: SlotsHash;
+    }): Promise<string>;
 }
 //# sourceMappingURL=TemplateFactoryStandalone.d.ts.map

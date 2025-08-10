@@ -35,6 +35,14 @@ class TemplateFactoryStandalone extends fte_js_base_1.TemplateFactoryBase {
         const bc = this.blockContent(templ);
         return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
     }
+    async runAsync(context, name) {
+        const templ = this.ensure(name);
+        const bc = this.blockContent(templ);
+        if (typeof bc.runAsync === 'function') {
+            return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options);
+        }
+        return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+    }
     runPartial({ context, name, slots, options, }) {
         const templ = this.ensure(name);
         if (!templ.chunks) {
@@ -42,7 +50,20 @@ class TemplateFactoryStandalone extends fte_js_base_1.TemplateFactoryBase {
             return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options });
         }
         else {
-            throw new Error("cant't use template with chunks as partial");
+            throw new Error(`can't use chunked template as partial: ${name}`);
+        }
+    }
+    async runPartialAsync({ context, name, slots, options, }) {
+        const templ = this.ensure(name);
+        if (!templ.chunks) {
+            const bc = this.blockContent(templ, slots);
+            if (typeof bc.runAsync === 'function') {
+                return (await bc.runAsync(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options }));
+            }
+            return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...options });
+        }
+        else {
+            throw new Error(`can't use chunked template as partial: ${name}`);
         }
     }
 }

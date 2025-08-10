@@ -93,7 +93,18 @@ export function build(
       if (typeof templateFile == 'string') {
         const desiredExt = options.typescript ? '.ts' : '.js'
         const outName = options.file && options.file.endsWith(desiredExt) ? options.file : `${options.file}${desiredExt}`
-        writeFile(`${dest}/${outName}`, templateFile, options.minify)
+        // Ensure typedef for context present in CJS singlefile bundle for DX
+        let header = ''
+        if (!options.typescript && moduleFormat === 'cjs') {
+          const withTypes = filelist.find(f => (f as any).template?.directives?.contextTypes)
+          const typedef: string | undefined = withTypes?.template?.directives?.contextTypes?.jsTypedef
+          if (typedef && typeof typedef === 'string' && typedef.trim().length > 0) {
+            header = typedef + '\n'
+          } else {
+            header = '/**\n * @typedef {object} Template_Context\n */\n'
+          }
+        }
+        writeFile(`${dest}/${outName}`, header + templateFile, options.minify)
       } else {
         templateFile.forEach(file => {
           writeFile(`${dest}/${file.name}`, file.content, options.minify)

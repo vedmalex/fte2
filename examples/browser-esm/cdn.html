@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>FTE.js ESM Browser Example (CDN)</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      // Ensure globalThis is defined in older environments
+      window.globalThis = window.globalThis || window;
+    </script>
+    <script type="module">
+      // NOTE: Pin versions as needed
+      import templates from 'https://unpkg.com/fte.js-templates@3.0.0-rc.12/dist/index.js';
+      import { TemplateFactoryStandalone as Factory } from 'https://unpkg.com/fte.js-standalone@3.0.0-rc.12/dist/TemplateFactoryStandalone.js';
+
+      const t = {
+        name: 'hello.njs',
+        directives: { context: 'context', requireAs: [], require: [], blocks: {}, slots: {} },
+        blocks: {},
+        slots: {},
+        main: [
+          { type: 'text', content: 'Hello ', eol: false },
+          { type: 'expression', content: 'name', start: true, end: true, eol: true },
+        ],
+      };
+
+      const compiled = templates['compiled.njs'].script(
+        t,
+        null,
+        (obj, name) => templates[name],
+        null,
+        { applyIndent: s => s, applyDeindent: s => s, escapeIt: s => s }
+      );
+
+      const helloTemplate = eval('(' + (typeof compiled === 'string' ? compiled : compiled.code) + ')');
+      const F = new Factory({ 'hello.njs': helloTemplate });
+      const html = F.run({ name: 'world' }, 'hello.njs');
+      document.getElementById('app').textContent = html;
+    </script>
+  </body>
+</html>

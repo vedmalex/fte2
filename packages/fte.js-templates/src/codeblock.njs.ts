@@ -17,6 +17,13 @@ export default {
     script: function(blockList, _content, partial, slot, options: CodeBlockOptions) {
         var out: Array<string> = [];
         var textQuote = false;
+        const asyncMode = !!(options as any)?.promise;
+        if (asyncMode) {
+            out.push("const __isThenable = v => v && typeof v.then==='function'\n");
+            out.push("const __then = (v,f) => __isThenable(v) ? v.then(f) : f(v)\n");
+            out.push("const __esc = v => __then(v, options.escapeIt)\n");
+            out.push("const __ind = (v,i) => __then(v, x => options.applyIndent(x, i))\n");
+        }
         const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({
           file: options.sourceFile,
           sourceRoot: options.sourceRoot,
@@ -27,25 +34,39 @@ export default {
         let generatedColumn = 0;
 
         const addMapping = (block: any, content: string) => {
-          if (sourceMapGenerator && block.sourceFile && block.originalStart) {
-            sourceMapGenerator.addSegment({
-              generatedLine,
-              generatedColumn,
-              originalLine: block.originalStart.line,
-              originalColumn: block.originalStart.column,
-              source: block.sourceFile,
-              content: block.sourceContent,
-              name: block.type
-            });
+          if (!sourceMapGenerator || !block.sourceFile || !block.originalStart) return;
 
-            // Обновляем позиции в сгенерированном коде
-            const lines = content.split('\n');
-            if (lines.length > 1) {
-              generatedLine += lines.length - 1;
-              generatedColumn = lines[lines.length - 1].length;
-            } else {
-              generatedColumn += content.length;
+          // Add mapping at current position
+          sourceMapGenerator.addSegment({
+            generatedLine,
+            generatedColumn,
+            originalLine: block.originalStart.line,
+            originalColumn: block.originalStart.column,
+            source: block.sourceFile,
+            content: block.sourceContent,
+            name: block.type,
+          });
+
+          // For each subsequent line in the emitted content, add a mapping at line start
+          // This increases mapping granularity and aligns mapping lines with code lines
+          const lines = content.split('\n');
+          if (lines.length > 1) {
+            for (let i = 1; i < lines.length; i += 1) {
+              const lineStartColumn = 0;
+              sourceMapGenerator.addSegment({
+                generatedLine: generatedLine + i,
+                generatedColumn: lineStartColumn,
+                originalLine: block.originalStart.line,
+                originalColumn: block.originalStart.column,
+                source: block.sourceFile,
+                content: block.sourceContent,
+                name: block.type,
+              });
             }
+            generatedLine += lines.length - 1;
+            generatedColumn = lines[lines.length - 1].length;
+          } else {
+            generatedColumn += content.length;
           }
         };
 
@@ -75,6 +96,13 @@ export default {
                 switch(block.type){
                     case "text":
                         {
+                            if (asyncMode) {
+                                // In async mode, push each text segment separately to avoid mixing with thenables
+                                const content = JSON.stringify(cont + (block.eol ? "\n" : ""));
+                                addMapping(block, content);
+                                out.push("out.push(" + content + ");" + (last ? "" : "\n"));
+                                break;
+                            }
                             let res = "";
                             if (!textQuote) {
                                 textQuote = true;
@@ -99,6 +127,16 @@ export default {
                         break;
                     case "uexpression":
                         {
+                            if (asyncMode) {
+                                let lcont = "__esc(" + cont + ")";
+                                if (block.indent) {
+                                    lcont = "__ind(" + lcont + ", '" + block.indent + "')";
+                                }
+                                const content = lcont;
+                                addMapping(block, content);
+                                out.push("out.push(" + content + ");" + (block.eol ? "\n" : "\n"));
+                                break;
+                            }
                             let res = "";
                             if (!textQuote) {
                                 textQuote = true;
@@ -107,9 +145,11 @@ export default {
                                 let lasItem = out.pop();
                                 res = lasItem + " + ";
                             }
-                            let lcont = "options.escapeIt(" + cont + ")";
+                            let lcont = asyncMode ? ("__esc(" + cont + ")") : ("options.escapeIt(" + cont + ")");
                             if (block.indent) {
-                                lcont = "options.applyIndent(" + lcont + ", '" + block.indent + "')";
+                                lcont = asyncMode
+                                  ? ("__ind(" + lcont + ", '" + block.indent + "')")
+                                  : ("options.applyIndent(" + lcont + ", '" + block.indent + "')");
                             }
                             let content: string;
                             if (block.start && block.end) {
@@ -144,6 +184,15 @@ export default {
                         break;
                     case "expression":
                         {
+                            if (asyncMode) {
+                                if (block.indent) {
+                                    cont = "__ind(" + cont + ", '" + block.indent + "')";
+                                }
+                                const content = cont;
+                                addMapping(block, content);
+                                out.push("out.push(" + content + ");" + (block.eol ? "\n" : "\n"));
+                                break;
+                            }
                             let res = "";
                             if (!textQuote) {
                                 textQuote = true;
@@ -155,7 +204,9 @@ export default {
                                 }
                             }
                             if (block.indent) {
-                                cont = "options.applyIndent(" + cont + ", '" + block.indent + "')";
+                                cont = asyncMode
+                                  ? ("__ind(" + cont + ", '" + block.indent + "')")
+                                  : ("options.applyIndent(" + cont + ", '" + block.indent + "')");
                             }
                             let content: string;
                             if (block.start && block.end) {

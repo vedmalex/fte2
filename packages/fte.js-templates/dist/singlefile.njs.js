@@ -20,6 +20,9 @@ exports.default = {
                     injected = true;
                 }
             }
+            if (!injected) {
+                out.push("/**\\n * @typedef {object} Template_Context\\n */\n");
+            }
         }
         out.push("const templates = {");
         files.forEach((file) => {

@@ -165,11 +165,44 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
         }
         return go.call(tpl, $context, $content, $partial, this.slot)
       },
+      runAsync<T>(
+        $context: T,
+        $content: ContentFunction,
+        $partial: PartialFunction,
+      ): Promise<string | Array<{ name: string; content: string }>> {
+        async function go(
+          this: TemplateBase<OPTIONS>,
+          context,
+          content,
+          partial,
+          slot,
+        ): Promise<string | Array<{ name: string; content: string }>> {
+          const $this = this as TemplateBase<OPTIONS>
+          if ($this.parent) {
+            const parent = self.ensure($this.parent)
+            scripts.push($this.script)
+            return go.call(parent, context, content, partial, slot)
+          } else {
+            try {
+              const result = ($this.script as any)(context, content, partial, slot, self.options)
+              return await result
+            } catch (e) {
+              throw new Error(
+                `template ${$this.name} failed to execute with error
+                  '${(e as Error).message}
+                  ${(e as Error).stack}'`,
+              )
+            }
+          }
+        }
+        return go.call(tpl, $context, $content, $partial, this.slot)
+      },
       options: { ...this.options },
     }
     bc.content = bc.content.bind(bc)
     bc.partial = bc.partial.bind(bc)
     bc.run = bc.run.bind(bc)
+    ;(bc as any).runAsync = (bc as any).runAsync ? (bc as any).runAsync.bind(bc) : (bc as any).runAsync
     bc.slot = bc.slot.bind(bc)
     return bc
   }

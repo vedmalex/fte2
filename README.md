@@ -94,7 +94,9 @@ console.log(F.run({ name: 'world' }, 'a/t.njs'))
 
 ### Browser (ESM)
 
-See `examples/browser-esm/index.html` for a minimal wiring example using `<script type="module">`.
+- Local example: `examples/browser-esm/globalthis.html`
+- CDN example: `examples/browser-esm/cdn.html`
+- Guide: `docs/browser-esm.md`
 
 ## Sourcemaps
 
@@ -104,7 +106,14 @@ See `examples/browser-esm/index.html` for a minimal wiring example using `<scrip
   - `codeblock.njs` emits segments for text, expressions (escaped and raw), and code blocks; newlines update generated positions.
   - `MainTemplate.*` passes sourcemap options to `codeblock` and carries through `map` to the final artifact when available.
   - Chunked rendering collects content and preserves `sourceMappingURL` comments.
-- Guarantees/limitations:
-  - Original source file name (`sourceFile`) is included in `map.sources`.
-  - Mappings are best-effort for template-generated JS; custom transforms outside templates are not mapped.
-  - Combining/minifying after build may alter positions; prefer disabling minify during debugging.
+- Guarantees/limitations: see `docs/source-map-guarantees.md` for details.
+
+## DX helpers
+
+- `generateContextTypes(template)` from `fte.js` produces inferred context typedefs/TS-interface for use in bundles.
+  ```ts
+  import { generateContextTypes } from 'fte.js'
+  const types = generateContextTypes(templateAst)
+  console.log(types.jsTypedef) // JSDoc typedef
+  console.log(types.tsInterface) // TS interface
+  ```

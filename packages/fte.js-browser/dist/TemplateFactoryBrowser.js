@@ -5,7 +5,7 @@ const fte_js_base_1 = require("fte.js-base");
 const TemplateBrowser_1 = require("./TemplateBrowser");
 class TemplateFactoryBrowser extends fte_js_base_1.TemplateFactoryBase {
     resolveTemplateConfig(fileName) {
-        const result = exports.global.fte(fileName);
+        const result = (globalThis.fte)(fileName);
         result.factory = this;
         result.name = fileName;
         return result;
@@ -22,6 +22,11 @@ class TemplateFactoryBrowser extends fte_js_base_1.TemplateFactoryBase {
         const bc = this.blockContent(templ);
         return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
     }
+    async runAsync(context, name) {
+        const templ = this.ensure(name);
+        const bc = this.blockContent(templ);
+        return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options);
+    }
     runPartial({ context, name, options, slots }) {
         const templ = this.ensure(name);
         if (!templ.chunks) {
@@ -29,7 +34,17 @@ class TemplateFactoryBrowser extends fte_js_base_1.TemplateFactoryBase {
             return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...(options !== null && options !== void 0 ? options : {}) });
         }
         else {
-            throw new Error("cant't use template with chunks as partial");
+            throw new Error(`can't use chunked template as partial: ${name}`);
+        }
+    }
+    async runPartialAsync({ context, name, options, slots }) {
+        const templ = this.ensure(name);
+        if (!templ.chunks) {
+            const bc = this.blockContent(templ, slots);
+            return (await bc.runAsync(context, bc.content, bc.partial, bc.slot, { ...this.options, ...(options !== null && options !== void 0 ? options : {}) }));
+        }
+        else {
+            throw new Error(`can't use chunked template as partial: ${name}`);
         }
     }
 }

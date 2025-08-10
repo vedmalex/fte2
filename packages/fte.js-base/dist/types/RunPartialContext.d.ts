@@ -1,6 +1,6 @@
 import { DefaultFactoryOption } from './DefaultFactoryOption';
 import { SlotsHash } from './SlotsHash';
-export type RunPartialContext<T = any, OPTIONS extends DefaultFactoryOption = DefaultFactoryOption> = {
+export type RunPartialContext<T, OPTIONS extends DefaultFactoryOption = DefaultFactoryOption> = {
     context: T;
     name: string;
     absPath?: boolean;

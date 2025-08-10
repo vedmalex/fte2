@@ -67,6 +67,6 @@ describe('TemplateFactoryBrowser', () => {
       }
     }
     const G = new TemplateFactoryBrowser()
-    expect(() => G.runPartial({ context: {}, name: 'bar.njs' })).toThrow("cant't use template with chunks as partial")
+    expect(() => G.runPartial({ context: {}, name: 'bar.njs' })).toThrow("can't use chunked template as partial")
   })
 })

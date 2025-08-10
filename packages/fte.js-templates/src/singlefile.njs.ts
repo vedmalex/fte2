@@ -20,6 +20,10 @@ export default {
                     injected = true;
                 }
             }
+            if (!injected) {
+                // Fallback to empty typedef to satisfy consumers
+                out.push("/**\\n * @typedef {object} Template_Context\\n */\n");
+            }
         }
         out.push("const templates = {");
         files.forEach((file)=>{

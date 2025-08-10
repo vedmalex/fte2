@@ -139,11 +139,34 @@ class TemplateFactoryBase {
                 }
                 return go.call(tpl, $context, $content, $partial, this.slot);
             },
+            runAsync($context, $content, $partial) {
+                async function go(context, content, partial, slot) {
+                    const $this = this;
+                    if ($this.parent) {
+                        const parent = self.ensure($this.parent);
+                        scripts.push($this.script);
+                        return go.call(parent, context, content, partial, slot);
+                    }
+                    else {
+                        try {
+                            const result = $this.script(context, content, partial, slot, self.options);
+                            return await result;
+                        }
+                        catch (e) {
+                            throw new Error(`template ${$this.name} failed to execute with error
+                  '${e.message}
+                  ${e.stack}'`);
+                        }
+                    }
+                }
+                return go.call(tpl, $context, $content, $partial, this.slot);
+            },
             options: { ...this.options },
         };
         bc.content = bc.content.bind(bc);
         bc.partial = bc.partial.bind(bc);
         bc.run = bc.run.bind(bc);
+        bc.runAsync = bc.runAsync ? bc.runAsync.bind(bc) : bc.runAsync;
         bc.slot = bc.slot.bind(bc);
         return bc;
     }

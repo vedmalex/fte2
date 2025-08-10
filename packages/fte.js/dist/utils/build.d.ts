@@ -1,6 +1,6 @@
-export declare function build(src: string, dest: string, options: {
+export type BuildOptions = {
     typescript: boolean;
-    format: boolean;
+    format: any;
     pretty: boolean;
     minify: boolean;
     standalone: boolean;
@@ -9,5 +9,6 @@ export declare function build(src: string, dest: string, options: {
     file: string;
     sourcemap?: boolean;
     inlineMap?: boolean;
-}, callback: (err?: unknown) => void): void;
+};
+export declare function build(src: string, dest: string, options: BuildOptions, callback: (err?: unknown) => void): void;
 //# sourceMappingURL=build.d.ts.map

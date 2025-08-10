@@ -167,7 +167,7 @@ if(slotNames.length > 0) {#>
   slots : {
 <#-
   for(let i = 0; i < slotNames.length; i+=1){
-    const slot = context.blocks[slotNames[i]]
+    const slot = context.slots[slotNames[i]]
 #>
     "#{slotNames[i]}": function(#{slot.directives.context},  _content, partial, slot, options){
       #{content('maincontent', slot.directives)}

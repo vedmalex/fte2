@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const fte_js_base_1 = require("fte.js-base");
 exports.default = {
     alias: [
         "MainTemplate.njs"
@@ -8,6 +9,7 @@ exports.default = {
         "codeblock": "codeblock.njs"
     },
     script: function (context, _content, partial, slot, options) {
+        var _a;
         function content(blockName, ctx) {
             if (ctx === undefined || ctx === null)
                 ctx = context;
@@ -39,11 +41,23 @@ exports.default = {
         }
         out.push("\n");
         out.push("\n");
+        const asyncMode = !!(options === null || options === void 0 ? void 0 : options.promise);
         out.push("script: function (" + (directives.context) + ", _content, partial, slot, options){\n");
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out = []\n");
+        if (asyncMode) {
+            out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
+            out.push("    const __aj = async arr => (await Promise.all(arr.map(v => __isThenable(v)? v : Promise.resolve(v)))).join('')\n");
+        }
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
+        out.push("/*__MAIN_START__*/\n");
+        if (asyncMode) {
+            out.push((options.applyIndent("(async ()=>{\n" + String(mainCode) + "\n})().then(v=>{ if(typeof v==='string') out.push(v) })", "    ")) + "\n");
+        }
+        else {
+            out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
+        }
+        out.push("/*__MAIN_END__*/");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
@@ -66,28 +80,38 @@ exports.default = {
             out.push("        )\n");
             out.push("      )\n");
             out.push("    } else {\n");
-            out.push("      return ");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
+            if (asyncMode) {
+                out.push("      return __aj(out)\n");
             }
-            out.push("out");
-            if (directives.deindent) {
-                out.push(")");
+            else {
+                out.push("      return ");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("out");
+                if (directives.deindent) {
+                    out.push(")");
+                }
+                out.push(".join('')\n");
             }
-            out.push(".join('')\n");
             out.push("    }");
         }
         else {
             out.push("\n");
-            out.push("      return ");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
+            if (asyncMode) {
+                out.push("      return __aj(out)");
             }
-            out.push("out");
-            if (directives.deindent) {
-                out.push(")");
+            else {
+                out.push("      return ");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("out");
+                if (directives.deindent) {
+                    out.push(")");
+                }
+                out.push(".join('')");
             }
-            out.push(".join('')");
         }
         out.push("\n");
         out.push("  },");
@@ -128,15 +152,20 @@ exports.default = {
                     out.push("          )\n");
                     out.push("        )\n");
                     out.push("      } else {\n");
-                    out.push("        return ");
-                    if (directives.deindent) {
-                        out.push(" options.applyDeindent(");
+                    if (asyncMode) {
+                        out.push("        return __aj(out)\n");
                     }
-                    out.push("out");
-                    if (directives.deindent) {
-                        out.push(")");
+                    else {
+                        out.push("        return ");
+                        if (directives.deindent) {
+                            out.push(" options.applyDeindent(");
+                        }
+                        out.push("out");
+                        if (directives.deindent) {
+                            out.push(")");
+                        }
+                        out.push(".join('')\n");
                     }
-                    out.push(".join('')\n");
                     out.push("      }");
                 }
                 else {
@@ -162,7 +191,7 @@ exports.default = {
             out.push("\n");
             out.push("  slots : {");
             for (let i = 0; i < slotNames.length; i += 1) {
-                const slot = context.blocks[slotNames[i]];
+                const slot = context.slots[slotNames[i]];
                 out.push("\n");
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
@@ -194,15 +223,20 @@ exports.default = {
                     out.push("          )\n");
                     out.push("        )\n");
                     out.push("      } else {\n");
-                    out.push("        return ");
-                    if (directives.deindent) {
-                        out.push(" options.applyDeindent(");
+                    if (asyncMode) {
+                        out.push("        return __aj(out)\n");
                     }
-                    out.push("out");
-                    if (directives.deindent) {
-                        out.push(")");
+                    else {
+                        out.push("        return ");
+                        if (directives.deindent) {
+                            out.push(" options.applyDeindent(");
+                        }
+                        out.push("out");
+                        if (directives.deindent) {
+                            out.push(")");
+                        }
+                        out.push(".join('')\n");
                     }
-                    out.push(".join('')\n");
                     out.push("      }");
                 }
                 else {
@@ -267,11 +301,51 @@ exports.default = {
         out.push("\n");
         out.push("  }\n");
         out.push("}");
-        const result = out.join("");
+        let result = out.join("");
         if (mainMap) {
+            const startMarker = "/*__MAIN_START__*/\n";
+            const endMarker = "/*__MAIN_END__*/";
+            const startIdx = result.indexOf(startMarker);
+            const endIdx = result.indexOf(endMarker);
+            const totalLines = result.split(/\r?\n/).length;
+            const prefixLines = startIdx >= 0 ? result.slice(0, startIdx).split(/\r?\n/).length : 0;
+            const indentColumns = 4;
+            result = result.replace(startMarker, "").replace(endMarker, "");
+            const gen = new fte_js_base_1.TemplateSourceMapGenerator({
+                file: options.sourceFile,
+                sourceRoot: options.sourceRoot,
+            });
+            const primarySource = Array.isArray(mainMap.sources) && mainMap.sources.length
+                ? mainMap.sources[0]
+                : 'template.njs';
+            for (let i = 1; i <= totalLines; i += 1) {
+                gen.addSegment({
+                    generatedLine: i,
+                    generatedColumn: 0,
+                    originalLine: 1,
+                    originalColumn: 0,
+                    source: primarySource,
+                    name: undefined,
+                    content: undefined,
+                });
+            }
+            const segs = ((_a = mainMap === null || mainMap === void 0 ? void 0 : mainMap.template) === null || _a === void 0 ? void 0 : _a.segments) || [];
+            if (Array.isArray(segs)) {
+                for (const s of segs) {
+                    gen.addSegment({
+                        generatedLine: prefixLines + s.generatedLine,
+                        generatedColumn: indentColumns + (s.generatedColumn || 0),
+                        originalLine: s.originalLine,
+                        originalColumn: s.originalColumn,
+                        source: s.source,
+                        name: s.name,
+                        content: s.content,
+                    });
+                }
+            }
             return {
                 code: result,
-                map: mainMap
+                map: gen.toJSON(),
             };
         }
         return {

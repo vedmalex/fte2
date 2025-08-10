@@ -1,4 +1,5 @@
 import { TemplateBase } from "fte.js-base";
+import { TemplateSourceMapGenerator } from "fte.js-base";
 
 export interface MainTemplateOptions {
     escapeIt: (str: string) => string;
@@ -8,6 +9,7 @@ export interface MainTemplateOptions {
     sourceFile?: string;
     sourceRoot?: string;
     inline?: boolean;
+    promise?: boolean;
 }
 
 export interface MainTemplateResult {
@@ -58,54 +60,75 @@ export default {
         }
         out.push("\n");
         out.push("\n");
+        const asyncMode = !!(options as any)?.promise;
         out.push("script: function (" + (directives.context) + ", _content, partial, slot, options){\n");
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         out.push("    var out = []\n");
+        if (asyncMode) {
+            out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
+            out.push("    const __aj = async arr => { const a = await Promise.all(Array.from(arr, v => __isThenable(v)? v : Promise.resolve(v))); return Array.isArray(a) ? a.join('') : String(a) }\n");
+        }
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
-        out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
+        out.push("/*__MAIN_START__*/\n");
+        if (asyncMode) {
+            out.push((options.applyIndent("(async ()=>{\n" + String(mainCode) + "\n})().then(v=>{ if(typeof v==='string') out.push(v) })", "    ")) + "\n");
+        } else {
+            out.push((options.applyIndent(String(mainCode), "    ")) + "\n");
+        }
+        out.push("/*__MAIN_END__*/");
         out.push((options.applyIndent(content("chunks-finish", directives), "    ")));
         if (directives.chunks) {
             out.push("\n");
             out.push("    if(out.some(t=>typeof t == 'object')){\n");
-            out.push("      return out.map(chunk=>(\n");
+            out.push(asyncMode
+              ? "      return Promise.all(out.map(async chunk => (\n"
+              : "      return out.map(chunk=(\n");
             out.push("          {...chunk,\n");
             out.push("            content:");
             if (directives.deindent) {
                 out.push(" options.applyDeindent(");
             }
             out.push("\n");
-            out.push("            Array.isArray(chunk.content)\n");
-            out.push("              ? chunk.content.join('')\n");
-            out.push("              : chunk.content");
+            out.push(asyncMode
+              ? "            Array.isArray(chunk.content)\n              ? await __aj(chunk.content)\n              : chunk.content"
+              : "            Array.isArray(chunk.content)\n              ? chunk.content.join('')\n              : chunk.content");
             if (directives.deindent) {
                 out.push(")");
             }
             out.push("\n");
             out.push("          }\n");
             out.push("        )\n");
-            out.push("      )\n");
+            out.push(asyncMode ? "      ))\n" : "      )\n");
             out.push("    } else {\n");
-            out.push("      return ");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
+            if (asyncMode) {
+                out.push("      return __aj(out)\n");
+            } else {
+                out.push("      return ");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("out");
+                if (directives.deindent) {
+                    out.push(")");
+                }
+                out.push(".join('')\n");
             }
-            out.push("out");
-            if (directives.deindent) {
-                out.push(")");
-            }
-            out.push(".join('')\n");
             out.push("    }");
         } else {
             out.push("\n");
-            out.push("      return ");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
+            if (asyncMode) {
+                out.push("      return __aj(out)");
+            } else {
+                out.push("      return ");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("out");
+                if (directives.deindent) {
+                    out.push(")");
+                }
+                out.push(".join('')");
             }
-            out.push("out");
-            if (directives.deindent) {
-                out.push(")");
-            }
-            out.push(".join('')");
         }
         out.push("\n");
         out.push("  },");
@@ -147,15 +170,19 @@ export default {
                     out.push("          )\n");
                     out.push("        )\n");
                     out.push("      } else {\n");
-                    out.push("        return ");
-                    if (directives.deindent) {
-                        out.push(" options.applyDeindent(");
+                    if (asyncMode) {
+                        out.push("        return __aj(out)\n");
+                    } else {
+                        out.push("        return ");
+                        if (directives.deindent) {
+                            out.push(" options.applyDeindent(");
+                        }
+                        out.push("out");
+                        if (directives.deindent) {
+                            out.push(")");
+                        }
+                        out.push(".join('')\n");
                     }
-                    out.push("out");
-                    if (directives.deindent) {
-                        out.push(")");
-                    }
-                    out.push(".join('')\n");
                     out.push("      }");
                 } else {
                     out.push("\n");
@@ -180,7 +207,7 @@ export default {
             out.push("\n");
             out.push("  slots : {");
             for(let i = 0; i < slotNames.length; i += 1){
-                const slot = context.blocks[slotNames[i]];
+                const slot = context.slots[slotNames[i]];
                 out.push("\n");
                 out.push('    "' + (slotNames[i]) + '": function(' + (slot.directives.context) + ",  _content, partial, slot, options){\n");
                 out.push((options.applyIndent(content("maincontent", slot.directives), "      ")) + "\n");
@@ -213,15 +240,19 @@ export default {
                     out.push("          )\n");
                     out.push("        )\n");
                     out.push("      } else {\n");
-                    out.push("        return ");
-                    if (directives.deindent) {
-                        out.push(" options.applyDeindent(");
+                    if (asyncMode) {
+                        out.push("        return __aj(out)\n");
+                    } else {
+                        out.push("        return ");
+                        if (directives.deindent) {
+                            out.push(" options.applyDeindent(");
+                        }
+                        out.push("out");
+                        if (directives.deindent) {
+                            out.push(")");
+                        }
+                        out.push(".join('')\n");
                     }
-                    out.push("out");
-                    if (directives.deindent) {
-                        out.push(")");
-                    }
-                    out.push(".join('')\n");
                     out.push("      }");
                 } else {
                     out.push("\n");
@@ -286,13 +317,62 @@ export default {
         out.push("  }\n");
         out.push("}");
 
-        const result = out.join("");
+        let result = out.join("");
 
-        // Если у нас есть source map от основного контента, возвращаем его
+        // Если у нас есть source map от основного контента, расширяем его до всего результата
         if (mainMap) {
+            const startMarker = "/*__MAIN_START__*/\n";
+            const endMarker = "/*__MAIN_END__*/";
+            const startIdx = result.indexOf(startMarker);
+            const endIdx = result.indexOf(endMarker);
+            const totalLines = result.split(/\r?\n/).length;
+            const prefixLines = startIdx >= 0 ? result.slice(0, startIdx).split(/\r?\n/).length : 0;
+            const indentColumns = 4; // we applyIndent with 4 spaces
+
+            // Remove markers from code
+            result = result.replace(startMarker, "").replace(endMarker, "");
+
+            const gen = new TemplateSourceMapGenerator({
+                file: options.sourceFile,
+                sourceRoot: options.sourceRoot,
+            });
+
+            const primarySource = Array.isArray((mainMap as any).sources) && (mainMap as any).sources.length
+                ? (mainMap as any).sources[0]
+                : 'template.njs';
+
+            // Map every line start to ensure dense mapping lines
+            for (let i = 1; i <= totalLines; i += 1) {
+                gen.addSegment({
+                    generatedLine: i,
+                    generatedColumn: 0,
+                    originalLine: 1,
+                    originalColumn: 0,
+                    source: primarySource,
+                    name: undefined,
+                    content: undefined as any,
+                } as any);
+            }
+
+            // Re-emit specific segments from inner main map with line/column shift
+            const segs = (mainMap as any)?.template?.segments || [];
+            if (Array.isArray(segs)) {
+                for (const s of segs) {
+                    gen.addSegment({
+                        generatedLine: prefixLines + s.generatedLine,
+                        generatedColumn: indentColumns + (s.generatedColumn || 0),
+                        originalLine: s.originalLine,
+                        originalColumn: s.originalColumn,
+                        source: s.source,
+                        name: s.name,
+                        content: s.content,
+                    });
+                }
+            }
+
             return {
                 code: result,
-                map: mainMap
+                map: gen.toJSON(),
             };
         }
 

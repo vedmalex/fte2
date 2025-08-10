@@ -39,6 +39,6 @@ describe('TemplateFactoryStandalone', () => {
     // Ensure template is loaded, then mark it as chunks-enabled
     const tmpl: any = (F as any).ensure(templName)
     tmpl.chunks = 'main'
-    expect(() => F.runPartial({ context: {}, name: templName })).toThrow("cant't use template with chunks as partial")
+    expect(() => F.runPartial({ context: {}, name: templName })).toThrow("can't use chunked template as partial")
   })
 })

@@ -10,6 +10,7 @@ const compileTs_1 = require("../compileTs");
 const compileFull_1 = require("../compileFull");
 const parseFile_1 = require("../parseFile");
 const run_1 = require("../run");
+const contextTypes_1 = require("./contextTypes");
 function parseTemplate(fileName, src, dest, compile, { typescript, format, pretty, minify, sourcemap, inlineMap }) {
     const fn = path_1.default.resolve(fileName);
     if (fs_1.default.existsSync(fn)) {
@@ -35,17 +36,43 @@ function parseTemplate(fileName, src, dest, compile, { typescript, format, prett
     }
 }
 function build(src, dest, options, callback) {
+    var _a, _b, _c;
     try {
         const files = (0, glob_1.globSync)(`${src}/**/*${options.ext ? options.ext : '.njs'}`);
+        const moduleFormat = options.format === 'esm' ? 'esm' : 'cjs';
         if (options.single) {
             const filelist = files.map(file => {
                 const name = path_1.default.relative(src, file);
                 const content = fs_1.default.readFileSync(file);
-                return { name, template: (0, parseFile_1.parseFile)(content) };
+                const template = (0, parseFile_1.parseFile)(content);
+                try {
+                    const ctxTypes = (0, contextTypes_1.generateContextTypes)(template);
+                    template.directives = template.directives || {};
+                    template.directives.contextTypes = ctxTypes;
+                }
+                catch (_a) { }
+                return { name, template };
             });
-            const templateFile = (0, run_1.run)(filelist, options.typescript ? 'singlefile.ts.njs' : 'singlefile.njs');
+            const templateFile = (0, run_1.run)(filelist, options.typescript
+                ? 'singlefile.ts.njs'
+                : moduleFormat === 'esm'
+                    ? 'singlefile.es6.njs'
+                    : 'singlefile.njs');
             if (typeof templateFile == 'string') {
-                (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, templateFile, options.minify);
+                const desiredExt = options.typescript ? '.ts' : '.js';
+                const outName = options.file && options.file.endsWith(desiredExt) ? options.file : `${options.file}${desiredExt}`;
+                let header = '';
+                if (!options.typescript && moduleFormat === 'cjs') {
+                    const withTypes = filelist.find(f => { var _a, _b; return (_b = (_a = f.template) === null || _a === void 0 ? void 0 : _a.directives) === null || _b === void 0 ? void 0 : _b.contextTypes; });
+                    const typedef = (_c = (_b = (_a = withTypes === null || withTypes === void 0 ? void 0 : withTypes.template) === null || _a === void 0 ? void 0 : _a.directives) === null || _b === void 0 ? void 0 : _b.contextTypes) === null || _c === void 0 ? void 0 : _c.jsTypedef;
+                    if (typedef && typeof typedef === 'string' && typedef.trim().length > 0) {
+                        header = typedef + '\n';
+                    }
+                    else {
+                        header = '/**\n * @typedef {object} Template_Context\n */\n';
+                    }
+                }
+                (0, filewriter_1.writeFile)(`${dest}/${outName}`, header + templateFile, options.minify);
             }
             else {
                 templateFile.forEach(file => {
@@ -67,10 +94,16 @@ function build(src, dest, options, callback) {
                     ? 'standalone.ts.njs'
                     : 'standalone.index.ts.njs'
                 : options.standalone
-                    ? 'standalone.njs'
-                    : 'standalone.index.njs');
+                    ? moduleFormat === 'esm'
+                        ? 'standalone.es6.njs'
+                        : 'standalone.njs'
+                    : moduleFormat === 'esm'
+                        ? 'standalone.index.es6.njs'
+                        : 'standalone.index.njs');
             if (typeof indexFile == 'string') {
-                (0, filewriter_1.writeFile)(`${dest}/${options.file}${options.typescript ? '.ts' : '.js'}`, indexFile, options.minify);
+                const desiredExt = options.typescript ? '.ts' : '.js';
+                const outName = options.file && options.file.endsWith(desiredExt) ? options.file : `${options.file}${desiredExt}`;
+                (0, filewriter_1.writeFile)(`${dest}/${outName}`, indexFile, options.minify);
             }
             else {
                 indexFile.forEach(file => {

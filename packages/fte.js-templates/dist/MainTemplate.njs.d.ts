@@ -7,6 +7,7 @@ export interface MainTemplateOptions {
     sourceFile?: string;
     sourceRoot?: string;
     inline?: boolean;
+    promise?: boolean;
 }
 export interface MainTemplateResult {
     code: string;
