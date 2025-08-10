@@ -11,6 +11,7 @@ export interface MainTemplateOptions {
     inline?: boolean;
     promise?: boolean;
     stream?: boolean;
+    abort?: any;
 }
 
 export interface MainTemplateResult {
@@ -67,11 +68,13 @@ export default {
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
         if (streamMode) {
             out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
+            out.push("    const __ab = options && options.abort\n");
             if (directives.chunks) {
-                out.push("    const __aiter = async function* (arr){ for(const v of arr){ yield (__isThenable(v)? await v : v) } }\n");
+                out.push("    const __aiter = async function* (arr){ for(const v of arr){ if(__ab && __ab.aborted) return; yield (__isThenable(v)? await v : v) } }\n");
+                out.push("    const __deindentIter = async function* (it){ let acc=''; for await(const s of it){ if(__ab && __ab.aborted) return; acc+=s } yield options.applyDeindent(acc) }\n");
                 out.push("    var out = []\n");
             } else {
-                out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(buf.length){ yield buf.shift(); continue } if(done) return; await new Promise(r=>res=r) } } }\n");
+                out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(__ab && __ab.aborted) return; if(buf.length){ yield buf.shift(); continue } if(done) return; await new Promise(r=>res=r) } } }\n");
                 out.push("    const __q = __makeQ()\n");
                 out.push("    var out = { push: v => __isThenable(v) ? v.then(v2=>__q.push(v2)) : __q.push(v) }\n");
             }
@@ -133,7 +136,11 @@ export default {
         } else {
             out.push("\n");
             if (streamMode) {
-                out.push("      __q.end(); return __q.iter()");
+                if (directives.deindent) {
+                    out.push("      __q.end(); return (async function*(){ let acc=''; for await(const s of __q.iter()){ if(options && options.abort && options.abort.aborted) return; acc+=s } yield options.applyDeindent(acc) })()")
+                } else {
+                    out.push("      __q.end(); return __q.iter()");
+                }
             } else if (asyncMode) {
                 out.push("      return __aj(out)");
             } else {
