@@ -28,6 +28,13 @@ export class TemplateFactoryBrowser<OPTIONS extends DefaultFactoryOption> extend
     return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
+  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<ChunkContent> {
+    const templ = this.ensure(name)
+    const bc: any = this.blockContent(templ)
+    const res: any = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    return res
+  }
+
   public override runPartial<T>({ context, name, options, slots }: RunPartialContext<T, OPTIONS>): string {
     const templ = this.ensure(name)
     if (!templ.chunks) {

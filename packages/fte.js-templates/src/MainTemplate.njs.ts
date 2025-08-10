@@ -10,6 +10,7 @@ export interface MainTemplateOptions {
     sourceRoot?: string;
     inline?: boolean;
     promise?: boolean;
+    stream?: boolean;
 }
 
 export interface MainTemplateResult {
@@ -61,12 +62,20 @@ export default {
         out.push("\n");
         out.push("\n");
         const asyncMode = !!(options as any)?.promise;
+        const streamMode = !!(options as any)?.stream;
         out.push("script: function (" + (directives.context) + ", _content, partial, slot, options){\n");
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
-        out.push("    var out = []\n");
-        if (asyncMode) {
+        if (streamMode && !directives.chunks) {
             out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
-            out.push("    const __aj = async arr => { const a = await Promise.all(Array.from(arr, v => __isThenable(v)? v : Promise.resolve(v))); return Array.isArray(a) ? a.join('') : String(a) }\n");
+            out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(buf.length){ yield buf.shift(); continue } if(done) return; await new Promise(r=>res=r) } } }\n");
+            out.push("    const __q = __makeQ()\n");
+            out.push("    var out = { push: v => __isThenable(v) ? v.then(v2=>__q.push(v2)) : __q.push(v) }\n");
+        } else {
+            out.push("    var out = []\n");
+            if (asyncMode) {
+                out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
+                out.push("    const __aj = async arr => { const a = await Promise.all(Array.from(arr, v => __isThenable(v)? v : Promise.resolve(v))); return Array.isArray(a) ? a.join('') : String(a) }\n");
+            }
         }
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
         out.push("/*__MAIN_START__*/\n");
@@ -116,7 +125,9 @@ export default {
             out.push("    }");
         } else {
             out.push("\n");
-            if (asyncMode) {
+            if (streamMode) {
+                out.push("      __q.end(); return __q.iter()");
+            } else if (asyncMode) {
                 out.push("      return __aj(out)");
             } else {
                 out.push("      return ");

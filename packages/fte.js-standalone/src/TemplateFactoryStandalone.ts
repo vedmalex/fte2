@@ -50,6 +50,14 @@ export class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOption> ext
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
+  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<{ name: string; content: string }> {
+    const templ = this.ensure(name)
+    const bc: any = this.blockContent(templ)
+    const res: any = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    // When stream mode is enabled, compiled template returns an async generator
+    return res
+  }
+
   public override runPartial<T, OPTIONS extends DefaultFactoryOption>({
     context,
     name,
