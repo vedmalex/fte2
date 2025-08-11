@@ -8,7 +8,17 @@
     "templates_debug": "node --inspect-brk ./packages/fte.js/bin/fte.js bundle packages/fte.js-templates/templ packages/fte.js-templates/templ --typescript",
     "lint": "eslint . --ext .ts,.tsx,.js --max-warnings=0",
     "typecheck": "pnpm -r exec tsc -p tsconfig.json --noEmit",
-    "ci": "pnpm -r test && pnpm run lint && pnpm run typecheck"
+    "ci": "pnpm -r test && pnpm run lint && pnpm run typecheck",
+    "ex:node-cjs": "(cd examples/node-cjs && ./build-and-run.sh)",
+    "ex:node-esm": "(cd examples/node-esm && ./build-and-run.sh)",
+    "ex:node-cjs-adv:build": "(cd examples/node-cjs-advanced && ./build.sh)",
+    "ex:node-cjs-adv:sync": "(cd examples/node-cjs-advanced && node run-sync.js)",
+    "ex:node-cjs-adv:async": "(cd examples/node-cjs-advanced && node run-async.js)",
+    "ex:node-cjs-adv:stream": "(cd examples/node-cjs-advanced && node run-stream.js)",
+    "ex:node-esm-adv:build": "(cd examples/node-esm-advanced && ./build.sh)",
+    "ex:node-esm-adv:sync": "(cd examples/node-esm-advanced && node --input-type=module run-sync.mjs)",
+    "ex:node-esm-adv:async": "(cd examples/node-esm-advanced && node --input-type=module run-async.mjs)",
+    "ex:node-esm-adv:stream": "(cd examples/node-esm-advanced && node --input-type=module run-stream.mjs)"
   },
   "repository": {
     "type": "git",

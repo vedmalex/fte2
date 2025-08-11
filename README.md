@@ -98,6 +98,16 @@ console.log(F.run({ name: 'world' }, 'a/t.njs'))
 - CDN example: `examples/browser-esm/cdn.html`
 - Guide: `docs/browser-esm.md`
 
+### Advanced example projects
+
+- Node CJS advanced: `examples/node-cjs-advanced`
+  - Build: `pnpm ex:node-cjs-adv:build`
+  - Run: `pnpm ex:node-cjs-adv:sync` | `pnpm ex:node-cjs-adv:async` | `pnpm ex:node-cjs-adv:stream`
+- Node ESM advanced: `examples/node-esm-advanced`
+  - Build: `pnpm ex:node-esm-adv:build`
+  - Run: `pnpm ex:node-esm-adv:sync` | `pnpm ex:node-esm-adv:async` | `pnpm ex:node-esm-adv:stream`
+- Browser ESM advanced: `examples/browser-esm-advanced` (open `index.html` via a dev server)
+
 ### Streaming and Async
 
 - Async mode: set `options.promise = true` to allow expressions/partials to return Promises. Factories expose `runAsync` to await results end-to-end.
