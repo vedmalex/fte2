@@ -98,6 +98,23 @@ console.log(F.run({ name: 'world' }, 'a/t.njs'))
 - CDN example: `examples/browser-esm/cdn.html`
 - Guide: `docs/browser-esm.md`
 
+### Streaming and Async
+
+- Async mode: set `options.promise = true` to allow expressions/partials to return Promises. Factories expose `runAsync` to await results end-to-end.
+- Stream mode: set `options.stream = true` and call `runStream`. Return type:
+  - Non-chunk templates: `AsyncIterable<string>` that yields as content is produced
+  - Chunk templates: `Array<{ name: string, content: AsyncIterable<string> }>` where each chunk's content streams
+- Abort: provide `options.abort` with `{ aborted: boolean }`; generators stop early when `aborted` becomes true.
+- Deindent in stream: when template has `deindent` directive, deindent is applied via `applyDeindentStream` without full buffering.
+- Stream adapters (fte.js-base):
+  - `toNodeReadable(asyncIterable)` -> Node.js Readable
+  - `toWebReadable(asyncIterable)` -> Web ReadableStream
+- Stream options (fte.js-base):
+  - `onChunk?(chunk: string)`: called for each yielded chunk (non-chunk templates)
+  - `onError?(error: unknown)`: error callback from `onChunk`
+  - `highWaterMark?: number`: soft backpressure threshold for internal queue
+  - `maxCoalesceChunkSize?: number`: coalesce small pieces into bigger chunks in chunked stream
+
 ## Sourcemaps
 
 - Generation is controlled per compile/build via options: `sourceMap`, `inline`, `sourceFile`, `sourceRoot`.
