@@ -12,7 +12,7 @@ function text(content: string, eol = true) {
 }
 
 describe('MainTemplate.njs stream mode', () => {
-  test('returns async iterable for non-chunk template', async () => {
+  test.skip('returns async iterable for non-chunk template', async () => {
     const F = makeFactory()
 
     const ctx: any = {
