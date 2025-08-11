@@ -101,18 +101,28 @@ export default {
               ? "      return Promise.all(out.map(async chunk => (\n"
               : "      return out.map(chunk=(\n");
             out.push("          {...chunk,\n");
-            out.push("            content:");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
-            }
-            out.push("\n");
-            out.push(streamMode
-              ? "            __aiter(Array.isArray(chunk.content) ? chunk.content : [chunk.content])"
-              : (asyncMode
-                ? "            Array.isArray(chunk.content)\n              ? await __aj(chunk.content)\n              : chunk.content"
-                : "            Array.isArray(chunk.content)\n              ? chunk.content.join('')\n              : chunk.content"));
-            if (directives.deindent) {
-                out.push(")");
+            if (streamMode) {
+                out.push("            content:");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindentStream(");
+                }
+                out.push("\n");
+                out.push("            __aiter(Array.isArray(chunk.content) ? chunk.content : [chunk.content])");
+                if (directives.deindent) {
+                    out.push(")");
+                }
+            } else {
+                out.push("            content:");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("\n");
+                out.push(asyncMode
+                  ? "            Array.isArray(chunk.content)\n              ? await __aj(chunk.content)\n              : chunk.content"
+                  : "            Array.isArray(chunk.content)\n              ? chunk.content.join('')\n              : chunk.content");
+                if (directives.deindent) {
+                    out.push(")");
+                }
             }
             out.push("\n");
             out.push("          }\n");
@@ -136,10 +146,11 @@ export default {
         } else {
             out.push("\n");
             if (streamMode) {
+                out.push("      __q.end(); ");
                 if (directives.deindent) {
-                    out.push("      __q.end(); return (async function*(){ let acc=''; for await(const s of __q.iter()){ if(options && options.abort && options.abort.aborted) return; acc+=s } yield options.applyDeindent(acc) })()")
+                    out.push("return options.applyDeindentStream(__q.iter())");
                 } else {
-                    out.push("      __q.end(); return __q.iter()");
+                    out.push("return __q.iter()");
                 }
             } else if (asyncMode) {
                 out.push("      return __aj(out)");
