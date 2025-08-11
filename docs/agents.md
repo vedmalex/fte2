@@ -60,6 +60,12 @@ while (true) {
 }
 ```
 
+## Example projects
+
+- Node CJS advanced: `examples/node-cjs-advanced` (sync/async/stream, chunks/partials/alias)
+- Node ESM advanced: `examples/node-esm-advanced`
+- Browser ESM advanced: `examples/browser-esm-advanced` (use `pnpm ex:serve`)
+
 ## Source maps
 - E2E tests validate mapping precision across templates.
 - `MainTemplate` carries `codeblock` mappings to final output; dense line segments are emitted to improve fidelity.

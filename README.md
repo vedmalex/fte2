@@ -108,6 +108,13 @@ console.log(F.run({ name: 'world' }, 'a/t.njs'))
   - Run: `pnpm ex:node-esm-adv:sync` | `pnpm ex:node-esm-adv:async` | `pnpm ex:node-esm-adv:stream`
 - Browser ESM advanced: `examples/browser-esm-advanced` (open `index.html` via a dev server)
 
+Dev server for browser examples:
+
+```bash
+pnpm ex:serve
+# open http://localhost:8080/browser-esm-advanced/ or http://localhost:8080/browser-esm/stream.html
+```
+
 ### Streaming and Async
 
 - Async mode: set `options.promise = true` to allow expressions/partials to return Promises. Factories expose `runAsync` to await results end-to-end.
