@@ -29,10 +29,26 @@
         const cfg = eval('(' + code + ')')
         const Local = new TemplateFactoryBrowser()
         Local.register(new (await import('../../packages/fte.js-browser/dist/TemplateBrowser')).TemplateBrowser(cfg), 'x.njs')
-        Local.options = { ...Local.options, stream: true }
+        Local.options = { ...Local.options, stream: true, maxCoalesceChunkSize: 1024 }
         const out = document.getElementById('out')
         const it = Local.runStream({ name: Promise.resolve('ESM') }, 'x.njs')
-        for await (const s of it) out.textContent += s
+        // Adapt AsyncIterable to Web ReadableStream
+        const { toWebReadable } = await import('../../packages/fte.js-base/dist/index.js')
+        const rs = toWebReadable(it)
+        const reader = rs.getReader()
+        const decoder = new TextDecoder()
+        const abort = new AbortController()
+        // Cancel stream after first chunk for demo
+        setTimeout(() => abort.abort(), 10)
+        while (true) {
+          const { value, done } = await reader.read()
+          if (done) break
+          out.textContent += decoder.decode(value)
+          if (abort.signal.aborted) {
+            reader.cancel()
+            break
+          }
+        }
       }
       run()
     </script>
