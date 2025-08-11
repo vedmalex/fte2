@@ -21,7 +21,11 @@
     "ex:node-esm-adv:stream": "(cd examples/node-esm-advanced && node --input-type=module run-stream.mjs)",
     "ex:serve": "node ./scripts/dev-server.js",
     "ex:demo-cjs": "(cd examples/demo-node-cjs && ./build-and-run.sh)",
-    "ex:demo-esm": "(cd examples/demo-node-esm && ./build-and-run.sh)"
+    "ex:demo-esm": "(cd examples/demo-node-esm && ./build-and-run.sh)",
+    "ex:demo-cjs:async": "(cd examples/demo-node-cjs && node run-async.js)",
+    "ex:demo-cjs:stream": "(cd examples/demo-node-cjs && node run-stream.js)",
+    "ex:demo-esm:async": "(cd examples/demo-node-esm && node --input-type=module run-async.mjs)",
+    "ex:demo-esm:stream": "(cd examples/demo-node-esm && node --input-type=module run-stream.mjs)"
   },
   "repository": {
     "type": "git",
