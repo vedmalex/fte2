@@ -28,7 +28,7 @@ export class TemplateFactoryBrowser<OPTIONS extends DefaultFactoryOption> extend
     return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
-  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<ChunkContent> {
+  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<ChunkContent | { name: string; content: AsyncIterable<string> }> {
     const templ = this.ensure(name)
     const bc: any = this.blockContent(templ)
     const res: any = bc.run(context, bc.content, bc.partial, bc.slot, this.options)

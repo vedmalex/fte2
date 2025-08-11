@@ -50,7 +50,7 @@ export class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOption> ext
     return bc.run(context, bc.content, bc.partial, bc.slot, this.options)
   }
 
-  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<{ name: string; content: string }> {
+  public runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<{ name: string; content: string } | { name: string; content: AsyncIterable<string> }> {
     const templ = this.ensure(name)
     const bc: any = this.blockContent(templ)
     const res: any = bc.run(context, bc.content, bc.partial, bc.slot, this.options)

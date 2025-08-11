@@ -44,4 +44,36 @@ describe('MainTemplate.njs stream mode', () => {
     for await (const c of it) chunks.push(c)
     expect(chunks.join('')).toBe('AXZ')
   })
+
+  test('chunk template returns streamed chunks with AsyncIterable content', async () => {
+    const Local = new TemplateFactoryStandalone({
+      'x.njs': {
+        name: 'x.njs',
+        chunks: 'main',
+        script: function (context: any, _c: any, _p: any, _s: any, options: any) {
+          const out: any[] = []
+          const chunkEnsure = (name: string) => {
+            return { name, content: [] as any[] }
+          }
+          // Simulate compiled chunk output
+          const main = chunkEnsure('main')
+          ;(main.content as any[]).push('A')
+          ;(main.content as any[]).push(Promise.resolve('X'))
+          ;(main.content as any[]).push('Z')
+          return [{ name: 'main', content: main.content }]
+        },
+        blocks: {},
+        slots: {},
+        compile() {},
+        dependency: {}
+      } as any
+    } as any)
+    Local.options = { ...(Local.options as any), stream: true } as any
+    const res = (Local as any).runStream({}, 'x.njs') as Array<{ name: string; content: AsyncIterable<string> }>
+    expect(Array.isArray(res)).toBe(true)
+    expect(res[0].name).toBe('main')
+    const chunks: string[] = []
+    for await (const c of res[0].content) chunks.push(c)
+    expect(chunks.join('')).toBe('AXZ')
+  })
 })
