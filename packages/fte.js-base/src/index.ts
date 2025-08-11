@@ -1,5 +1,6 @@
 export * from './utils/applyDeindent'
 export * from './utils/applyIndent'
+export * from './utils/applyDeindentStream'
 export * from './types/BlockContent'
 export * from './types/BlockRunFunction'
 export * from './types/BlocksHash'
