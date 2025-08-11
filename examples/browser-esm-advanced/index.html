@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>browser esm advanced</title>
+  </head>
+  <body>
+    <pre id="out"></pre>
+    <script type="module">
+      import { TemplateFactoryBrowser } from '../../packages/fte.js-browser/dist/index.js'
+      import tpl from '../../packages/fte.js-templates/dist/index.js'
+      import { toWebReadable } from '../../packages/fte.js-base/dist/index.js'
+
+      const F = new TemplateFactoryBrowser()
+      // register
+      Object.keys(tpl).forEach(k => (globalThis.fteTemplates = tpl))
+      globalThis.fte = (name) => tpl[name]
+
+      function compile() {
+        return F.run({
+          directives: { context: 'context', content: false, chunks: 'index.html', alias: undefined, deindent: true, requireAs: [], blocks: {}, slots: {} },
+          blocks: {},
+          slots: {},
+          main: [
+            { type: 'text', content: '<#@ context \'context\' #>\n<#@ requireAs(\'partials/header.njs\',\'header\') #>\n<#@ requireAs(\'partials/footer.njs\',\'footer\') #>\n', eol: true },
+            { type: 'text', content: '<# block \'body\': #>\n', eol: true },
+            { type: 'text', content: 'Hello !{context.name}\n', eol: true },
+            { type: 'text', content: '<# end #>\n', eol: true },
+          ],
+        }, 'MainTemplate.njs')
+      }
+
+      async function runAll() {
+        const outEl = document.getElementById('out')
+
+        const res = compile()
+        const code = typeof res === 'string' ? res : res.code
+        const cfg = eval('(' + code + ')')
+        const Local = new TemplateFactoryBrowser()
+        Local.register(new (await import('../../packages/fte.js-browser/dist/TemplateBrowser')).TemplateBrowser(cfg), 'pages/index.njs')
+
+        // Sync
+        outEl.textContent += 'SYNC\n' + Local.run({ name: 'world' }, 'pages/index.njs') + '\n\n'
+
+        // Async
+        Local.options = { ...Local.options, promise: true }
+        outEl.textContent += 'ASYNC\n' + (await Local.runAsync({ name: Promise.resolve('async') }, 'pages/index.njs')) + '\n\n'
+
+        // Stream
+        Local.options = { ...Local.options, stream: true, maxCoalesceChunkSize: 1024 }
+        const it = Local.runStream({ name: 'stream' }, 'pages/index.njs')
+        const rs = toWebReadable(it)
+        const reader = rs.getReader()
+        const dec = new TextDecoder()
+        outEl.textContent += 'STREAM\n'
+        while (true) {
+          const { value, done } = await reader.read()
+          if (done) break
+          outEl.textContent += dec.decode(value)
+        }
+      }
+
+      runAll().catch(console.error)
+    </script>
+  </body>
+</html>
