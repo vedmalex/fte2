@@ -108,6 +108,11 @@ console.log(F.run({ name: 'world' }, 'a/t.njs'))
   - Run: `pnpm ex:node-esm-adv:sync` | `pnpm ex:node-esm-adv:async` | `pnpm ex:node-esm-adv:stream`
 - Browser ESM advanced: `examples/browser-esm-advanced` (open `index.html` via a dev server)
 
+### Demo-based examples (from demo/)
+
+- Node CJS demo: `examples/demo-node-cjs` → `pnpm ex:demo-cjs`
+- Node ESM demo: `examples/demo-node-esm` → `pnpm ex:demo-esm`
+
 Dev server for browser examples:
 
 ```bash

@@ -19,7 +19,9 @@
     "ex:node-esm-adv:sync": "(cd examples/node-esm-advanced && node --input-type=module run-sync.mjs)",
     "ex:node-esm-adv:async": "(cd examples/node-esm-advanced && node --input-type=module run-async.mjs)",
     "ex:node-esm-adv:stream": "(cd examples/node-esm-advanced && node --input-type=module run-stream.mjs)",
-    "ex:serve": "node ./scripts/dev-server.js"
+    "ex:serve": "node ./scripts/dev-server.js",
+    "ex:demo-cjs": "(cd examples/demo-node-cjs && ./build-and-run.sh)",
+    "ex:demo-esm": "(cd examples/demo-node-esm && ./build-and-run.sh)"
   },
   "repository": {
     "type": "git",
