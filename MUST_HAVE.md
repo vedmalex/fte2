@@ -75,6 +75,20 @@
   - Migration guide from previous return-shape behaviors to new stable contracts
   - Examples (browser/node/esm) + troubleshooting guide
 
+- **Example projects (end-to-end)**
+  - Node (CJS): CLI bundle, run sync/async/stream, write files per chunk, use `toNodeReadable`
+  - Node (ESM): same as above with ESM imports
+  - Browser (ESM): dynamic register via `globalThis.fte`, render sync/async/stream, use `toWebReadable` and abort
+  - Features to cover:
+    - Async (`options.promise`) and Stream (`options.stream`) modes
+    - Abort handling, deindent in stream, coalescing (`maxCoalesceChunkSize`), backpressure (`highWaterMark`)
+    - Chunks API (array/hash), partials, slots, extend, alias, requireAs
+    - CLI bundling matrix: singlefile/standalone + CJS/ESM, sourcemaps on/off, external maps
+  - Deliverables:
+    - Minimal projects in `examples/` ready to run with instructions
+    - Scripts in package.json to build/run
+    - Docs sections linking to examples and explaining options
+
 - **Roadmap (short-term)**
   - Finish sourcemap E2E tests and position validation
   - Ship browser-facing ESM examples and docs

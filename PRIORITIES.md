@@ -30,34 +30,41 @@ Open questions:
   - interplay with existing chunk API (hash/array) and sourcemaps
   - backpressure/abort signals integration
 
-## 3. Chunking and partials (medium)
+## 3. Streaming polish and DX (high)
+- [done] Stream deindent without full buffering
+- [done] Async/chunk stream types; refine factory `runStream` types
+- [done] Adapters for Node/Web streams
+- [done] Options: `onChunk`, `onError`, `highWaterMark`, `maxCoalesceChunkSize`
+- [new] Example projects demonstrating full streaming stack (Node/Browser/ESM)
+
+## 4. Chunking and partials (medium)
 - Unify chunk API (hash vs array) and option to include/exclude main chunk across modes
 - Better error messages when chunked templates are used as partials
 
-## 4. Testing and coverage (medium)
+## 5. Testing and coverage (medium)
 - Increase coverage for TemplateFactoryBase, merge logic, slot resolution (partially improved)
 - Add integration tests: multi-file projects, aliasing, requireAs, extend in realistic graphs (extended and stabilized; keep broadening scenarios)
 - Snapshot tests for generated bundles (JS/TS/ESM)
 
-## 5. Bundling and formats (medium)
+## 6. Bundling and formats (medium)
 - Provide browser ESM example using globalThis if needed and verify paths
 - Validate SWC/TS pipeline on large inputs to catch regressions; ensure comments/sourcemap URLs preserved
 - Add documented browser ESM sample using `globalThis`-safe imports and CDN-friendly paths
   - [done] Add local example at `examples/browser-esm/globalthis.html`
   - [done] Add CDN example at `examples/browser-esm/cdn.html`
 
-## 8. Documentation (high)
+## 7. Documentation (high)
 - [done] Write “Source map guarantees” doc per template (levels of fidelity, known limitations, examples)
 - [done] Add browser ESM usage guide with runnable example and troubleshooting
 - Update README with DX improvements (typedef in bundles, flags)
 
-## 9. Tooling/CI (medium)
+## 8. Tooling/CI (medium)
 - [done] Add ESLint config at repo root; `pnpm run lint`
 - [done] Add monorepo typecheck script; `pnpm run typecheck`
 - [todo] Wire CI job to run `pnpm run ci` (tests + lint + typecheck)
 - Automate vulnerability checks (Dependabot/GitHub alerts)
 
-## 6. Tooling/CI (medium)
+## 9. Tooling/CI (medium)
 - Add ESLint/Prettier configs and enforce in CI
 - Add type-check steps per package; block on public API changes
  - Exclude legacy/generated sources from lint; stage gradual cleanup for remaining warnings

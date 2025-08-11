@@ -12,13 +12,19 @@ This project can generate code in streaming and async modes, which is helpful fo
 - Use `runStream(context, name)`:
   - For non-chunk templates it returns `AsyncIterable<string>`.
   - For chunk templates it returns an array of chunks where `chunk.content` is `AsyncIterable<string>`.
-- Supports early cancellation via `factory.options.abort` (`AbortSignal`).
-- With `deindent` enabled, deindent is applied on the buffered, combined output per stream.
+- Supports early cancellation via `factory.options.abort` (boolean or `AbortSignal`-like with `.aborted`).
+- With `deindent` enabled, deindent is applied on the fly via `applyDeindentStream` without full buffering.
+- Stream adapters: `toNodeReadable(asyncIterable)` and `toWebReadable(asyncIterable)` help integrate with Node/Web streaming APIs.
+- Stream options:
+  - `onChunk?(chunk: string)` – callback per yielded chunk (non-chunk templates)
+  - `onError?(error: unknown)` – callback for errors thrown inside `onChunk`
+  - `highWaterMark?: number` – soft backpressure threshold for internal queue
+  - `maxCoalesceChunkSize?: number` – coalesce small pieces inside chunked streams
 
 ### Example (non-chunk)
 ```ts
 const F = new TemplateFactoryStandalone(templates as any)
-F.options = { ...F.options, stream: true } as any
+F.options = { ...F.options, stream: true, onChunk: c => process.stdout.write(c) } as any
 const it = (F as any).runStream({ x: Promise.resolve('X') }, 'view.njs') as AsyncIterable<string>
 let acc = ''
 for await (const s of it) acc += s
@@ -31,6 +37,26 @@ for (const ch of res) {
   let acc = ''
   for await (const s of ch.content) acc += s
   await fs.promises.writeFile(path.join(outDir, ch.name), acc)
+}
+```
+
+### Adapters
+```ts
+import { toNodeReadable, toWebReadable } from 'fte.js-base'
+
+// Node
+const readable = toNodeReadable(it)
+readable.pipe(process.stdout)
+
+// Web
+const rs = toWebReadable(it)
+const reader = rs.getReader()
+const dec = new TextDecoder()
+let out = ''
+while (true) {
+  const { value, done } = await reader.read()
+  if (done) break
+  out += dec.decode(value)
 }
 ```
 
