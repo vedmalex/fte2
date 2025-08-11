@@ -15,4 +15,8 @@ export interface DefaultFactoryOption {
   // Streaming options (optional)
   stream?: boolean
   abort?: any
+  onChunk?(chunk: string): void
+  onError?(error: unknown): void
+  highWaterMark?: number
+  maxCoalesceChunkSize?: number
 }

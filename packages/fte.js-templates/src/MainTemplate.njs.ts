@@ -70,11 +70,15 @@ export default {
             out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
             out.push("    const __ab = options && options.abort\n");
             if (directives.chunks) {
-                out.push("    const __aiter = async function* (arr){ for(const v of arr){ if(__ab && __ab.aborted) return; yield (__isThenable(v)? await v : v) } }\n");
-                out.push("    const __deindentIter = async function* (it){ let acc=''; for await(const s of it){ if(__ab && __ab.aborted) return; acc+=s } yield options.applyDeindent(acc) }\n");
+                out.push("    const __aiter = async function* (arr){\n");
+                out.push("      const maxSize = options && options.maxCoalesceChunkSize || 0\n");
+                out.push("      let acc=''\n");
+                out.push("      for(const v of arr){ if(__ab && __ab.aborted) return; const sv = (__isThenable(v)? await v : v); if(maxSize>0){ acc += sv; if(acc.length>=maxSize){ yield acc; acc='' } } else { yield sv } }\n");
+                out.push("      if(acc) yield acc\n");
+                out.push("    }\n");
                 out.push("    var out = []\n");
             } else {
-                out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(__ab && __ab.aborted) return; if(buf.length){ yield buf.shift(); continue } if(done) return; await new Promise(r=>res=r) } } }\n");
+                out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; const hwm=(options&&options.highWaterMark)||0; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } if(hwm>0 && buf.length>=hwm){ /* soft backpressure point */ } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(__ab && __ab.aborted) return; if(buf.length){ const val = buf.shift(); if(options&&options.onChunk) try{ options.onChunk(String(val)) }catch(e){ if(options.onError) options.onError(e) } yield val; continue } if(done) return; await new Promise(r=>res=r) } } }\n");
                 out.push("    const __q = __makeQ()\n");
                 out.push("    var out = { push: v => __isThenable(v) ? v.then(v2=>__q.push(v2)) : __q.push(v) }\n");
             }
