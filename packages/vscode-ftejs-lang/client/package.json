@@ -8,6 +8,7 @@
     "watch": "tsc -w"
   },
   "dependencies": {
+    "fte.js-standalone": "workspace:*",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {

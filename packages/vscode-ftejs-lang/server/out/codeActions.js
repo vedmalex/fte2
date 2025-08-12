@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildCodeActions = buildCodeActions;
+exports.buildCodeActions = void 0;
 const node_1 = require("vscode-languageserver/node");
 const astUtils_1 = require("./astUtils");
 function buildCodeActions(params) {
@@ -137,3 +137,4 @@ function buildCodeActions(params) {
     }
     return actions;
 }
+exports.buildCodeActions = buildCodeActions;

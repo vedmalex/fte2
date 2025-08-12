@@ -167,6 +167,22 @@ importers:
         specifier: ^3.0.0-rc.12
         version: link:../fte.js-base
 
+  packages/fte.js-formatter:
+    dependencies:
+      fte.js-parser:
+        specifier: workspace:3.0.0-rc.12
+        version: link:../fte.js-parser
+    devDependencies:
+      jest:
+        specifier: ^29.4.3
+        version: 29.4.3(@types/node@18.11.18)(ts-node@10.9.1)
+      jest-config:
+        specifier: ^29.4.3
+        version: 29.5.0(@types/node@18.11.18)(ts-node@10.9.1)
+      typescript:
+        specifier: next
+        version: 6.0.0-dev.20250812
+
   packages/fte.js-parser:
     dependencies:
       detect-indent:
@@ -226,6 +242,18 @@ importers:
         specifier: workspace:3.0.0-rc.12
         version: link:../fte.js-standalone
 
+  packages/vscode-ftejs-lang:
+    dependencies:
+      vscode-languageclient:
+        specifier: ^9.0.1
+        version: 9.0.1
+      vscode-languageserver:
+        specifier: ^9.0.1
+        version: 9.0.1
+      vscode-languageserver-textdocument:
+        specifier: ^1.0.11
+        version: 1.0.12
+
 packages:
 
   /@ampproject/remapping@2.2.1:
@@ -258,7 +286,7 @@ packages:
       '@babel/parser': 7.21.4
       '@babel/template': 7.20.7
       '@babel/traverse': 7.21.4
-      '@babel/types': 7.21.4
+      '@babel/types': 7.21.5
       convert-source-map: 1.9.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -5955,7 +5983,7 @@ packages:
       '@babel/plugin-syntax-jsx': 7.21.4(@babel/core@7.21.4)
       '@babel/plugin-syntax-typescript': 7.21.4(@babel/core@7.21.4)
       '@babel/traverse': 7.21.4
-      '@babel/types': 7.21.4
+      '@babel/types': 7.21.5
       '@jest/expect-utils': 29.5.0
       '@jest/transform': 29.5.0
       '@jest/types': 29.5.0
@@ -8766,6 +8794,12 @@ packages:
     hasBin: true
     dev: true
 
+  /typescript@6.0.0-dev.20250812:
+    resolution: {integrity: sha512-6N5LK+q1e6oEBNW5DvmVv6rgRMxaUpIsLW1fexQXk/iw3DtN3wUXFgq91nGQ7ZtlfeSQf4ZAWve79qih8eY5Sg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
+
   /ua-parser-js@1.0.35:
     resolution: {integrity: sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==}
     dev: true
@@ -8948,6 +8982,42 @@ packages:
       cloneable-readable: 1.1.3
       remove-trailing-separator: 1.1.0
       replace-ext: 1.0.1
+    dev: false
+
+  /vscode-jsonrpc@8.2.0:
+    resolution: {integrity: sha512-C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==}
+    engines: {node: '>=14.0.0'}
+    dev: false
+
+  /vscode-languageclient@9.0.1:
+    resolution: {integrity: sha512-JZiimVdvimEuHh5olxhxkht09m3JzUGwggb5eRUkzzJhZ2KjCN0nh55VfiED9oez9DyF8/fz1g1iBV3h+0Z2EA==}
+    engines: {vscode: ^1.82.0}
+    dependencies:
+      minimatch: 5.1.6
+      semver: 7.4.0
+      vscode-languageserver-protocol: 3.17.5
+    dev: false
+
+  /vscode-languageserver-protocol@3.17.5:
+    resolution: {integrity: sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==}
+    dependencies:
+      vscode-jsonrpc: 8.2.0
+      vscode-languageserver-types: 3.17.5
+    dev: false
+
+  /vscode-languageserver-textdocument@1.0.12:
+    resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
+    dev: false
+
+  /vscode-languageserver-types@3.17.5:
+    resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
+    dev: false
+
+  /vscode-languageserver@9.0.1:
+    resolution: {integrity: sha512-woByF3PDpkHFUreUa7Hos7+pUWdeWMXRd26+ZX2A8cFx6v/JPTtd4/uN0/jB6XQHYaOlHbio03NTHCqrgG5n7g==}
+    hasBin: true
+    dependencies:
+      vscode-languageserver-protocol: 3.17.5
     dev: false
 
   /walk-up-path@1.0.0:

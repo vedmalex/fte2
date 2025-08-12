@@ -1,0 +1,39 @@
+name: Release VSCode Extension
+
+on:
+  push:
+    tags:
+      - 'vscode-ftejs-lang-v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install deps
+        run: pnpm install --frozen-lockfile=false
+      - name: Build extension
+        run: pnpm --filter fte-js-template run compile
+      - name: Package VSIX
+        working-directory: packages/vscode-ftejs-lang
+        run: npx vsce package --no-yarn
+      - name: Publish to VS Code Marketplace
+        if: ${{ secrets.VSCE_TOKEN != '' }}
+        working-directory: packages/vscode-ftejs-lang
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
+        run: npx vsce publish --no-yarn
+      - name: Publish to Open VSX
+        if: ${{ secrets.OVSX_TOKEN != '' }}
+        working-directory: packages/vscode-ftejs-lang
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
+        run: npx ovsx publish

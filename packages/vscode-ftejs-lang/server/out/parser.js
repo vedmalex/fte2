@@ -2,8 +2,7 @@
 // Local copy of fte.js-parser essential parts for AST-based parsing
 // This ensures all syntax parsing operations use consistent AST approach
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = exports.CodeBlock = void 0;
-exports.SUB = SUB;
+exports.Parser = exports.SUB = exports.CodeBlock = void 0;
 const globalStates = {
     text: {
         states: [
@@ -119,6 +118,7 @@ function sub(buffer, str, pos = 0, size) {
 function SUB(buffer, str, pos = 0, size) {
     return sub(buffer, str, pos, size);
 }
+exports.SUB = SUB;
 class Parser {
     static parse(text, options = {}) {
         const parser = new Parser(text, options);

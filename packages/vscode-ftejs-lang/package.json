@@ -27,10 +27,10 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "npm --workspace server run build && npm --workspace client run build",
-    "watch": "npm --workspace server run watch & npm --workspace client run watch",
+    "compile": "npm --prefix server run build && npm --prefix client run build",
+    "watch": "npm --prefix server run watch & npm --prefix client run watch",
     "docs:sync-usage": "node tools/sync-usage.js",
-    "test": "npm --workspace server run test",
+    "test": "npm --prefix server run test",
     "package": "vsce package --no-yarn",
     "publish:vsce": "vsce publish",
     "publish:openvsx": "ovsx publish",

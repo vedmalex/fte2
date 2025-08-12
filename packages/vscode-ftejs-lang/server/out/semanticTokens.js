@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.semanticTokenModifiers = exports.semanticTokenTypes = void 0;
-exports.buildSemanticTokensFromText = buildSemanticTokensFromText;
-exports.buildSemanticTokensFromAst = buildSemanticTokensFromAst;
+exports.buildSemanticTokensFromAst = exports.buildSemanticTokensFromText = exports.semanticTokenModifiers = exports.semanticTokenTypes = void 0;
 const parser_1 = require("./parser");
 exports.semanticTokenTypes = [
     'namespace', 'type', 'class', 'enum', 'interface', 'struct', 'typeParameter',
@@ -16,6 +14,7 @@ function buildSemanticTokensFromText(text) {
     const ast = parser_1.Parser.parse(text);
     return buildSemanticTokensFromAst(text, ast);
 }
+exports.buildSemanticTokensFromText = buildSemanticTokensFromText;
 function buildSemanticTokensFromAst(text, ast) {
     if (!ast || !Array.isArray(ast.main))
         return [];
@@ -111,6 +110,7 @@ function buildSemanticTokensFromAst(text, ast) {
     }
     return tokens;
 }
+exports.buildSemanticTokensFromAst = buildSemanticTokensFromAst;
 function offsetToPos(text, offset) {
     let line = 0;
     let character = 0;

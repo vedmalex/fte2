@@ -30,5 +30,9 @@ jobs:
           fi
       - name: Build templates
         run: pnpm --filter fte.js-templates build
+      - name: Build VSCode extension
+        run: pnpm --filter fte-js-template run compile
+      - name: Test VSCode server
+        run: pnpm --filter fte-js-template run test
       - name: Run tests
         run: pnpm -r test

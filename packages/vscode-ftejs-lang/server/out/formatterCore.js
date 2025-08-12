@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractTemplateCodeView = extractTemplateCodeView;
-exports.extractInstructionCodeView = extractInstructionCodeView;
-exports.formatWithSourceWalking = formatWithSourceWalking;
-exports.formatSegments = formatSegments;
+exports.formatSegments = exports.formatWithSourceWalking = exports.extractInstructionCodeView = exports.extractTemplateCodeView = void 0;
 function getHostAdapter(host) {
     const h = host || 'html';
     if (h === 'html' || h === 'markdown') {
@@ -67,6 +64,7 @@ function extractTemplateCodeView(originalText, ast, options = {}) {
     }
     return { code: out.join('') };
 }
+exports.extractTemplateCodeView = extractTemplateCodeView;
 /**
  * Build Instruction Code View: executable instruction stream where text becomes string literals
  * and instruction content remains as code (delimiters removed). This is a linearized form for analysis/preview.
@@ -106,6 +104,7 @@ function extractInstructionCodeView(originalText, ast, options = {}) {
     }
     return { code: out.join('\n') };
 }
+exports.extractInstructionCodeView = extractInstructionCodeView;
 function ensureNewlinePrefix(result, textBuffer) {
     // Check if we need to add a newline before structural tags
     if (result.length === 0 && !textBuffer.trim())
@@ -673,6 +672,7 @@ function formatWithSourceWalking(originalText, ast, options) {
     flushTextChunk();
     return result.join('');
 }
+exports.formatWithSourceWalking = formatWithSourceWalking;
 function formatSegments(items, uri, indentSize, defaultLang, settings, prettierConfigCache) {
     const filePath = uri.startsWith('file:') ? uri.replace(/^file:\/\//, '') : undefined;
     const keepLimit = settings?.format?.keepBlankLines ?? -1;
@@ -760,3 +760,4 @@ function formatSegments(items, uri, indentSize, defaultLang, settings, prettierC
     flushText();
     return out;
 }
+exports.formatSegments = formatSegments;

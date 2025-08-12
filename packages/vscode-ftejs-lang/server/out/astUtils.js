@@ -15,48 +15,15 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeOpenBlocksFromAst = computeOpenBlocksFromAst;
-exports.buildEndTagFor = buildEndTagFor;
-exports.computePairsFromAst = computePairsFromAst;
-exports.walkAstNodes = walkAstNodes;
-exports.getTemplatePathVariants = getTemplatePathVariants;
-exports.posFromOffset = posFromOffset;
-exports.getExtendTargetFrom = getExtendTargetFrom;
-exports.resolveTemplatePath = resolveTemplatePath;
-exports.resolveTemplateRel = resolveTemplateRel;
-exports.isTemplateTagLine = isTemplateTagLine;
-exports.stripStringsAndComments = stripStringsAndComments;
-exports.computeJsCodeDelta = computeJsCodeDelta;
-exports.collectAllASTSegments = collectAllASTSegments;
-exports.extractBlockAndSlotSymbols = extractBlockAndSlotSymbols;
-exports.computeOpenBlocksFromText = computeOpenBlocksFromText;
-exports.validateStructureAndCollectErrors = validateStructureAndCollectErrors;
-exports.collectUnknownContentRefs = collectUnknownContentRefs;
-exports.collectUnresolvedPartials = collectUnresolvedPartials;
-exports.collectDuplicateDeclarations = collectDuplicateDeclarations;
-exports.collectTrimWhitespaceHints = collectTrimWhitespaceHints;
-exports.validateDirectivesInText = validateDirectivesInText;
-exports.collectExtendParentIssues = collectExtendParentIssues;
-exports.collectUnknownContentAgainstParent = collectUnknownContentAgainstParent;
-exports.collectChildBlocksMissingInParent = collectChildBlocksMissingInParent;
+exports.collectChildBlocksMissingInParent = exports.collectUnknownContentAgainstParent = exports.collectExtendParentIssues = exports.validateDirectivesInText = exports.collectTrimWhitespaceHints = exports.collectDuplicateDeclarations = exports.collectUnresolvedPartials = exports.collectUnknownContentRefs = exports.validateStructureAndCollectErrors = exports.computeOpenBlocksFromText = exports.extractBlockAndSlotSymbols = exports.collectAllASTSegments = exports.computeJsCodeDelta = exports.stripStringsAndComments = exports.isTemplateTagLine = exports.resolveTemplateRel = exports.resolveTemplatePath = exports.getExtendTargetFrom = exports.posFromOffset = exports.getTemplatePathVariants = exports.walkAstNodes = exports.computePairsFromAst = exports.buildEndTagFor = exports.computeOpenBlocksFromAst = void 0;
 const node_1 = require("vscode-languageserver/node");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
@@ -83,11 +50,13 @@ function computeOpenBlocksFromAst(nodes, upTo) {
     }
     return stack;
 }
+exports.computeOpenBlocksFromAst = computeOpenBlocksFromAst;
 function buildEndTagFor(item) {
     const openTrim = item.trimmedOpen ? '-' : '';
     const closeTrim = item.trimmedClose ? '-' : '';
     return `<#${openTrim} end ${closeTrim}#>`;
 }
+exports.buildEndTagFor = buildEndTagFor;
 // Compute block pairing using raw token stream from parser main nodes.
 // This is robust to adjacent end/start like "#>#<#" because we scan linear nodes by positions.
 function computePairsFromAst(nodes) {
@@ -110,6 +79,7 @@ function computePairsFromAst(nodes) {
     }
     return pairs;
 }
+exports.computePairsFromAst = computePairsFromAst;
 // AST traversal utility to eliminate duplication across server.ts
 function walkAstNodes(ast, callback) {
     if (!ast || !Array.isArray(ast.main))
@@ -120,6 +90,7 @@ function walkAstNodes(ast, callback) {
             break; // Allow early termination
     }
 }
+exports.walkAstNodes = walkAstNodes;
 // Template path variants utility to eliminate 4x duplication
 function getTemplatePathVariants(basePath) {
     // Defer to shared mapping to ensure client/server parity
@@ -134,6 +105,7 @@ function getTemplatePathVariants(basePath) {
     // Fallback to built-in list if shared module is unavailable
     return [basePath, basePath + '.njs', basePath + '.nhtml', basePath + '.nts'];
 }
+exports.getTemplatePathVariants = getTemplatePathVariants;
 // Compute LSP Position from character offset
 function posFromOffset(text, offset) {
     let line = 0;
@@ -150,6 +122,7 @@ function posFromOffset(text, offset) {
     }
     return node_1.Position.create(line, col);
 }
+exports.posFromOffset = posFromOffset;
 // Resolve parent template path from <#@ extend ... #> in given text
 function getExtendTargetFrom(text, docUri, parseContent) {
     const ast = parseContent(text);
@@ -172,6 +145,7 @@ function getExtendTargetFrom(text, docUri, parseContent) {
         return null;
     return resolveTemplatePath(rel, docUri);
 }
+exports.getExtendTargetFrom = getExtendTargetFrom;
 function resolveTemplatePath(rel, docUri) {
     try {
         const currentDir = docUri && docUri.startsWith('file:') ? path.dirname(url.fileURLToPath(docUri)) : process.cwd();
@@ -189,6 +163,7 @@ function resolveTemplatePath(rel, docUri) {
     catch { }
     return null;
 }
+exports.resolveTemplatePath = resolveTemplatePath;
 // Resolve a template relative to current doc and workspace roots
 function resolveTemplateRel(rel, docUri, workspaceRoots) {
     try {
@@ -206,10 +181,12 @@ function resolveTemplateRel(rel, docUri, workspaceRoots) {
     catch { }
     return null;
 }
+exports.resolveTemplateRel = resolveTemplateRel;
 // Detect if a line contains template delimiters that should not be treated as plain JS/HTML for indent purposes
 function isTemplateTagLine(line) {
     return /<#|#>|\#\{|!\{|<%|%>/.test(line);
 }
+exports.isTemplateTagLine = isTemplateTagLine;
 // Remove strings and comments for lightweight JS structure analysis
 function stripStringsAndComments(line) {
     let res = line.replace(/\/\/.*$/, '');
@@ -218,6 +195,7 @@ function stripStringsAndComments(line) {
     res = res.replace(/`(?:\\.|[^`\\])*`/g, '`');
     return res;
 }
+exports.stripStringsAndComments = stripStringsAndComments;
 // Compute JS indent delta and whether to dedent first for a line
 function computeJsCodeDelta(line) {
     const trimmed = line.trimStart();
@@ -231,6 +209,7 @@ function computeJsCodeDelta(line) {
     const delta = opens - closes;
     return { dedentFirst, delta };
 }
+exports.computeJsCodeDelta = computeJsCodeDelta;
 // Collect all segments from AST in document order for formatting fallback or reconstruction
 function collectAllASTSegments(ast) {
     if (!ast)
@@ -287,6 +266,7 @@ function collectAllASTSegments(ast) {
     segmentsByPos.sort((a, b) => a.pos - b.pos);
     return segmentsByPos.map(item => item.segment);
 }
+exports.collectAllASTSegments = collectAllASTSegments;
 function extractBlockAndSlotSymbols(ast) {
     const blocks = [];
     const slots = [];
@@ -308,6 +288,7 @@ function extractBlockAndSlotSymbols(ast) {
     }
     return { blocks, slots };
 }
+exports.extractBlockAndSlotSymbols = extractBlockAndSlotSymbols;
 // Compute open blocks from full text using provided parser
 function computeOpenBlocksFromText(text, upTo, parseContent) {
     const ast = parseContent(text);
@@ -317,6 +298,7 @@ function computeOpenBlocksFromText(text, upTo, parseContent) {
     }
     return [];
 }
+exports.computeOpenBlocksFromText = computeOpenBlocksFromText;
 function validateStructureAndCollectErrors(text, parseContent) {
     const ast = parseContent(text);
     const unmatchedEnds = [];
@@ -350,6 +332,7 @@ function validateStructureAndCollectErrors(text, parseContent) {
     }
     return { unmatchedEnds, unclosed, parserErrors };
 }
+exports.validateStructureAndCollectErrors = validateStructureAndCollectErrors;
 // Scan AST-bound expr/code nodes to collect content('name') references that are unknown
 function collectUnknownContentRefs(text, docUri, parseContent, getExtendTargetFrom) {
     const ast = parseContent(text);
@@ -383,6 +366,7 @@ function collectUnknownContentRefs(text, docUri, parseContent, getExtendTargetFr
     }
     return result;
 }
+exports.collectUnknownContentRefs = collectUnknownContentRefs;
 // Scan for partial(..., 'name') and verify target can be resolved using local requireAs and workspace index
 function collectUnresolvedPartials(text, docUri, parseContent, fileIndex, workspaceRoots) {
     const ast = parseContent(text);
@@ -423,6 +407,7 @@ function collectUnresolvedPartials(text, docUri, parseContent, fileIndex, worksp
     }
     return res;
 }
+exports.collectUnresolvedPartials = collectUnresolvedPartials;
 // Duplicate block/slot declarations
 function collectDuplicateDeclarations(text, parseContent) {
     const ast = parseContent(text);
@@ -441,6 +426,7 @@ function collectDuplicateDeclarations(text, parseContent) {
     }
     return out;
 }
+exports.collectDuplicateDeclarations = collectDuplicateDeclarations;
 // Whitespace trim hints around template tags
 function collectTrimWhitespaceHints(text) {
     const hints = [];
@@ -487,6 +473,7 @@ function collectTrimWhitespaceHints(text) {
     catch { }
     return hints;
 }
+exports.collectTrimWhitespaceHints = collectTrimWhitespaceHints;
 // Directive validation in text
 function validateDirectivesInText(text) {
     const issues = [];
@@ -564,6 +551,7 @@ function validateDirectivesInText(text) {
     catch { }
     return issues;
 }
+exports.validateDirectivesInText = validateDirectivesInText;
 // Validate extend directive resolves to an accessible parent template
 function collectExtendParentIssues(text, docUri, parseContent, workspaceRoots) {
     const issues = [];
@@ -601,6 +589,7 @@ function collectExtendParentIssues(text, docUri, parseContent, workspaceRoots) {
     catch { }
     return issues;
 }
+exports.collectExtendParentIssues = collectExtendParentIssues;
 // Find content('name') usages that are not locally declared nor in parent
 function collectUnknownContentAgainstParent(text, docUri, parseContent, getExtendTargetFrom) {
     const out = [];
@@ -630,6 +619,7 @@ function collectUnknownContentAgainstParent(text, docUri, parseContent, getExten
     catch { }
     return out;
 }
+exports.collectUnknownContentAgainstParent = collectUnknownContentAgainstParent;
 // Find child-declared blocks that do not exist in parent
 function collectChildBlocksMissingInParent(text, docUri, parseContent, getExtendTargetFrom) {
     const res = [];
@@ -658,3 +648,4 @@ function collectChildBlocksMissingInParent(text, docUri, parseContent, getExtend
     catch { }
     return res;
 }
+exports.collectChildBlocksMissingInParent = collectChildBlocksMissingInParent;
