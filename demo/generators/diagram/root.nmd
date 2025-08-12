@@ -1,0 +1,17 @@
+<#@ context "diagram" #>
+<#@ alias "model-root" #>
+<#@ chunks "$$$main$$$" #>
+
+<#- chunkStart(`application.md`); -#>
+# Application diagram
+
+#{partial(diagram, 'application')}
+<#- chunkEnd(); -#>
+
+<* диаграммы для каждой сущности *>
+
+<#- diagram.things.forEach(thing => {#>
+<#- chunkStart(`./${thing.thingType.split('.').join('/')}.md`); -#>
+#{partial(thing, 'thing-and-siblings')}
+<# chunkEnd(); -#>
+<#- })#>

@@ -1,7 +1,7 @@
 <#@ extend 'PanelHeading.nhtml' #>
 <div>
-  #{content('header', context.head)}
+#{content('header', context.head)}
 </div>
 <div>
-  #{content()}
+#{content()}
 </div>

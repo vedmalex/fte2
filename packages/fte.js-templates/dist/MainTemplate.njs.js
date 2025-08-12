@@ -42,12 +42,33 @@ exports.default = {
         out.push("\n");
         out.push("\n");
         const asyncMode = !!(options === null || options === void 0 ? void 0 : options.promise);
+        const streamMode = !!(options === null || options === void 0 ? void 0 : options.stream);
         out.push("script: function (" + (directives.context) + ", _content, partial, slot, options){\n");
         out.push((options.applyIndent(content("maincontent", directives), "    ")) + "\n");
-        out.push("    var out = []\n");
-        if (asyncMode) {
+        if (streamMode) {
             out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
-            out.push("    const __aj = async arr => (await Promise.all(arr.map(v => __isThenable(v)? v : Promise.resolve(v)))).join('')\n");
+            out.push("    const __ab = options && options.abort\n");
+            if (directives.chunks) {
+                out.push("    const __aiter = async function* (arr){\n");
+                out.push("      const maxSize = options && options.maxCoalesceChunkSize || 0\n");
+                out.push("      let acc=''\n");
+                out.push("      for(const v of arr){ if(__ab && __ab.aborted) return; const sv = (__isThenable(v)? await v : v); if(maxSize>0){ acc += sv; if(acc.length>=maxSize){ yield acc; acc='' } } else { yield sv } }\n");
+                out.push("      if(acc) yield acc\n");
+                out.push("    }\n");
+                out.push("    var out = []\n");
+            }
+            else {
+                out.push("    const __makeQ = ()=>{ const buf=[]; let res; let done=false; const hwm=(options&&options.highWaterMark)||0; return { push: v=>{ buf.push(v); if(res){ res(); res=undefined } if(hwm>0 && buf.length>=hwm){ /* soft backpressure point */ } }, end:()=>{ done=true; if(res){res()} }, async *iter(){ while(true){ if(__ab && __ab.aborted) return; if(buf.length){ const val = buf.shift(); if(options&&options.onChunk) try{ options.onChunk(String(val)) }catch(e){ if(options.onError) options.onError(e) } yield val; continue } if(done) return; await new Promise(r=>res=r) } } }\n");
+                out.push("    const __q = __makeQ()\n");
+                out.push("    var out = { push: v => __isThenable(v) ? v.then(v2=>__q.push(v2)) : __q.push(v) }\n");
+            }
+        }
+        else {
+            out.push("    var out = []\n");
+            if (asyncMode) {
+                out.push("    const __isThenable = v => v && typeof v.then==='function'\n");
+                out.push("    const __aj = async arr => { const a = await Promise.all(Array.from(arr, v => __isThenable(v)? v : Promise.resolve(v))); return Array.isArray(a) ? a.join('') : String(a) }\n");
+            }
         }
         out.push((options.applyIndent(content("chunks-start", directives), "    ")) + "\n");
         out.push("/*__MAIN_START__*/\n");
@@ -62,23 +83,38 @@ exports.default = {
         if (directives.chunks) {
             out.push("\n");
             out.push("    if(out.some(t=>typeof t == 'object')){\n");
-            out.push("      return out.map(chunk=>(\n");
+            out.push(asyncMode
+                ? "      return Promise.all(out.map(async chunk => (\n"
+                : "      return out.map(chunk=(\n");
             out.push("          {...chunk,\n");
-            out.push("            content:");
-            if (directives.deindent) {
-                out.push(" options.applyDeindent(");
+            if (streamMode) {
+                out.push("            content:");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindentStream(");
+                }
+                out.push("\n");
+                out.push("            __aiter(Array.isArray(chunk.content) ? chunk.content : [chunk.content])");
+                if (directives.deindent) {
+                    out.push(")");
+                }
             }
-            out.push("\n");
-            out.push("            Array.isArray(chunk.content)\n");
-            out.push("              ? chunk.content.join('')\n");
-            out.push("              : chunk.content");
-            if (directives.deindent) {
-                out.push(")");
+            else {
+                out.push("            content:");
+                if (directives.deindent) {
+                    out.push(" options.applyDeindent(");
+                }
+                out.push("\n");
+                out.push(asyncMode
+                    ? "            Array.isArray(chunk.content)\n              ? await __aj(chunk.content)\n              : chunk.content"
+                    : "            Array.isArray(chunk.content)\n              ? chunk.content.join('')\n              : chunk.content");
+                if (directives.deindent) {
+                    out.push(")");
+                }
             }
             out.push("\n");
             out.push("          }\n");
             out.push("        )\n");
-            out.push("      )\n");
+            out.push(asyncMode ? "      ))\n" : "      )\n");
             out.push("    } else {\n");
             if (asyncMode) {
                 out.push("      return __aj(out)\n");
@@ -98,7 +134,16 @@ exports.default = {
         }
         else {
             out.push("\n");
-            if (asyncMode) {
+            if (streamMode) {
+                out.push("      __q.end(); ");
+                if (directives.deindent) {
+                    out.push("return options.applyDeindentStream(__q.iter())");
+                }
+                else {
+                    out.push("return __q.iter()");
+                }
+            }
+            else if (asyncMode) {
                 out.push("      return __aj(out)");
             }
             else {

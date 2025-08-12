@@ -8,6 +8,8 @@ export interface MainTemplateOptions {
     sourceRoot?: string;
     inline?: boolean;
     promise?: boolean;
+    stream?: boolean;
+    abort?: any;
 }
 export interface MainTemplateResult {
     code: string;

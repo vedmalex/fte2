@@ -1,0 +1,39 @@
+{
+  "name": "fte.js-formatter",
+  "version": "0.1.0",
+  "description": "Formatter & Linter for FTE templates",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./cli": {
+      "require": "./dist/cli.js",
+      "import": "./dist/cli.js"
+    }
+  },
+  "bin": {
+    "fte-format": "dist/cli.js"
+  },
+  "prettier": "../../.prettierrc.js",
+  "scripts": {
+    "test": "jest --coverage --passWithNoTests",
+    "prepublish": "tsc -b",
+    "build": "tsc -b",
+    "watch": "tsc -w"
+  },
+  "keywords": ["fte", "formatter", "linter", "templates"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fte.js-parser": "workspace:3.0.0-rc.12"
+  },
+  "devDependencies": {
+    "typescript": "next",
+    "jest": "^29.4.3",
+    "jest-config": "^29.4.3"
+  }
+}

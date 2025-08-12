@@ -3,7 +3,7 @@
 <#@ extend "panel.nhtml"#>
 <#@ context 'panel' #>
 <div>
-  <p>
-    extended panel
-  </p>
+<p>
+extended panel
+</p>
 </div>

@@ -1,0 +1,85 @@
+Template = { Segment } ;
+
+Segment = Directive
+        | Block
+        | Slot
+        | BlockEnd
+        | CodeBlock
+        | EjsCode
+        | EjsExpression
+        | EjsUExpression
+        | Comment
+        | HashExpression
+        | BangExpression
+        | Text
+        ;
+
+Text = { AnyChar } ;
+
+Directive   = "<#@", DirectiveBody, DirectiveEnd ;
+DirectiveEnd = "#>" | "-#>" ;
+
+DirectiveBody = "extend", [ Params ]
+              | "context", [ Params ]
+              | "alias", [ Params ]
+              | "deindent", [ Params ]
+              | "chunks", [ Params ]
+              | "includeMainChunk"
+              | "useHash"
+              | "noContent"
+              | "noSlots"
+              | "noBlocks"
+              | "noPartial"
+              | "noOptions"
+              | "promise"
+              | "callback"
+              | "requireAs", Params
+              | UnknownDirective
+              ;
+
+UnknownDirective = Identifier, [ Params ] ;
+
+Params    = "(", [ ParamList ], ")" ;
+ParamList = Param, { ",", Param } ;
+Param     = String | Identifier ;
+
+Block = BlockStart, { Segment }, BlockEnd ;
+Slot  = SlotStart,  { Segment }, BlockEnd ;
+
+BlockStart = ("<# block" | "<#- block"), BlockName, ": #>"
+           | ("<# block" | "<#- block"), BlockName, ": -#>" ;
+SlotStart  = ("<# slot"  | "<#- slot"),  SlotName,  ": #>"
+           | ("<# slot"  | "<#- slot"),  SlotName,  ": -#>" ;
+
+BlockEnd = "<# end #>" | "<#- end #>" | "<# end -#>" | "<#- end -#>" ;
+
+BlockName = Quoted | Identifier ;
+SlotName  = Quoted | Identifier ;
+
+CodeBlock = ("<#-" | "<#"), CodeBody, ("-#>" | "#>") ;
+CodeBody  = { AnyChar } ;
+
+EjsCode        = ("<%_" | "<%"), EjsBody, UnknownEnd ;
+EjsExpression  = "<%-",           EjsBody, UnknownEnd ;
+EjsUExpression = "<%=",           EjsBody, UnknownEnd ;
+EjsBody        = { AnyChar } ;
+UnknownEnd     = "%>" | "-%>" | "_%>" ;
+
+Comment = "<*", { AnyChar }, "*>" ;
+
+HashExpression = "#{", CurlyBalanced, "}" ;
+BangExpression = "!{", CurlyBalanced, "}" ;
+
+CurlyBalanced = { CurlyItem } ;
+CurlyItem     = String | "{", CurlyBalanced, "}" | AnyChar ;
+
+Quoted = "'", { NotQuote }, "'"
+       | '"', { NotDQuote }, '"'
+       | "`", { NotBQuote }, "`" ;
+String = Quoted | Identifier ;
+
+Identifier = "IDENT" ;
+AnyChar    = "CHAR" ;
+NotQuote   = "CHAR_NO_SINGLE_QUOTE" ;
+NotDQuote  = "CHAR_NO_DOUBLE_QUOTE" ;
+NotBQuote  = "CHAR_NO_BACKQUOTE" ;

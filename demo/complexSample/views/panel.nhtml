@@ -1,20 +1,21 @@
 <#@ alias "panel" #>
 <#@ context 'panel' #>
-<#- block 'title' : -#>
-<#@ context 'title' #>
+
+<# block 'title' : #>
+  <#@ context 'title' #>
   <div class="panel-heading">
-    <h3 class="panel-title">#{title}</h3>
+  <h3 class="panel-title">#{title}</h3>
   </div>
-<#- end -#>
-<#- block 'body' : -#>
-<#@ context 'body' #>
-  <div class="panel-body">
-    #{body}
-  </div>
-<#- end -#>
+<# end #>
+
+<# block 'body' : #>
+  <#@ context 'body' #>
+  <div class="panel-body">#{body}</div>
+<# end #>
+
 <div class="panel panel-default">
 #{content('title', panel.title)}
 #{content('body', panel.body)}
 #{content()}
-<p> sample text! </p>
+<p>sample text!</p>
 </div>

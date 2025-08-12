@@ -27,6 +27,12 @@ class TemplateFactoryBrowser extends fte_js_base_1.TemplateFactoryBase {
         const bc = this.blockContent(templ);
         return bc.runAsync(context, bc.content, bc.partial, bc.slot, this.options);
     }
+    runStream(context, name) {
+        const templ = this.ensure(name);
+        const bc = this.blockContent(templ);
+        const res = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        return res;
+    }
     runPartial({ context, name, options, slots }) {
         const templ = this.ensure(name);
         if (!templ.chunks) {

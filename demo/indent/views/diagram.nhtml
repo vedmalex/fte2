@@ -8,15 +8,15 @@ chunkStart(`root.plantuml`);
 <#
 
 const association = {
-  "inheritance": ["<|","|>"],
-  "composition": "*",
-  "aggregation": "o",
-  "navigable":["<",">"]
+"inheritance": ["<|","|>"],
+"composition": "*",
+"aggregation": "o",
+"navigable":["<",">"]
 }
 
 const dependency = {
-  "implement":["<|", "|>"],
-  "depends":["<", ">"]
+"implement":["<|", "|>"],
+"depends":["<", ">"]
 }
 #>
 @startuml diagram
@@ -29,15 +29,15 @@ package #{namespace.name} {}
 <#- diagram.things.forEach(thing => {#>
 class #{thing.thingType} {
 <# thing.properties.forEach(prop=> {#>
-  #{prop.propertyName}:#{prop.type ?? "String"}
+#{prop.propertyName}:#{prop.type ?? "String"}
 <#})#>
 __ server methods __
 <#- thing.methods.forEach(method=> {#>
-  #{method.name}()
+#{method.name}()
 <#})#>
 __ client methods __
 <#- thing.clientMethods.forEach(method=> {#>
-  #{method.name}()
+#{method.name}()
 <#})#>
 }
 <#- })#>

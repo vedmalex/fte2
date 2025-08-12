@@ -43,6 +43,12 @@ class TemplateFactoryStandalone extends fte_js_base_1.TemplateFactoryBase {
         }
         return bc.run(context, bc.content, bc.partial, bc.slot, this.options);
     }
+    runStream(context, name) {
+        const templ = this.ensure(name);
+        const bc = this.blockContent(templ);
+        const res = bc.run(context, bc.content, bc.partial, bc.slot, this.options);
+        return res;
+    }
     runPartial({ context, name, slots, options, }) {
         const templ = this.ensure(name);
         if (!templ.chunks) {

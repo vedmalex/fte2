@@ -14,6 +14,13 @@ export declare class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOpt
         name: string;
         content: string;
     }>>;
+    runStream<T>(context: T, name: string): AsyncIterable<string> | string | Array<{
+        name: string;
+        content: string;
+    } | {
+        name: string;
+        content: AsyncIterable<string>;
+    }>;
     runPartial<T, OPTIONS extends DefaultFactoryOption>({ context, name, slots, options, }: {
         context: T;
         name: string;

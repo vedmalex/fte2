@@ -1,0 +1,20 @@
+<#@ context 'diagram' #>
+<#@ alias 'application' #>
+
+```plantuml
+<* диаграммы для всего приложения *>
+@startuml application
+<#- diagram.things.forEach(thing => {#>
+
+class #{thing.thingType} << (T, green) thing>> <#if(thing.extends){#> extends #{thing.extends} <#}#> {
+collection: #{thing.collectionType}
+location: #{thing.locationType}
+}
+<#- })#>
+
+<#- diagram.relations.forEach(rel => {#>
+#{rel.source.thingType.thingType} "#{rel.source.name}"  #{rel.source.cardinality == "*"? "*" : "-"}--#{rel.dest.cardinality == "*"? "*" : "-"} "#{rel.dest.name}" #{rel.dest.thingType.thingType}
+<#- })#>
+@enduml
+```
+

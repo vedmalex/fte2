@@ -63,6 +63,7 @@
   - Benchmark parser + codegen on large templates; identify hotspots
   - Avoid repeated partial invocations in hot paths; memoize where safe
   - Consider lazy sourcemap generation behind a flag to speed up defaults
+  - Add formal grammar (EBNF) for parser to guide maintenance and tests
 
 - **Tooling/CI**
   - Enforce formatting (dprint/prettier) and lint in CI across workspaces
@@ -74,6 +75,13 @@
   - “Source map guarantees” doc per template with examples
   - Migration guide from previous return-shape behaviors to new stable contracts
   - Examples (browser/node/esm) + troubleshooting guide
+  - Parser grammar document kept in repo and linked from package README
+
+- **Formatter & Linter for templates (based on GRAMMAR.ebnf)**
+  - Implement deterministic formatter with 2-space default indent, preserving user indent style when detected
+  - Implement linter rules enforcing directive-on-own-line, block/slot only construct on line, trimming requirements, no nested blocks in blocks, last line empty
+  - Provide CLI and programmatic API, integrate with existing demos
+  - Colocated tests (vitest) with ≥85% coverage; golden formatting tests
 
 - **Example projects (end-to-end)**
   - Node (CJS): CLI bundle, run sync/async/stream, write files per chunk, use `toNodeReadable`

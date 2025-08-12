@@ -1,5 +1,5 @@
-  resolver: {
-    <#-
-      console.log('hellop')
-    #>
-    id: root => root._id,
+resolver: {
+<#-
+console.log('hellop')
+#>
+id: root => root._id,

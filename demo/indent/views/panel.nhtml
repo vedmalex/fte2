@@ -2,24 +2,24 @@
 <#@ alias "panel" #>
 <#@ context 'panel' #>
 <# block 'title' : #>
-<#@ context 'title' #>
-<#@ noContent #>
-<#@ noEscape #>
-<div class="panel-heading">
+  <#@ context 'title' #>
+  <#@ noContent #>
+  <#@ noEscape #>
+  <div class="panel-heading">
   <#{'p'}> text </#{'p'}>
   <h3 class="panel-title">#{title}</h3>
-</div>
+  </div>
 <# end #>
 <# block 'body' : #>
-<#@ context 'body' #>
-<#@ noContent #>
-<#@ noEscape #>
-<div class="panel-body">
+  <#@ context 'body' #>
+  <#@ noContent #>
+  <#@ noEscape #>
+  <div class="panel-body">
   #{body}
-</div>
+  </div>
 <# end #>
 <div class="panel panel-default">
-  #{content('title', panel.title)}
-  #{content('body', panel.body)}
-  #{content()}
+#{content('title', panel.title)}
+#{content('body', panel.body)}
+#{content()}
 </div>

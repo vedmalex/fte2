@@ -1,0 +1,49 @@
+<#@ context 'thing' #>
+<#@ alias 'thing-and-siblings'#>
+# Diagram for #{thing.thingType}
+
+```plantuml #{thing.thingType}
+@startuml diagram
+!theme sketchy-outline
+set namespaceSeparator none
+left to right direction
+
+class #{thing.thingType} << (T, green) thing>> <#if(thing.extends){#> extends #{thing.extends} <#}#> {
+<#- if(thing.properties){#>
+collection: #{thing.collectionType}
+location: #{thing.locationType}
+__ properties __
+  id: ID
+<#-}#>
+<#- thing.properties?.forEach(prop=> {#>
+  #{prop.propertyName}:#{prop.type ?? "String"}
+<#-})#>
+<#- if(thing.methods){#>
+__ server methods __
+<#-}#>
+<#- thing.methods?.forEach(method=> {#>
+  #{method.name}()
+<#-})#>
+<#- if(thing.clientMethods){#>
+__ client methods __
+<#-}#>
+<#- thing.clientMethods?.forEach(method=> {#>
+  #{method.name}()
+<#-})#>
+}
+
+<#- thing.sourceRels?.forEach(rel=>{#>
+
+#{rel.source.thingType.thingType}  ---- "#{rel.dest.required ? '1':'0'}..#{rel.dest.cardinality == "*"? "*" : "1"}" #{rel.dest.thingType.thingType} : #{rel.dest.name}
+
+<#-})#>
+
+<#- thing.destRels?.forEach(rel=>{#>
+
+#{rel.dest.thingType.thingType}  ---- "#{rel.source.required ? '1':'0'}..#{rel.source.cardinality == "*"? "*" : "1"}" #{rel.source.thingType.thingType} : #{rel.source.name}
+
+<#-})#>
+
+@enduml
+
+```

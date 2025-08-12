@@ -25,7 +25,9 @@
     "ex:demo-cjs:async": "(cd examples/demo-node-cjs && node run-async.js)",
     "ex:demo-cjs:stream": "(cd examples/demo-node-cjs && node run-stream.js)",
     "ex:demo-esm:async": "(cd examples/demo-node-esm && node --input-type=module run-async.mjs)",
-    "ex:demo-esm:stream": "(cd examples/demo-node-esm && node --input-type=module run-stream.mjs)"
+    "ex:demo-esm:stream": "(cd examples/demo-node-esm && node --input-type=module run-stream.mjs)",
+    "format:check": "node ./packages/fte.js-formatter/dist/cli.js --check demo/complexSample/views/*.nhtml",
+    "format:write": "node ./packages/fte.js-formatter/dist/cli.js --write demo/complexSample/views/*.nhtml"
   },
   "repository": {
     "type": "git",

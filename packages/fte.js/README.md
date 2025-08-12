@@ -168,6 +168,19 @@ it accept tempalte code and return function code to be used within `fte.js` Fact
 'remove-empty-statement' and 'remove-unreachable-branch'.
 You alwais can build yout own compiler, just see the source.
 
+## Streaming and Async (modern runtime)
+
+If you use the modern runtime factories (`fte.js-standalone`, `fte.js-browser`) and templates from this monorepo, you can enable async and stream modes:
+
+- Async mode: `factory.options.promise = true`, then use `runAsync`/`runPartialAsync`.
+- Stream mode: `factory.options.stream = true`, then use `runStream`.
+  - Non-chunk templates: returns `AsyncIterable<string>`
+  - Chunk templates: returns array of `{ name, content: AsyncIterable<string> }`
+  - Abort: `factory.options.abort = { aborted: boolean }`
+  - Deindent in stream: processed on-the-fly via `applyDeindentStream`
+  - Options: `onChunk`, `onError`, `highWaterMark`, `maxCoalesceChunkSize`
+  - Adapters (from `fte.js-base`): `toNodeReadable`, `toWebReadable`
+
 ### expression blocks
 
 Both of them is used only to displaying the data.

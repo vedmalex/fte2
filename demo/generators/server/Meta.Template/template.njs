@@ -1,0 +1,2 @@
+<#@ noContent #>
+#{context.template}

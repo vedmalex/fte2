@@ -3,10 +3,10 @@
 <#@ alias "index" #>
 <#@ extend 'template.nhtml' #>
 <section>
-  #{partial(context, 'panel')}
+#{partial(context, 'panel')}
 </section>
 <section>
 <#- var extra = { title: 'Another panel', body:'extra!!! content'}#>
-  #{partial(extra, 'panel')}
-  #{partial(extra, 'panel_e')}
+#{partial(extra, 'panel')}
+#{partial(extra, 'panel_e')}
 </section>
