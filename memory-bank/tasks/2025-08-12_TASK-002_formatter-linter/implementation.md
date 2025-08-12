@@ -1,0 +1,1 @@
+Created package `packages/fte.js-formatter` with initial API/CLI and minimal rules (trailing whitespace, final newline, directive-on-own-line). Next: integrate parser for indentation-aware formatting.

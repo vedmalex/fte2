@@ -6,7 +6,7 @@
   let properties = context.gridviewProps
   const config = context.getThingConfig(context)
 
-#>
+-#>
 
 Ext.define('Modeleditor.view.#{context.$namespace}.List.#{context.$name}', {
   serverModel: '#{context.$normalizedName}',

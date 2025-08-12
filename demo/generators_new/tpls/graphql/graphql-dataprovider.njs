@@ -447,7 +447,7 @@ export default new Query(
 
 <#- chunkStart(`graphql/${item.name}/operations/index.js`); #>
 import create from './create.js'
-<#- operations.push(`create`)-#>
+<#- operations.push(`create`) -#>
 <#- chunkEnd(); -#>
 
 <#- chunkStart(`graphql/${item.name}/operations/create.js`); #>

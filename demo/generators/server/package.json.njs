@@ -10,7 +10,7 @@ let modules = context.modules.toArray()
 let len = modules.length ?? 0;
 for (let i = 0; i < len; i++) {
   let module = modules[i]
-#>
+-#>
   "#{module.name}":"#{ module.version ? module.version : '*'}"
   <#- if( i != len-1){#>,<#}#>
 <#-}#>
