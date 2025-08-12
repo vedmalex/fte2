@@ -1,0 +1,87 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FTE Template Injection (Generic)",
+  "scopeName": "fte.template.inject.generic",
+  "injectionSelector": "L:source.python, L:source.swift, L:source.ruby, L:source.go, L:source.php",
+  "patterns": [
+    {
+      "name": "meta.inline.template.brackets.generic",
+      "match": "(<#|#>|#\\{|!\\{|<\\*|\\*>)",
+      "captures": { "1": { "name": "punctuation.definition.bracket.template" } }
+    },
+    {
+      "begin": "<#@\\s*",
+      "beginCaptures": { "0": { "name": "punctuation.definition.bracket.template.directive.begin" } },
+      "end": "[-]?\\s*#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.bracket.template.directive.end" } },
+      "name": "meta.directive.template",
+      "patterns": [
+        { "name": "keyword.control.directive", "match": "\\w+" },
+        { "name": "string.unquoted.directive", "match": "[^\\s#>]*" }
+      ]
+    },
+    {
+      "begin": "#{",
+      "beginCaptures": { "0": { "name": "punctuation.definition.bracket.template.expression.begin" } },
+      "end": "}",
+      "endCaptures": { "0": { "name": "punctuation.definition.bracket.template.expression.end" } },
+      "contentName": "meta.embedded.block.javascript",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "!{",
+      "beginCaptures": { "0": { "name": "punctuation.definition.bracket.template.expression.begin" } },
+      "end": "}",
+      "endCaptures": { "0": { "name": "punctuation.definition.bracket.template.expression.end" } },
+      "contentName": "meta.embedded.block.javascript",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "(?:<#-(?!\\s*(?:block|slot)\\b)|<#(?!\\s*(?:block|slot|@|end\\s*#>)|\\{))",
+      "beginCaptures": { "0": { "name": "punctuation.definition.bracket.template.block.begin" } },
+      "end": "[-]?#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.bracket.template.block.end" } },
+      "contentName": "meta.embedded.block.javascript",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "<\\*",
+      "beginCaptures": { "0": { "name": "punctuation.definition.bracket.template.comment.begin" } },
+      "end": "\\*>",
+      "endCaptures": { "0": { "name": "punctuation.definition.bracket.template.comment.end" } },
+      "name": "comment.block.template"
+    },
+    {
+      "begin": "<#-\\s*block\\s+['\"`]([^'\"`]+)['\"`]\\s*:\\s*-#>",
+      "beginCaptures": { "0": { "name": "punctuation.definition.block.begin" }, "1": { "name": "entity.name.block" } },
+      "end": "<#-\\s*end\\s*-#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.block.end" } },
+      "name": "meta.block.template",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "<#\\s*block\\s+['\"`]([^'\"`]+)['\"`]\\s*:\\s*#>",
+      "beginCaptures": { "0": { "name": "punctuation.definition.block.begin" }, "1": { "name": "entity.name.block" } },
+      "end": "<#\\s*end\\s*#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.block.end" } },
+      "name": "meta.block.template",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "<#-\\s*slot\\s+['\"`]([^'\"`]+)['\"`]\\s*:\\s*-#>",
+      "beginCaptures": { "0": { "name": "punctuation.definition.block.begin" }, "1": { "name": "entity.name.block" } },
+      "end": "<#-\\s*end\\s*-#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.block.end" } },
+      "name": "meta.slot.template",
+      "patterns": [ { "include": "source.js" } ]
+    },
+    {
+      "begin": "<#\\s*slot\\s+['\"`]([^'\"`]+)['\"`]\\s*:\\s*#>",
+      "beginCaptures": { "0": { "name": "punctuation.definition.block.begin" }, "1": { "name": "entity.name.block" } },
+      "end": "<#\\s*end\\s*#>",
+      "endCaptures": { "0": { "name": "punctuation.definition.block.end" } },
+      "name": "meta.slot.template",
+      "patterns": [ { "include": "source.js" } ]
+    }
+  ]
+}

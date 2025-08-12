@@ -1,0 +1,229 @@
+{
+  "name": "fte-js-template",
+  "publisher": "alex-vedmedenko",
+  "displayName": "fte.js-template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vedmalex/vscode-ftejs-lang.git"
+  },
+  "description": "fte.js templates: syntax highlight + language server",
+  "license": "MIT",
+  "homepage": "https://github.com/vedmalex/vscode-ftejs-lang#readme",
+  "bugs": {
+    "url": "https://github.com/vedmalex/vscode-ftejs-lang/issues"
+  },
+  "keywords": [
+    "fte.js",
+    "template",
+    "syntax",
+    "highlighting",
+    "textmate",
+    "vscode-extension"
+  ],
+  "version": "1.2.0",
+  "workspaces": ["client", "server"],
+  "engines": {
+    "vscode": "^1.96.4"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm --workspace server run build && npm --workspace client run build",
+    "watch": "npm --workspace server run watch & npm --workspace client run watch",
+    "docs:sync-usage": "node tools/sync-usage.js",
+    "test": "npm --workspace server run test",
+    "package": "vsce package --no-yarn",
+    "publish:vsce": "vsce publish",
+    "publish:openvsx": "ovsx publish",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:major": "npm version major && git push --follow-tags"
+  },
+  "main": "./client/out/extension.js",
+  "activationEvents": [
+    "onLanguage:template-js",
+    "onLanguage:template-html",
+    "onLanguage:template-typescript",
+    "onLanguage:template-markdown",
+    "onCommand:ftejs.convertToTemplate",
+    "onCommand:ftejs.toggleTrimVisualizer",
+    "onCommand:ftejs.preview.dualExtraction"
+  ],
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [ { "id": "ftejs", "title": "fte.js", "icon": "" } ]
+    },
+    "configuration": {
+      "title": "fte.js",
+      "properties": {
+
+        "ftejs.format.textFormatter": {
+          "type": "boolean",
+          "default": true,
+          "description": "Format non-template text segments using Prettier (html/markdown/js/ts)"
+        },
+        "ftejs.format.keepBlankLines": {
+          "type": "number",
+          "default": 1,
+          "description": "Maximum consecutive blank lines to keep in formatted output (use -1 to disable)"
+        },
+        "ftejs.format.codeFormatter": {
+          "type": "boolean",
+          "default": true,
+          "description": "Indent template code blocks and align control structures (does not change generated text)"
+        },
+        "ftejs.docs.usagePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to USAGE.md providing function/directive documentation for hovers"
+        }
+      }
+    },
+    "commands": [
+      { "command": "ftejs.scaffold.block", "title": "fte.js: Insert Block" },
+      { "command": "ftejs.scaffold.slot", "title": "fte.js: Insert Slot" },
+      { "command": "ftejs.scaffold.chunkPair", "title": "fte.js: Insert chunkStart/chunkEnd" },
+      { "command": "ftejs.scaffold.partial", "title": "fte.js: Create Partial and Insert Call" },
+      { "command": "ftejs.debug.syntaxScopes", "title": "fte.js: Debug Syntax Scopes (experimental)" },
+      { "command": "ftejs.generator.nhtmlPage", "title": "fte.js: Generate .nhtml Page" },
+      { "command": "ftejs.generator.ntsClass", "title": "fte.js: Generate .nts Class" },
+      { "command": "ftejs.preview.chunks", "title": "fte.js: Preview Chunks (static)" },
+      { "command": "ftejs.preview.dualExtraction", "title": "fte.js: Preview Dual Extraction (Code/Instruction)" },
+      { "command": "ftejs.convertToTemplate", "title": "fte.js: Create template from this file" },
+      { "command": "ftejs.toggleTrimVisualizer", "title": "fte.js: Toggle Trimmed Whitespace Visualizer" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "ftejs.scaffold.block", "group": "navigation@10", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.scaffold.slot", "group": "navigation@11", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.scaffold.chunkPair", "group": "navigation@12", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.scaffold.partial", "group": "navigation@13", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.generator.nhtmlPage", "group": "navigation@20", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.generator.ntsClass", "group": "navigation@21", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.preview.chunks", "group": "navigation@30", "when": "editorLangId =~ /template-/" },
+        { "command": "ftejs.convertToTemplate", "group": "3_modification@15", "when": "editorLangId == markdown || editorLangId == html || editorLangId == typescript || editorLangId == javascript || editorLangId == typescriptreact || editorLangId == javascriptreact" }
+      ]
+    },
+    "languages": [
+      {
+        "id": "template-js",
+        "extensions": [
+          ".njs"
+        ],
+        "configuration": "./language-configuration.json",
+        "embeddedLanguages": {
+          "source.js": "javascript",
+          "text.template": "template"
+        }
+      },
+      {
+        "id": "template-html",
+        "extensions": [
+          ".nhtml"
+        ],
+        "configuration": "./language-configuration.json",
+        "embeddedLanguages": {
+          "text.html.basic": "html",
+          "text.template": "template"
+        }
+      },
+      {
+        "id": "template-typescript",
+        "extensions": [
+          ".nts"
+        ],
+        "configuration": "./language-configuration.json",
+        "embeddedLanguages": {
+          "source.ts": "typescript",
+          "text.template": "template"
+        }
+      },
+      {
+        "id": "template-markdown",
+        "extensions": [
+          ".nmd"
+        ],
+        "configuration": "./language-configuration.json",
+        "embeddedLanguages": {
+          "text.html.markdown": "markdown",
+          "text.template": "template"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "template-js",
+        "scopeName": "source.js.template",
+        "path": "./syntaxes/template-js.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.javascript": "javascript"
+        }
+      },
+      {
+        "language": "template-html",
+        "scopeName": "text.html.template",
+        "path": "./syntaxes/template-html.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.html": "html",
+          "meta.embedded.block.javascript": "javascript"
+        }
+      },
+      {
+        "language": "template-typescript",
+        "scopeName": "source.ts.template",
+        "path": "./syntaxes/template-typescript.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.typescript": "typescript",
+          "meta.embedded.block.javascript": "javascript"
+        }
+      },
+      {
+        "language": "template-markdown",
+        "scopeName": "text.html.markdown.template",
+        "path": "./syntaxes/template-markdown.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.markdown": "markdown",
+          "meta.embedded.block.javascript": "javascript"
+        }
+      },
+      {
+        "scopeName": "text.html.template.inline",
+        "path": "./syntaxes/template-inline.tmLanguage.json",
+        "injectTo": [
+          "source.js",
+          "source.ts"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.javascript": "javascript"
+        }
+      },
+      {
+        "scopeName": "fte.template.inject.html",
+        "path": "./syntaxes/template-inject-html.tmLanguage.json",
+        "injectTo": [
+          "text.html.basic",
+          "text.html.markdown"
+        ]
+      },
+      {
+        "scopeName": "fte.template.inject.generic",
+        "path": "./syntaxes/template-inject-generic.tmLanguage.json",
+        "injectTo": [
+          "source.python",
+          "source.swift",
+          "source.ruby",
+          "source.go",
+          "source.php"
+        ]
+      }
+    ]
+  }
+  ,
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.11"
+  }
+}
