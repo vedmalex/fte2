@@ -301,9 +301,7 @@
     "partial": true,
     "options": true,
     "requireAs": [],
-    "alias": [
-      "typedefs.ts.njs"
-    ]
+    "alias": ["typedefs.ts.njs"]
   },
   "documentation": [],
   "slots": {},

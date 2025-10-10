@@ -1,0 +1,2 @@
+export declare function compileLight(content: Buffer | string, optimize: boolean, fileName?: string, sourceRoot?: string, inlineMap?: boolean, sourcemap?: boolean): any;
+//# sourceMappingURL=compileLight.d.ts.map

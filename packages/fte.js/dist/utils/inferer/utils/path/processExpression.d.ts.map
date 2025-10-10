@@ -1,1 +1,0 @@
-{"version":3,"file":"processExpression.d.ts","sourceRoot":"","sources":["../../../../../src/utils/inferer/utils/path/processExpression.ts"],"names":[],"mappings":"AAAA,OAAiB,EAAE,QAAQ,EAAE,MAAM,iBAAiB,CAAA;AACpD,OAAO,KAAK,CAAC,MAAM,cAAc,CAAA;AACjC,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAA;AAE7B,wBAAgB,iBAAiB,CAAC,IAAI,EAAE,QAAQ,CAAC,CAAC,CAAC,IAAI,CAAC,EAAE,SAAS,EAAE,IAAI,EAAE,QAoD1E"}

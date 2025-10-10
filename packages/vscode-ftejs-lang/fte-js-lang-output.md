@@ -475,7 +475,7 @@ export function deactivate(): Thenable<void> | undefined {
   "name": "ftejs-client",
   "private": true,
   "version": "0.0.1",
-  "main": "out/extension.js",
+  "main": "dist/extension.js",
   "scripts": {
     "build": "tsc -b",
     "watch": "tsc -w"
@@ -3387,7 +3387,7 @@ connection.listen();
   "name": "ftejs-server",
   "private": true,
   "version": "0.0.1",
-  "main": "out/server.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc -b",
     "watch": "tsc -w",
@@ -8461,7 +8461,7 @@ connection.listen();
     "release:minor": "npm version minor && git push --follow-tags",
     "release:major": "npm version major && git push --follow-tags"
   },
-  "main": "./client/out/extension.js",
+  "main": "./client/dist/extension.js",
   "activationEvents": [
     "onLanguage:template-js",
     "onLanguage:template-html",

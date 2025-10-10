@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { SUB } from '../index'
 
 describe('SUB Function Tests', () => {

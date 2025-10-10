@@ -21,11 +21,15 @@
     "vscode-extension"
   ],
   "version": "1.2.0",
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "engines": {
     "vscode": "^1.96.4"
   },
   "scripts": {
+    "clean": "git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist",
     "vscode:prepublish": "npm run compile",
     "compile": "npm --prefix server run build && npm --prefix client run build",
     "watch": "npm --prefix server run watch & npm --prefix client run watch",
@@ -38,12 +42,13 @@
     "release:minor": "npm version minor && git push --follow-tags",
     "release:major": "npm version major && git push --follow-tags"
   },
-  "main": "./client/out/extension.js",
+  "main": "./client/dist/extension.js",
   "activationEvents": [
     "onLanguage:template-js",
     "onLanguage:template-html",
     "onLanguage:template-typescript",
     "onLanguage:template-markdown",
+    "onCommand:ftejs.formatDocument",
     "onCommand:ftejs.convertToTemplate",
     "onCommand:ftejs.toggleTrimVisualizer",
     "onCommand:ftejs.preview.dualExtraction"
@@ -53,12 +58,17 @@
   ],
   "contributes": {
     "viewsContainers": {
-      "activitybar": [ { "id": "ftejs", "title": "fte.js", "icon": "" } ]
+      "activitybar": [
+        {
+          "id": "ftejs",
+          "title": "fte.js",
+          "icon": ""
+        }
+      ]
     },
     "configuration": {
       "title": "fte.js",
       "properties": {
-
         "ftejs.format.textFormatter": {
           "type": "boolean",
           "default": true,
@@ -74,6 +84,11 @@
           "default": true,
           "description": "Indent template code blocks and align control structures (does not change generated text)"
         },
+        "ftejs.linter.external.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable built-in linter (fte.js-formatter) diagnostics for hygiene rules"
+        },
         "ftejs.docs.usagePath": {
           "type": "string",
           "default": "",
@@ -82,28 +97,97 @@
       }
     },
     "commands": [
-      { "command": "ftejs.scaffold.block", "title": "fte.js: Insert Block" },
-      { "command": "ftejs.scaffold.slot", "title": "fte.js: Insert Slot" },
-      { "command": "ftejs.scaffold.chunkPair", "title": "fte.js: Insert chunkStart/chunkEnd" },
-      { "command": "ftejs.scaffold.partial", "title": "fte.js: Create Partial and Insert Call" },
-      { "command": "ftejs.debug.syntaxScopes", "title": "fte.js: Debug Syntax Scopes (experimental)" },
-      { "command": "ftejs.generator.nhtmlPage", "title": "fte.js: Generate .nhtml Page" },
-      { "command": "ftejs.generator.ntsClass", "title": "fte.js: Generate .nts Class" },
-      { "command": "ftejs.preview.chunks", "title": "fte.js: Preview Chunks (static)" },
-      { "command": "ftejs.preview.dualExtraction", "title": "fte.js: Preview Dual Extraction (Code/Instruction)" },
-      { "command": "ftejs.convertToTemplate", "title": "fte.js: Create template from this file" },
-      { "command": "ftejs.toggleTrimVisualizer", "title": "fte.js: Toggle Trimmed Whitespace Visualizer" }
+      {
+        "command": "ftejs.scaffold.block",
+        "title": "fte.js: Insert Block"
+      },
+      {
+        "command": "ftejs.scaffold.slot",
+        "title": "fte.js: Insert Slot"
+      },
+      {
+        "command": "ftejs.scaffold.chunkPair",
+        "title": "fte.js: Insert chunkStart/chunkEnd"
+      },
+      {
+        "command": "ftejs.scaffold.partial",
+        "title": "fte.js: Create Partial and Insert Call"
+      },
+      {
+        "command": "ftejs.debug.syntaxScopes",
+        "title": "fte.js: Debug Syntax Scopes (experimental)"
+      },
+      {
+        "command": "ftejs.generator.nhtmlPage",
+        "title": "fte.js: Generate .nhtml Page"
+      },
+      {
+        "command": "ftejs.generator.ntsClass",
+        "title": "fte.js: Generate .nts Class"
+      },
+      {
+        "command": "ftejs.preview.chunks",
+        "title": "fte.js: Preview Chunks (static)"
+      },
+      {
+        "command": "ftejs.preview.dualExtraction",
+        "title": "fte.js: Preview Dual Extraction (Code/Instruction)"
+      },
+      {
+        "command": "ftejs.convertToTemplate",
+        "title": "fte.js: Create template from this file"
+      },
+      {
+        "command": "ftejs.toggleTrimVisualizer",
+        "title": "fte.js: Toggle Trimmed Whitespace Visualizer"
+      },
+      {
+        "command": "ftejs.formatDocument",
+        "title": "fte.js: Format Document (bundled formatter)"
+      }
     ],
     "menus": {
       "editor/context": [
-        { "command": "ftejs.scaffold.block", "group": "navigation@10", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.scaffold.slot", "group": "navigation@11", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.scaffold.chunkPair", "group": "navigation@12", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.scaffold.partial", "group": "navigation@13", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.generator.nhtmlPage", "group": "navigation@20", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.generator.ntsClass", "group": "navigation@21", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.preview.chunks", "group": "navigation@30", "when": "editorLangId =~ /template-/" },
-        { "command": "ftejs.convertToTemplate", "group": "3_modification@15", "when": "editorLangId == markdown || editorLangId == html || editorLangId == typescript || editorLangId == javascript || editorLangId == typescriptreact || editorLangId == javascriptreact" }
+        {
+          "command": "ftejs.scaffold.block",
+          "group": "navigation@10",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.scaffold.slot",
+          "group": "navigation@11",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.scaffold.chunkPair",
+          "group": "navigation@12",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.scaffold.partial",
+          "group": "navigation@13",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.generator.nhtmlPage",
+          "group": "navigation@20",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.generator.ntsClass",
+          "group": "navigation@21",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.preview.chunks",
+          "group": "navigation@30",
+          "when": "editorLangId =~ /template-/"
+        },
+        {
+          "command": "ftejs.convertToTemplate",
+          "group": "3_modification@15",
+          "when": "editorLangId == markdown || editorLangId == html || editorLangId == typescript || editorLangId == javascript || editorLangId == typescriptreact || editorLangId == javascriptreact"
+        }
       ]
     },
     "languages": [
@@ -219,11 +303,10 @@
         ]
       }
     ]
-  }
-  ,
+  },
   "dependencies": {
-    "vscode-languageclient": "^9.0.1",
-    "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "vscode-languageclient": "catalog:dev",
+    "vscode-languageserver": "catalog:dev",
+    "vscode-languageserver-textdocument": "catalog:dev"
   }
 }

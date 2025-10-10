@@ -1,7 +1,8 @@
+import { describe, expect, test } from 'vitest'
 import * as visitor from './typeinfer'
 
 describe('inferTypesFromFunction', () => {
-  it('finds all function in code', () => {
+  test('finds all function in code', () => {
     const code = `
       function name(a,b,c){}
     `
@@ -9,7 +10,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.size).toBe(1)
     expect(result.get('name')).not.toBeUndefined()
   })
-  it('finds all function expression in code', () => {
+  test('finds all function expression in code', () => {
     const code = `
       const name = (a,b,c)=>{
         return 'name'
@@ -19,7 +20,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.size).toBe(1)
     expect(result.get('name')).not.toBeUndefined()
   })
-  it('finds all arrow function in code', () => {
+  test('finds all arrow function in code', () => {
     const code = `
       const name = function(a,b,c){
         return 'name'
@@ -29,7 +30,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.size).toBe(1)
     expect(result.get('name')).not.toBeUndefined()
   })
-  it('finds all methods of class declaration in code', () => {
+  test('finds all methods of class declaration in code', () => {
     const code = `
       class A{ name(a,b,c){}}
     `
@@ -38,7 +39,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.get('name')).not.toBeUndefined()
   })
 
-  it('finds all assigment expressions with anonynmous functions', () => {
+  test('finds all assigment expressions with anonynmous functions', () => {
     const code = `
       const name = (function(a,b,c){
         return 'name'
@@ -48,7 +49,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.size).toBe(1)
     expect(result.get('anonymous0')).not.toBeUndefined()
   })
-  it('finds all assigment expressions with anonynmous arrow function', () => {
+  test('finds all assigment expressions with anonynmous arrow function', () => {
     const code = `
       const name = ((a,b,c)=>{
         return 'name'
@@ -59,7 +60,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.get('anonymous0')).not.toBeUndefined()
   })
 
-  it('finds all functions in code', () => {
+  test('finds all functions in code', () => {
     const code = `
       function name001(a, b, c) {}
       const name002 = (a, b, c) => {
@@ -115,7 +116,7 @@ describe('inferTypesFromFunction', () => {
     expect(result.get('anonymous2')).not.toBeUndefined()
     expect(result.get('anonymous3')).not.toBeUndefined()
   })
-  it('process RestElement parameters', () => {
+  test('process RestElement parameters', () => {
     const code = `
       function name1(a, b, c, ...rest) {}
     `
@@ -126,7 +127,7 @@ describe('inferTypesFromFunction', () => {
     expect(func1?.properties.size).toBe(4)
   })
 
-  it('process isTSParameterProperty parameters', () => {
+  test('process isTSParameterProperty parameters', () => {
     const code = `
       class A{ constructor(public a, b, c, ...rest) {}}
     `
@@ -137,7 +138,7 @@ describe('inferTypesFromFunction', () => {
     expect(func1?.properties.size).toBe(4)
   })
 
-  it('process ObjectPattern parameters', () => {
+  test('process ObjectPattern parameters', () => {
     const code = `
       function name1(a, {b, c, d, ...rest}) {
         c.push(a + b)
@@ -146,7 +147,6 @@ describe('inferTypesFromFunction', () => {
         return {a, b, c, other: rest}
       }
     `
-    debugger
     const result = visitor.inferTypesFromFunction(code)
     expect(result.size).toBe(1)
     expect(result.get('name1')).not.toBeUndefined()
@@ -154,7 +154,7 @@ describe('inferTypesFromFunction', () => {
     expect(func1?.properties.size).toBe(2)
   })
 
-  it('extracts all parameters of function', () => {
+  test('extracts all parameters of function', () => {
     const code = `
       function name1(a, b, c, ...rest) {
         rest.push(a + b + c)
@@ -205,7 +205,6 @@ describe('inferTypesFromFunction', () => {
       }
       r.name7(1, 2, 3)
     `
-    debugger
     const result = visitor.inferTypesFromFunction(code)
     expect(result.size).toBe(13)
     const func1 = result.get('name1')
@@ -286,14 +285,13 @@ describe('inferTypesFromFunction', () => {
     expect(func13?.properties.get('e')).not.toBeUndefined()
     expect(func13?.properties.get('f')).not.toBeUndefined()
   })
-  it('should take usage of primitive types into account', () => {
+  test('should take usage of primitive types into account', () => {
     const code = `
       function name001(a, b, c, param, ...rest) {
         rest[0].some.push(a + b + c)
         param?.some?.[1]?.['super name']?.nice(a + b + c);
         return rest
       }`
-    debugger
     const result = visitor.inferTypesFromFunction(code)
     expect(result.size).toBe(1)
     const func1 = result.get('name001')
@@ -302,7 +300,7 @@ describe('inferTypesFromFunction', () => {
     expect(func1?.properties.get('c')).not.toBeUndefined()
     expect(func1?.properties.get('rest')).not.toBeUndefined()
   })
-  it('should teke care of arrays', () => {
+  test('should teke care of arrays', () => {
     const code = `function name001(param) {
         param.push([])
         param.push([0])
@@ -310,8 +308,9 @@ describe('inferTypesFromFunction', () => {
           item.push(index)
         })
       }`
-    debugger
     const result = visitor.inferTypesFromFunction(code)
-    expect(result.size).toBe(1)
+    expect(result.get('name001')).not.toBeUndefined()
+    const func1 = result.get('name001')
+    expect(func1?.properties.get('param')).not.toBeUndefined()
   })
 })

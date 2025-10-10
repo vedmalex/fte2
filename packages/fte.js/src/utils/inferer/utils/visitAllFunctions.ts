@@ -1,6 +1,6 @@
-import * as t from '@babel/types'
-import traverse, { NodePath, Scope } from '@babel/traverse'
-import { FunctionType } from '../types/FunctionType'
+import traverse, { type NodePath, Scope } from '@babel/traverse'
+import type * as t from '@babel/types'
+import type { FunctionType } from '../types/FunctionType'
 
 export function visitAllFunctions(ast: t.File) {
   const context: Array<NodePath<FunctionType>> = []

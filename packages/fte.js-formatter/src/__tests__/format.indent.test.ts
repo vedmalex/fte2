@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { format } from '../index'
 
 describe('indentation formatting', () => {
@@ -7,16 +8,18 @@ describe('indentation formatting', () => {
       '<# const x = 1; #>',
       'text',
       '<# end #>',
-      ''
+      '',
     ].join('\n')
 
     const out = format(input)
-    expect(out).toBe([
-      '<# block main : #>',
-      '  <# const x = 1; #>',
-      '  text',
-      '<# end #>',
-      ''
-    ].join('\n'))
+    expect(out).toBe(
+      [
+        '<# block main : #>',
+        '  <# const x = 1; #>',
+        '  text',
+        '<# end #>',
+        '',
+      ].join('\n'),
+    )
   })
 })

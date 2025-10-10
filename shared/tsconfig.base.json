@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "CommonJS",
+    "module": "ES2022",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
@@ -24,12 +24,12 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2018",
-    "moduleResolution": "node",
+    "target": "es2022",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM", "DOM.Iterable"],
-    "types": ["node", "jest"]
+    "types": ["@types/bun", "@types/node"]
   }
 }

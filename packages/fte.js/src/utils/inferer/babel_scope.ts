@@ -1,5 +1,5 @@
 import * as babel from '@babel/core'
-import traverse, { Scope, Binding } from '@babel/traverse'
+import traverse, { Binding, Scope } from '@babel/traverse'
 
 // Define a state object to hold the collected information
 const state = {
@@ -62,6 +62,10 @@ r.name7(1, 2, 3)
 const ast = babel.parse(code, {
   sourceType: 'module',
 })
+
+if (!ast) {
+  throw new Error('Failed to parse code')
+}
 
 traverse(
   ast,

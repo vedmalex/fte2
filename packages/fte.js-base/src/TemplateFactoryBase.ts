@@ -1,23 +1,24 @@
-import { TemplateBase } from './TemplateBase'
-
-import { BlockRunFunction } from './types/BlockRunFunction'
-import { FactoryConfig } from './types/FactoryConfig'
+import type { TemplateBase } from './TemplateBase'
+import type { BlockContent } from './types/BlockContent'
+import type { BlockRunFunction } from './types/BlockRunFunction'
+import type { ContentFunction } from './types/ContentFunction'
+import type { DefaultFactoryOption } from './types/DefaultFactoryOption'
 import { DefaultFactoryOptions } from './types/DefaultFactoryOptions'
+import type { FactoryConfig } from './types/FactoryConfig'
+import type { HashTypeGeneric } from './types/HashTypeGeneric'
+import type { PartialFunction } from './types/PartialFunction'
+import type { RunPartialContext } from './types/RunPartialContext'
+import type { SlotFunction } from './types/SlotFunction'
+import type { SlotsHash } from './types/SlotsHash'
 import type { SourceMapOptions } from './types/source-map'
-import { BlockContent } from './types/BlockContent'
-import { ContentFunction } from './types/ContentFunction'
-import { DefaultFactoryOption } from './types/DefaultFactoryOption'
-import { HashTypeGeneric } from './types/HashTypeGeneric'
-import { PartialFunction } from './types/PartialFunction'
-import { SlotFunction } from './types/SlotFunction'
-import { SlotsHash } from './types/SlotsHash'
-import { RunPartialContext } from './types/RunPartialContext'
 
 /**
  * template factory -- it instantiate the templates
  */
 
-export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption = DefaultFactoryOption> {
+export abstract class TemplateFactoryBase<
+  OPTIONS extends DefaultFactoryOption = DefaultFactoryOption,
+> {
   public ext: Array<string> = []
   public cache: HashTypeGeneric<TemplateBase<OPTIONS>>
   public root?: Array<string> = undefined
@@ -26,7 +27,10 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
 
   constructor(config?: Partial<FactoryConfig<OPTIONS>>) {
     if (config?.options) {
-      this.options = { ...(DefaultFactoryOptions as OPTIONS), ...config.options }
+      this.options = {
+        ...(DefaultFactoryOptions as OPTIONS),
+        ...config.options,
+      }
     } else {
       this.options = { ...(DefaultFactoryOptions as OPTIONS) } as OPTIONS
     }
@@ -61,8 +65,8 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
       this.cache[tpl.name!] = tpl
       if (tpl.alias && Array.isArray(tpl.alias)) {
         tpl.alias
-          .filter(a => a !== tpl.name)
-          .forEach(a => {
+          .filter((a) => a !== tpl.name)
+          .forEach((a) => {
             this.cache[a] = tpl
           })
       }
@@ -77,7 +81,10 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
     }
     return this.cache[fileName]
   }
-  public blockContent(tpl: TemplateBase<OPTIONS>, slots?: SlotsHash): BlockContent<OPTIONS> {
+  public blockContent(
+    tpl: TemplateBase<OPTIONS>,
+    slots?: SlotsHash,
+  ): BlockContent<OPTIONS> {
     const scripts: Array<BlockRunFunction> = []
     const self = this
     const bc: BlockContent<OPTIONS> = {
@@ -89,7 +96,7 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
           }
           if (content) {
             if (Array.isArray(content)) {
-              content.forEach(c => this.slot(name, c))
+              content.forEach((c) => this.slot(name, c))
             } else {
               if (this.slots[name].indexOf(content) === -1) {
                 this.slots[name].push(content)
@@ -119,7 +126,13 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
           })
         }
       },
-      content<T>(name: string, context: T, content: ContentFunction, partial: PartialFunction, slot: SlotFunction) {
+      content<T>(
+        name: string,
+        context: T,
+        content: ContentFunction,
+        partial: PartialFunction,
+        slot: SlotFunction,
+      ) {
         if (name) {
           return tpl.blocks && tpl.blocks.hasOwnProperty(name)
             ? tpl.blocks[name](context, content, partial, slot, self.options)
@@ -184,7 +197,13 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
             return go.call(parent, context, content, partial, slot)
           } else {
             try {
-              const result = ($this.script as any)(context, content, partial, slot, self.options)
+              const result = ($this.script as any)(
+                context,
+                content,
+                partial,
+                slot,
+                self.options,
+              )
               return await result
             } catch (e) {
               throw new Error(
@@ -202,7 +221,9 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
     bc.content = bc.content.bind(bc)
     bc.partial = bc.partial.bind(bc)
     bc.run = bc.run.bind(bc)
-    ;(bc as any).runAsync = (bc as any).runAsync ? (bc as any).runAsync.bind(bc) : (bc as any).runAsync
+    ;(bc as any).runAsync = (bc as any).runAsync
+      ? (bc as any).runAsync.bind(bc)
+      : (bc as any).runAsync
     bc.slot = bc.slot.bind(bc)
     return bc
   }
@@ -215,7 +236,10 @@ export abstract class TemplateFactoryBase<OPTIONS extends DefaultFactoryOption =
     throw new Error('abstract method call')
   }
 
-  public run<T>(context: T, name: string): string | Array<{ name: string; content: string }> {
+  public run<T>(
+    context: T,
+    name: string,
+  ): string | Array<{ name: string; content: string }> {
     throw new Error('abstract method call')
   }
 

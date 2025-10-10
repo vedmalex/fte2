@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { format } from '../index'
 
 describe('blank lines normalization', () => {

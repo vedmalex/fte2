@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { format, lint } from '../index'
 
 describe('fte.js-formatter blocks/slots and end rules', () => {
@@ -7,7 +8,9 @@ describe('fte.js-formatter blocks/slots and end rules', () => {
     expect(out).toBe('before\n<# block main : #>\n  after\n')
 
     const issues = lint('before <# block main : #> after\n')
-    expect(issues.find(i => i.ruleId === 'block-or-slot-on-own-line')).toBeTruthy()
+    expect(
+      issues.find((i) => i.ruleId === 'block-or-slot-on-own-line'),
+    ).toBeTruthy()
   })
 
   test('splits slot declaration to its own line', () => {
@@ -22,6 +25,6 @@ describe('fte.js-formatter blocks/slots and end rules', () => {
     expect(out).toBe('x\n<# end #>\ny\n')
 
     const issues = lint('x <# end #> y\n')
-    expect(issues.find(i => i.ruleId === 'end-on-own-line')).toBeTruthy()
+    expect(issues.find((i) => i.ruleId === 'end-on-own-line')).toBeTruthy()
   })
 })

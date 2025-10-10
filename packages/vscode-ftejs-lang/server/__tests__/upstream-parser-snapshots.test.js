@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest'
+
 const { Parser } = require('../out/parser.js')
 
 describe('FTE Parser Tests (upstream snapshots)', () => {
@@ -325,12 +327,15 @@ describe('FTE Parser Tests (upstream snapshots)', () => {
     })
 
     test('should handle complex diagram template with chunks', () => {
-      const template = `
+      const template =
+        `
         <#@ context "diagram" #>
         <#@ alias "model-root" #>
         <#@ chunks "$$$main$$$" #>
         <#@ deindent #>
-        <#- chunkStart(` + "`root.plantuml`" + `); -#>
+        <#- chunkStart(` +
+        '`root.plantuml`' +
+        `); -#>
         <#
         const association = {
           "inheritance": ["<|","|>"],
@@ -622,7 +627,8 @@ describe('FTE Parser Tests (upstream snapshots)', () => {
     })
 
     test('should handle nested slots with conditions', () => {
-      const template = `
+      const template =
+        `
         <#@ context "ctx" -#>
         <#@ alias 'nested-slots' -#>
 
@@ -632,8 +638,12 @@ describe('FTE Parser Tests (upstream snapshots)', () => {
             <#- slot('before-fields') #>
             <#- fields.forEach(field => { -#>
               <div class="field-wrapper">
-                <#- slot(` + "`field-${field.type}`" + `) #>
-                #{content(` + "`field-content-${field.name}`" + `)}
+                <#- slot(` +
+        '`field-${field.type}`' +
+        `) #>
+                #{content(` +
+        '`field-content-${field.name}`' +
+        `)}
                 <#- if (field.hasValidation) { -#>
                   <#- slot('validation-messages') #>
                 <#- } -#>

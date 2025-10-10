@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Temporary files
+tmp/
+*.tmp
+*.temp
+
+# Backup and compare directories
+src.backup.before-regeneration/
+src.compare/
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

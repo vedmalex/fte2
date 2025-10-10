@@ -1,12 +1,14 @@
+import type { TemplateFactoryBase } from './TemplateFactoryBase'
+import type { BlockRunFunction } from './types/BlockRunFunction'
+import type { BlocksHash } from './types/BlocksHash'
+import type { DefaultFactoryOption } from './types/DefaultFactoryOption'
+import type { HashTypeGeneric } from './types/HashTypeGeneric'
+import type { TemplateConfig } from './types/TemplateConfig'
 import { merge } from './utils/merge'
-import { TemplateFactoryBase } from './TemplateFactoryBase'
-import { BlocksHash } from './types/BlocksHash'
-import { TemplateConfig } from './types/TemplateConfig'
-import { BlockRunFunction } from './types/BlockRunFunction'
-import { HashTypeGeneric } from './types/HashTypeGeneric'
-import { DefaultFactoryOption } from './types/DefaultFactoryOption'
 
-export class TemplateBase<OPTIONS extends DefaultFactoryOption = DefaultFactoryOption> {
+export class TemplateBase<
+  OPTIONS extends DefaultFactoryOption = DefaultFactoryOption,
+> {
   public parent?: string
   public blocks?: BlocksHash
   public slots?: BlocksHash

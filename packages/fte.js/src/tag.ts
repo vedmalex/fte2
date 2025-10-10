@@ -1,6 +1,6 @@
+import { F } from './compile'
 import { compileFull } from './compileFull'
 import { safeEval } from './safeEval'
-import { F } from './compile'
 
 /**
  * Tagged template helper for inline fte templates.
@@ -21,7 +21,10 @@ export function fte(strings: TemplateStringsArray, ...values: unknown[]) {
   const code = typeof compiled === 'string' ? compiled : compiled.code
   const templateConfig = safeEval(code)
 
-  return function render<TContext = any>(context?: TContext, options?: any): string {
+  return function render<TContext = any>(
+    context?: TContext,
+    options?: any,
+  ): string {
     const noop = () => ''
     return templateConfig.script(
       context ?? ({} as TContext),

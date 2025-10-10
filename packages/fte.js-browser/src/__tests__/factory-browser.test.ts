@@ -1,10 +1,13 @@
+import { describe, expect, test } from 'vitest'
+import type { DefaultFactoryOption } from 'fte.js-base'
 import { TemplateFactoryBrowser } from '../TemplateFactoryBrowser'
-import { DefaultFactoryOption } from 'fte.js-base'
 
 describe('TemplateFactoryBrowser', () => {
   test('loads template via global.fte and runs it', () => {
     const called: string[] = []
-    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(filename: string) => {
+    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(
+      filename: string,
+    ) => {
       called.push(filename)
       return {
         name: filename,
@@ -13,7 +16,13 @@ describe('TemplateFactoryBrowser', () => {
         alias: [filename],
         aliases: {},
         dependency: {},
-        script: function (context: any, _content: any, _partial: any, _slot: any, _options: any) {
+        script: function (
+          context: any,
+          _content: any,
+          _partial: any,
+          _slot: any,
+          _options: any,
+        ) {
           const out: string[] = []
           out.push('OK')
           return out.join('')
@@ -29,7 +38,9 @@ describe('TemplateFactoryBrowser', () => {
 
   test('runPartial returns string and rejects chunks templates', () => {
     const called: string[] = []
-    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(filename: string) => {
+    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(
+      filename: string,
+    ) => {
       called.push(filename)
       return {
         name: filename,
@@ -49,7 +60,9 @@ describe('TemplateFactoryBrowser', () => {
     const s = F.runPartial({ context: {}, name: 'bar.njs' })
     expect(typeof s).toBe('string')
 
-    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(filename: string) => {
+    ;(globalThis as any).fte = <O extends DefaultFactoryOption>(
+      filename: string,
+    ) => {
       return {
         name: filename,
         source: '',
@@ -67,6 +80,8 @@ describe('TemplateFactoryBrowser', () => {
       }
     }
     const G = new TemplateFactoryBrowser()
-    expect(() => G.runPartial({ context: {}, name: 'bar.njs' })).toThrow("can't use chunked template as partial")
+    expect(() => G.runPartial({ context: {}, name: 'bar.njs' })).toThrow(
+      "can't use chunked template as partial",
+    )
   })
 })

@@ -1,5 +1,6 @@
-import { TemplateFactoryStandalone } from '../TemplateFactoryStandalone'
+import { describe, expect, test } from 'vitest'
 import templates from 'fte.js-templates'
+import { TemplateFactoryStandalone } from '../TemplateFactoryStandalone'
 
 function textBlock(content: string, withEol = true) {
   return [{ type: 'text', content, eol: withEol }] as any
@@ -30,7 +31,9 @@ describe('TemplateFactoryStandalone', () => {
 
   test('throws when template not found', () => {
     const F = new TemplateFactoryStandalone(templates as any)
-    expect(() => F.run({}, 'missing.njs' as any)).toThrow('template missing.njs not found')
+    expect(() => F.run({}, 'missing.njs' as any)).toThrow(
+      'template missing.njs not found',
+    )
   })
 
   test('runPartial throws for templates with chunks', () => {
@@ -39,6 +42,8 @@ describe('TemplateFactoryStandalone', () => {
     // Ensure template is loaded, then mark it as chunks-enabled
     const tmpl: any = (F as any).ensure(templName)
     tmpl.chunks = 'main'
-    expect(() => F.runPartial({ context: {}, name: templName })).toThrow("can't use chunked template as partial")
+    expect(() => F.runPartial({ context: {}, name: templName })).toThrow(
+      "can't use chunked template as partial",
+    )
   })
 })

@@ -1,1 +1,0 @@
-{"version":3,"file":"ident.d.ts","sourceRoot":"","sources":["../../src/inferer/ident.ts"],"names":[],"mappings":"AA2CA,MAAM,MAAM,YAAY,GAAG;IACzB,YAAY,CAAC,EAAE,KAAK,CAAC,MAAM,CAAC,CAAA;CAC7B,CAAA;AAED,wBAAgB,4BAA4B,CAAC,IAAI,KAAA,EAAE,OAAO,CAAC,EAAE,YAAY;;;;;EAGxE;AAED,wBAAgB,+BAA+B,CAAC,IAAI,KAAA,EAAE,OAAO,CAAC,EAAE,YAAY;;;;;EA2M3E"}

@@ -1,218 +1,216 @@
 {
- "main": [
-  {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "empty",
+      "eol": true
+    },
+    {
+      "content": "const { Factory } = require('fte.js/lib/standalone.fte.js')",
+      "pos": 70,
+      "line": 5,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 130,
+      "line": 6,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const templates = {",
+      "pos": 131,
+      "line": 7,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 151,
+      "line": 8,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 151,
+      "line": 8,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 198,
+      "line": 8,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  '",
+      "pos": 199,
+      "line": 9,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name",
+      "pos": 202,
+      "line": 9,
+      "column": 4,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "': require('",
+      "pos": 218,
+      "line": 9,
+      "column": 20,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].path",
+      "pos": 230,
+      "line": 9,
+      "column": 32,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "'),",
+      "pos": 246,
+      "line": 9,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 250,
+      "line": 10,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 250,
+      "line": 10,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 257,
+      "line": 10,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 258,
+      "line": 11,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 260,
+      "line": 12,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const F = new Factory(templates)",
+      "pos": 261,
+      "line": 13,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 294,
+      "line": 14,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "module.exports = (context, name) => {",
+      "pos": 295,
+      "line": 15,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  return F.run( context, name )",
+      "pos": 333,
+      "line": 16,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 365,
+      "line": 17,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 367,
+      "line": 18,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 367,
+      "line": 18,
+      "column": 1,
+      "type": "empty"
+    }
+  ],
+  "directives": {
+    "context": "files",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": ["standalone.njs"]
   },
-  {
-   "content": "const { Factory } = require('fte.js/lib/standalone.fte.js')",
-   "pos": 70,
-   "line": 5,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 130,
-   "line": 6,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "const templates = {",
-   "pos": 131,
-   "line": 7,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 151,
-   "line": 8,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 151,
-   "line": 8,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 198,
-   "line": 8,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  '",
-   "pos": 199,
-   "line": 9,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name",
-   "pos": 202,
-   "line": 9,
-   "column": 4,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "': require('",
-   "pos": 218,
-   "line": 9,
-   "column": 20,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].path",
-   "pos": 230,
-   "line": 9,
-   "column": 32,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "'),",
-   "pos": 246,
-   "line": 9,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 250,
-   "line": 10,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 250,
-   "line": 10,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 257,
-   "line": 10,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 258,
-   "line": 11,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 260,
-   "line": 12,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "const F = new Factory(templates)",
-   "pos": 261,
-   "line": 13,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 294,
-   "line": 14,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "module.exports = (context, name) => {",
-   "pos": 295,
-   "line": 15,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  return F.run( context, name )",
-   "pos": 333,
-   "line": 16,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 365,
-   "line": 17,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 367,
-   "line": 18,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 367,
-   "line": 18,
-   "column": 1,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "files",
-  "content": false,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": [],
-  "alias": [
-   "standalone.njs"
-  ]
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

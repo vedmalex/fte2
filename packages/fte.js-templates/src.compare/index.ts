@@ -1,2 +1,2 @@
-const templates = {};
-export default templates;
+const templates = {}
+export default templates

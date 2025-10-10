@@ -1,22 +1,24 @@
-var fs = require('fs-extra');
-var path = require('path');
-var compileFull = require('../../dist/node').compileFull;
-var compileLight = require('../../dist/node').compileLight;
-var glob = require('glob');
+var fs = require('fs-extra')
+var path = require('path')
+var compileFull = require('../../dist/node').compileFull
+var compileLight = require('../../dist/node').compileLight
+var glob = require('glob')
 
 var root = ['raw', '/home/vedanta-krit/Work/merchantz/Merchantz/web/views/']
-var ext = ['js', 'nhtml'];
+var ext = ['js', 'nhtml']
 
-var files = [];
+var files = []
 for (var i = 0, rLen = root.length; i < rLen; i++) {
-	for (var j = 0, eLen = ext.length; j < eLen; j++) {
-		files = files.concat(glob.sync('*.' + ext[j], {
-			root: root[i],
-			cwd: root[i],
-			matchBase: true,
-		}));
-	}
+  for (var j = 0, eLen = ext.length; j < eLen; j++) {
+    files = files.concat(
+      glob.sync('*.' + ext[j], {
+        root: root[i],
+        cwd: root[i],
+        matchBase: true,
+      }),
+    )
+  }
 }
 
-console.log(files);
-console.log(files.length);
+console.log(files)
+console.log(files.length)

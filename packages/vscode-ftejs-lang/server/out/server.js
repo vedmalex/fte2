@@ -15,37 +15,50 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_1 = require("vscode-languageserver/node");
-const vscode_languageserver_textdocument_1 = require("vscode-languageserver-textdocument");
-const semanticTokens_1 = require("./semanticTokens");
-const diagnostics_1 = require("./diagnostics");
-const completion_1 = require("./completion");
-const navigation_1 = require("./navigation");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const node_1 = require("vscode-languageserver/node");
+const vscode_languageserver_textdocument_1 = require("vscode-languageserver-textdocument");
+const completion_1 = require("./completion");
+const diagnostics_1 = require("./diagnostics");
 const formatterCore_1 = require("./formatterCore");
+const navigation_1 = require("./navigation");
+const semanticTokens_1 = require("./semanticTokens");
+const { formatText } = require('./adapters/format.js');
+const { lintText } = require('./adapters/lint.js');
+const url = __importStar(require("url"));
 const astUtils_1 = require("./astUtils");
 const parser_1 = require("./parser");
-const url = __importStar(require("url"));
-// Using embedded parser - no external dependencies (MUST_HAVE.md point 12)
-// Parser is directly embedded in the extension for maximum reliability
 const connection = (0, node_1.createConnection)(node_1.ProposedFeatures.all);
 const documents = new node_1.TextDocuments(vscode_languageserver_textdocument_1.TextDocument);
-// Using embedded LocalParser directly - no external fte.js-parser dependency needed
 let usageDocs = { functions: {}, directives: {} };
 let usageWatchers = [];
-let serverSettings = { format: { textFormatter: true, codeFormatter: true, keepBlankLines: 1 }, docs: {}, debug: { enabled: false }, linter: { external: { enabled: false } } };
+let serverSettings = {
+    format: { textFormatter: true, codeFormatter: true, keepBlankLines: 1 },
+    docs: {},
+    debug: { enabled: false },
+    linter: { external: { enabled: false } },
+};
 let workspaceRoots = [];
 const prettierConfigCache = {};
-// Enhanced logging system for debugging server crashes and issues
 var LogLevel;
 (function (LogLevel) {
     LogLevel["ERROR"] = "ERROR";
@@ -56,19 +69,24 @@ var LogLevel;
 function log(level, context, message, details) {
     try {
         const timestamp = new Date().toISOString();
-        const detailsStr = details ? ` | Details: ${JSON.stringify(details, null, 2)}` : '';
+        const detailsStr = details
+            ? ` | Details: ${JSON.stringify(details, null, 2)}`
+            : '';
         const logMessage = `[${timestamp}] [${level}] ${context}: ${message}${detailsStr}`;
-        // Always log to console for immediate feedback
-        const logFn = level === LogLevel.ERROR ? console.error :
-            level === LogLevel.WARN ? console.warn :
-                level === LogLevel.DEBUG ? console.debug : console.log;
+        const logFn = level === LogLevel.ERROR
+            ? console.error
+            : level === LogLevel.WARN
+                ? console.warn
+                : level === LogLevel.DEBUG
+                    ? console.debug
+                    : console.log;
         try {
             logFn(logMessage);
         }
         catch { }
-        // Log to file if debug enabled or for errors (always log errors to file for troubleshooting)
         if (serverSettings?.debug?.enabled || level === LogLevel.ERROR) {
-            const target = serverSettings?.debug?.logFile || path.join(process.cwd(), 'ftejs-server.log');
+            const target = serverSettings?.debug?.logFile ||
+                path.join(process.cwd(), 'ftejs-server.log');
             try {
                 fs.appendFileSync(target, logMessage + '\n', 'utf8');
             }
@@ -78,7 +96,6 @@ function log(level, context, message, details) {
         }
     }
     catch (logErr) {
-        // Fallback logging if main logger fails
         try {
             console.error(`Logger error: ${logErr}`);
         }
@@ -86,7 +103,7 @@ function log(level, context, message, details) {
     }
 }
 function logError(err, context, details) {
-    const message = err instanceof Error ? (err.stack || err.message) : String(err);
+    const message = err instanceof Error ? err.stack || err.message : String(err);
     log(LogLevel.ERROR, context, message, details);
 }
 function logWarn(message, context, details) {
@@ -101,7 +118,6 @@ function logDebug(message, context, details) {
     }
 }
 const fileIndex = new Map();
-// Reverse index: parent absolute path -> set of child URIs that extend it
 const extendsChildren = new Map();
 function walkDir(root, out = []) {
     try {
@@ -138,42 +154,44 @@ function indexText(uri, text, absPath) {
     const blocks = new Map();
     const slots = new Map();
     const requireAs = new Map();
-    // Use AST-based approach for more robust parsing
     const ast = parseContent(text);
     (0, astUtils_1.walkAstNodes)(ast, (node) => {
         if (node.type === 'blockStart') {
             const name = String(node.name || node.blockName || '');
             if (name) {
-                const range = { start: node.pos, end: node.pos + (String(node.start || '').length) };
+                const range = {
+                    start: node.pos,
+                    end: node.pos + String(node.start || '').length,
+                };
                 blocks.set(name, range);
             }
         }
         else if (node.type === 'slotStart') {
             const name = String(node.name || node.slotName || '');
             if (name) {
-                const range = { start: node.pos, end: node.pos + (String(node.start || '').length) };
+                const range = {
+                    start: node.pos,
+                    end: node.pos + String(node.start || '').length,
+                };
                 slots.set(name, range);
             }
         }
     });
-    // (AST-based parsing eliminates need for regex fallback)
-    // Extract requireAs directives from AST
     (0, astUtils_1.walkAstNodes)(ast, (node) => {
         if (node.type === 'directive' && node.content) {
             const content = String(node.content).trim();
             if (content.startsWith('requireAs')) {
-                // Parse requireAs directive content
                 const match = content.match(/requireAs\s*\(\s*([^)]*)\s*\)/);
                 if (match) {
-                    const params = match[1].split(',').map((s) => s.trim().replace(/^['"`]|['"`]$/g, ''));
+                    const params = match[1]
+                        .split(',')
+                        .map((s) => s.trim().replace(/^['"`]|['"`]$/g, ''));
                     if (params.length >= 2)
                         requireAs.set(params[1], params[0]);
                 }
             }
         }
     });
-    // (AST-based parsing eliminates need for regex fallback)
-    // remove old reverse index link if present
     const prev = fileIndex.get(uri);
     if (prev?.extendsPath) {
         const set = extendsChildren.get(prev.extendsPath);
@@ -183,7 +201,6 @@ function indexText(uri, text, absPath) {
                 extendsChildren.delete(prev.extendsPath);
         }
     }
-    // resolve parent template absolute path if present
     let extendsPath;
     try {
         const parentAbs = getExtendTargetFrom(text, uri);
@@ -193,15 +210,20 @@ function indexText(uri, text, absPath) {
     catch (e) {
         logError(e, 'indexText.getExtendTargetFrom');
     }
-    fileIndex.set(uri, { uri, path: absPath, blocks, slots, requireAs, extendsPath });
-    // update reverse index
+    fileIndex.set(uri, {
+        uri,
+        path: absPath,
+        blocks,
+        slots,
+        requireAs,
+        extendsPath,
+    });
     if (extendsPath) {
         const set = extendsChildren.get(extendsPath) || new Set();
         set.add(uri);
         extendsChildren.set(extendsPath, set);
     }
 }
-// moved to astUtils.ts: posFromOffset
 function loadUsageDocsFrom(pathCandidates) {
     for (const p of pathCandidates) {
         try {
@@ -235,12 +257,27 @@ function loadUsageDocsFrom(pathCandidates) {
                     current.type = 'func';
                     current.key = 'chunkStart';
                     current.buf.push('chunkStart(name), chunkEnd()');
-                    // keep collecting
                     continue;
                 }
                 if (mDir) {
                     const key = mDir[1];
-                    const known = ['extend', 'context', 'alias', 'requireAs', 'deindent', 'chunks', 'includeMainChunk', 'useHash', 'noContent', 'noSlots', 'noBlocks', 'noPartial', 'noOptions', 'promise', 'callback'];
+                    const known = [
+                        'extend',
+                        'context',
+                        'alias',
+                        'requireAs',
+                        'deindent',
+                        'chunks',
+                        'includeMainChunk',
+                        'useHash',
+                        'noContent',
+                        'noSlots',
+                        'noBlocks',
+                        'noPartial',
+                        'noOptions',
+                        'promise',
+                        'callback',
+                    ];
                     if (known.includes(key)) {
                         flush();
                         current.type = 'dir';
@@ -258,7 +295,6 @@ function loadUsageDocsFrom(pathCandidates) {
     }
 }
 function watchUsage(candidates) {
-    // clear previous watchers
     for (const w of usageWatchers) {
         try {
             w.close();
@@ -284,45 +320,50 @@ connection.onInitialize((params) => {
     try {
         logInfo('Server initializing with embedded parser', 'onInitialize', {
             workspaceFolders: params.workspaceFolders?.length || 0,
-            clientInfo: params.clientInfo
+            clientInfo: params.clientInfo,
         });
-        // Using embedded parser - no external configuration needed
-        // load usage docs candidates (workspace USAGE.md and repo USAGE.md)
         const wsFolders = params.workspaceFolders?.map((f) => url.fileURLToPath(f.uri)) || [];
         const candidates = [
             ...wsFolders.map((f) => path.join(f, 'USAGE.md')),
-            path.join(process.cwd(), 'USAGE.md')
+            path.join(process.cwd(), 'USAGE.md'),
         ];
         workspaceRoots = wsFolders;
         logDebug('Loading usage docs', 'onInitialize', { candidates });
-        // prefer configured docs path if provided later via settings
         loadUsageDocsFrom(candidates);
         watchUsage(candidates);
-        // initial index
         logDebug('Starting workspace indexing', 'onInitialize', { workspaceRoots });
         indexWorkspace();
         logInfo('Server initialization completed', 'onInitialize');
     }
     catch (err) {
         logError(err, 'onInitialize', { params: params.workspaceFolders });
-        throw err; // Re-throw to signal initialization failure
+        throw err;
     }
     return {
         capabilities: {
             textDocumentSync: node_1.TextDocumentSyncKind.Incremental,
-            completionProvider: { resolveProvider: false, triggerCharacters: ['{', '<', '@', '\'', '"'] },
+            completionProvider: {
+                resolveProvider: false,
+                triggerCharacters: ['{', '<', '@', "'", '"'],
+            },
             hoverProvider: true,
             documentSymbolProvider: true,
             definitionProvider: true,
             referencesProvider: true,
             documentFormattingProvider: true,
             signatureHelpProvider: { triggerCharacters: ['(', '"', "'"] },
-            documentOnTypeFormattingProvider: { firstTriggerCharacter: '>', moreTriggerCharacter: ['\n'] },
+            documentOnTypeFormattingProvider: {
+                firstTriggerCharacter: '>',
+                moreTriggerCharacter: ['\n'],
+            },
             codeActionProvider: { resolveProvider: false },
             semanticTokensProvider: {
-                legend: { tokenTypes: Array.from(semanticTokens_1.semanticTokenTypes), tokenModifiers: Array.from(semanticTokens_1.semanticTokenModifiers) },
+                legend: {
+                    tokenTypes: Array.from(semanticTokens_1.semanticTokenTypes),
+                    tokenModifiers: Array.from(semanticTokens_1.semanticTokenModifiers),
+                },
                 range: false,
-                full: true
+                full: true,
             },
         },
     };
@@ -333,7 +374,6 @@ connection.onInitialized(async () => {
     }
     catch { }
 });
-// Custom request: provide dual extraction views for a document
 connection.onRequest('ftejs/extractViews', (params) => {
     try {
         const doc = documents.get(params.uri);
@@ -342,17 +382,28 @@ connection.onRequest('ftejs/extractViews', (params) => {
         }
         const text = doc.getText();
         const ast = parseContent(text);
-        // Derive host language if not provided
         let host = 'javascript';
         if (params.hostLanguage) {
             host = params.hostLanguage;
         }
         else {
             const ext = (params.uri.split('.').pop() || '').toLowerCase();
-            host = ext === 'nhtml' ? 'html' : ext === 'nmd' ? 'markdown' : ext === 'nts' ? 'typescript' : 'javascript';
+            host =
+                ext === 'nhtml'
+                    ? 'html'
+                    : ext === 'nmd'
+                        ? 'markdown'
+                        : ext === 'nts'
+                            ? 'typescript'
+                            : 'javascript';
         }
-        const codeView = (0, formatterCore_1.extractTemplateCodeView)(text, ast, { hostLanguage: host });
-        const instrView = (0, formatterCore_1.extractInstructionCodeView)(text, ast, { hostLanguage: host, instructionLanguage: host === 'typescript' ? 'typescript' : 'javascript' });
+        const codeView = (0, formatterCore_1.extractTemplateCodeView)(text, ast, {
+            hostLanguage: host,
+        });
+        const instrView = (0, formatterCore_1.extractInstructionCodeView)(text, ast, {
+            hostLanguage: host,
+            instructionLanguage: host === 'typescript' ? 'typescript' : 'javascript',
+        });
         return { templateCode: codeView.code, instructionCode: instrView.code };
     }
     catch (e) {
@@ -365,7 +416,6 @@ async function refreshSettings() {
         const cfg = await connection.workspace?.getConfiguration?.('ftejs');
         if (cfg)
             serverSettings = cfg;
-        // reload docs from configured path if available
         const usagePath = serverSettings?.docs?.usagePath;
         if (usagePath && fs.existsSync(usagePath)) {
             loadUsageDocsFrom([usagePath]);
@@ -378,7 +428,6 @@ connection.onDidChangeConfiguration(async () => {
     await refreshSettings();
 });
 function parseContent(text) {
-    // Use embedded parser consistently - no external dependencies (MUST_HAVE.md point 12)
     try {
         return parser_1.Parser.parse(text, { indent: 2 });
     }
@@ -387,9 +436,6 @@ function parseContent(text) {
         return undefined;
     }
 }
-// Collect all segments from AST in document order for formatting
-// moved to astUtils.ts: collectAllASTSegments
-// Resolve parent template path from <#@ extend ... #>
 function getExtendTargetFrom(text, docUri) {
     return (0, astUtils_1.getExtendTargetFrom)(text, docUri, parseContent);
 }
@@ -399,13 +445,12 @@ function computeDiagnostics(doc) {
         getExtendTargetFrom,
         fileIndex,
         workspaceRoots,
-        logError: (e, ctx) => logError(e, ctx)
+        logError: (e, ctx) => logError(e, ctx),
     });
 }
 function computeOpenBlocks(text, upTo) {
     return (0, astUtils_1.computeOpenBlocksFromText)(text, upTo, parseContent);
 }
-// moved to astUtils.ts: stripStringsAndComments, isTemplateTagLine, computeJsCodeDelta
 connection.onCompletion(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
@@ -427,7 +472,12 @@ connection.onDefinition(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
         return null;
-    return (0, navigation_1.getDefinition)(doc.getText(), textDocument.uri, position, { parseContent, getExtendTargetFrom, fileIndex, workspaceRoots });
+    return (0, navigation_1.getDefinition)(doc.getText(), textDocument.uri, position, {
+        parseContent,
+        getExtendTargetFrom,
+        fileIndex,
+        workspaceRoots,
+    });
 });
 connection.onReferences(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
@@ -442,23 +492,29 @@ connection.onSignatureHelp(({ textDocument, position }) => {
     const text = doc.getText();
     const offset = doc.offsetAt(position);
     const before = text.slice(Math.max(0, offset - 60), offset);
-    const m = before.match(/<#@\s*(\w+)\s*\([^\)]*$/);
+    const m = before.match(/<#@\s*(\w+)\s*\([^)]*$/);
     const name = m?.[1];
     if (!name)
         return null;
     const sig = {
         label: `<#@ ${name}(...) #>`,
         documentation: `fte.js directive ${name}`,
-        parameters: [{ label: '...params' }]
+        parameters: [{ label: '...params' }],
     };
-    const help = { signatures: [sig], activeSignature: 0, activeParameter: 0 };
+    const help = {
+        signatures: [sig],
+        activeSignature: 0,
+        activeParameter: 0,
+    };
     return help;
 });
 connection.onDocumentFormatting(({ textDocument, options }) => {
     try {
         const doc = documents.get(textDocument.uri);
         if (!doc) {
-            logWarn('Document not found for formatting', 'onDocumentFormatting', { uri: textDocument.uri });
+            logWarn('Document not found for formatting', 'onDocumentFormatting', {
+                uri: textDocument.uri,
+            });
             return [];
         }
         const indentSize = options.tabSize || 2;
@@ -468,110 +524,26 @@ connection.onDocumentFormatting(({ textDocument, options }) => {
             originalUri,
             documentVersion: doc.version,
             textLength: text.length,
-            indentSize
-        });
-        // Use local parser to split into items
-        let ast;
-        try {
-            ast = parseContent(text);
-            logDebug('AST parsing successful', 'onDocumentFormatting');
-        }
-        catch (e) {
-            logError(e, 'onDocumentFormatting.parseContent', {
-                uri: textDocument.uri,
-                textLength: text.length
-            });
-            ast = undefined;
-        }
-        // Fallback to previous simple formatter if parse failed
-        if (!ast) {
-            const lines = text.split(/\r?\n/);
-            let level = 0;
-            const openTpl = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+?)\2\s*:\s*-?\s*#>/;
-            const endTpl = /<#\s*-?\s*end\s*-?\s*#>/;
-            const isHtml = textDocument.uri.endsWith('.nhtml');
-            const htmlOpen = /<([A-Za-z][^\s>/]*)[^>]*?(?<![\/])>/;
-            const htmlClose = /<\/(\w+)[^>]*>/;
-            const htmlSelf = /<([A-Za-z][^\s>/]*)([^>]*)\/>/;
-            const formattedFallback = lines.map((line) => {
-                const rtrim = line.replace(/\s+$/, '');
-                const raw = rtrim;
-                const isTplEnd = endTpl.test(rtrim);
-                const isHtmlClose = isHtml && htmlClose.test(rtrim.trimStart());
-                const maybeCode = !(0, astUtils_1.isTemplateTagLine)(raw);
-                let jsDedentFirst = 0;
-                let jsDelta = 0;
-                if (maybeCode) {
-                    const d = (0, astUtils_1.computeJsCodeDelta)(raw);
-                    jsDedentFirst = d.dedentFirst;
-                    jsDelta = d.delta;
-                }
-                if (isTplEnd || isHtmlClose || jsDedentFirst)
-                    level = Math.max(0, level - 1);
-                const base = rtrim.trimStart();
-                const indented = (level > 0 ? ' '.repeat(level * indentSize) : '') + base;
-                const opensTpl = openTpl.test(rtrim) && !endTpl.test(rtrim);
-                const opensHtml = isHtml && htmlOpen.test(rtrim.trim()) && !htmlSelf.test(rtrim.trim()) && !isHtmlClose && !/^<\//.test(rtrim.trim());
-                let delta = 0;
-                if (opensTpl || opensHtml)
-                    delta += 1;
-                if (maybeCode)
-                    delta += jsDelta;
-                if (delta > 0)
-                    level += delta;
-                return indented;
-            }).join('\n');
-            const fullRange = node_1.Range.create(node_1.Position.create(0, 0), doc.positionAt(doc.getText().length));
-            return [node_1.TextEdit.replace(fullRange, formattedFallback.endsWith('\n') ? formattedFallback : formattedFallback + '\n')];
-        }
-        const ext = (textDocument.uri.split('.').pop() || '').toLowerCase();
-        let defaultLang = ext === 'nhtml' ? 'html' : ext === 'nmd' ? 'markdown' : ext === 'nts' ? 'typescript' : 'babel';
-        // Override defaultLang if directive <#@ lang = X #> is present
-        try {
-            const langDir = /<#@\s*lang\s*=\s*([A-Za-z#]+)\s*#>/i.exec(text);
-            if (langDir && langDir[1]) {
-                const v = langDir[1].toLowerCase();
-                if (v === 'c#' || v === 'csharp')
-                    defaultLang = 'csharp';
-                else if (v === 'ts' || v === 'typescript')
-                    defaultLang = 'typescript';
-                else if (v === 'js' || v === 'javascript')
-                    defaultLang = 'babel';
-                else if (v === 'html')
-                    defaultLang = 'html';
-                else if (v === 'md' || v === 'markdown')
-                    defaultLang = 'markdown';
-            }
-        }
-        catch { }
-        const getTextLang = () => defaultLang;
-        // Build result using shared core to make it testable without LSP runtime
-        // Prefer flat token list from parser (ast.tokens) when available to preserve exact order
-        const items = ast.tokens && Array.isArray(ast.tokens)
-            ? ast.tokens
-            : (0, astUtils_1.collectAllASTSegments)(ast);
-        // Prefer source-walking formatting
-        const finalText = (0, formatterCore_1.formatWithSourceWalking)(text, ast, {
             indentSize,
-            defaultLang: getTextLang(),
-            settings: serverSettings,
-            uri: textDocument.uri,
-            prettierConfigCache,
         });
+        const finalText = formatText(text, { indentSize });
         const original = doc.getText();
         const fullRange = node_1.Range.create(node_1.Position.create(0, 0), doc.positionAt(original.length));
         const needsTerminalNewline = /\n$/.test(original);
-        const replaced = needsTerminalNewline ? (finalText.endsWith('\n') ? finalText : finalText + '\n') : finalText.replace(/\n$/, '');
+        const replaced = needsTerminalNewline
+            ? finalText.endsWith('\n')
+                ? finalText
+                : finalText + '\n'
+            : finalText.replace(/\n$/, '');
         logDebug('Document formatting completed', 'onDocumentFormatting', {
             originalLength: original.length,
             formattedLength: replaced.length,
-            hasTerminalNewline: needsTerminalNewline
+            hasTerminalNewline: needsTerminalNewline,
         });
-        // Sanity check: ensure URI did not change during formatting lifecycle
         if (textDocument.uri !== originalUri) {
             logError(new Error('URI changed during formatting'), 'onDocumentFormatting', {
                 original: originalUri,
-                current: textDocument.uri
+                current: textDocument.uri,
             });
         }
         return [node_1.TextEdit.replace(fullRange, replaced)];
@@ -579,9 +551,8 @@ connection.onDocumentFormatting(({ textDocument, options }) => {
     catch (err) {
         logError(err, 'onDocumentFormatting.general', {
             uri: textDocument.uri,
-            options
+            options,
         });
-        // Return empty array to avoid crashing the client
         return [];
     }
 });
@@ -592,27 +563,21 @@ connection.onDocumentOnTypeFormatting(({ ch, options, position, textDocument }) 
     const indentSize = options.tabSize || 2;
     const text = doc.getText();
     const offset = doc.offsetAt(position);
-    // Only react when '>' or newline typed right after opener; use token-ordered stack for reliable pairing
     const before = text.slice(0, offset);
     const lastOpenStack = computeOpenBlocks(text, offset);
     if (lastOpenStack.length === 0)
         return [];
     const last = lastOpenStack[lastOpenStack.length - 1];
-    // If next non-space after cursor is already an end tag - do nothing
     const after = text.slice(offset);
     if (after.match(/^\s*<#-?\s*end\s*-?#>/))
         return [];
-    // Build end tag based on opener trim markers
     const endTag = (0, astUtils_1.buildEndTagFor)(last);
     const currentLineStart = before.lastIndexOf('\n') + 1;
     const currentLineIndent = before.slice(currentLineStart).match(/^\s*/)?.[0]?.length ?? 0;
     const indent = ' '.repeat(Math.max(0, currentLineIndent));
     const nextIndent = ' '.repeat(Math.max(0, currentLineIndent + indentSize));
-    // Insert a newline, keep cursor line, add end on new line below
-    // We return edits that re-indent current line (if needed) and append the end tag
     const edits = [];
     if (ch === '>') {
-        // user just closed opener; insert newline + end below
         edits.push(node_1.TextEdit.insert(position, `\n${nextIndent}`));
         const insertPos = { line: position.line + 1, character: 0 };
         edits.push(node_1.TextEdit.insert(insertPos, `${indent}${endTag}`));
@@ -630,7 +595,7 @@ connection.onCodeAction(({ textDocument, range, context }) => {
         return [];
     const text = doc.getText();
     const diagnostics = context.diagnostics || [];
-    const indentSize = context?.only?.length ? 2 : 2; // keep existing behavior
+    const indentSize = context?.only?.length ? 2 : 2;
     const { buildCodeActions } = require('./codeActions');
     return buildCodeActions({
         text,
@@ -639,18 +604,40 @@ connection.onCodeAction(({ textDocument, range, context }) => {
         diagnostics,
         doc,
         indentSize,
-        parseContent
+        parseContent,
     });
 });
-// publish diagnostics on open/change with counts like typical linters
 documents.onDidChangeContent(({ document }) => {
     const diags = computeDiagnostics(document);
+    try {
+        if (serverSettings?.linter?.external?.enabled) {
+            const lintIssues = lintText(document.getText());
+            for (const issue of lintIssues) {
+                const line = Math.max(0, (issue.line || 1) - 1);
+                const char = Math.max(0, (issue.column || 1) - 1);
+                const sev = issue.severity === 'error'
+                    ? node_1.DiagnosticSeverity.Error
+                    : issue.severity === 'warning'
+                        ? node_1.DiagnosticSeverity.Warning
+                        : node_1.DiagnosticSeverity.Information;
+                diags.push({
+                    severity: sev,
+                    range: {
+                        start: { line, character: char },
+                        end: { line, character: char + 1 },
+                    },
+                    message: `${issue.ruleId}: ${issue.message}`,
+                    source: 'fte.formatter',
+                });
+            }
+        }
+    }
+    catch { }
     connection.sendDiagnostics({ uri: document.uri, diagnostics: diags });
-    const errors = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Error).length;
-    const warns = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Warning).length;
-    const hints = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Hint).length;
+    const errors = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Error).length;
+    const warns = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Warning).length;
+    const hints = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Hint).length;
     logInfo(`Diagnostics updated: ${errors} error(s), ${warns} warning(s), ${hints} hint(s)`, 'diagnostics', { uri: document.uri });
-    // re-index this document
     try {
         indexText(document.uri, document.getText());
     }
@@ -658,10 +645,34 @@ documents.onDidChangeContent(({ document }) => {
 });
 documents.onDidOpen(({ document }) => {
     const diags = computeDiagnostics(document);
+    try {
+        if (serverSettings?.linter?.external?.enabled) {
+            const lintIssues = lintText(document.getText());
+            for (const issue of lintIssues) {
+                const line = Math.max(0, (issue.line || 1) - 1);
+                const char = Math.max(0, (issue.column || 1) - 1);
+                const sev = issue.severity === 'error'
+                    ? node_1.DiagnosticSeverity.Error
+                    : issue.severity === 'warning'
+                        ? node_1.DiagnosticSeverity.Warning
+                        : node_1.DiagnosticSeverity.Information;
+                diags.push({
+                    severity: sev,
+                    range: {
+                        start: { line, character: char },
+                        end: { line, character: char + 1 },
+                    },
+                    message: `${issue.ruleId}: ${issue.message}`,
+                    source: 'fte.formatter',
+                });
+            }
+        }
+    }
+    catch { }
     connection.sendDiagnostics({ uri: document.uri, diagnostics: diags });
-    const errors = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Error).length;
-    const warns = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Warning).length;
-    const hints = diags.filter(d => d.severity === node_1.DiagnosticSeverity.Hint).length;
+    const errors = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Error).length;
+    const warns = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Warning).length;
+    const hints = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Hint).length;
     logInfo(`Diagnostics on open: ${errors} error(s), ${warns} warning(s), ${hints} hint(s)`, 'diagnostics', { uri: document.uri });
     try {
         indexText(document.uri, document.getText());
@@ -681,21 +692,32 @@ connection.onDocumentSymbol(({ textDocument }) => {
         symbols.push({
             name: `block ${b.name}`,
             kind: 12,
-            range: { start: doc.positionAt(b.startPos), end: doc.positionAt(b.endPos) },
-            selectionRange: { start: doc.positionAt(b.startPos), end: doc.positionAt(Math.min(b.endPos, b.startPos + 20)) }
+            range: {
+                start: doc.positionAt(b.startPos),
+                end: doc.positionAt(b.endPos),
+            },
+            selectionRange: {
+                start: doc.positionAt(b.startPos),
+                end: doc.positionAt(Math.min(b.endPos, b.startPos + 20)),
+            },
         });
     }
     for (const s of slots) {
         symbols.push({
             name: `slot ${s.name}`,
             kind: 12,
-            range: { start: doc.positionAt(s.startPos), end: doc.positionAt(s.endPos) },
-            selectionRange: { start: doc.positionAt(s.startPos), end: doc.positionAt(Math.min(s.endPos, s.startPos + 20)) }
+            range: {
+                start: doc.positionAt(s.startPos),
+                end: doc.positionAt(s.endPos),
+            },
+            selectionRange: {
+                start: doc.positionAt(s.startPos),
+                end: doc.positionAt(Math.min(s.endPos, s.startPos + 20)),
+            },
         });
     }
     return symbols;
 });
-// Semantic tokens: provide stable highlighting independent of TextMate quirks
 connection.languages.semanticTokens.on((params) => {
     try {
         const doc = documents.get(params.textDocument.uri);
@@ -703,7 +725,6 @@ connection.languages.semanticTokens.on((params) => {
             return { data: [] };
         const text = doc.getText();
         const built = (0, semanticTokens_1.buildSemanticTokensFromText)(text);
-        // LSP requires delta-encoded integers: [lineDelta, startCharDelta, length, tokenType, tokenModifiers]
         const legendTypes = Array.from(semanticTokens_1.semanticTokenTypes);
         const legendMods = Array.from(semanticTokens_1.semanticTokenModifiers);
         const data = [];
@@ -730,3 +751,4 @@ connection.languages.semanticTokens.on((params) => {
 });
 documents.listen(connection);
 connection.listen();
+//# sourceMappingURL=server.js.map

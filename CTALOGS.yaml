@@ -1,0 +1,163 @@
+---
+guide_title: "Управление зависимостями с помощью каталогов в Bun"
+introduction: "Каталоги (Catalogs) в Bun предоставляют простой способ для совместного использования общих версий зависимостей между несколькими пакетами в монорепозитории. Вместо того чтобы многократно указывать одни и те же версии в каждом пакете воркспейса, вы определяете их один раз в корневом package.json и последовательно ссылаетесь на них во всем проекте."
+
+overview:
+  title: "Обзор"
+  description: "В отличие от традиционного управления зависимостями, где каждый пакет воркспейса должен независимо указывать версии, каталоги позволяют вам:"
+  key_features:
+    - "Определять каталоги версий в корневом package.json."
+    - "Ссылаться на эти версии с помощью простого протокола `catalog:`."
+    - "Обновлять все пакеты одновременно, изменяя версию всего в одном месте."
+  summary: "Это особенно полезно в больших монорепозиториях, где десятки пакетов должны использовать одну и ту же версию ключевых зависимостей."
+
+how_to_use:
+  title: "Как использовать каталоги"
+  directory_structure:
+    title: "Пример структуры директорий"
+    code:
+      language: "text"
+      content: |
+        my-monorepo/
+        ├── package.json
+        ├── bun.lockb
+        └── packages/
+            ├── app/
+            │   └── package.json
+            ├── ui/
+            │   └── package.json
+            └── utils/
+                └── package.json
+  steps:
+    - title: "1. Определение каталогов в корневом package.json"
+      description: "В вашем корневом `package.json` добавьте поле `catalog` или `catalogs` внутри объекта `workspaces`. Если вы разместите их на верхнем уровне файла, это также будет работать."
+      code:
+        language: "json"
+        content: |
+          {
+            "name": "my-monorepo",
+            "workspaces": {
+              "packages": ["packages/*"],
+              "catalog": {
+                "react": "^19.0.0",
+                "react-dom": "^19.0.0"
+              },
+              "catalogs": {
+                "testing": {
+                  "jest": "30.0.0",
+                  "testing-library": "14.0.0"
+                }
+              }
+            }
+          }
+    - title: "2. Ссылки на версии из каталога в пакетах воркспейса"
+      description: "В `package.json` ваших пакетов используйте протокол `catalog:` для ссылки на версии."
+      examples:
+        - file: "packages/app/package.json"
+          code:
+            language: "json"
+            content: |
+              {
+                "name": "app",
+                "dependencies": {
+                  "react": "catalog:",
+                  "react-dom": "catalog:",
+                  "jest": "catalog:testing"
+                }
+              }
+        - file: "packages/ui/package.json"
+          code:
+            language: "json"
+            content: |
+              {
+                "name": "ui",
+                "dependencies": {
+                  "react": "catalog:",
+                  "react-dom": "catalog:"
+                },
+                "devDependencies": {
+                  "jest": "catalog:testing",
+                  "testing-library": "catalog:testing"
+                }
+              }
+    - title: "3. Запуск `bun install`"
+      description: "Выполните `bun install`, чтобы установить все зависимости в соответствии с версиями из каталогов."
+
+comparison:
+  title: "catalog в сравнении с catalogs"
+  description: "Bun поддерживает два способа определения каталогов:"
+  types:
+    - name: "catalog (единственное число)"
+      description: "Единый каталог по умолчанию для часто используемых зависимостей."
+      example_definition:
+        language: "json"
+        content: |
+          "catalog": {
+            "react": "^19.0.0",
+            "react-dom": "^19.0.0"
+          }
+      example_reference:
+        language: "json"
+        content: |
+          "dependencies": {
+            "react": "catalog:"
+          }
+    - name: "catalogs (множественное число)"
+      description: "Несколько именованных каталогов для группировки зависимостей."
+      example_definition:
+        language: "json"
+        content: |
+          "catalogs": {
+            "testing": {
+              "jest": "30.0.0"
+            },
+            "ui": {
+              "tailwind": "4.0.0"
+            }
+          }
+      example_reference:
+        language: "json"
+        content: |
+          "dependencies": {
+            "jest": "catalog:testing",
+            "tailwind": "catalog:ui"
+          }
+
+benefits:
+  title: "Преимущества использования каталогов"
+  points:
+    - name: "Согласованность"
+      description: "Гарантирует, что все пакеты используют одну и ту же версию критически важных зависимостей."
+    - name: "Простота обслуживания"
+      description: "Обновляйте версию зависимости в одном месте вместо множества файлов `package.json`."
+    - name: "Ясность"
+      description: "Сразу видно, какие зависимости стандартизированы во всем монорепозитории."
+    - name: "Простота"
+      description: "Нет необходимости в сложных стратегиях разрешения версий или внешних инструментах."
+
+updating_versions:
+  title: "Обновление версий"
+  description: "Чтобы обновить версии во всех пакетах, просто измените версию в корневом `package.json` и выполните `bun install`."
+  example:
+    language: "json"
+    content: |
+      "catalog": {
+        "react": "^19.1.0",  // Обновлено с ^19.0.0
+        "react-dom": "^19.1.0"  // Обновлено с ^19.0.0
+      }
+
+lockfile_integration:
+  title: "Интеграция с локфайлом"
+  description: "Локфайл Bun (`bun.lockb`) отслеживает версии из каталогов, обеспечивая согласованные установки в различных средах. Он включает в себя определения каталогов и разрешенные (конкретные) версии для каждой зависимости из каталога."
+
+limitations:
+  title: "Ограничения и особые случаи"
+  points:
+    - "Ссылки на каталоги должны соответствовать зависимости, определенной либо в `catalog`, либо в одном из именованных `catalogs`."
+    - "Пустые строки и пробелы в именах каталогов игнорируются (рассматриваются как ссылка на каталог по умолчанию)."
+    - "Неверные версии зависимостей в каталогах приведут к ошибке разрешения во время `bun install`."
+    - "Каталоги доступны только внутри воркспейсов; их нельзя использовать вне монорепозитория."
+
+publishing:
+  title: "Публикация"
+  description: "Когда вы выполняете `bun publish` или `bun pm pack`, Bun автоматически заменяет ссылки `catalog:` в вашем `package.json` на разрешенные номера версий. Опубликованный пакет будет содержать обычные semver-строки и больше не будет зависеть от определений ваших каталогов."

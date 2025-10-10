@@ -1,0 +1,105 @@
+module.exports = {
+    script: function(context, _content, partial, slot, options) {
+        var out = [];
+        out.push("\n");
+        const config = context.getThingConfig(context);
+        out.push("\n");
+        out.push("Ext.define(\"Modeleditor.view." + (context.namespace) + ".ListDictionary." + (context.$name) + "\", {\n");
+        out.push("  serverModel: '" + (context.$normalizedName) + "',\n");
+        out.push("  // requires: [" + (context.requires) + "],\n");
+        out.push("  filters:[],\n");
+        out.push("  extend:\"Modeleditor.view.base.baseWindowDictionaryList\",\n");
+        out.push("  iconCls: _r('iconCls', '', '" + (context.$namespace) + "." + (context.$name) + "')");
+        if (context.iconCls) {
+            out.push("|| \"" + (context.iconCls) + "\"");
+        }
+        out.push(" ,\n");
+        out.push("  alias: \"widget." + (context.$widgetName) + "listdictionary\",\n");
+        out.push("  initComponent: function(){\n");
+        out.push("    const me = this\n");
+        out.push("    DirectCacheLogger.userStories('List Dictionary Init Component', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', dictionaryId: this.id });\n");
+        out.push("    const catalogConfig = {\n");
+        out.push("      xtype: '" + (context.$widgetName) + "catalog',\n");
+        out.push("    }\n");
+        out.push("    if(me.hasOwnProperty('catalogPaginator')){\n");
+        out.push("      catalogConfig.catalogPaginator = me.catalogPaginator\n");
+        out.push("    }\n");
+        out.push("    if(me.hasOwnProperty('catalogPlugins')){\n");
+        out.push("      catalogConfig.catalogPlugins = me.catalogPlugins\n");
+        out.push("    }\n");
+        out.push("    if(me.hasOwnProperty('catalogStore')){\n");
+        out.push("      catalogConfig.catalogStore = me.catalogStore\n");
+        out.push("    }\n");
+        out.push("    if(me.hasOwnProperty('catalogBbar')){\n");
+        out.push("      catalogConfig.catalogBbar = me.catalogBbar\n");
+        out.push("    }\n");
+        out.push("    Ext.apply(this,{\n");
+        out.push("      itemId: \"ListDictionary\",\n");
+        out.push("      listDictionary: true,\n");
+        out.push("      title: _t(\"" + (context.$name) + "\",'" + (context.$namespace) + "." + (context.$name) + "', 'titles','ListDictionary'),\n");
+        out.push("      border: true,\n");
+        out.push("      layout: {\n");
+        out.push("        type:\"hbox\",\n");
+        out.push("        align: \"stretch\"\n");
+        out.push("      },\n");
+        out.push("      defaults:{\n");
+        out.push("        flex: 1,\n");
+        out.push("        margin: '2'\n");
+        out.push("      },\n");
+        out.push("      items: [\n");
+        out.push("        {\n");
+        out.push("          ...catalogConfig,\n");
+        out.push("          btns: true,\n");
+        out.push("          viewConfig: {\n");
+        out.push("            // copy: true,\n");
+        out.push("            plugins: {\n");
+        out.push("              ptype: 'gridviewdragdrop',\n");
+        out.push("              pluginId: \"gridviewdragdrop\",\n");
+        out.push("              dragGroup: 'catalog',\n");
+        out.push("              dropGroup: 'elements'\n");
+        out.push("            },\n");
+        out.push("          }\n");
+        out.push("        },\n");
+        out.push("        Ext.widget('" + (context.$widgetName) + "elements', {\n");
+        out.push("          filters: this.filters\n");
+        out.push("        }),\n");
+        out.push("      ],\n");
+        out.push("      buttons : [\n");
+        out.push("        {\n");
+        out.push("          text: _t('Ok','SYSTEM', 'buttons'),\n");
+        out.push("          itemId: 'okMany',\n");
+        out.push("          listeners: {\n");
+        out.push("            click: function(btn) {\n");
+        out.push("              DirectCacheLogger.userStories('List Dictionary OK Button', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', dictionaryId: btn.up('window').id });\n");
+        out.push("            }\n");
+        out.push("          }\n");
+        out.push("        },\n");
+        out.push("        {\n");
+        out.push("          text: _t('Cancel','SYSTEM', 'buttons'),\n");
+        out.push("          itemId: 'dictCancel',\n");
+        out.push("          listeners: {\n");
+        out.push("            click: function(btn) {\n");
+        out.push("              DirectCacheLogger.userStories('List Dictionary Cancel Button', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', dictionaryId: btn.up('window').id });\n");
+        out.push("            }\n");
+        out.push("          }\n");
+        out.push("        }\n");
+        out.push("      ],\n");
+        out.push("      listeners: {\n");
+        out.push("        show: function(window) {\n");
+        out.push("          DirectCacheLogger.userStories('List Dictionary Show', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', dictionaryId: this.id });\n");
+        out.push("        },\n");
+        out.push("        beforeclose: function(window) {\n");
+        out.push("          DirectCacheLogger.userStories('List Dictionary Before Close', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', dictionaryId: this.id });\n");
+        out.push("        }\n");
+        out.push("      }\n");
+        out.push("    });\n");
+        out.push("    this.callParent(arguments);\n");
+        out.push("  }\n");
+        out.push("});");
+        return out.join('');
+    },
+    compile: function() {},
+    dependency: {}
+};
+
+//# sourceMappingURL=generators/server/Meta.Thing/ext.grid-thing.ListDictionary.njs.js.map

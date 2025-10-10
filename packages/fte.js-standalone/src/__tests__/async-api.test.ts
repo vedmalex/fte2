@@ -1,5 +1,6 @@
-import { TemplateFactoryStandalone } from '../TemplateFactoryStandalone'
+import { describe, expect, test } from 'vitest'
 import templates from 'fte.js-templates'
+import { TemplateFactoryStandalone } from '../TemplateFactoryStandalone'
 
 function text(content: string, eol = true) {
   return [{ type: 'text', content, eol }] as any
@@ -21,7 +22,7 @@ describe('Async factory APIs', () => {
       },
       blocks: {},
       slots: {},
-      main: text('Hello')
+      main: text('Hello'),
     }
     const syncRes: any = F.run(ctx, 'MainTemplate.njs')
     const asyncRes: any = await F.runAsync(ctx, 'MainTemplate.njs')
@@ -45,10 +46,13 @@ describe('Async factory APIs', () => {
       },
       blocks: {},
       slots: {},
-      main: text('Hello')
+      main: text('Hello'),
     }
     const res = F.run(ctx, 'MainTemplate.njs') as any
-    const cfg = typeof res === 'string' ? eval('(' + res + ')') : eval('(' + res.code + ')')
+    const cfg =
+      typeof res === 'string'
+        ? eval('(' + res + ')')
+        : eval('(' + res.code + ')')
     const Local = new TemplateFactoryStandalone({ 'x.njs': cfg } as any)
     const s1 = Local.runPartial({ context: {}, name: 'x.njs' })
     const s2 = await Local.runPartialAsync({ context: {}, name: 'x.njs' })

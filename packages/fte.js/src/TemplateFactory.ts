@@ -1,12 +1,19 @@
+import { type FSWatcher, watch } from 'chokidar'
 import * as fs from 'fs'
-import * as path from 'path'
+import {
+  type DefaultFactoryOption,
+  type SlotsHash,
+  type TemplateBase,
+  TemplateFactoryBase,
+} from 'fte.js-base'
 import * as glob from 'glob'
-import { Template } from './Template'
-import { FSWatcher, watch } from 'chokidar'
-import { DefaultFactoryOption, SlotsHash, TemplateBase, TemplateFactoryBase } from 'fte.js-base'
+import * as path from 'path'
 import { safeEval } from './safeEval'
+import { Template } from './Template'
 
-export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends TemplateFactoryBase<OPTIONS> {
+export class TemplateFactory<
+  OPTIONS extends DefaultFactoryOption,
+> extends TemplateFactoryBase<OPTIONS> {
   // подумать нужно ли делать один общий для все список watchTree
   public watchList: Array<string> = []
   public watcher?: FSWatcher
@@ -14,7 +21,9 @@ export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends Templ
     let root
     for (let i = 0, len = this.root!.length; i < len; i++) {
       root = this.root![i]
-      const fn = absPath ? path.resolve(fileName) : path.resolve(path.join(root, fileName))
+      const fn = absPath
+        ? path.resolve(fileName)
+        : path.resolve(path.join(root, fileName))
       const compiledJS = fn + '.js'
       if (fs.existsSync(compiledJS)) {
         let result
@@ -113,12 +122,24 @@ export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends Templ
     //   source.add(new SourceNode(m.column, m.line, m.content))
     // })
     const bc = this.blockContent(templ, {})
-    const result = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
+    const result = bc.run(
+      context,
+      bc.content,
+      bc.partial,
+      bc.slot,
+      this.options,
+    )
     if (Object.keys(bc.slots).length > 0) {
       if (Array.isArray(result)) {
-        return result.map(r => {
+        return result.map((r) => {
           const tpl = this.standalone(r.content)
-          const content = tpl.script(bc.slots, bc.content, bc.partial, bc.slot, this.options)
+          const content = tpl.script(
+            bc.slots,
+            bc.content,
+            bc.partial,
+            bc.slot,
+            this.options,
+          )
           return {
             name: r.name,
             content,
@@ -126,7 +147,13 @@ export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends Templ
         })
       } else {
         const res = this.standalone(result)
-        return res.script(bc.slots, bc.content, bc.partial, bc.slot, this.options)
+        return res.script(
+          bc.slots,
+          bc.content,
+          bc.partial,
+          bc.slot,
+          this.options,
+        )
       }
     } else {
       return result
@@ -149,17 +176,21 @@ export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends Templ
     const templ = this.ensure(name, absPath)
     if (!templ.chunks) {
       const bc = this.blockContent(templ, slots)
-      return bc.run(context, bc.content, bc.partial, bc.slot, { ...this.options, ...(options ?? {}) }) as string
+      const result = bc.run(context, bc.content, bc.partial, bc.slot, {
+        ...this.options,
+        ...(options ?? {}),
+      })
+      // Handle both string and {code, map} returns (sourcemap support)
+      return typeof result === 'string' ? result : (result as any)?.code ?? ''
     } else {
       throw new Error("cant't use template with chunks as partial")
     }
   }
 
   public express() {
-    const self = this
     return <T>(fileName: string, context: T, callback) => {
-      const templ = self.ensure(fileName, true)
-      const bc = self.blockContent(templ)
+      const templ = this.ensure(fileName, true)
+      const bc = this.blockContent(templ)
       let result, err
       try {
         result = bc.run(context, bc.content, bc.partial, bc.slot, this.options)
@@ -174,12 +205,15 @@ export class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends Templ
   public clearCache(template: TemplateBase<OPTIONS>) {
     delete this.cache[template.name!]
     delete this.cache[template.absPath!]
-    template.alias.forEach(alias => {
+    template.alias.forEach((alias) => {
       delete this.cache[alias]
     })
   }
 
-  public override ensure(fileName: string, absPath?: boolean): TemplateBase<OPTIONS> {
+  public override ensure(
+    fileName: string,
+    absPath?: boolean,
+  ): TemplateBase<OPTIONS> {
     const template = super.ensure(fileName, absPath)
     if (this.watch) {
       if (!this.watchList) this.watchList = []

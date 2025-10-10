@@ -1,16 +1,24 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`FTE Parser Tests Basic Template Tags should parse code tag <% 1`] = `
+exports[`FTE Parser Tests > Basic Template Tags > should parse code tag <% 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -54,21 +62,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Basic Template Tags should parse comment tag <%# 1`] = `
+exports[`FTE Parser Tests > Basic Template Tags > should parse comment tag <%# 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [
     {
@@ -100,21 +117,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Basic Template Tags should parse escaped output tag <%= 1`] = `
+exports[`FTE Parser Tests > Basic Template Tags > should parse escaped output tag <%= 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -158,21 +184,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Basic Template Tags should parse unescaped output tag <%- 1`] = `
+exports[`FTE Parser Tests > Basic Template Tags > should parse unescaped output tag <%- 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -216,23 +251,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Blocks and Slots should parse block definition 1`] = `
+exports[`FTE Parser Tests > Blocks and Slots > should parse block definition 1`] = `
 CodeBlock {
   "blocks": {
     "content": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -281,13 +325,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -305,23 +357,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Blocks and Slots should parse slot definition 1`] = `
+exports[`FTE Parser Tests > Blocks and Slots > should parse slot definition 1`] = `
 CodeBlock {
   "blocks": {
     "header": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -370,13 +431,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -394,23 +463,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Chunks and Templates should handle chunks with multiple files 1`] = `
+exports[`FTE Parser Tests > Chunks and Templates > should handle chunks with multiple files 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
     "chunks": "main.file.txt",
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
     "includeMainChunk": true,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -844,11 +920,12 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Chunks and Templates should handle complex template with multiple directives 1`] = `
+exports[`FTE Parser Tests > Chunks and Templates > should handle complex template with multiple directives 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
@@ -856,11 +933,16 @@ CodeBlock {
       "complex.njs",
     ],
     "blocks": true,
+    "callback": undefined,
     "chunks": "output",
     "content": false,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [
       {
         "alias": "base",
@@ -872,6 +954,7 @@ CodeBlock {
       },
     ],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -1424,22 +1507,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Chunks and Templates should handle mixed chunks and expressions 1`] = `
+exports[`FTE Parser Tests > Chunks and Templates > should handle mixed chunks and expressions 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
     "chunks": "output.txt",
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -1837,22 +1928,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Chunks and Templates should handle nested expressions in chunks 1`] = `
+exports[`FTE Parser Tests > Chunks and Templates > should handle nested expressions in chunks 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
     "chunks": "nested.txt",
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2212,11 +2311,12 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Chunks and Templates should handle template with alias and requires 1`] = `
+exports[`FTE Parser Tests > Chunks and Templates > should handle template with alias and requires 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
@@ -2224,10 +2324,16 @@ CodeBlock {
       "raw.njs",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": false,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [
       {
         "alias": "core",
@@ -2235,6 +2341,7 @@ CodeBlock {
       },
     ],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2421,21 +2528,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Directives should parse context directive 1`] = `
+exports[`FTE Parser Tests > Directives > should parse context directive 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "customContext",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2492,22 +2608,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Directives should parse extend directive 1`] = `
+exports[`FTE Parser Tests > Directives > should parse extend directive 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
     "extend": "layout.ftl",
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2564,23 +2688,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Directives should parse multiple directives 1`] = `
+exports[`FTE Parser Tests > Directives > should parse multiple directives 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "customContext",
     "deindent": 2,
     "extend": "layout.ftl",
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2715,39 +2846,57 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Edge Cases should handle empty template 1`] = `
+exports[`FTE Parser Tests > Edge Cases > should handle empty template 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Edge Cases should handle nested curly braces 1`] = `
+exports[`FTE Parser Tests > Edge Cases > should handle nested curly braces 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2791,21 +2940,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Edge Cases should handle template with only whitespace 1`] = `
+exports[`FTE Parser Tests > Edge Cases > should handle template with only whitespace 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -2849,11 +3007,12 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests HTML Templates should handle complex diagram template with chunks 1`] = `
+exports[`FTE Parser Tests > HTML Templates > should handle complex diagram template with chunks 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
@@ -2861,14 +3020,19 @@ CodeBlock {
       "model-root",
     ],
     "blocks": true,
+    "callback": undefined,
     "chunks": "$$$main$$$",
     "content": true,
     "context": "diagram",
     "deindent": true,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -3978,23 +4142,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests HTML Templates should handle mixed expressions with HTML 1`] = `
+exports[`FTE Parser Tests > HTML Templates > should handle mixed expressions with HTML 1`] = `
 CodeBlock {
   "blocks": {
     "adminControls": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -4095,13 +4268,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "page",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -4640,23 +4821,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests HTML Templates should handle panel with blocks and context 1`] = `
+exports[`FTE Parser Tests > HTML Templates > should handle panel with blocks and context 1`] = `
 CodeBlock {
   "blocks": {
     "body": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "body",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -4784,13 +4974,21 @@ CodeBlock {
     "title": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "title",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -4921,12 +5119,19 @@ CodeBlock {
       "panel",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "panel",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -5230,11 +5435,12 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests HTML Templates should handle template inheritance with partials 1`] = `
+exports[`FTE Parser Tests > HTML Templates > should handle template inheritance with partials 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
@@ -5242,13 +5448,19 @@ CodeBlock {
       "index",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
     "extend": "template.nhtml",
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -5513,23 +5725,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests HTML Templates should handle template with multiple context switches 1`] = `
+exports[`FTE Parser Tests > HTML Templates > should handle template with multiple context switches 1`] = `
 CodeBlock {
   "blocks": {
     "navigation": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "nav",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -5749,13 +5970,21 @@ CodeBlock {
     "sidebar": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "sidebar",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -5882,13 +6111,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "main",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -6218,23 +6455,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Mixed Content should handle mixed template content 1`] = `
+exports[`FTE Parser Tests > Mixed Content > should handle mixed template content 1`] = `
 CodeBlock {
   "blocks": {
     "content": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -6375,14 +6621,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
     "extend": "layout.ftl",
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -6478,23 +6731,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Multiline Content should handle multiline blocks with mixed content 1`] = `
+exports[`FTE Parser Tests > Multiline Content > should handle multiline blocks with mixed content 1`] = `
 CodeBlock {
   "blocks": {
     "content": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -6661,13 +6923,21 @@ CodeBlock {
     },
   },
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -6737,21 +7007,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Multiline Content should handle multiline code blocks 1`] = `
+exports[`FTE Parser Tests > Multiline Content > should handle multiline code blocks 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -6847,22 +7126,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Multiline Content should handle multiline directives 1`] = `
+exports[`FTE Parser Tests > Multiline Content > should handle multiline directives 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "(",
+    "deindent": undefined,
     "extend": "layout.ftl",
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -6971,21 +7258,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Multiline Content should handle multiline expressions 1`] = `
+exports[`FTE Parser Tests > Multiline Content > should handle multiline expressions 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -7081,21 +7377,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Multiline Content should preserve indentation in multiline content 1`] = `
+exports[`FTE Parser Tests > Multiline Content > should preserve indentation in multiline content 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -7401,23 +7706,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle base show component template 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle base show component template 1`] = `
 CodeBlock {
   "blocks": {
     "": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -7441,13 +7755,21 @@ CodeBlock {
     ");": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7457,13 +7779,21 @@ CodeBlock {
     "</Show>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7473,13 +7803,21 @@ CodeBlock {
     "<Show title={<Title />} {...props}>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7489,13 +7827,21 @@ CodeBlock {
     "ShowRecordView.contextTypes = {": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7505,13 +7851,21 @@ CodeBlock {
     "export default ShowRecordView;": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7521,13 +7875,21 @@ CodeBlock {
     "import-from-react-admin-show', 'Show": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7537,13 +7899,21 @@ CodeBlock {
     "translate: PropTypes.func.isRequired,": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7553,13 +7923,21 @@ CodeBlock {
     "uix: PropTypes.object.isRequired,": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7569,13 +7947,21 @@ CodeBlock {
     "view": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7585,13 +7971,21 @@ CodeBlock {
     "}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7601,13 +7995,21 @@ CodeBlock {
     "};": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -7620,12 +8022,19 @@ CodeBlock {
       "forms-show-base",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "entity",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -8384,23 +8793,32 @@ CodeBlock {
       "type": "text",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle complex slot and content interactions 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle complex slot and content interactions 1`] = `
 CodeBlock {
   "blocks": {
     "": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -8424,13 +8842,21 @@ CodeBlock {
     "#{entity.name.toLowerCase()}-component": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8440,13 +8866,21 @@ CodeBlock {
     ");": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8456,13 +8890,21 @@ CodeBlock {
     "</div>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8472,13 +8914,21 @@ CodeBlock {
     "additional-prop-types": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8488,13 +8938,21 @@ CodeBlock {
     "additional-props": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8504,13 +8962,21 @@ CodeBlock {
     "additional-render": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8520,13 +8986,21 @@ CodeBlock {
     "component-imports": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8536,13 +9010,21 @@ CodeBlock {
     "const #{entity.name}Component = ({": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8552,13 +9034,21 @@ CodeBlock {
     "export default #{entity.name}Component;": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8568,13 +9058,21 @@ CodeBlock {
     "hooks": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8584,13 +9082,21 @@ CodeBlock {
     "prop-types": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8600,13 +9106,21 @@ CodeBlock {
     "props": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8616,13 +9130,21 @@ CodeBlock {
     "render": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8632,13 +9154,21 @@ CodeBlock {
     "return (": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8648,13 +9178,21 @@ CodeBlock {
     "}) => {": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8664,13 +9202,21 @@ CodeBlock {
     "};": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -8683,12 +9229,19 @@ CodeBlock {
       "complex-component",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "entity",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -8914,22 +9467,30 @@ CodeBlock {
       "type": "text",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle import from components template 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle import from components template 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
     "alias": [],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "items",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -9467,23 +10028,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle nested slots with conditions 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle nested slots with conditions 1`] = `
 CodeBlock {
   "blocks": {
     "": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -9507,13 +10077,21 @@ CodeBlock {
     "<#- fields.forEach(field => { -#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9523,13 +10101,21 @@ CodeBlock {
     "<#- if (field.hasValidation) { -#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9539,13 +10125,21 @@ CodeBlock {
     "<#- } -#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9555,13 +10149,21 @@ CodeBlock {
     "<#- } else { -#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9571,13 +10173,21 @@ CodeBlock {
     "<#- }); -#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9587,13 +10197,21 @@ CodeBlock {
     "</div>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9603,13 +10221,21 @@ CodeBlock {
     "after-fields": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9619,13 +10245,21 @@ CodeBlock {
     "before-fields": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9635,13 +10269,21 @@ CodeBlock {
     "field-\${field.type}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9651,13 +10293,21 @@ CodeBlock {
     "field-content-\${field.name}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9667,13 +10317,21 @@ CodeBlock {
     "field-wrapper": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9683,13 +10341,21 @@ CodeBlock {
     "no-fields": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9699,13 +10365,21 @@ CodeBlock {
     "validation-messages": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -9718,12 +10392,19 @@ CodeBlock {
       "nested-slots",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "ctx",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -9910,11 +10591,12 @@ CodeBlock {
       "type": "text",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle show field template 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle show field template 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
@@ -9922,12 +10604,19 @@ CodeBlock {
       "show-field",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "ctx",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -10374,23 +11063,32 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests React Component Templates should handle single embedded relation template 1`] = `
+exports[`FTE Parser Tests > React Component Templates > should handle single embedded relation template 1`] = `
 CodeBlock {
   "blocks": {
     "": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [
@@ -10414,13 +11112,21 @@ CodeBlock {
     "#{f.field}Value": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10430,13 +11136,21 @@ CodeBlock {
     "#{f.name}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10446,13 +11160,21 @@ CodeBlock {
     "(reUI.edit[f.name] ||": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10462,13 +11184,21 @@ CodeBlock {
     "-#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10478,13 +11208,21 @@ CodeBlock {
     ".filter(f=>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10494,13 +11232,21 @@ CodeBlock {
     ".forEach(f=>{-#>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10510,13 +11256,21 @@ CodeBlock {
     "/#{entity.role}/#{f.ref.entity}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10526,13 +11280,21 @@ CodeBlock {
     "/>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10542,13 +11304,21 @@ CodeBlock {
     "<#": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10558,13 +11328,21 @@ CodeBlock {
     "</EmbeddedField>": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10574,13 +11352,21 @@ CodeBlock {
     "<EmbeddedField": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10590,13 +11376,21 @@ CodeBlock {
     ">": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10606,13 +11400,21 @@ CodeBlock {
     "Number" ? "Text": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10622,13 +11424,21 @@ CodeBlock {
     "addLabel={false}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10638,13 +11448,21 @@ CodeBlock {
     "entity.UI.embedded.items[current].fields": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10654,13 +11472,21 @@ CodeBlock {
     "id": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10670,13 +11496,21 @@ CodeBlock {
     "import-from-ra-ui-components-show','EmbeddedField": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10686,13 +11520,21 @@ CodeBlock {
     "import-from-react-admin-show','DeleteButton": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10702,13 +11544,21 @@ CodeBlock {
     "import-from-react-admin-show','EditButton": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10718,13 +11568,21 @@ CodeBlock {
     "import-from-react-admin-show','ShowButton": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10734,13 +11592,21 @@ CodeBlock {
     "let embededEntity = entity.UI.embedded.items[current].entity;": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10750,13 +11616,21 @@ CodeBlock {
     "let reUI = entity.UI.embedded.items[current].UI;": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10766,13 +11640,21 @@ CodeBlock {
     "reUI.list[f.name] ||": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10782,13 +11664,21 @@ CodeBlock {
     "reUI.show[f.name] !== false)": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10798,13 +11688,21 @@ CodeBlock {
     "reUI.show[f.name]) &&": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10814,13 +11712,21 @@ CodeBlock {
     "resources.#{embededEntity}.fields.#{f.name}": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10830,13 +11736,21 @@ CodeBlock {
     "});": CodeBlock {
       "blocks": {},
       "directives": CodeBlockDirectives {
+        "alias": undefined,
         "blocks": true,
+        "callback": undefined,
+        "chunks": undefined,
         "content": true,
         "context": "context",
+        "deindent": undefined,
+        "extend": undefined,
+        "includeMainChunk": undefined,
         "options": true,
         "partial": true,
+        "promise": undefined,
         "requireAs": [],
         "slots": true,
+        "useHash": undefined,
       },
       "documentation": [],
       "main": [],
@@ -10849,12 +11763,19 @@ CodeBlock {
       "show-rel-single-embed",
     ],
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "ctx",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -11002,21 +11923,30 @@ CodeBlock {
       "type": "text",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Special Endings should handle trimmed ending -%> 1`] = `
+exports[`FTE Parser Tests > Special Endings > should handle trimmed ending -%> 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -11086,21 +12016,30 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;
 
-exports[`FTE Parser Tests Special Endings should handle whitespace slurping ending _%> 1`] = `
+exports[`FTE Parser Tests > Special Endings > should handle whitespace slurping ending _%> 1`] = `
 CodeBlock {
   "blocks": {},
   "directives": CodeBlockDirectives {
+    "alias": undefined,
     "blocks": true,
+    "callback": undefined,
+    "chunks": undefined,
     "content": true,
     "context": "context",
+    "deindent": undefined,
+    "extend": undefined,
+    "includeMainChunk": undefined,
     "options": true,
     "partial": true,
+    "promise": undefined,
     "requireAs": [],
     "slots": true,
+    "useHash": undefined,
   },
   "documentation": [],
   "main": [
@@ -11157,6 +12096,7 @@ CodeBlock {
       "type": "empty",
     },
   ],
+  "name": undefined,
   "slots": {},
 }
 `;

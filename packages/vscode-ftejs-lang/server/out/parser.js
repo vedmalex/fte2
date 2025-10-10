@@ -1,8 +1,7 @@
 "use strict";
-// Local copy of fte.js-parser essential parts for AST-based parsing
-// This ensures all syntax parsing operations use consistent AST approach
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = exports.SUB = exports.CodeBlock = void 0;
+exports.Parser = exports.CodeBlock = void 0;
+exports.SUB = SUB;
 const globalStates = {
     text: {
         states: [
@@ -70,10 +69,15 @@ const globalStates = {
     },
 };
 class CodeBlock {
+    name;
+    main = [];
+    slots = {};
+    blocks = {};
+    declPos;
+    declStart;
+    declContent;
+    declEnd;
     constructor(init) {
-        this.main = [];
-        this.slots = {};
-        this.blocks = {};
         if (init) {
             this.name = this.unquote(init.data);
             this.declPos = init.pos;
@@ -114,25 +118,29 @@ function sub(buffer, str, pos = 0, size) {
     }
     return '';
 }
-// Expose SUB for compatibility tests with upstream fte.js-parser
 function SUB(buffer, str, pos = 0, size) {
     return sub(buffer, str, pos, size);
 }
-exports.SUB = SUB;
 class Parser {
+    buffer;
+    size;
+    static INITIAL_STATE = 'text';
+    globalState;
+    actualState;
+    globalToken;
+    pos = 0;
+    line = 1;
+    column = 1;
+    curlyAware = 0;
+    curlyBalance = [];
+    result = [];
+    errors = [];
     static parse(text, options = {}) {
         const parser = new Parser(text, options);
         parser.parse();
         return parser.process();
     }
     constructor(value, options) {
-        this.pos = 0;
-        this.line = 1;
-        this.column = 1;
-        this.curlyAware = 0;
-        this.curlyBalance = [];
-        this.result = [];
-        this.errors = [];
         this.globalState = Parser.INITIAL_STATE;
         this.buffer = value.toString();
         this.size = this.buffer.length;
@@ -245,11 +253,10 @@ class Parser {
         };
         for (let i = 0; i < resultSize; i += 1) {
             const r = this.result[i];
-            let data = r.data;
+            const data = r.data;
             const { pos, line, column, start, end, eol, type } = r;
             switch (type) {
                 case 'blockStart':
-                    // push token for opener with extracted name
                     tokens.push({
                         content: data,
                         pos,
@@ -263,11 +270,9 @@ class Parser {
                     });
                     curr = new CodeBlock(r);
                     content.addBlock(curr);
-                    // track for error reporting
                     stack.push({ type: 'block', name: unquote(data), pos, line, column });
                     break;
                 case 'slotStart':
-                    // push token for slot opener with extracted name
                     tokens.push({
                         content: data,
                         pos,
@@ -284,7 +289,6 @@ class Parser {
                     stack.push({ type: 'slot', name: unquote(data), pos, line, column });
                     break;
                 case 'blockEnd':
-                    // push token for end
                     tokens.push({
                         content: data,
                         pos,
@@ -296,7 +300,12 @@ class Parser {
                         eol,
                     });
                     if (stack.length === 0) {
-                        this.errors.push({ message: 'Unmatched end tag', pos, line, column });
+                        this.errors.push({
+                            message: 'Unmatched end tag',
+                            pos,
+                            line,
+                            column,
+                        });
                     }
                     else {
                         stack.pop();
@@ -308,7 +317,7 @@ class Parser {
                 case 'uexpression':
                 case 'text':
                 case 'directive':
-                case 'comments':
+                case 'comments': {
                     const item = {
                         content: data,
                         pos,
@@ -319,19 +328,23 @@ class Parser {
                         type: type === 'uexpression' ? 'expression' : type,
                         eol,
                     };
-                    // push into flat token stream preserving order
                     tokens.push(item);
                     curr.main.push(item);
                     break;
+                }
             }
         }
         ;
         content.tokens = tokens;
-        // any unclosed blocks/slots
         if (stack.length > 0) {
             for (const it of stack) {
                 const kind = it.type === 'slot' ? 'slot' : 'block';
-                this.errors.push({ message: `Unclosed ${kind}: '${it.name}'`, pos: it.pos, line: it.line, column: it.column });
+                this.errors.push({
+                    message: `Unclosed ${kind}: '${it.name}'`,
+                    pos: it.pos,
+                    line: it.line,
+                    column: it.column,
+                });
             }
         }
         ;
@@ -353,7 +366,10 @@ class Parser {
     SKIP(term) {
         let eol = false;
         if (term.length == 1) {
-            if (term == '\n' || term == '\r' || term == '\u2028' || term == '\u2029') {
+            if (term == '\n' ||
+                term == '\r' ||
+                term == '\u2028' ||
+                term == '\u2029') {
                 if (term == '\r' && this.SUB('\r\n') == '\r\n') {
                     term = '\r\n';
                 }
@@ -362,7 +378,7 @@ class Parser {
                 eol = true;
             }
             else if (term == '\t') {
-                this.column += 2; // default tab size
+                this.column += 2;
             }
             else {
                 this.column += 1;
@@ -402,4 +418,4 @@ class Parser {
     }
 }
 exports.Parser = Parser;
-Parser.INITIAL_STATE = 'text';
+//# sourceMappingURL=parser.js.map

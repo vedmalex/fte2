@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -11,17 +12,30 @@ describe('codeblock.njs runtime generation', () => {
     const F = makeFactory()
     const blocks = [
       { type: 'text', content: 'Hello ', eol: false },
-      { type: 'expression', content: 'name', start: true, end: true, eol: true },
+      {
+        type: 'expression',
+        content: 'name',
+        start: true,
+        end: true,
+        eol: true,
+      },
     ] as any
 
     const res: any = F.run(blocks, 'codeblock.njs')
     expect(typeof res).toBe('object')
-    const fn = new Function('options', 'name', `var out=[];\n${res.code};\nreturn out.join('')`)
-    const html = fn({
-      escapeIt: (s: string) => s,
-      applyIndent: (s: string) => s,
-      applyDeindent: (s: string) => s,
-    }, 'name')
+    const fn = new Function(
+      'options',
+      'name',
+      `var out=[];\n${res.code};\nreturn out.join('')`,
+    )
+    const html = fn(
+      {
+        escapeIt: (s: string) => s,
+        applyIndent: (s: string) => s,
+        applyDeindent: (s: string) => s,
+      },
+      'name',
+    )
     expect(html).toBe('Hello name')
   })
 
@@ -29,16 +43,30 @@ describe('codeblock.njs runtime generation', () => {
     const F = makeFactory()
     const blocks = [
       { type: 'text', content: 'Hi ', eol: false },
-      { type: 'uexpression', content: 'name', start: true, end: true, eol: true, indent: '  ' },
+      {
+        type: 'uexpression',
+        content: 'name',
+        start: true,
+        end: true,
+        eol: true,
+        indent: '  ',
+      },
     ] as any
 
     const res: any = F.run(blocks, 'codeblock.njs')
-    const fn = new Function('options', 'name', `var out=[];\n${res.code};\nreturn out.join('')`)
-    const html = fn({
-      escapeIt: (s: string) => `[${s}]`,
-      applyIndent: (s: string, i: string) => i + s,
-      applyDeindent: (s: string) => s,
-    }, 'name')
+    const fn = new Function(
+      'options',
+      'name',
+      `var out=[];\n${res.code};\nreturn out.join('')`,
+    )
+    const html = fn(
+      {
+        escapeIt: (s: string) => `[${s}]`,
+        applyIndent: (s: string, i: string) => i + s,
+        applyDeindent: (s: string) => s,
+      },
+      'name',
+    )
     expect(html).toBe('Hi   [name]')
   })
 
@@ -50,5 +78,26 @@ describe('codeblock.njs runtime generation', () => {
     ] as any
     const res: any = F.run(blocks, 'codeblock.njs')
     expect(res.code).toContain('const x = 1;\n')
+  })
+
+  test('leading whitespace-only nodes are dropped (alias scenario)', () => {
+    const F = makeFactory()
+    const blocks = [
+      { type: 'empty', content: '', eol: false },
+      { type: 'text', content: '', eol: true },
+      { type: 'text', content: 'import foo from "./foo";', eol: true },
+    ] as any
+    const res: any = F.run(blocks, 'codeblock.njs')
+    const fn = new Function(
+      'options',
+      `var out=[];\n${res.code};\nreturn out.join('')`,
+    )
+    const output = fn({
+      escapeIt: (s: string) => s,
+      applyIndent: (s: string) => s,
+      applyDeindent: (s: string) => s,
+    })
+    expect(output.startsWith('import foo')).toBe(true)
+    expect(output).toBe('import foo from "./foo";')
   })
 })

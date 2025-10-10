@@ -15,21 +15,30 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeDiagnosticsFromText = void 0;
+exports.computeDiagnosticsFromText = computeDiagnosticsFromText;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const astUtils_1 = require("./astUtils");
 function computeDiagnosticsFromText(text, workspaceRoots = []) {
     const diags = [];
-    // Unmatched end: more end tags than opened
     try {
         const openRe = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+?)\2\s*:\s*-?\s*#>/g;
         const endRe = /<#\s*-?\s*end\s*-?\s*#>/g;
@@ -44,7 +53,6 @@ function computeDiagnosticsFromText(text, workspaceRoots = []) {
         }
     }
     catch { }
-    // Duplicate block/slot declarations
     try {
         const seen = {};
         const kind = {};
@@ -57,12 +65,14 @@ function computeDiagnosticsFromText(text, workspaceRoots = []) {
         }
         for (const n of Object.keys(seen)) {
             if (seen[n] > 1) {
-                diags.push({ severity: 'warning', message: `Duplicate ${kind[n]} declaration: ${n}` });
+                diags.push({
+                    severity: 'warning',
+                    message: `Duplicate ${kind[n]} declaration: ${n}`,
+                });
             }
         }
     }
     catch { }
-    // Unknown content('name') references
     try {
         const declared = new Set();
         const rxDecl = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+)\2\s*:\s*-?\s*#>/g;
@@ -75,18 +85,23 @@ function computeDiagnosticsFromText(text, workspaceRoots = []) {
         while ((m = rxUse.exec(text))) {
             const name = m[2];
             if (!declared.has(name)) {
-                diags.push({ severity: 'warning', message: `Unknown block name: ${name}` });
+                diags.push({
+                    severity: 'warning',
+                    message: `Unknown block name: ${name}`,
+                });
             }
         }
     }
     catch { }
-    // Unresolved partial alias/path
     try {
         const rp = /partial\(\s*[^,]+,\s*(["'`])([^"'`]+)\1/g;
         let m;
         while ((m = rp.exec(text))) {
             const key = m[2];
-            const bases = [...workspaceRoots, ...workspaceRoots.map(r => path.join(r, 'templates'))];
+            const bases = [
+                ...workspaceRoots,
+                ...workspaceRoots.map((r) => path.join(r, 'templates')),
+            ];
             const exists = (rel) => {
                 for (const base of bases) {
                     const p = path.isAbsolute(rel) ? rel : path.join(base, rel);
@@ -99,11 +114,14 @@ function computeDiagnosticsFromText(text, workspaceRoots = []) {
                 return false;
             };
             if (!exists(key)) {
-                diags.push({ severity: 'warning', message: `Unresolved partial: ${key}` });
+                diags.push({
+                    severity: 'warning',
+                    message: `Unresolved partial: ${key}`,
+                });
             }
         }
     }
     catch { }
     return diags;
 }
-exports.computeDiagnosticsFromText = computeDiagnosticsFromText;
+//# sourceMappingURL=diagnosticsCore.js.map

@@ -1,81 +1,81 @@
 {
- "main": [
-  {
-   "content": "  resolver: {",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "text",
-   "eol": false
+  "main": [
+    {
+      "content": "  resolver: {",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 18,
+      "line": 2,
+      "column": 5,
+      "start": "<#-",
+      "type": "code",
+      "eol": true
+    },
+    {
+      "content": "      console.log('hellop')",
+      "pos": 22,
+      "line": 3,
+      "column": 1,
+      "type": "code",
+      "eol": true
+    },
+    {
+      "content": "    ",
+      "pos": 50,
+      "line": 4,
+      "column": 1,
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 56,
+      "line": 4,
+      "column": 7,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "    id: root => root._id,",
+      "pos": 57,
+      "line": 5,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 83,
+      "line": 6,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 83,
+      "line": 6,
+      "column": 1,
+      "type": "empty"
+    }
+  ],
+  "directives": {
+    "context": "context",
+    "content": true,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": []
   },
-  {
-   "content": "",
-   "pos": 18,
-   "line": 2,
-   "column": 5,
-   "start": "<#-",
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "      console.log('hellop')",
-   "pos": 22,
-   "line": 3,
-   "column": 1,
-   "type": "code",
-   "eol": true
-  },
-  {
-   "content": "    ",
-   "pos": 50,
-   "line": 4,
-   "column": 1,
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 56,
-   "line": 4,
-   "column": 7,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "    id: root => root._id,",
-   "pos": 57,
-   "line": 5,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 83,
-   "line": 6,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 83,
-   "line": 6,
-   "column": 1,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "context",
-  "content": true,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": []
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

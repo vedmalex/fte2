@@ -9,6 +9,7 @@ export function extractName(
     | t.PrivateName
     | t.AssignmentPattern
     | t.ObjectProperty
+    | t.PatternLike
     | null
     | undefined,
   anonymous?: () => string,
@@ -35,6 +36,9 @@ export function extractName(
     return extractName(n.expression, anonymous)
   } else if (t.isTSNonNullExpression(n)) {
     return extractName(n.expression, anonymous)
+  } else if (t.isVoidPattern(n)) {
+    // VoidPattern doesn't have a name, use anonymous
+    return anonymous?.() ?? 'anonymous'
   } else {
     return anonymous?.() ?? 'anonymous'
   }
@@ -59,8 +63,8 @@ export function extractNameList(
       return [...extractName(n.object, anonymous), ...property]
     } else return [property]
   } else if (t.isArrayPattern(n)) {
-    return n.elements.flatMap(element => extractName(element, anonymous))
+    return n.elements.flatMap((element) => extractName(element, anonymous))
   } else if (t.isObjectPattern(n)) {
-    return n.properties.flatMap(property => extractName(property, anonymous))
+    return n.properties.flatMap((property) => extractName(property, anonymous))
   } else return [extractName(n, anonymous)]
 }

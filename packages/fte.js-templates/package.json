@@ -2,14 +2,39 @@
   "name": "fte.js-templates",
   "version": "3.0.0-rc.12",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "prettier": "../../.prettierrc.js",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "module": "./dist/index.esm.js",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "bun": "./src/index.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "types",
+    "src",
+    "templates",
+    "templ"
+  ],
   "scripts": {
-    "test": "jest --coverage --passWithNoTests",
-    "prepublish": "tsc -b",
-    "build": "tsc -b",
-    "watch": "tsc -w"
+    "prepublish": "npm run clean && npm run build",
+    "build": "npm run build:all",
+    "build:cjs": "FORMAT=cjs bun build.ts",
+    "build:esm": "FORMAT=esm bun build.ts",
+    "build:all": "npm run build:cjs && npm run build:esm && tsc -p tsconfig.build.json",
+    "watch": "tsc -w -p tsconfig.json",
+    "clean": "git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist",
+    "test": "vitest run",
+    "test:watch": "vitest run --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "bench:run": "vitest bench",
+    "dev": "bun run watch"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +44,10 @@
   },
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82",
   "devDependencies": {
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "@types/node": "^20.12.8",
+    "esbuild": "^0.25.10",
     "fte.js-standalone": "workspace:3.0.0-rc.12"
   }
 }

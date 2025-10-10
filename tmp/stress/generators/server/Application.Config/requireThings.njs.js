@@ -1,0 +1,27 @@
+module.exports = {
+    script: function(context, _content, partial, slot, options) {
+        var out = [];
+        out.push("\n");
+        let requireNs = Object.keys(context.nsList);
+        if (requireNs.length > 0) {
+            out.push("\n");
+            out.push("Ext.require([\n");
+            for(let i = 0; i < requireNs.length; i++){
+                out.push("\n");
+                out.push("    \"things." + (requireNs[i]) + "\",\n");
+            }
+            out.push("\n");
+            out.push("], function() {\n");
+            out.push("    me.loadProfile();\n");
+            out.push("});\n");
+        } else {
+            out.push("\n");
+            out.push("    me.loadProfile();\n");
+        }
+        return out.join('');
+    },
+    compile: function() {},
+    dependency: {}
+};
+
+//# sourceMappingURL=generators/server/Application.Config/requireThings.njs.js.map

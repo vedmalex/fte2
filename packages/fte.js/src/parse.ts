@@ -1,5 +1,5 @@
-import { TemplateFactory as Factory } from './TemplateFactory'
 import { Template } from './Template'
+import { TemplateFactory as Factory } from './TemplateFactory'
 
 export function parse(source: string, context: any): string | object[] {
   const ONLY_ONE = 'ONLY_ONE'

@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 const path = require('path')
 const fs = require('fs')
-const { build } = require('../dist/utils/build')
+const { build } = require('../dist/index')
 const { Command } = require('commander')
 const program = new Command()
 
 program
   .name('fte.js')
   .description('tempalte generator engine for faster template processing')
-  .version(JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version)
+  .version(
+    JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')))
+      .version,
+  )
 
 program
   .command('bundle')
@@ -25,20 +28,25 @@ program
   .option('--format <format>', 'module format: cjs|esm', 'cjs')
   .addHelpText(
     'after',
-    `\nExamples:\n  $ fte.js bundle ./templates ./dist\n  $ fte.js bundle ./templates ./dist --single --file bundle --format esm --sourcemap\n  $ fte.js bundle ./templates ./dist --standalone --format esm --sourcemap --no-inline-map\n\nNotes:\n  --format esm routes bundling to ES module templates for JS output.\n  With --sourcemap and --no-inline-map external .map files are emitted.\n`,
+    '\nExamples:\n  $ fte.js bundle ./templates ./dist\n  $ fte.js bundle ./templates ./dist --single --file bundle --format esm --sourcemap\n  $ fte.js bundle ./templates ./dist --standalone --format esm --sourcemap --no-inline-map\n\nNotes:\n  --format esm routes bundling to ES module templates for JS output.\n  With --sourcemap and --no-inline-map external .map files are emitted.\n',
   )
   .action(function (tempalates, dest, options) {
     if (!dest) {
       dest = tempalates
     }
-    build(`${path.resolve(process.cwd(), tempalates)}`, `${path.resolve(process.cwd(), dest)}`, options, err => {
-      if (err) {
-        console.log(err)
-        process.exit(1)
-      } else {
-        process.exit(0)
-      }
-    })
+    build(
+      `${path.resolve(process.cwd(), tempalates)}`,
+      `${path.resolve(process.cwd(), dest)}`,
+      options,
+      (err) => {
+        if (err) {
+          console.log(err)
+          process.exit(1)
+        } else {
+          process.exit(0)
+        }
+      },
+    )
   })
 
 program.parse()

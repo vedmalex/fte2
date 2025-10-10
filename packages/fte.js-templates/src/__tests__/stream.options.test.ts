@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
 
 describe('stream options', () => {
@@ -7,7 +8,11 @@ describe('stream options', () => {
         name: 'x.njs',
         script: function (_ctx: any, _c: any, _p: any, _s: any, options: any) {
           if (options && options.stream) {
-            const gen = async function* () { yield 'A'; yield 'B'; yield 'C' }
+            const gen = async function* () {
+              yield 'A'
+              yield 'B'
+              yield 'C'
+            }
             return gen()
           }
           return 'ABC'
@@ -15,11 +20,15 @@ describe('stream options', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
     const seen: string[] = []
-    Local.options = { ...(Local.options as any), stream: true, onChunk: (c: string) => seen.push(c) } as any
+    Local.options = {
+      ...(Local.options as any),
+      stream: true,
+      onChunk: (c: string) => seen.push(c),
+    } as any
     const it = (Local as any).runStream({}, 'x.njs') as AsyncIterable<string>
     const acc: string[] = []
     for await (const c of it) acc.push(c)

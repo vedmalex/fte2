@@ -1,8 +1,8 @@
-import path from 'path'
+import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import fs from 'fs'
-import { build } from '../utils/build'
-
 import os from 'os'
+import path from 'path'
+import { build } from '../utils/build'
 
 const repoRoot = path.resolve(__dirname, '..', '..', '..')
 const tmpAbs = fs.mkdtempSync(path.join(os.tmpdir(), 'fte-src-'))
@@ -20,10 +20,49 @@ function rimrafDir(dir: string) {
   }
 }
 
+async function runBuildAndVerify(
+  options: Parameters<typeof build>[2],
+  verify: () => void,
+) {
+  fs.rmSync(outAbs, { recursive: true, force: true })
+  fs.mkdirSync(outAbs, { recursive: true })
+  await new Promise<void>((resolve, reject) => {
+    build(
+      tmpAbs,
+      outAbs,
+      options,
+      (err) => {
+        if (err) {
+          reject(err instanceof Error ? err : new Error(String(err)))
+          return
+        }
+        try {
+          verify()
+          resolve()
+        } catch (error) {
+          reject(error as Error)
+        }
+      },
+    )
+  })
+}
+
+function listFiles(dir: string): string[] {
+  const entries = fs.readdirSync(dir)
+  let acc: string[] = []
+  for (const e of entries) {
+    const p = path.join(dir, e)
+    const st = fs.statSync(p)
+    if (st.isDirectory()) acc = acc.concat(listFiles(p))
+    else acc.push(p)
+  }
+  return acc
+}
+
 describe('CLI build sourcemap', () => {
   beforeAll(() => {
     // create a simple template file
-    const tpl = "Hello, <%= name %>";
+    const tpl = 'Hello, <%= name %>'
     fs.writeFileSync(path.join(tmpAbs, 'sample.njs'), tpl)
   })
   afterAll(() => {
@@ -31,10 +70,8 @@ describe('CLI build sourcemap', () => {
     rimrafDir(tmpAbs)
   })
 
-  test('should emit external map when --sourcemap --no-inline-map', done => {
-    build(
-      tmpAbs,
-      outAbs,
+  test('should emit external map when --sourcemap --no-inline-map', async () => {
+    await runBuildAndVerify(
       {
         typescript: false,
         format: false,
@@ -47,35 +84,16 @@ describe('CLI build sourcemap', () => {
         sourcemap: true,
         inlineMap: false,
       },
-      err => {
-        try {
-          expect(err).toBeUndefined()
-          function list(dir: string): string[] {
-            const entries = fs.readdirSync(dir)
-            let acc: string[] = []
-            for (const e of entries) {
-              const p = path.join(dir, e)
-              const st = fs.statSync(p)
-              if (st.isDirectory()) acc = acc.concat(list(p))
-              else acc.push(p)
-            }
-            return acc
-          }
-          const files = list(outAbs)
-          const hasMap = files.some(f => f.endsWith('.map'))
-          expect(hasMap).toBeTruthy()
-          done()
-        } catch (e) {
-          done(e)
-        }
+      () => {
+        const files = listFiles(outAbs)
+        const hasMap = files.some((f) => f.endsWith('.map'))
+        expect(hasMap).toBeTruthy()
       },
     )
   })
 
-  test('should support esm format for singlefile bundle', done => {
-    build(
-      tmpAbs,
-      outAbs,
+  test('should support esm format for singlefile bundle', async () => {
+    await runBuildAndVerify(
       {
         typescript: false,
         format: 'esm' as any,
@@ -88,23 +106,18 @@ describe('CLI build sourcemap', () => {
         sourcemap: false,
         inlineMap: true,
       },
-      err => {
-        try {
-          expect(err).toBeUndefined()
-          const out = fs.readFileSync(path.join(outAbs, 'bundle.esm.js'), 'utf8')
-          expect(out).toMatch(/export const templates =/)
-          done()
-        } catch (e) {
-          done(e)
-        }
+      () => {
+        const out = fs.readFileSync(
+          path.join(outAbs, 'bundle.esm.js'),
+          'utf8',
+        )
+        expect(out).toMatch(/export const templates =/)
       },
     )
   })
 
-  test('should support esm format for standalone index bundle', done => {
-    build(
-      tmpAbs,
-      outAbs,
+  test('should support esm format for standalone index bundle', async () => {
+    await runBuildAndVerify(
       {
         typescript: false,
         format: 'esm' as any,
@@ -117,29 +130,14 @@ describe('CLI build sourcemap', () => {
         sourcemap: false,
         inlineMap: true,
       },
-      err => {
-        try {
-          expect(err).toBeUndefined()
-          function list(dir: string): string[] {
-            const entries = fs.readdirSync(dir)
-            let acc: string[] = []
-            for (const e of entries) {
-              const p = path.join(dir, e)
-              const st = fs.statSync(p)
-              if (st.isDirectory()) acc = acc.concat(list(p))
-              else acc.push(p)
-            }
-            return acc
-          }
-          const files = list(outAbs)
-          const hasImports = files
-            .filter(f => f.endsWith('.js'))
-            .some(f => /import\s+.*from\s+['"]/m.test(fs.readFileSync(f, 'utf8')))
-          expect(hasImports).toBeTruthy()
-          done()
-        } catch (e) {
-          done(e)
-        }
+      () => {
+        const files = listFiles(outAbs)
+        const hasImports = files
+          .filter((f) => f.endsWith('.js'))
+          .some((f) =>
+            /import\s+.*from\s+['"]/m.test(fs.readFileSync(f, 'utf8')),
+          )
+        expect(hasImports).toBeTruthy()
       },
     )
   })

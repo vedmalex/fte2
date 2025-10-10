@@ -1,0 +1,1 @@
+{"version":3,"file":"diagnosticsCore.d.ts","sourceRoot":"","sources":["../src/diagnosticsCore.ts"],"names":[],"mappings":"AAIA,MAAM,MAAM,gBAAgB,GAAG;IAC7B,QAAQ,EAAE,OAAO,GAAG,SAAS,GAAG,MAAM,CAAA;IACtC,OAAO,EAAE,MAAM,CAAA;CAChB,CAAA;AAED,wBAAgB,0BAA0B,CACxC,IAAI,EAAE,MAAM,EACZ,cAAc,GAAE,MAAM,EAAO,GAC5B,gBAAgB,EAAE,CAwFpB"}

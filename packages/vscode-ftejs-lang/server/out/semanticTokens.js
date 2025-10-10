@@ -1,20 +1,49 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildSemanticTokensFromAst = exports.buildSemanticTokensFromText = exports.semanticTokenModifiers = exports.semanticTokenTypes = void 0;
+exports.semanticTokenModifiers = exports.semanticTokenTypes = void 0;
+exports.buildSemanticTokensFromText = buildSemanticTokensFromText;
+exports.buildSemanticTokensFromAst = buildSemanticTokensFromAst;
 const parser_1 = require("./parser");
 exports.semanticTokenTypes = [
-    'namespace', 'type', 'class', 'enum', 'interface', 'struct', 'typeParameter',
-    'parameter', 'variable', 'property', 'enumMember', 'event', 'function', 'method',
-    'macro', 'keyword', 'modifier', 'comment', 'string', 'number', 'regexp', 'operator'
+    'namespace',
+    'type',
+    'class',
+    'enum',
+    'interface',
+    'struct',
+    'typeParameter',
+    'parameter',
+    'variable',
+    'property',
+    'enumMember',
+    'event',
+    'function',
+    'method',
+    'macro',
+    'keyword',
+    'modifier',
+    'comment',
+    'string',
+    'number',
+    'regexp',
+    'operator',
 ];
 exports.semanticTokenModifiers = [
-    'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async', 'modification', 'documentation', 'defaultLibrary'
+    'declaration',
+    'definition',
+    'readonly',
+    'static',
+    'deprecated',
+    'abstract',
+    'async',
+    'modification',
+    'documentation',
+    'defaultLibrary',
 ];
 function buildSemanticTokensFromText(text) {
     const ast = parser_1.Parser.parse(text);
     return buildSemanticTokensFromAst(text, ast);
 }
-exports.buildSemanticTokensFromText = buildSemanticTokensFromText;
 function buildSemanticTokensFromAst(text, ast) {
     if (!ast || !Array.isArray(ast.main))
         return [];
@@ -23,7 +52,13 @@ function buildSemanticTokensFromAst(text, ast) {
         if (from >= to)
             return;
         const start = offsetToPos(text, from);
-        tokens.push({ line: start.line, char: start.character, length: Math.max(1, to - from), type, modifiers: mods });
+        tokens.push({
+            line: start.line,
+            char: start.character,
+            length: Math.max(1, to - from),
+            type,
+            modifiers: mods,
+        });
     };
     for (const node of ast.tokens || ast.main) {
         const startLen = (node.start || '').length;
@@ -34,9 +69,7 @@ function buildSemanticTokensFromAst(text, ast) {
         const endOff = contentOff + contentLen;
         switch (node.type) {
             case 'directive':
-                // <#@ ... #>
                 add(startOff, startOff + startLen, 'operator');
-                // highlight directive name as keyword within content
                 {
                     const c = String(node.content || '');
                     const m = c.match(/^\s*(\w+)/);
@@ -48,24 +81,22 @@ function buildSemanticTokensFromAst(text, ast) {
                 add(endOff, endOff + endLen, 'operator');
                 break;
             case 'expression':
-                // #{ ... } and !{ ... }
                 add(startOff, startOff + startLen, 'operator');
                 add(endOff, endOff + endLen, 'operator');
                 break;
             case 'blockStart':
             case 'slotStart': {
-                // <# block 'name' : #>
                 add(startOff, startOff + startLen, 'operator');
                 const c = String(node.content || '');
-                // keyword
                 {
                     const m = c.match(/^(\s*)(block|slot)\b/);
                     if (m) {
                         const kwStart = contentOff + (m[1]?.length || 0);
-                        add(kwStart, kwStart + (m[2]?.length || 0), 'keyword', ['declaration']);
+                        add(kwStart, kwStart + (m[2]?.length || 0), 'keyword', [
+                            'declaration',
+                        ]);
                     }
                 }
-                // quoted name as string
                 const nameMatch = c.match(/['"`][^'"`]+['"`]/);
                 if (nameMatch) {
                     const nameStart = contentOff + (nameMatch.index || 0);
@@ -76,7 +107,6 @@ function buildSemanticTokensFromAst(text, ast) {
             }
             case 'blockEnd':
                 add(startOff, startOff + startLen, 'operator');
-                // 'end' keyword in content
                 {
                     const c = String(node.content || '');
                     const m = c.match(/\bend\b/);
@@ -91,7 +121,6 @@ function buildSemanticTokensFromAst(text, ast) {
                 add(startOff, endOff + endLen, 'comment');
                 break;
             case 'code': {
-                // Recognize helper function names as functions
                 const c = String(node.content || '');
                 const helpers = ['partial', 'content', 'slot', 'chunkStart', 'chunkEnd'];
                 for (const h of helpers) {
@@ -102,6 +131,18 @@ function buildSemanticTokensFromAst(text, ast) {
                         add(s, s + h.length, 'function');
                     }
                 }
+                if (startLen > 0) {
+                    add(startOff, startOff + startLen, 'operator');
+                }
+                if (endLen > 0) {
+                    add(endOff, endOff + endLen, 'operator');
+                }
+                const keywordRe = /\b(if|for|while|switch|else|return|try|catch|finally)\b/g;
+                let match;
+                while ((match = keywordRe.exec(c))) {
+                    const kwStart = contentOff + (match.index || 0);
+                    add(kwStart, kwStart + match[0].length, 'keyword');
+                }
                 break;
             }
             default:
@@ -110,13 +151,12 @@ function buildSemanticTokensFromAst(text, ast) {
     }
     return tokens;
 }
-exports.buildSemanticTokensFromAst = buildSemanticTokensFromAst;
 function offsetToPos(text, offset) {
     let line = 0;
     let character = 0;
     for (let i = 0; i < offset && i < text.length; i++) {
         const ch = text.charCodeAt(i);
-        if (ch === 10 /*\n*/) {
+        if (ch === 10) {
             line++;
             character = 0;
         }
@@ -126,3 +166,4 @@ function offsetToPos(text, offset) {
     }
     return { line, character };
 }
+//# sourceMappingURL=semanticTokens.js.map

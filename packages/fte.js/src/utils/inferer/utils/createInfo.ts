@@ -1,6 +1,6 @@
+import type { Scope } from '@babel/traverse'
 import _ from 'lodash'
-import { Info } from '../types/Info'
-import { Scope } from '@babel/traverse'
+import type { Info } from '../types/Info'
 
 // create info and add it to props
 export function createInfo(

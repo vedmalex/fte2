@@ -54,8 +54,8 @@
 <#})-#>
 
 <#if(context.reqThings.length > 0){#>
-Ext.require(#{JSON.stringify(context.reqThings)}, 
-    function(){ 
+Ext.require(#{JSON.stringify(context.reqThings)},
+    function(){
         Ext.define('namespace.#{context.name}',{});
     }
 )

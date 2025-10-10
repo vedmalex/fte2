@@ -138,7 +138,7 @@ flowchart TD
   E -->|Test| Q[QA]
   E -->|Status| T[Brief Status + Bug/MH/LEVER Summary]
   E -->|Archive| Z[Archive]
-  
+
   I --> LV{LEVER Check}
   LV -->|Existing Code Found| LE[Leverage/Extend Existing]
   LV -->|No Existing Code| IN[Implement New]
@@ -158,7 +158,7 @@ flowchart TD
   D -->|No| F{Can create reusable code?}
   F -->|Yes| G[Create reusable abstraction]
   F -->|No| H[Reconsider approach]
-  
+
   C --> I[Update LEVER.md - Applied]
   E --> I
   G --> I

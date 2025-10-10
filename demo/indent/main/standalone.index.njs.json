@@ -1,154 +1,152 @@
 {
- "main": [
-  {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "empty",
+      "eol": true
+    },
+    {
+      "content": "const templates = {",
+      "pos": 76,
+      "line": 4,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 96,
+      "line": 5,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 96,
+      "line": 5,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 143,
+      "line": 5,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  '",
+      "pos": 144,
+      "line": 6,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name",
+      "pos": 147,
+      "line": 6,
+      "column": 4,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "': require('",
+      "pos": 163,
+      "line": 6,
+      "column": 20,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].path",
+      "pos": 175,
+      "line": 6,
+      "column": 32,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "'),",
+      "pos": 191,
+      "line": 6,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 195,
+      "line": 7,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 195,
+      "line": 7,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 202,
+      "line": 7,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 203,
+      "line": 8,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "module.exports = templates",
+      "pos": 205,
+      "line": 9,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 231,
+      "line": 9,
+      "column": 27,
+      "type": "empty"
+    }
+  ],
+  "directives": {
+    "context": "files",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": ["standalone.index.njs"]
   },
-  {
-   "content": "const templates = {",
-   "pos": 76,
-   "line": 4,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 96,
-   "line": 5,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 96,
-   "line": 5,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 143,
-   "line": 5,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  '",
-   "pos": 144,
-   "line": 6,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name",
-   "pos": 147,
-   "line": 6,
-   "column": 4,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "': require('",
-   "pos": 163,
-   "line": 6,
-   "column": 20,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].path",
-   "pos": 175,
-   "line": 6,
-   "column": 32,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "'),",
-   "pos": 191,
-   "line": 6,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 195,
-   "line": 7,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 195,
-   "line": 7,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 202,
-   "line": 7,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 203,
-   "line": 8,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "module.exports = templates",
-   "pos": 205,
-   "line": 9,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 231,
-   "line": 9,
-   "column": 27,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "files",
-  "content": false,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": [],
-  "alias": [
-   "standalone.index.njs"
-  ]
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

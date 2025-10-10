@@ -1,8 +1,14 @@
 export function applyDeindent(str: string, numChars: number | string): string
-export function applyDeindent(str: Array<string>, numChars: number | string): Array<string>
-export function applyDeindent(str: string | Array<string>, numChars: number | string): string | Array<string> {
+export function applyDeindent(
+  str: Array<string>,
+  numChars: number | string,
+): Array<string>
+export function applyDeindent(
+  str: string | Array<string>,
+  numChars: number | string,
+): string | Array<string> {
   if (!str) return str
-  let lines = Array.isArray(str) ? [...str] : String(str).split('\n')
+  const lines = Array.isArray(str) ? [...str] : String(str).split('\n')
   // по первой строке
   if (typeof numChars == 'string') {
     numChars = numChars.length

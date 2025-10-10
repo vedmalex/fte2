@@ -20,4 +20,6 @@ const sourceFile = project.createSourceFile(
 
 const printPersonFunction = sourceFile.getFunction('printPerson')
 const parameter = printPersonFunction?.getParameters()[0]
-console.log(`Type of parameter '${parameter?.getName()}' is '${parameter?.getType().getText()}'`)
+console.log(
+  `Type of parameter '${parameter?.getName()}' is '${parameter?.getType().getText()}'`,
+)

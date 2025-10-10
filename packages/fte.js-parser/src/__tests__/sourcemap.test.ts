@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { Parser } from '../index'
 
 describe('Parser Source Map', () => {
@@ -11,11 +12,10 @@ describe('Parser Source Map', () => {
     })
 
     // any item with content should have originalStart set
-    const all = [
-      ...(res.main || []),
-      ...(res.documentation || []),
-    ] as any[]
+    const all = [...(res.main || []), ...(res.documentation || [])] as any[]
 
-    expect(all.some(i => i.originalStart && i.sourceFile === 'template.njs')).toBeTruthy()
+    expect(
+      all.some((i) => i.originalStart && i.sourceFile === 'template.njs'),
+    ).toBeTruthy()
   })
 })

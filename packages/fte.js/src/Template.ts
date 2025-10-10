@@ -1,4 +1,4 @@
-import { TemplateBase, DefaultFactoryOption } from 'fte.js-base'
+import { type DefaultFactoryOption, TemplateBase } from 'fte.js-base'
 import { makeTemplate } from './makeTemplate'
 
 export class Template<T extends DefaultFactoryOption> extends TemplateBase<T> {

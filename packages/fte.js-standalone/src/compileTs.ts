@@ -5,8 +5,8 @@ export function compileTs(
   content: Buffer | string,
   fileName?: string,
   sourceRoot?: string,
-  inlineMap: boolean = true,
-  sourcemap: boolean = true,
+  inlineMap = true,
+  sourcemap = true,
 ) {
   const compiled = Parser.parse(content.toString(), {
     sourceMap: sourcemap,

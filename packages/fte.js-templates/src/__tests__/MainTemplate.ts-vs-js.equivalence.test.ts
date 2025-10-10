@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -40,8 +41,12 @@ describe('MainTemplate.ts.njs vs MainTemplate.njs - structural equivalence', () 
     const jsCode = getCode(jsRes)
     const tsCode = getCode(tsRes)
 
-    expect(jsCode).toContain('script: function (context, _content, partial, slot, options)')
-    expect(tsCode).toContain('script: function (context, _content, partial, slot, options)')
+    expect(jsCode).toContain(
+      'script: function (context, _content, partial, slot, options)',
+    )
+    expect(tsCode).toContain(
+      'script: function (context, _content, partial, slot, options)',
+    )
 
     expect(jsCode).toContain('out.push("Hello");')
     expect(tsCode).toContain('out.push("Hello");')

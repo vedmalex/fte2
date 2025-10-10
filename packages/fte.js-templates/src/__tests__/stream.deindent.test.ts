@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
 
 describe('stream deindent', () => {
@@ -19,10 +20,14 @@ describe('stream deindent', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
-    Local.options = { ...(Local.options as any), stream: true, deindent: true } as any
+    Local.options = {
+      ...(Local.options as any),
+      stream: true,
+      deindent: true,
+    } as any
     const it = (Local as any).runStream({}, 'x.njs') as AsyncIterable<string>
     const chunks: string[] = []
     for await (const c of it) chunks.push(c)
@@ -44,11 +49,18 @@ describe('stream deindent', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
-    Local.options = { ...(Local.options as any), stream: true, deindent: true } as any
-    const res = (Local as any).runStream({}, 'x.njs') as Array<{ name: string; content: AsyncIterable<string> }>
+    Local.options = {
+      ...(Local.options as any),
+      stream: true,
+      deindent: true,
+    } as any
+    const res = (Local as any).runStream({}, 'x.njs') as Array<{
+      name: string
+      content: AsyncIterable<string>
+    }>
     const chunks: string[] = []
     for await (const c of res[0].content) chunks.push(c)
     expect(chunks.join('')).toBe('A\n  B\nC')

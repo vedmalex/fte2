@@ -1,233 +1,249 @@
-import { TemplateBase } from "fte.js-base";
+import type { TemplateBase } from 'fte.js-base'
 export default {
-    alias: [
-        "codeblock.njs"
-    ],
-    script: function(blockList, _content, partial, slot, options) {
-        var out: Array<string> = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push('import { TemplateSourceMapGenerator, SourceMapOptions } from "fte.js-base";\n');
-        out.push("\n");
-        out.push("var textQuote = false\n");
-        out.push("const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({\n");
-        out.push("  file: options.sourceFile,\n");
-        out.push("  sourceRoot: options.sourceRoot,\n");
-        out.push("  inline: options.inline\n");
-        out.push("}) : null\n");
-        out.push("\n");
-        out.push("let generatedLine = 1\n");
-        out.push("let generatedColumn = 0\n");
-        out.push("\n");
-        out.push("function addMapping(block, content){\n");
-        out.push("  if (sourceMapGenerator && block.sourceFile && block.originalStart) {\n");
-        out.push("    sourceMapGenerator.addSegment({\n");
-        out.push("      generatedLine,\n");
-        out.push("      generatedColumn,\n");
-        out.push("      originalLine: block.originalStart.line,\n");
-        out.push("      originalColumn: block.originalStart.column,\n");
-        out.push("      source: block.sourceFile,\n");
-        out.push("      content: block.sourceContent,\n");
-        out.push("      name: block.type\n");
-        out.push("    })\n");
-        out.push("\n");
-        out.push("    const lines = content.split('\\n')\n");
-        out.push("    if (lines.length > 1) {\n");
-        out.push("      generatedLine += lines.length - 1\n");
-        out.push("      generatedColumn = lines[lines.length - 1].length\n");
-        out.push("    } else {\n");
-        out.push("      generatedColumn += content.length\n");
-        out.push("    }\n");
-        out.push("  }\n");
-        out.push("}\n");
-        out.push("\n");
-        out.push("do {\n");
-        out.push("  if(blockList.length == 0) break\n");
-        out.push("  const cur = blockList.shift()\n");
-        out.push("  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {\n");
-        out.push("    blockList.unshift(cur)\n");
-        out.push("    break\n");
-        out.push("  }\n");
-        out.push("}\n");
-        out.push("while(true)\n");
-        out.push("\n");
-        out.push("do {\n");
-        out.push("  if(blockList.length == 0) break\n");
-        out.push("  const cur = blockList.pop()\n");
-        out.push("  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {\n");
-        out.push("    blockList.push(cur)\n");
-        out.push("    break\n");
-        out.push("  }\n");
-        out.push("}\n");
-        out.push("while(true)\n");
-        out.push("if(blockList.length > 0){\n");
-        out.push("  blockList[blockList.length - 1].eol = false\n");
-        out.push("  for (var i = 0, len = blockList.length; i < len; i++) {\n");
-        out.push("    var last = i === blockList.length - 1\n");
-        out.push("    var block = blockList[i]\n");
-        out.push("    var next = (i + 1) < len ? blockList[i+1] : null\n");
-        out.push("    var cont = block?.content\n");
-        out.push("    switch (block.type) {\n");
-        out.push("      case 'text': {\n");
-        out.push("            let res = ''\n");
-        out.push("            if (!textQuote) {\n");
-        out.push("              textQuote = true\n");
-        out.push("              res = 'out.push('\n");
-        out.push("            } else {\n");
-        out.push("              let lasItem = out.pop()\n");
-        out.push('              res = lasItem + " + "\n');
-        out.push("            }\n");
-        out.push("\n");
-        out.push("            let content\n");
-        out.push("            if (!block.eol) {\n");
-        out.push("              content = JSON.stringify(cont)\n");
-        out.push("              res += content\n");
-        out.push("            } else {\n");
-        out.push("              content = JSON.stringify(cont + '\\n')\n");
-        out.push("              res += content\n");
-        out.push("              res += ');' + (last ? '' : '\\n')\n");
-        out.push("              textQuote = false\n");
-        out.push("            }\n");
-        out.push("            addMapping(block, content)\n");
-        out.push("            out.push(res)\n");
-        out.push("        }\n");
-        out.push("        break\n");
-        out.push("      case 'uexpression': {\n");
-        out.push("          let res = ''\n");
-        out.push("          if (!textQuote) {\n");
-        out.push("            textQuote = true\n");
-        out.push("            res = 'out.push('\n");
-        out.push("          } else {\n");
-        out.push("            let lasItem = out.pop()\n");
-        out.push('            res = lasItem + " + "\n');
-        out.push("          }\n");
-        out.push("\n");
-        out.push('          let lcont = "options.escapeIt("+cont+")"\n');
-        out.push("\n");
-        out.push("          if(block.indent) {\n");
-        out.push('            lcont = "options.applyIndent("+lcont+", \'"+block.indent+"\')"\n');
-        out.push("          }\n");
-        out.push("\n");
-        out.push("          let content\n");
-        out.push("          if(block.start && block.end){\n");
-        out.push('            content = "("+lcont+")"\n');
-        out.push("            res += content\n");
-        out.push("          } else if(block.start){\n");
-        out.push('            content = "("+lcont\n');
-        out.push("            res += content\n");
-        out.push("          } else if(block.end){\n");
-        out.push('            content = lcont+")"\n');
-        out.push("            res += content\n");
-        out.push("          } else {\n");
-        out.push("            content = lcont\n");
-        out.push("            res += content\n");
-        out.push("          }\n");
-        out.push("\n");
-        out.push("          //here always textQuote == true\n");
-        out.push("          if (!block.eol) {\n");
-        out.push("            out.push(res)\n");
-        out.push("          } else {\n");
-        out.push("            if (block.start && block.end) {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            } else if (block.start) {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            } else if (block.end) {\n");
-        out.push("              out.push(res + ');' + (last ? '' : '\\n'))\n");
-        out.push("              textQuote = false\n");
-        out.push("            } else {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            }\n");
-        out.push("          }\n");
-        out.push("          addMapping(block, content)\n");
-        out.push("        }\n");
-        out.push("        break\n");
-        out.push("      case 'expression': {\n");
-        out.push("          let res = ''\n");
-        out.push("          if (!textQuote) {\n");
-        out.push("            textQuote = true\n");
-        out.push("            res = 'out.push('\n");
-        out.push("          } else {\n");
-        out.push("            if(block.start){\n");
-        out.push("              let lasItem = out.pop()\n");
-        out.push('              res = lasItem+" + "\n');
-        out.push("            }\n");
-        out.push("          }\n");
-        out.push("\n");
-        out.push("          if(block.indent) {\n");
-        out.push('            cont = "options.applyIndent("+cont+", \'"+block.indent+"\')"\n');
-        out.push("          }\n");
-        out.push("\n");
-        out.push("          let content\n");
-        out.push("          if(block.start && block.end){\n");
-        out.push('            content = "("+cont+")"\n');
-        out.push("            res += content\n");
-        out.push("          } else if(block.start){\n");
-        out.push('            content = "("+cont\n');
-        out.push("            res += content\n");
-        out.push("          } else if(block.end){\n");
-        out.push('            content = cont+")"\n');
-        out.push("            res += content\n");
-        out.push("          } else {\n");
-        out.push("            content = cont\n");
-        out.push("            res += content\n");
-        out.push("          }\n");
-        out.push("\n");
-        out.push("          //here always textQuote == true\n");
-        out.push("          if (!block.eol) {\n");
-        out.push("            out.push(res)\n");
-        out.push("          } else {\n");
-        out.push("            if (block.start && block.end) {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            } else if (block.start) {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            } else if (block.end) {\n");
-        out.push("              out.push(res + ');' + (last ? '' : '\\n'))\n");
-        out.push("              textQuote = false\n");
-        out.push("            } else {\n");
-        out.push("              out.push(res + '\\n')\n");
-        out.push("            }\n");
-        out.push("          }\n");
-        out.push("          addMapping(block, content)\n");
-        out.push("        }\n");
-        out.push("        break\n");
-        out.push("      case 'code':\n");
-        out.push("        if (textQuote) {\n");
-        out.push("          let item = out.pop()\n");
-        out.push('          out.push(item+");\\n")\n');
-        out.push("          textQuote = false\n");
-        out.push("        }\n");
-        out.push("        const content = cont + ((block.eol || next?.type != 'code') ? '\\n' : '')\n");
-        out.push("        addMapping(block, content)\n");
-        out.push("        out.push(content)\n");
-        out.push("        break\n");
-        out.push("    }\n");
-        out.push("  }\n");
-        out.push("}\n");
-        out.push("\n");
-        out.push("if (textQuote) {\n");
-        out.push("  let lasItem = out.pop()\n");
-        out.push('  out.push(lasItem+");")\n');
-        out.push("}\n");
-        out.push("\n");
-        out.push('let result = out.join("")\n');
-        out.push("\n");
-        out.push("if (sourceMapGenerator && options.sourceMap) {\n");
-        out.push("  if (options.inline) {\n");
-        out.push('    result += "\\n" + sourceMapGenerator.toInlineSourceMap()\n');
-        out.push("  } else if (options.sourceFile) {\n");
-        out.push('    result += "\\n//# sourceMappingURL=" + options.sourceFile + ".map"\n');
-        out.push("  }\n");
-        out.push("}\n");
-        out.push("\n");
-        out.push("return {\n");
-        out.push("  code: result,\n");
-        out.push("  map: sourceMapGenerator?.toJSON()\n");
-        out.push("}\n");
-        out.push("#>");
-        return out.join("");
-    },
-    compile: function(this: TemplateBase) {},
-    dependency: {}
-};
+  alias: ['codeblock.njs'],
+  script: function (blockList, _content, partial, slot, options) {
+    var out: Array<string> = []
+    out.push('\n')
+    out.push('\n')
+    out.push('\n')
+    out.push('\n')
+    out.push(
+      'import { TemplateSourceMapGenerator, SourceMapOptions } from "fte.js-base";\n',
+    )
+    out.push('\n')
+    out.push('var textQuote = false\n')
+    out.push(
+      'const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({\n',
+    )
+    out.push('  file: options.sourceFile,\n')
+    out.push('  sourceRoot: options.sourceRoot,\n')
+    out.push('  inline: options.inline\n')
+    out.push('}) : null\n')
+    out.push('\n')
+    out.push('let generatedLine = 1\n')
+    out.push('let generatedColumn = 0\n')
+    out.push('\n')
+    out.push('function addMapping(block, content){\n')
+    out.push(
+      '  if (sourceMapGenerator && block.sourceFile && block.originalStart) {\n',
+    )
+    out.push('    sourceMapGenerator.addSegment({\n')
+    out.push('      generatedLine,\n')
+    out.push('      generatedColumn,\n')
+    out.push('      originalLine: block.originalStart.line,\n')
+    out.push('      originalColumn: block.originalStart.column,\n')
+    out.push('      source: block.sourceFile,\n')
+    out.push('      content: block.sourceContent,\n')
+    out.push('      name: block.type\n')
+    out.push('    })\n')
+    out.push('\n')
+    out.push("    const lines = content.split('\\n')\n")
+    out.push('    if (lines.length > 1) {\n')
+    out.push('      generatedLine += lines.length - 1\n')
+    out.push('      generatedColumn = lines[lines.length - 1].length\n')
+    out.push('    } else {\n')
+    out.push('      generatedColumn += content.length\n')
+    out.push('    }\n')
+    out.push('  }\n')
+    out.push('}\n')
+    out.push('\n')
+    out.push('do {\n')
+    out.push('  if(blockList.length == 0) break\n')
+    out.push('  const cur = blockList.shift()\n')
+    out.push(
+      "  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {\n",
+    )
+    out.push('    blockList.unshift(cur)\n')
+    out.push('    break\n')
+    out.push('  }\n')
+    out.push('}\n')
+    out.push('while(true)\n')
+    out.push('\n')
+    out.push('do {\n')
+    out.push('  if(blockList.length == 0) break\n')
+    out.push('  const cur = blockList.pop()\n')
+    out.push(
+      "  if(cur.type !== 'empty' || (cur.type === 'text' && cur.content.trim())) {\n",
+    )
+    out.push('    blockList.push(cur)\n')
+    out.push('    break\n')
+    out.push('  }\n')
+    out.push('}\n')
+    out.push('while(true)\n')
+    out.push('if(blockList.length > 0){\n')
+    out.push('  blockList[blockList.length - 1].eol = false\n')
+    out.push('  for (var i = 0, len = blockList.length; i < len; i++) {\n')
+    out.push('    var last = i === blockList.length - 1\n')
+    out.push('    var block = blockList[i]\n')
+    out.push('    var next = (i + 1) < len ? blockList[i+1] : null\n')
+    out.push('    var cont = block?.content\n')
+    out.push('    switch (block.type) {\n')
+    out.push("      case 'text': {\n")
+    out.push("            let res = ''\n")
+    out.push('            if (!textQuote) {\n')
+    out.push('              textQuote = true\n')
+    out.push("              res = 'out.push('\n")
+    out.push('            } else {\n')
+    out.push('              let lasItem = out.pop()\n')
+    out.push('              res = lasItem + " + "\n')
+    out.push('            }\n')
+    out.push('\n')
+    out.push('            let content\n')
+    out.push('            if (!block.eol) {\n')
+    out.push('              content = JSON.stringify(cont)\n')
+    out.push('              res += content\n')
+    out.push('            } else {\n')
+    out.push("              content = JSON.stringify(cont + '\\n')\n")
+    out.push('              res += content\n')
+    out.push("              res += ');' + (last ? '' : '\\n')\n")
+    out.push('              textQuote = false\n')
+    out.push('            }\n')
+    out.push('            addMapping(block, content)\n')
+    out.push('            out.push(res)\n')
+    out.push('        }\n')
+    out.push('        break\n')
+    out.push("      case 'uexpression': {\n")
+    out.push("          let res = ''\n")
+    out.push('          if (!textQuote) {\n')
+    out.push('            textQuote = true\n')
+    out.push("            res = 'out.push('\n")
+    out.push('          } else {\n')
+    out.push('            let lasItem = out.pop()\n')
+    out.push('            res = lasItem + " + "\n')
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          let lcont = "options.escapeIt("+cont+")"\n')
+    out.push('\n')
+    out.push('          if(block.indent) {\n')
+    out.push(
+      '            lcont = "options.applyIndent("+lcont+", \'"+block.indent+"\')"\n',
+    )
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          let content\n')
+    out.push('          if(block.start && block.end){\n')
+    out.push('            content = "("+lcont+")"\n')
+    out.push('            res += content\n')
+    out.push('          } else if(block.start){\n')
+    out.push('            content = "("+lcont\n')
+    out.push('            res += content\n')
+    out.push('          } else if(block.end){\n')
+    out.push('            content = lcont+")"\n')
+    out.push('            res += content\n')
+    out.push('          } else {\n')
+    out.push('            content = lcont\n')
+    out.push('            res += content\n')
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          //here always textQuote == true\n')
+    out.push('          if (!block.eol) {\n')
+    out.push('            out.push(res)\n')
+    out.push('          } else {\n')
+    out.push('            if (block.start && block.end) {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            } else if (block.start) {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            } else if (block.end) {\n')
+    out.push("              out.push(res + ');' + (last ? '' : '\\n'))\n")
+    out.push('              textQuote = false\n')
+    out.push('            } else {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            }\n')
+    out.push('          }\n')
+    out.push('          addMapping(block, content)\n')
+    out.push('        }\n')
+    out.push('        break\n')
+    out.push("      case 'expression': {\n")
+    out.push("          let res = ''\n")
+    out.push('          if (!textQuote) {\n')
+    out.push('            textQuote = true\n')
+    out.push("            res = 'out.push('\n")
+    out.push('          } else {\n')
+    out.push('            if(block.start){\n')
+    out.push('              let lasItem = out.pop()\n')
+    out.push('              res = lasItem+" + "\n')
+    out.push('            }\n')
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          if(block.indent) {\n')
+    out.push(
+      '            cont = "options.applyIndent("+cont+", \'"+block.indent+"\')"\n',
+    )
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          let content\n')
+    out.push('          if(block.start && block.end){\n')
+    out.push('            content = "("+cont+")"\n')
+    out.push('            res += content\n')
+    out.push('          } else if(block.start){\n')
+    out.push('            content = "("+cont\n')
+    out.push('            res += content\n')
+    out.push('          } else if(block.end){\n')
+    out.push('            content = cont+")"\n')
+    out.push('            res += content\n')
+    out.push('          } else {\n')
+    out.push('            content = cont\n')
+    out.push('            res += content\n')
+    out.push('          }\n')
+    out.push('\n')
+    out.push('          //here always textQuote == true\n')
+    out.push('          if (!block.eol) {\n')
+    out.push('            out.push(res)\n')
+    out.push('          } else {\n')
+    out.push('            if (block.start && block.end) {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            } else if (block.start) {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            } else if (block.end) {\n')
+    out.push("              out.push(res + ');' + (last ? '' : '\\n'))\n")
+    out.push('              textQuote = false\n')
+    out.push('            } else {\n')
+    out.push("              out.push(res + '\\n')\n")
+    out.push('            }\n')
+    out.push('          }\n')
+    out.push('          addMapping(block, content)\n')
+    out.push('        }\n')
+    out.push('        break\n')
+    out.push("      case 'code':\n")
+    out.push('        if (textQuote) {\n')
+    out.push('          let item = out.pop()\n')
+    out.push('          out.push(item+");\\n")\n')
+    out.push('          textQuote = false\n')
+    out.push('        }\n')
+    out.push(
+      "        const content = cont + ((block.eol || next?.type != 'code') ? '\\n' : '')\n",
+    )
+    out.push('        addMapping(block, content)\n')
+    out.push('        out.push(content)\n')
+    out.push('        break\n')
+    out.push('    }\n')
+    out.push('  }\n')
+    out.push('}\n')
+    out.push('\n')
+    out.push('if (textQuote) {\n')
+    out.push('  let lasItem = out.pop()\n')
+    out.push('  out.push(lasItem+");")\n')
+    out.push('}\n')
+    out.push('\n')
+    out.push('let result = out.join("")\n')
+    out.push('\n')
+    out.push('if (sourceMapGenerator && options.sourceMap) {\n')
+    out.push('  if (options.inline) {\n')
+    out.push('    result += "\\n" + sourceMapGenerator.toInlineSourceMap()\n')
+    out.push('  } else if (options.sourceFile) {\n')
+    out.push(
+      '    result += "\\n//# sourceMappingURL=" + options.sourceFile + ".map"\n',
+    )
+    out.push('  }\n')
+    out.push('}\n')
+    out.push('\n')
+    out.push('return {\n')
+    out.push('  code: result,\n')
+    out.push('  map: sourceMapGenerator?.toJSON()\n')
+    out.push('}\n')
+    out.push('#>')
+    return out.join('')
+  },
+  compile: function (this: TemplateBase) {},
+  dependency: {},
+}

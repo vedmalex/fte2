@@ -1,7 +1,30 @@
 {
-  "packages": ["packages/*", "apps/*", "utilities/*"],
-  "ignoreChanges": ["**/CHANGELOG.md", "**/node_modules/**", "**/*.md"],
-  "npmClient": "pnpm",
-  "useWorkspaces": true,
-  "version": "independent"
+  "packages": [
+    "packages/*",
+    "apps/*",
+    "utilities/*"
+  ],
+  "ignoreChanges": [
+    "**/CHANGELOG.md",
+    "**/node_modules/**",
+    "**/*.md"
+  ],
+  "npmClient": "bun",
+  "version": "3.0.0-rc.12",
+  "registry": "https://registry.npmjs.org/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "yes": false,
+      "ignoreChanges": [
+        "apps/**",
+        "*.md",
+        "**/*.md"
+      ]
+    }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

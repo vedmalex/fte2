@@ -20,11 +20,15 @@
         },
         {
           "begin": "\\$\\{",
-          "beginCaptures": { "0": { "name": "punctuation.section.interpolation.begin" } },
+          "beginCaptures": {
+            "0": { "name": "punctuation.section.interpolation.begin" }
+          },
           "end": "}",
-          "endCaptures": { "0": { "name": "punctuation.section.interpolation.end" } },
+          "endCaptures": {
+            "0": { "name": "punctuation.section.interpolation.end" }
+          },
           "contentName": "meta.embedded.block.javascript",
-          "patterns": [ { "include": "source.js" } ]
+          "patterns": [{ "include": "source.js" }]
         },
         { "include": "text.html.template" }
       ]

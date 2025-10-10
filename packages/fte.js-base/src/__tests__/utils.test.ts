@@ -1,4 +1,5 @@
-import { escapeIt, applyIndent, applyDeindent } from '..'
+import { describe, expect, test } from 'vitest'
+import { applyDeindent, applyIndent, escapeIt } from '..'
 
 describe('fte.js-base utils', () => {
   test('escapeIt escapes HTML characters', () => {

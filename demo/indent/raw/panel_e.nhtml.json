@@ -1,75 +1,73 @@
 {
- "main": [
-  {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
-  },
-  {
-   "content": "<div>",
-   "pos": 89,
-   "line": 5,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  <p>",
-   "pos": 95,
-   "line": 6,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "    extended panel",
-   "pos": 101,
-   "line": 7,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  </p>",
-   "pos": 120,
-   "line": 8,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "</div>",
-   "pos": 127,
-   "line": 9,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 133,
-   "line": 9,
-   "column": 7,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "panel",
-  "content": true,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": [],
-  "alias": [
-   "panel_e"
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "empty",
+      "eol": true
+    },
+    {
+      "content": "<div>",
+      "pos": 89,
+      "line": 5,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  <p>",
+      "pos": 95,
+      "line": 6,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "    extended panel",
+      "pos": 101,
+      "line": 7,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  </p>",
+      "pos": 120,
+      "line": 8,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "</div>",
+      "pos": 127,
+      "line": 9,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 133,
+      "line": 9,
+      "column": 7,
+      "type": "empty"
+    }
   ],
-  "extend": "panel.nhtml"
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "directives": {
+    "context": "panel",
+    "content": true,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": ["panel_e"],
+    "extend": "panel.nhtml"
+  },
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

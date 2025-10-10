@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { lint } from '../index'
 
 describe('fte.js-formatter linter with parser rules', () => {
@@ -7,10 +8,10 @@ describe('fte.js-formatter linter with parser rules', () => {
       '<# block inner : #>',
       '<# end #>',
       '<# end #>',
-      ''
+      '',
     ].join('\n')
 
     const issues = lint(input)
-    expect(issues.find(i => i.ruleId === 'no-nested-blocks')).toBeTruthy()
+    expect(issues.find((i) => i.ruleId === 'no-nested-blocks')).toBeTruthy()
   })
 })

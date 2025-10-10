@@ -1,16 +1,19 @@
-import * as memFs from 'mem-fs'
-import * as editor from 'mem-fs-editor'
-import { parse, join } from 'path'
 import * as swc from '@swc/core'
 import * as realFs from 'fs'
+import * as memFs from 'mem-fs'
+import * as editor from 'mem-fs-editor'
+import { join, parse } from 'path'
 
 const store = memFs.create()
 const fs = editor.create(store as any)
 
-function parseFile(text: string, minify: boolean = false) {
+function parseFile(text: string, minify = false) {
   let result: string
   try {
-    const ast = swc.parseSync(text, { syntax: 'typescript', comments: true } as any)
+    const ast = swc.parseSync(text, {
+      syntax: 'typescript',
+      comments: true,
+    } as any)
     // Preserve comments on print. swc attaches comments to ast; printSync keeps them by default.
     result = swc.printSync(ast, { minify }).code
     return result
@@ -28,14 +31,18 @@ function parseFile(text: string, minify: boolean = false) {
 export function writeFile(fn: string, data: string, minify?: boolean) {
   try {
     // Preserve sourceMappingURL comments removed by SWC
-    const inlineMatch = data.match(/\/\/\#\s*sourceMappingURL=data:application\/json;base64,[^\n\r]+/)
-    const externalMatch = data.match(/\/\/\#\s*sourceMappingURL=[^\n\r]+\.map/)
+    const inlineMatch = data.match(
+      /\/\/#\s*sourceMappingURL=data:application\/json;base64,[^\n\r]+/,
+    )
+    const externalMatch = data.match(/\/\/#\s*sourceMappingURL=[^\n\r]+\.map/)
     // Capture typedef block comments which SWC may drop on print
-    const typedefBlocks = (data.match(/\/\*\*[\s\S]*?\*\//g) || []).filter(b => /@typedef/.test(b))
+    const typedefBlocks = (data.match(/\/\*\*[\s\S]*?\*\//g) || []).filter(
+      (b) => /@typedef/.test(b),
+    )
 
     let result = parseFile(data, minify)
 
-    const hasAnyMapComment = /\/\/\#\s*sourceMappingURL=/.test(result)
+    const hasAnyMapComment = /\/\/#\s*sourceMappingURL=/.test(result)
     if (!hasAnyMapComment) {
       if (inlineMatch) {
         result += `\n${inlineMatch[0]}`
@@ -52,7 +59,14 @@ export function writeFile(fn: string, data: string, minify?: boolean) {
     fs.write(fn, result)
   } catch (err) {
     const parsedFn = parse(fn)
-    fs.write(join(parsedFn.dir, `${parsedFn.name}.err${parsedFn.ext}`), data)
+    // Save error file in the target directory
+    const errPath = join(parsedFn.dir, `${parsedFn.name}.err${parsedFn.ext}`)
+    // Ensure directory exists
+    const errDir = parsedFn.dir
+    if (!realFs.existsSync(errDir)) {
+      realFs.mkdirSync(errDir, { recursive: true })
+    }
+    realFs.writeFileSync(errPath, data)
     try {
       // Also persist latest error to workspace for easier debugging during tests
       const debugDir = join(process.cwd(), 'packages', 'fte.js', 'tmp')
@@ -60,8 +74,12 @@ export function writeFile(fn: string, data: string, minify?: boolean) {
         realFs.mkdirSync(debugDir, { recursive: true })
       }
       const safeName = parsedFn.name.replace(/[^a-zA-Z0-9._-]/g, '_')
-      realFs.writeFileSync(join(debugDir, `${safeName}.err${parsedFn.ext}`), data)
-    } catch {}
+      realFs.writeFileSync(
+        join(debugDir, `${safeName}.err${parsedFn.ext}`),
+        data,
+      )
+      console.error(`Compilation error saved to: ${join(parsedFn.dir, `${parsedFn.name}.err${parsedFn.ext}`)}`)
+    } catch { }
     console.error(err)
   }
 }
@@ -71,10 +89,5 @@ export function writeRaw(fn: string, data: string) {
 }
 
 export function commit() {
-  return new Promise((res, rej) => {
-    return fs.commit(err => {
-      if (err) return rej(err)
-      else res(true)
-    })
-  })
+  return fs.commit()
 }

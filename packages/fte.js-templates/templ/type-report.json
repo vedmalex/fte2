@@ -14,37 +14,19 @@
         {
           "name": "content",
           "params": {
-            "blockName": [
-              "string"
-            ],
-            "ctx": [
-              "undefined",
-              "null",
-              "any"
-            ]
+            "blockName": ["string"],
+            "ctx": ["undefined", "null", "any"]
           },
-          "returns": [
-            "any"
-          ]
+          "returns": ["any"]
         },
         {
           "name": "_content",
           "params": {
-            "arg0": [
-              "any"
-            ],
-            "arg1": [
-              "any"
-            ],
-            "arg2": [
-              "any"
-            ],
-            "arg3": [
-              "any"
-            ],
-            "arg4": [
-              "any"
-            ]
+            "arg0": ["any"],
+            "arg1": ["any"],
+            "arg2": ["any"],
+            "arg3": ["any"],
+            "arg4": ["any"]
           },
           "returns": []
         }

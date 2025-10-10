@@ -90,7 +90,7 @@ Ext.define('Modeleditor.controller.Profile', {
 #{partial(context,'modules')}
     },
 
-#{partial(context,'toolbarFuncs')}
+    #{partial(context,'toolbarFuncs')}
 
     initScreen: function(screenItem, scope, callback) {
       let self = scope;

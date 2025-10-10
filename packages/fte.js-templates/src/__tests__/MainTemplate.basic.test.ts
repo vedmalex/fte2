@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -34,7 +35,9 @@ describe('MainTemplate.njs - basic generation', () => {
     expect(typeof res).toBe('object')
     expect(typeof res.code).toBe('string')
 
-    expect(res.code).toContain('script: function (context, _content, partial, slot, options)')
+    expect(res.code).toContain(
+      'script: function (context, _content, partial, slot, options)',
+    )
     // Last block has eol cleared by template, so no \n
     expect(res.code).toContain('out.push("Hello");')
     expect(res.map).toBeUndefined()

@@ -1,5 +1,8 @@
-import detectIndent from "detect-indent";
-import type { SourceLocation, SourceMapOptions } from "fte.js-base/dist/types/source-map";
+import detectIndent from 'detect-indent'
+import type {
+  SourceLocation,
+  SourceMapOptions,
+} from 'fte.js-base'
 
 export type StateDefinition = {
   start?: Array<string>
@@ -41,7 +44,14 @@ export type ResultTypes =
   | 'skip'
   | 'empty'
 
-export type SystemBlocksType = 'directive' | 'comments' | 'slotStart' | 'blockStart' | 'blockEnd' | 'code' | null
+export type SystemBlocksType =
+  | 'directive'
+  | 'comments'
+  | 'slotStart'
+  | 'blockStart'
+  | 'blockEnd'
+  | 'code'
+  | null
 
 const globalStates: { [key: string]: StateDefinition } = {
   /*
@@ -303,7 +313,7 @@ const UNQUOTE = (str?: string) => {
 const UNPARAM = (str?: string) => {
   if (str) {
     let res = str?.trim()
-    res = res.match(/\(?([^\)].*\))/)?.[1] ?? res
+    res = res.match(/\(?([^)].*\))/)?.[1] ?? res
     return res.split(',').map(UNQUOTE)
   } else {
     return []
@@ -337,17 +347,23 @@ export class Parser {
   private sourceFile?: string
   private sourceContent?: string
   private sourceRoot?: string
-  private sourceMapEnabled: boolean = false
+  private sourceMapEnabled = false
 
   public static parse(text: string | Buffer, options: ParserOptions = {}) {
-    const parser = new Parser(typeof text == 'string' ? text : text.toString(), options)
+    const parser = new Parser(
+      typeof text == 'string' ? text : text.toString(),
+      options,
+    )
     parser.parse()
     return parser.process()
   }
 
   private constructor(value: string, options: ParserOptions) {
     if (options.indent) {
-      this.INDENT = typeof options.indent === 'string' ? options.indent.length : options.indent
+      this.INDENT =
+        typeof options.indent === 'string'
+          ? options.indent.length
+          : options.indent
     }
 
     this.sourceMapEnabled = options.sourceMap ?? false
@@ -481,13 +497,13 @@ export class Parser {
         item.originalEnd = {
           source: item.sourceFile,
           line: this.line,
-          column: this.column
+          column: this.column,
         }
       }
     }
 
     for (let i = 0; i < resultSize; i += 1) {
-      let r = this.result[i]
+      const r = this.result[i]
       data = r.data
       pos = r.pos
       line = r.line
@@ -543,7 +559,7 @@ export class Parser {
           curr = content
           trimEndLines()
           break
-        case 'unknown':
+        case 'unknown': {
           let actual_type: ResultTypes = 'unknown'
           switch (start) {
             case '<%':
@@ -583,7 +599,7 @@ export class Parser {
               eol,
               sourceFile: r.sourceFile,
               originalStart: r.originalStart,
-              sourceContent: r.sourceContent
+              sourceContent: r.sourceContent,
             }
             updateSourceMap(item)
             curr.main.push(item)
@@ -599,13 +615,14 @@ export class Parser {
               eol,
               sourceFile: r.sourceFile,
               originalStart: r.originalStart,
-              sourceContent: r.sourceContent
+              sourceContent: r.sourceContent,
             }
             updateSourceMap(item)
             curr.documentation.push(item)
           }
           break
-        case 'code':
+        }
+        case 'code': {
           if (start === '<%_') {
             trimStartSpases()
           }
@@ -626,11 +643,12 @@ export class Parser {
             eol,
             sourceFile: r.sourceFile,
             originalStart: r.originalStart,
-            sourceContent: r.sourceContent
+            sourceContent: r.sourceContent,
           }
           updateSourceMap(codeItem)
           curr.main.push(codeItem)
           break
+        }
         case 'expression':
         case 'expression2':
           {
@@ -645,7 +663,7 @@ export class Parser {
               eol,
               sourceFile: r.sourceFile,
               originalStart: r.originalStart,
-              sourceContent: r.sourceContent
+              sourceContent: r.sourceContent,
             }
             updateSourceMap(expressionItem)
             curr.main.push(expressionItem)
@@ -665,7 +683,7 @@ export class Parser {
               eol,
               sourceFile: r.sourceFile,
               originalStart: r.originalStart,
-              sourceContent: r.sourceContent
+              sourceContent: r.sourceContent,
             }
             updateSourceMap(uexpressionItem)
             const prev = curr.main.pop()
@@ -681,9 +699,11 @@ export class Parser {
           break
         case 'text': {
           const actualType: ResultTypes = data || eol ? type : 'empty'
-          if (actualType === 'empty' &&
-              curr.main.length > 0 &&
-              curr.main[curr.main.length - 1].type === 'empty') {
+          if (
+            actualType === 'empty' &&
+            curr.main.length > 0 &&
+            curr.main[curr.main.length - 1].type === 'empty'
+          ) {
             break
           }
           const textItem: Items = {
@@ -697,13 +717,13 @@ export class Parser {
             eol,
             sourceFile: r.sourceFile,
             originalStart: r.originalStart,
-            sourceContent: r.sourceContent
+            sourceContent: r.sourceContent,
           }
           updateSourceMap(textItem)
           curr.main.push(textItem)
           break
         }
-        case 'comments':
+        case 'comments': {
           trimStartLines()
           trimEndLines()
           const commentItem: Items = {
@@ -717,11 +737,12 @@ export class Parser {
             eol,
             sourceFile: r.sourceFile,
             originalStart: r.originalStart,
-            sourceContent: r.sourceContent
+            sourceContent: r.sourceContent,
           }
           updateSourceMap(commentItem)
           curr.documentation.push(commentItem)
           break
+        }
       }
     }
     return content
@@ -759,7 +780,12 @@ export class Parser {
     const { INDENT } = this
     let eol = false
     if (term.length == 1) {
-      if (term == '\n' || term == '\r' || term == '\u2028' || term == '\u2029') {
+      if (
+        term == '\n' ||
+        term == '\r' ||
+        term == '\u2028' ||
+        term == '\u2029'
+      ) {
         if (term == '\r' && this.SUB('\r\n') == '\r\n') {
           term = '\r\n'
         }
@@ -788,7 +814,15 @@ export class Parser {
     return { term, eol }
   }
   private block(extra: Partial<ParserResult> = {}): ParserResult {
-    const { pos, line, column, globalState, actualState, sourceFile, sourceMapEnabled } = this
+    const {
+      pos,
+      line,
+      column,
+      globalState,
+      actualState,
+      sourceFile,
+      sourceMapEnabled,
+    } = this
     const result: ParserResult = {
       data: '',
       pos,
@@ -808,7 +842,7 @@ export class Parser {
       result.originalStart = {
         source: sourceFile,
         line,
-        column
+        column,
       }
       // originalEnd будет установлен позже, когда мы будем знать конечную позицию
     }
@@ -825,7 +859,7 @@ export class Parser {
   }
 }
 
-export function SUB(buffer: string, str: string, pos:number = 0, size?: number) {
+export function SUB(buffer: string, str: string, pos = 0, size?: number) {
   if (!size) {
     size = buffer.length
   }

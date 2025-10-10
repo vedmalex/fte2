@@ -1,15 +1,15 @@
 import { Parser } from 'fte.js-parser'
+import { F } from './compile'
 import { prepareCode } from './prepareCode'
 import { run } from './run'
-import { F } from './compile'
 
 export function compileLight(
   content: Buffer | string,
   optimize: boolean,
   fileName?: string,
   sourceRoot?: string,
-  inlineMap: boolean = true,
-  sourcemap: boolean = true,
+  inlineMap = true,
+  sourcemap = true,
 ) {
   F.options = {
     ...F.options,
@@ -19,13 +19,22 @@ export function compileLight(
     sourceRoot,
   } as any
 
-  const compiled = Parser.parse(content.toString(), {
+  const parsed = Parser.parse(content.toString(), {
     sourceMap: sourcemap,
     sourceFile: fileName,
     sourceContent: typeof content === 'string' ? content : content.toString(),
     sourceRoot,
   })
-  const result = run(compiled, 'raw.njs') as any
+
+  // Convert parsed result to plain object for template context
+  const templateContext = {
+    main: parsed.main,
+    blocks: parsed.blocks,
+    slots: parsed.slots,
+    directives: parsed.directives,
+  }
+  const core = run(templateContext, 'MainTemplate.njs') as any
+  const result = run({ core }, 'raw.njs') as any
   if (typeof result === 'string') {
     return optimize ? prepareCode(result) : result
   }

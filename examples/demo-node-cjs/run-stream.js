@@ -1,4 +1,6 @@
-const { TemplateFactoryStandalone: F } = require('../../packages/fte.js-standalone/dist/TemplateFactoryStandalone.js')
+const {
+  TemplateFactoryStandalone: F,
+} = require('../../packages/fte.js-standalone/dist/TemplateFactoryStandalone.js')
 const { toNodeReadable } = require('../../packages/fte.js-base/dist')
 const templates = require('./dist/index.js')
 
@@ -12,4 +14,7 @@ f.options = { ...f.options, stream: true, maxCoalesceChunkSize: 2048 }
   } else {
     console.log('Template returned non-stream result (likely chunk array)')
   }
-})().catch(e => { console.error(e); process.exit(1) })
+})().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})

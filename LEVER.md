@@ -1,17 +1,18 @@
 # LEVER - Reuse Opportunities
 
 ## Leverage Existing Patterns
-- [ ] [LEV-001] Reuse token/state machine from `packages/fte.js-parser/src/index.ts` to define grammar rules
-- [ ] [LEV-002] Reuse trimming behaviors (`trimStartLines`, `trimEndLines`, etc.) as normative semantics in grammar notes
-- [ ] [LEV-003] Reuse existing indentation detection from demos (`demo/parser.mjs`) as a baseline for formatter
+- [ ] [LEV-001] Analyze working templates in `packages/fte.js-templates/src.backup.before-regeneration` to understand the stable, string-based output generation logic.
+- [ ] [LEV-002] Reuse patterns from the stable version for safe handling of optional `context` properties (like `directives`) and for inlining `partial` results as text.
+- [ ] [LEV-003] Extract walkAstNodes utility from duplicate AST traversals in vscode-ftejs-lang
+- [ ] [LEV-004] Reuse patterns for template path resolution
 
 ## Eliminate Duplicates
-- [ ] [DUP-001] Consolidate directive list across code and docs to a single source of truth
+- [ ] [DUP-001] Eliminate duplicate test setups in vscode-ftejs-lang tests
 
 ## Reduce Complexity
-- [ ] [COMP-001] Express tag families and states in EBNF to simplify mental model and tests
-- [ ] [COMP-002] Unify multi-line templating instructions into single logical blocks during formatting
 
 ## Applied LEVER
+- [x] [LEV-001] Leveraged pattern from contextTypes.ts and tag.ts for handling {code, map} objects in runPartial - Location: packages/fte.js/src/TemplateFactory.ts
+- [x] [LEV-002] Applied optional chaining pattern consistently throughout MainTemplate.ts.njs.ts for safe property access
 
 

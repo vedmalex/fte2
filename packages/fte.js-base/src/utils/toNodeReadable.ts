@@ -9,7 +9,7 @@ export function toNodeReadable(source: AsyncIterable<string>): Readable {
     try {
       for await (const chunk of source) {
         if (!readable.push(chunk)) {
-          await new Promise<void>(resolve => readable.once('drain', resolve))
+          await new Promise<void>((resolve) => readable.once('drain', resolve))
         }
       }
       readable.push(null)

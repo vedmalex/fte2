@@ -1,10 +1,11 @@
-import { lint, format } from '../index'
+import { describe, expect, test } from 'vitest'
+import { format, lint } from '../index'
 
 describe('comments own line (no inline)', () => {
   test('lint warns when <* or *> inline with other content', () => {
     const src = 'text <* comment *> more\n'
     const issues = lint(src)
-    expect(issues.find(i => i.ruleId === 'comment-on-own-line')).toBeTruthy()
+    expect(issues.find((i) => i.ruleId === 'comment-on-own-line')).toBeTruthy()
   })
 
   test('format splits comment markers to own lines', () => {

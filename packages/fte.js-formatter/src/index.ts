@@ -1,3 +1,9 @@
+import generate from '@babel/generator'
+import type { ParserOptions } from '@babel/parser'
+import { parse, parseExpression } from '@babel/parser'
+import type { CodeBlock, Items } from 'fte.js-parser'
+import { Parser } from 'fte.js-parser'
+
 export interface FormatOptions {
   indent?: number | 'tab'
   ensureFinalNewline?: boolean
@@ -17,9 +23,174 @@ export interface LintIssue {
   }
 }
 
-const DEFAULT_OPTIONS: Required<Pick<FormatOptions, 'ensureFinalNewline' | 'trimTrailingWhitespace'>> = {
+const DEFAULT_OPTIONS: Required<
+  Pick<FormatOptions, 'ensureFinalNewline' | 'trimTrailingWhitespace'>
+> = {
   ensureFinalNewline: true,
   trimTrailingWhitespace: true,
+}
+
+type Replacement = {
+  start: number
+  end: number
+  value: string
+}
+
+const collectItems = (block: CodeBlock | undefined, acc: Items[] = []) => {
+  if (!block) return acc
+  if (Array.isArray(block.main)) {
+    for (const item of block.main) {
+      acc.push(item)
+    }
+  }
+  const nestedBlocks = (block.blocks || {}) as Record<string, CodeBlock>
+  for (const child of Object.values(nestedBlocks)) {
+    collectItems(child, acc)
+  }
+  const nestedSlots = (block as any).slots as Record<string, CodeBlock> | undefined
+  if (nestedSlots) {
+    for (const child of Object.values(nestedSlots)) {
+      collectItems(child, acc)
+    }
+  }
+  return acc
+}
+
+const getLineWhitespacePrefix = (src: string, index: number) => {
+  const safeIndex = Math.max(0, index)
+  const lineStart = src.lastIndexOf('\n', safeIndex - 1) + 1
+  const before = src.slice(lineStart, safeIndex)
+  const match = before.match(/[\t ]*$/)
+  return match ? match[0] : ''
+}
+
+const BABEL_PLUGINS: NonNullable<ParserOptions['plugins']> = [
+  'typescript',
+  'jsx',
+  'classProperties',
+  'decorators-legacy',
+  'dynamicImport',
+  'optionalChaining',
+  'nullishCoalescingOperator',
+]
+
+const EXPRESSION_PARSE_OPTIONS: ParserOptions = {
+  sourceType: 'module',
+  plugins: BABEL_PLUGINS,
+}
+
+const STATEMENT_PARSE_OPTIONS: ParserOptions = {
+  ...EXPRESSION_PARSE_OPTIONS,
+  allowReturnOutsideFunction: true,
+  allowAwaitOutsideFunction: true,
+}
+
+const formatJsExpression = (code: string): string | null => {
+  const trimmed = code.trim()
+  if (!trimmed) return null
+  try {
+    const ast = parseExpression(trimmed, EXPRESSION_PARSE_OPTIONS)
+    const { code: output } = generate(ast, {
+      compact: false,
+      retainLines: false,
+      comments: false,
+    })
+    return output.replace(/;\s*$/, '').trim()
+  } catch {
+    return null
+  }
+}
+
+const formatJsCode = (code: string): string | null => {
+  const trimmed = code.trim()
+  if (!trimmed) return null
+  try {
+    const ast = parse(trimmed, STATEMENT_PARSE_OPTIONS)
+    let { code: output } = generate(ast, {
+      compact: false,
+      retainLines: false,
+      comments: false,
+    })
+    output = output.trim()
+    return output
+  } catch {
+    const fallback = formatJsExpression(trimmed)
+    return fallback
+  }
+}
+
+const applyJsAwareFormatting = (input: string): string => {
+  let ast: CodeBlock
+  try {
+    ast = Parser.parse(input)
+  } catch {
+    return input
+  }
+  if (!ast) return input
+
+  const items = collectItems(ast)
+  const replacements: Replacement[] = []
+
+  for (const item of items) {
+    if (
+      typeof item.pos !== 'number' ||
+      typeof item.content !== 'string' ||
+      typeof item.start !== 'string'
+    ) {
+      continue
+    }
+    const startOffset = item.pos + (item.start?.length ?? 0)
+    const endOffset = startOffset + item.content.length
+    if (startOffset < 0 || endOffset <= startOffset) continue
+
+    const leading = item.content.match(/^\s*/)?.[0] ?? ''
+    const trailing = item.content.match(/\s*$/)?.[0] ?? ''
+    const trimmed = item.content.trim()
+    if (!trimmed) continue
+
+    if (item.type === 'expression' || item.type === 'uexpression') {
+      const formatted = formatJsExpression(trimmed)
+      if (!formatted) continue
+      const indent = getLineWhitespacePrefix(input, startOffset)
+      const multiline =
+        formatted.includes('\n') || formatted.includes('\r')
+          ? formatted.split(/\r?\n/).map((line, idx) =>
+              idx === 0 ? line : indent + line,
+            )
+          : [formatted]
+      const rewritten = leading + multiline.join('\n') + trailing
+      replacements.push({
+        start: startOffset,
+        end: endOffset,
+        value: rewritten,
+      })
+    } else if (item.type === 'code') {
+      const formatted = formatJsCode(trimmed)
+      if (!formatted) continue
+      const indent = getLineWhitespacePrefix(input, startOffset)
+      const multiline =
+        formatted.includes('\n') || formatted.includes('\r')
+          ? formatted.split(/\r?\n/).map((line, idx) =>
+              idx === 0 ? line : indent + line,
+            )
+          : [formatted]
+      const rewritten = leading + multiline.join('\n') + trailing
+      replacements.push({
+        start: startOffset,
+        end: endOffset,
+        value: rewritten,
+      })
+    }
+  }
+
+  if (replacements.length === 0) return input
+
+  replacements.sort((a, b) => b.start - a.start)
+  let result = input
+  for (const { start, end, value } of replacements) {
+    result = result.slice(0, start) + value + result.slice(end)
+  }
+  return result
 }
 
 /**
@@ -42,7 +213,8 @@ export function format(input: string, options: FormatOptions = {}): string {
 
     // Iteratively split heavy template tokens into standalone lines
     // Covers: directive, block/slot start, end, code tags, comments
-    const HEAVY = /^(.*?)(<#@[^]*?#>|<#[\-]?\s+(?:block|slot)[\s\S]*?:\s+#>|<#[\-]?\s+end\s+[\-]?#>|<%[-=_]?[\s\S]*?(?:-%>|_%>|%>)|<\*[\s\S]*?\*>)(.*)$/
+    const HEAVY =
+      /^(.*?)(<#@[^]*?#>|<#[-]?\s+(?:block|slot)[\s\S]*?:\s+#>|<#[-]?\s+end\s+[-]?#>|<%[-=_]?[\s\S]*?(?:-%>|_%>|%>)|<\*[\s\S]*?\*>)(.*)$/
     let rest = line
     let matched = false
     while (true) {
@@ -96,7 +268,8 @@ export function format(input: string, options: FormatOptions = {}): string {
       else spaceCount += 1
     }
     if (cfg.indent === 'tab') return '\t'
-    if (typeof cfg.indent === 'number' && cfg.indent > 0) return ' '.repeat(cfg.indent)
+    if (typeof cfg.indent === 'number' && cfg.indent > 0)
+      return ' '.repeat(cfg.indent)
     if (tabCount > spaceCount) return '\t'
     return '  '
   }
@@ -106,8 +279,8 @@ export function format(input: string, options: FormatOptions = {}): string {
   let depth = 0
   for (let i = 0; i < processed.length; i += 1) {
     const ln = processed[i]
-    const isStart = /<#[\-]?\s+(?:block|slot)\b[\s\S]*?:\s+#>/.test(ln)
-    const isEnd = /<#[\-]?\s+end\s+[\-]?#>/.test(ln)
+    const isStart = /<#[-]?\s+(?:block|slot)\b[\s\S]*?:\s+#>/.test(ln)
+    const isEnd = /<#[-]?\s+end\s+[-]?#>/.test(ln)
 
     const baseDepth = isEnd ? Math.max(depth - 1, 0) : depth
     const shouldIndent = ln.trim().length > 0
@@ -134,6 +307,7 @@ export function format(input: string, options: FormatOptions = {}): string {
   }
 
   let output = collapsed.join('\n')
+  output = applyJsAwareFormatting(output)
 
   if (cfg.ensureFinalNewline && output.length > 0 && !output.endsWith('\n')) {
     output += '\n'
@@ -191,14 +365,17 @@ export function lint(input: string): LintIssue[] {
     }
 
     // block/slot start on own line
-    const mStart = line.match(/^(.*?)(<#[\-]?\s+(?:block|slot)[\s\S]*?:\s+#>)(.*)$/)
+    const mStart = line.match(
+      /^(.*?)(<#[-]?\s+(?:block|slot)[\s\S]*?:\s+#>)(.*)$/,
+    )
     if (mStart) {
       const before = mStart[1].trim()
       const after = mStart[3].trim()
       if (before || after) {
         issues.push({
           ruleId: 'block-or-slot-on-own-line',
-          message: 'Block/slot declaration must be the only content on its line',
+          message:
+            'Block/slot declaration must be the only content on its line',
           line: i + 1,
           column: (mStart.index ?? 0) + 1,
           severity: 'error',
@@ -208,7 +385,7 @@ export function lint(input: string): LintIssue[] {
     }
 
     // end on own line
-    const mEnd = line.match(/^(.*?)(<#[\-]?\s+end\s+[\-]?#>)(.*)$/)
+    const mEnd = line.match(/^(.*?)(<#[-]?\s+end\s+[-]?#>)(.*)$/)
     if (mEnd) {
       const before = mEnd[1].trim()
       const after = mEnd[3].trim()
@@ -242,7 +419,8 @@ export function lint(input: string): LintIssue[] {
     }
 
     // one-construct-per-line: flag multiple template tokens on one line
-    const HEAVY_GLOBAL = /(<#@[^]*?#>|<#[\-]?\s+(?:block|slot)[\s\S]*?:\s+#>|<#[\-]?\s+end\s+[\-]?#>|<%[-=_]?[\s\S]*?(?:-%>|_%>|%>)|<\*[\s\S]*?\*>)/g
+    const HEAVY_GLOBAL =
+      /(<#@[^]*?#>|<#[-]?\s+(?:block|slot)[\s\S]*?:\s+#>|<#[-]?\s+end\s+[-]?#>|<%[-=_]?[\s\S]*?(?:-%>|_%>|%>)|<\*[\s\S]*?\*>)/g
     const tokens = line.match(HEAVY_GLOBAL)
     if (tokens && tokens.length > 1) {
       issues.push({
@@ -285,7 +463,10 @@ export function lint(input: string): LintIssue[] {
     }
 
     // empty code tags like <% %>, <%_ %>, <# #>, <#- #>
-    if (/(<%_?)\s*(?:-%>|_%>|%>)/.test(line) || /(<#-?)\s*(?:-#>|#>)/.test(line)) {
+    if (
+      /(<%_?)\s*(?:-%>|_%>|%>)/.test(line) ||
+      /(<#-?)\s*(?:-#>|#>)/.test(line)
+    ) {
       // Ensure truly empty (no non-whitespace between start and end)
       const emptyPercent = line.match(/<%_?\s*(?:-%>|_%>|%>)/)
       const emptyHash = line.match(/<#-?\s*(?:-#>|#>)/)
@@ -318,7 +499,9 @@ export function lint(input: string): LintIssue[] {
     const Parser = ParserMod?.Parser
     if (Parser) {
       const root = Parser.parse(input)
-      const blockEntries = Object.entries((root as any).blocks ?? {}) as Array<[string, any]>
+      const blockEntries = Object.entries((root as any).blocks ?? {}) as Array<
+        [string, any]
+      >
       for (const [blockName, block] of blockEntries) {
         const nested = Object.keys(block.blocks ?? {}).length > 0
         if (nested) {
@@ -342,8 +525,8 @@ export function lint(input: string): LintIssue[] {
     let blockDepth = 0
     for (let i = 0; i < lines2.length; i += 1) {
       const line = lines2[i]
-      const isBlockStart = /<#[\-]?\s+block\b[\s\S]*?:\s+#>/.test(line)
-      const isEnd = /<#[\-]?\s+end\s+[\-]?#>/.test(line)
+      const isBlockStart = /<#[-]?\s+block\b[\s\S]*?:\s+#>/.test(line)
+      const isEnd = /<#[-]?\s+end\s+[-]?#>/.test(line)
       if (isBlockStart) {
         if (blockDepth > 0) {
           issues.push({

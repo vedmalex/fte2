@@ -704,7 +704,21 @@ export function makeAST(ast: t.Node) {
       infos.set(tmp.typeName, tmp)
     } else if (parts.length > 1) {
       // если путь состоит из нескольких элементов
-      const parent = infos.get(parts[0])!
+      let parent = infos.get(parts[0])
+      if (!parent) {
+        const parentInfo = types.get(parts[0])
+        parent = createMinInfo({
+          name: parentInfo?.name ?? parts[0],
+          typeName: parentInfo?.typeName ?? parts[0],
+          type:
+            parentInfo && (parentInfo.type === 'array' || parentInfo.type === 'object')
+              ? parentInfo.type
+              : parentInfo && (parentInfo.type === 'call' || parentInfo.type === 'new')
+              ? 'function'
+              : 'object',
+        })
+        infos.set(parts[0], parent)
+      }
       // добавляем Info в children родителя
       parent.children.set(tmp.typeName, tmp)
     }

@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -16,7 +17,13 @@ describe('MainTemplate.njs stream mode', () => {
     const Local = new TemplateFactoryStandalone({
       'x.njs': {
         name: 'x.njs',
-        script: function (context: any, _c: any, _p: any, _s: any, options: any) {
+        script: function (
+          context: any,
+          _c: any,
+          _p: any,
+          _s: any,
+          options: any,
+        ) {
           if (options && options.stream) {
             const ab = options.abort
             const gen = async function* () {
@@ -35,11 +42,14 @@ describe('MainTemplate.njs stream mode', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
     Local.options = { ...(Local.options as any), stream: true } as any
-    const it = (Local as any).runStream({ x: Promise.resolve('X') } as any, 'x.njs') as AsyncIterable<string>
+    const it = (Local as any).runStream(
+      { x: Promise.resolve('X') } as any,
+      'x.njs',
+    ) as AsyncIterable<string>
     const chunks: string[] = []
     for await (const c of it) chunks.push(c)
     expect(chunks.join('')).toBe('AXZ')
@@ -50,7 +60,13 @@ describe('MainTemplate.njs stream mode', () => {
       'x.njs': {
         name: 'x.njs',
         chunks: 'main',
-        script: function (context: any, _c: any, _p: any, _s: any, options: any) {
+        script: function (
+          context: any,
+          _c: any,
+          _p: any,
+          _s: any,
+          options: any,
+        ) {
           const out: any[] = []
           const chunkEnsure = (name: string) => {
             return { name, content: [] as any[] }
@@ -65,11 +81,14 @@ describe('MainTemplate.njs stream mode', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
     Local.options = { ...(Local.options as any), stream: true } as any
-    const res = (Local as any).runStream({}, 'x.njs') as Array<{ name: string; content: AsyncIterable<string> }>
+    const res = (Local as any).runStream({}, 'x.njs') as Array<{
+      name: string
+      content: AsyncIterable<string>
+    }>
     expect(Array.isArray(res)).toBe(true)
     expect(res[0].name).toBe('main')
     const chunks: string[] = []

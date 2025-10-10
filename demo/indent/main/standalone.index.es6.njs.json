@@ -1,250 +1,248 @@
 {
- "main": [
-  {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "empty",
+      "eol": true
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 81,
+      "line": 5,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 128,
+      "line": 5,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  import ",
+      "pos": 129,
+      "line": 6,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+      "pos": 138,
+      "line": 6,
+      "column": 10,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": " from '",
+      "pos": 180,
+      "line": 6,
+      "column": 52,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].path",
+      "pos": 187,
+      "line": 6,
+      "column": 59,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "'",
+      "pos": 203,
+      "line": 6,
+      "column": 75,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 205,
+      "line": 7,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 205,
+      "line": 7,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 212,
+      "line": 7,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 213,
+      "line": 8,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const templates = {",
+      "pos": 214,
+      "line": 9,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 234,
+      "line": 10,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 234,
+      "line": 10,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 281,
+      "line": 10,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  '",
+      "pos": 282,
+      "line": 11,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name",
+      "pos": 285,
+      "line": 11,
+      "column": 4,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "': ",
+      "pos": 301,
+      "line": 11,
+      "column": 20,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+      "pos": 304,
+      "line": 11,
+      "column": 23,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": ",",
+      "pos": 346,
+      "line": 11,
+      "column": 65,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 348,
+      "line": 12,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 348,
+      "line": 12,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 355,
+      "line": 12,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 356,
+      "line": 13,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "export default templates",
+      "pos": 358,
+      "line": 14,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 382,
+      "line": 14,
+      "column": 25,
+      "type": "empty"
+    }
+  ],
+  "directives": {
+    "context": "files",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": ["standalone.index.es6.njs"]
   },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 81,
-   "line": 5,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 128,
-   "line": 5,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  import ",
-   "pos": 129,
-   "line": 6,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 138,
-   "line": 6,
-   "column": 10,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": " from '",
-   "pos": 180,
-   "line": 6,
-   "column": 52,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].path",
-   "pos": 187,
-   "line": 6,
-   "column": 59,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "'",
-   "pos": 203,
-   "line": 6,
-   "column": 75,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 205,
-   "line": 7,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 205,
-   "line": 7,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 212,
-   "line": 7,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 213,
-   "line": 8,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "const templates = {",
-   "pos": 214,
-   "line": 9,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 234,
-   "line": 10,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 234,
-   "line": 10,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 281,
-   "line": 10,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  '",
-   "pos": 282,
-   "line": 11,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name",
-   "pos": 285,
-   "line": 11,
-   "column": 4,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "': ",
-   "pos": 301,
-   "line": 11,
-   "column": 20,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 304,
-   "line": 11,
-   "column": 23,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": ",",
-   "pos": 346,
-   "line": 11,
-   "column": 65,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 348,
-   "line": 12,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 348,
-   "line": 12,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 355,
-   "line": 12,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 356,
-   "line": 13,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "export default templates",
-   "pos": 358,
-   "line": 14,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 382,
-   "line": 14,
-   "column": 25,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "files",
-  "content": false,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": [],
-  "alias": [
-   "standalone.index.es6.njs"
-  ]
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

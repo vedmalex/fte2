@@ -4,8 +4,8 @@
 <#- chunkStart(`./${thingType}.js`); -#>
 
 <# const chunks = ['model','store','metadata','app'] #>
-Ext.require(#{JSON.stringify(chunks.map(chunk=> `things.${ns}.${chunk}.${thingType}`))}, 
-    function(){ 
+Ext.require(#{JSON.stringify(chunks.map(chunk=> `things.${ns}.${chunk}.${thingType}`))},
+    function(){
         Ext.define('things.#{context.thingType}',{});
     }
 )
@@ -37,7 +37,7 @@ Ext.require('things.#{ns}.model.#{thingType}', function() {
     <# context.renderstore.forEach((file)=>{#>
     #{file}
     <#})#>
-    
+
     Ext.define('things.#{ns}.store.#{thingType}',{});
 })
 

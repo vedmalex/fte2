@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -27,8 +28,8 @@ describe('stream abort', () => {
         blocks: {},
         slots: {},
         compile() {},
-        dependency: {}
-      } as any
+        dependency: {},
+      } as any,
     } as any)
     const abort = { aborted: false }
     Local.options = { ...(Local.options as any), stream: true, abort } as any

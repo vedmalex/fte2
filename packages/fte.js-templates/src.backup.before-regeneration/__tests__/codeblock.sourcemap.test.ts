@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 describe('Templates codeblock sourcemap', () => {
   test('should produce inline sourcemap when inline', () => {
@@ -13,8 +14,20 @@ describe('Templates codeblock sourcemap', () => {
     } as any
 
     const blockList = [
-      { type: 'text', content: 'Hello', eol: false, sourceFile: 'template.njs', originalStart: { line: 1, column: 1, source: 'template.njs' }},
-      { type: 'uexpression', content: ' name ', eol: true, sourceFile: 'template.njs', originalStart: { line: 1, column: 6, source: 'template.njs' }},
+      {
+        type: 'text',
+        content: 'Hello',
+        eol: false,
+        sourceFile: 'template.njs',
+        originalStart: { line: 1, column: 1, source: 'template.njs' },
+      },
+      {
+        type: 'uexpression',
+        content: ' name ',
+        eol: true,
+        sourceFile: 'template.njs',
+        originalStart: { line: 1, column: 6, source: 'template.njs' },
+      },
     ] as any
 
     const res: any = F.run(blockList, 'codeblock.njs')
@@ -34,12 +47,18 @@ describe('Templates codeblock sourcemap', () => {
     } as any
 
     const blockList = [
-      { type: 'text', content: 'Hello', eol: false, sourceFile: 'template.njs', originalStart: { line: 1, column: 1, source: 'template.njs' }},
+      {
+        type: 'text',
+        content: 'Hello',
+        eol: false,
+        sourceFile: 'template.njs',
+        originalStart: { line: 1, column: 1, source: 'template.njs' },
+      },
     ] as any
 
     const res: any = F.run(blockList, 'codeblock.njs')
     expect(typeof res).toBe('object')
-    expect(res.code).toMatch(/\/\/\# sourceMappingURL=test.js.map/)
+    expect(res.code).toMatch(/\/\/# sourceMappingURL=test.js.map/)
     expect(res.map).toBeDefined()
   })
 })

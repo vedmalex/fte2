@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { toNodeReadable } from '../utils/toNodeReadable'
 import { toWebReadable } from '../utils/toWebReadable'
 
@@ -12,7 +13,9 @@ describe('adapters', () => {
     const r = toNodeReadable(makeSource())
     const chunks: Buffer[] = []
     await new Promise<void>((resolve, reject) => {
-      r.on('data', c => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(String(c))))
+      r.on('data', (c) =>
+        chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(String(c))),
+      )
       r.on('end', resolve)
       r.on('error', reject)
     })

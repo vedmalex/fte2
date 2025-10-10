@@ -1,0 +1,1 @@
+{"version":3,"file":"lint.js","sourceRoot":"","sources":["../../src/adapters/lint.ts"],"names":[],"mappings":";;AAaA,4BAEC;AAND,MAAM,EAAE,IAAI,EAAE,GAAG,OAAO,CAAC,kBAAkB,CAE1C,CAAA;AAED,SAAgB,QAAQ,CAAC,KAAa;IACpC,OAAO,IAAI,CAAC,MAAM,CAAC,KAAK,IAAI,EAAE,CAAC,CAAgB,CAAA;AACjD,CAAC"}

@@ -1,2 +1,2 @@
-const templates = {};
-module.exports = templates;
+const templates = {}
+module.exports = templates

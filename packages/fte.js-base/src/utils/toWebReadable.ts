@@ -1,4 +1,6 @@
-export function toWebReadable(source: AsyncIterable<string>): ReadableStream<Uint8Array> {
+export function toWebReadable(
+  source: AsyncIterable<string>,
+): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder()
   const iterator = (source as any)[Symbol.asyncIterator]()
   return new ReadableStream<Uint8Array>({

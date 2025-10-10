@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -16,7 +17,7 @@ function normalizeTsToJs(tsCode: string): string {
     // remove this: TemplateBase in compile
     .replace(/this:\s*TemplateBase/g, '')
     // remove type annotations like ": Array<string>" or ": string" but DO NOT touch ": function"
-    .replace(/:(?!\s*function)\s*[A-Za-z_][A-Za-z0-9_<>,\[\]\s{}]*/g, '')
+    .replace(/:(?!\s*function)\s*[A-Za-z_][A-Za-z0-9_<>,[\]\s{}]*/g, '')
     // remove generics like <T>( or <T>(blockName: string,...)
     .replace(/<[^>]+>\(/g, '(')
     // remove " as any" casts
@@ -61,8 +62,12 @@ describe('TS vs JS templates equivalence (structure/behavior)', () => {
 
     const jsN = normalizeJs(jsCode)
     const tsN = normalizeTsToJs(tsCode)
-    expect(tsN).toContain('script: function (context, _content, partial, slot, options)')
-    expect(jsN).toContain('script: function (context, _content, partial, slot, options)')
+    expect(tsN).toContain(
+      'script: function (context, _content, partial, slot, options)',
+    )
+    expect(jsN).toContain(
+      'script: function (context, _content, partial, slot, options)',
+    )
     // After normalization, TS and JS bodies should be equivalent
     expect(tsN).toContain('out.push("Hello");')
     expect(jsN).toContain('out.push("Hello");')
@@ -71,14 +76,43 @@ describe('TS vs JS templates equivalence (structure/behavior)', () => {
   test('blocks and slots bodies are equivalent after stripping types', () => {
     const F = makeFactory()
 
-    const header = { directives: { context: 'ctx', content: false, chunks: undefined, alias: undefined, deindent: false, requireAs: [] }, main: text('Header') }
-    const footer = { directives: { context: 'ctx', content: false, chunks: undefined, alias: undefined, deindent: false, requireAs: [] }, main: text('Footer') }
+    const header = {
+      directives: {
+        context: 'ctx',
+        content: false,
+        chunks: undefined,
+        alias: undefined,
+        deindent: false,
+        requireAs: [],
+      },
+      main: text('Header'),
+    }
+    const footer = {
+      directives: {
+        context: 'ctx',
+        content: false,
+        chunks: undefined,
+        alias: undefined,
+        deindent: false,
+        requireAs: [],
+      },
+      main: text('Footer'),
+    }
 
     const ctx: any = {
-      directives: { context: 'context', content: false, chunks: undefined, alias: undefined, deindent: false, requireAs: [], blocks: { header, footer }, slots: { footer } },
+      directives: {
+        context: 'context',
+        content: false,
+        chunks: undefined,
+        alias: undefined,
+        deindent: false,
+        requireAs: [],
+        blocks: { header, footer },
+        slots: { footer },
+      },
       blocks: { header, footer },
       slots: { footer },
-      main: text('Body')
+      main: text('Body'),
     }
 
     const jsRes = F.run(ctx, 'MainTemplate.njs') as any
@@ -108,10 +142,21 @@ describe('TS vs JS templates equivalence (structure/behavior)', () => {
     const F = makeFactory()
 
     const ctx: any = {
-      directives: { context: 'context', content: false, chunks: 'main', alias: undefined, deindent: false, requireAs: [], blocks: {}, slots: {}, includeMainChunk: false, useHash: false },
+      directives: {
+        context: 'context',
+        content: false,
+        chunks: 'main',
+        alias: undefined,
+        deindent: false,
+        requireAs: [],
+        blocks: {},
+        slots: {},
+        includeMainChunk: false,
+        useHash: false,
+      },
       blocks: {},
       slots: {},
-      main: text('X')
+      main: text('X'),
     }
 
     const jsRes = F.run(ctx, 'MainTemplate.njs') as any

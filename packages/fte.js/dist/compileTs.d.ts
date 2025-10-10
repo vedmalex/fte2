@@ -1,3 +1,0 @@
-/// <reference types="node" />
-export declare function compileTs(content: Buffer | string, optimize?: boolean, fileName?: string, sourceRoot?: string, inlineMap?: boolean, sourcemap?: boolean): any;
-//# sourceMappingURL=compileTs.d.ts.map

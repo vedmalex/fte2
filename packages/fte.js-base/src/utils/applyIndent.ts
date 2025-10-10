@@ -1,7 +1,13 @@
 export function applyIndent(str: string, _indent: number | string): string
-export function applyIndent(str: Array<string>, _indent: number | string): Array<string>
-export function applyIndent(str: string | Array<string>, _indent: number | string): string | Array<string> {
-  let lines = Array.isArray(str) ? [...str] : String(str).split('\n')
+export function applyIndent(
+  str: Array<string>,
+  _indent: number | string,
+): Array<string>
+export function applyIndent(
+  str: string | Array<string>,
+  _indent: number | string,
+): string | Array<string> {
+  const lines = Array.isArray(str) ? [...str] : String(str).split('\n')
   var indent = ''
   if (typeof _indent == 'number' && _indent > 0) {
     var res = ''
@@ -14,7 +20,7 @@ export function applyIndent(str: string | Array<string>, _indent: number | strin
     indent = _indent
   }
   if (indent && lines) {
-    let res = lines.map(s => indent + s)
+    const res = lines.map((s) => indent + s)
     return Array.isArray(str) ? res : res.join('\n')
   } else {
     return lines

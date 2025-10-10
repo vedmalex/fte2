@@ -41,7 +41,12 @@ export interface Items {
   name?: string
 }
 
-export interface ParserError { message: string; pos: number; line: number; column: number }
+export interface ParserError {
+  message: string
+  pos: number
+  line: number
+  column: number
+}
 
 type StateDefinition = {
   start?: Array<string>
@@ -132,7 +137,7 @@ export class CodeBlock {
   declStart?: string
   declContent?: string
   declEnd?: string
-  
+
   constructor(init?: ParserResult) {
     if (init) {
       this.name = this.unquote(init.data)
@@ -142,15 +147,15 @@ export class CodeBlock {
       this.declEnd = init.end
     }
   }
-  
+
   addBlock(block: CodeBlock) {
     this.blocks[block.name] = block
   }
-  
+
   addSlot(slot: CodeBlock) {
     this.slots[slot.name] = slot
   }
-  
+
   private unquote(str?: string) {
     if (str) {
       let res = str.trim()
@@ -161,7 +166,7 @@ export class CodeBlock {
   }
 }
 
-function sub(buffer: string, str: string, pos: number = 0, size?: number) {
+function sub(buffer: string, str: string, pos = 0, size?: number) {
   if (!size) {
     size = buffer.length
   }
@@ -179,7 +184,7 @@ function sub(buffer: string, str: string, pos: number = 0, size?: number) {
 }
 
 // Expose SUB for compatibility tests with upstream fte.js-parser
-export function SUB(buffer: string, str: string, pos: number = 0, size?: number) {
+export function SUB(buffer: string, str: string, pos = 0, size?: number) {
   return sub(buffer, str, pos, size)
 }
 
@@ -224,7 +229,7 @@ export class Parser {
     const init_pos = this.pos
     const state = globalStates[currentState]
     this.curlyAware = state.curly
-    
+
     if (state.start) {
       if (state.skip?.start) {
         for (let i = 0; i < state.skip.start.length; i += 1) {
@@ -233,7 +238,7 @@ export class Parser {
           }
         }
       }
-      
+
       let foundStart = false
       let foundEnd = false
       for (let i = state.start.length - 1; i >= 0; i -= 1) {
@@ -248,7 +253,7 @@ export class Parser {
           break
         }
       }
-      
+
       if (foundStart)
         do {
           if (state.end) {
@@ -311,7 +316,13 @@ export class Parser {
     const resultSize = this.result.length
     let curr = content
     const tokens: Items[] = []
-    const stack: Array<{ type: 'block' | 'slot'; name: string; pos: number; line: number; column: number }> = []
+    const stack: Array<{
+      type: 'block' | 'slot'
+      name: string
+      pos: number
+      line: number
+      column: number
+    }> = []
     const unquote = (str?: string) => {
       if (!str) return ''
       const m = str.match(/['"`]\s*([^'"`]+?)\s*['"`]/)
@@ -320,7 +331,7 @@ export class Parser {
 
     for (let i = 0; i < resultSize; i += 1) {
       const r = this.result[i]
-      let data = r.data
+      const data = r.data
       const { pos, line, column, start, end, eol, type } = r
 
       switch (type) {
@@ -372,7 +383,12 @@ export class Parser {
             eol,
           })
           if (stack.length === 0) {
-            this.errors.push({ message: 'Unmatched end tag', pos, line, column })
+            this.errors.push({
+              message: 'Unmatched end tag',
+              pos,
+              line,
+              column,
+            })
           } else {
             stack.pop()
           }
@@ -383,7 +399,7 @@ export class Parser {
         case 'uexpression':
         case 'text':
         case 'directive':
-        case 'comments':
+        case 'comments': {
           const item: Items = {
             content: data,
             pos,
@@ -398,6 +414,7 @@ export class Parser {
           tokens.push(item)
           curr.main.push(item)
           break
+        }
       }
     }
     ;(content as any).tokens = tokens
@@ -405,7 +422,12 @@ export class Parser {
     if (stack.length > 0) {
       for (const it of stack) {
         const kind = it.type === 'slot' ? 'slot' : 'block'
-        this.errors.push({ message: `Unclosed ${kind}: '${it.name}'`, pos: it.pos, line: it.line, column: it.column })
+        this.errors.push({
+          message: `Unclosed ${kind}: '${it.name}'`,
+          pos: it.pos,
+          line: it.line,
+          column: it.column,
+        })
       }
     }
     ;(content as any).errors = this.errors
@@ -427,7 +449,12 @@ export class Parser {
   private SKIP(term: string) {
     let eol = false
     if (term.length == 1) {
-      if (term == '\n' || term == '\r' || term == '\u2028' || term == '\u2029') {
+      if (
+        term == '\n' ||
+        term == '\r' ||
+        term == '\u2028' ||
+        term == '\u2029'
+      ) {
         if (term == '\r' && this.SUB('\r\n') == '\r\n') {
           term = '\r\n'
         }

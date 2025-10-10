@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -9,7 +10,11 @@ function makeFactory() {
 }
 
 function runGenerated(code: string, options: any, vars: Record<string, any>) {
-  const fn = new Function('options', ...Object.keys(vars), `var out=[];\n${code};\nreturn out`)
+  const fn = new Function(
+    'options',
+    ...Object.keys(vars),
+    `var out=[];\n${code};\nreturn out`,
+  )
   return fn(options, ...Object.values(vars))
 }
 
@@ -18,20 +23,36 @@ describe('async expressions/uexpressions in codeblock', () => {
     const F = makeFactory()
     const blocks = [
       { type: 'text', content: 'A', eol: false },
-      { type: 'expression', content: 'promiseName', start: true, end: true, eol: false },
+      {
+        type: 'expression',
+        content: 'promiseName',
+        start: true,
+        end: true,
+        eol: false,
+      },
       { type: 'text', content: 'Z', eol: true },
     ] as any
 
     const res: any = F.run(blocks, 'codeblock.njs')
-    const out = runGenerated(res.code, {
-      escapeIt: (s: string) => s,
-      applyIndent: (s: string) => s,
-      applyDeindent: (s: string) => s,
-    }, {
-      promiseName: Promise.resolve('X'),
-    })
+    const out = runGenerated(
+      res.code,
+      {
+        escapeIt: (s: string) => s,
+        applyIndent: (s: string) => s,
+        applyDeindent: (s: string) => s,
+      },
+      {
+        promiseName: Promise.resolve('X'),
+      },
+    )
 
-    const final = (await Promise.all(out.map((v: any) => (v && typeof v.then === 'function') ? v : Promise.resolve(v)))).join('')
+    const final = (
+      await Promise.all(
+        out.map((v: any) =>
+          v && typeof v.then === 'function' ? v : Promise.resolve(v),
+        ),
+      )
+    ).join('')
     expect(final).toBe('AXZ')
   })
 
@@ -39,19 +60,36 @@ describe('async expressions/uexpressions in codeblock', () => {
     const F = makeFactory()
     const blocks = [
       { type: 'text', content: 'Hi ', eol: false },
-      { type: 'uexpression', content: 'promiseName', start: true, end: true, eol: true, indent: '  ' },
+      {
+        type: 'uexpression',
+        content: 'promiseName',
+        start: true,
+        end: true,
+        eol: true,
+        indent: '  ',
+      },
     ] as any
 
     const res: any = F.run(blocks, 'codeblock.njs')
-    const out = runGenerated(res.code, {
-      escapeIt: (s: string) => `[${s}]`,
-      applyIndent: (s: string, i: string) => i + s,
-      applyDeindent: (s: string) => s,
-    }, {
-      promiseName: Promise.resolve('name'),
-    })
+    const out = runGenerated(
+      res.code,
+      {
+        escapeIt: (s: string) => `[${s}]`,
+        applyIndent: (s: string, i: string) => i + s,
+        applyDeindent: (s: string) => s,
+      },
+      {
+        promiseName: Promise.resolve('name'),
+      },
+    )
 
-    const final = (await Promise.all(out.map((v: any) => (v && typeof v.then === 'function') ? v : Promise.resolve(v)))).join('')
+    const final = (
+      await Promise.all(
+        out.map((v: any) =>
+          v && typeof v.then === 'function' ? v : Promise.resolve(v),
+        ),
+      )
+    ).join('')
     expect(final).toBe('Hi   [name]')
   })
 })

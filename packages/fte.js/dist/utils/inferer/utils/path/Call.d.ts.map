@@ -1,1 +1,0 @@
-{"version":3,"file":"Call.d.ts","sourceRoot":"","sources":["../../../../../src/utils/inferer/utils/path/Call.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAA;AAE7B,MAAM,MAAM,IAAI,GAAG;IACjB,IAAI,EAAE,MAAM,CAAA;IACZ,IAAI,EAAE,MAAM,CAAA;IACZ,QAAQ,EAAE,OAAO,CAAA;IACjB,SAAS,EAAE,IAAI,EAAE,CAAA;CAClB,CAAA"}

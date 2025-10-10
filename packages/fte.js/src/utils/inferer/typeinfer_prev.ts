@@ -1,14 +1,17 @@
-import { Info } from './types/Info'
-import { createInfo } from './utils/createInfo'
+import * as parser from '@babel/parser'
+import traverse, { type NodePath, type Scope } from '@babel/traverse'
 
 import * as t from '@babel/types'
-import traverse, { NodePath, Scope } from '@babel/traverse'
-import * as parser from '@babel/parser'
+import type { Info } from './types/Info'
+import { createInfo } from './utils/createInfo'
 
 export function inferTypesFromFunction(funcCode: string): Map<string, Info> {
   // create source file
   const code = funcCode.trim()
-  const sourceFile = parser.parse(code, { plugins: ['typescript'], sourceType: 'script' })
+  const sourceFile = parser.parse(code, {
+    plugins: ['typescript'],
+    sourceType: 'script',
+  })
   // reserver result array
   console.log(JSON.stringify(sourceFile, null, 2))
   const result = new Map<string, Info>()
@@ -18,11 +21,17 @@ export function inferTypesFromFunction(funcCode: string): Map<string, Info> {
 
 function VisitAllFunctions(result: Map<string, Info>, ast: t.File) {
   const extractFunction = {
-    FunctionDeclaration(path: NodePath<t.FunctionDeclaration>, context: Map<string, Info>) {
+    FunctionDeclaration(
+      path: NodePath<t.FunctionDeclaration>,
+      context: Map<string, Info>,
+    ) {
       const name = extractName(path.node.id)[0]
       createFunction(context, name, path.node, path.scope)
     },
-    VariableDeclarator(path: NodePath<t.VariableDeclarator>, context: Map<string, Info>) {
+    VariableDeclarator(
+      path: NodePath<t.VariableDeclarator>,
+      context: Map<string, Info>,
+    ) {
       const name = extractName(path.node.id)[0]
       if (name) {
         const init = path.node.init
@@ -53,7 +62,10 @@ function VisitAllFunctions(result: Map<string, Info>, ast: t.File) {
         createFunction(context, name, path.node, path.scope)
       }
     },
-    ClassPrivateMethod(path: NodePath<t.ClassPrivateMethod>, context: Map<string, Info>) {
+    ClassPrivateMethod(
+      path: NodePath<t.ClassPrivateMethod>,
+      context: Map<string, Info>,
+    ) {
       const name = extractName(path.node.key)[0]
       if (name) {
         createFunction(context, name, path.node, path.scope)
@@ -73,6 +85,7 @@ function extractName(
     | t.PrivateName
     | t.AssignmentPattern
     | t.ObjectProperty
+    | t.PatternLike
     | null
     | undefined,
 ): Array<string> {
@@ -96,9 +109,9 @@ function extractName(
   } else if (t.isAssignmentPattern(n)) {
     return extractName(n.left)
   } else if (t.isArrayPattern(n)) {
-    return n.elements.flatMap(element => extractName(element))
+    return n.elements.flatMap((element) => extractName(element))
   } else if (t.isObjectPattern(n)) {
-    return n.properties.flatMap(property => extractName(property))
+    return n.properties.flatMap((property) => extractName(property))
   } else if (t.isTSParameterProperty(n)) {
     return extractName(n.parameter)
   } else if (t.isTSAsExpression(n)) {
@@ -107,10 +120,18 @@ function extractName(
     return extractName(n.expression)
   } else if (t.isTSNonNullExpression(n)) {
     return extractName(n.expression)
+  } else if (t.isVoidPattern(n)) {
+    // VoidPattern doesn't have a name, return empty array
+    return []
   } else return ['anonymous']
 }
 
-function createFunction(context: Map<string, Info>, name: string, func: t.Function, scope: Scope) {
+function createFunction(
+  context: Map<string, Info>,
+  name: string,
+  func: t.Function,
+  scope: Scope,
+) {
   const info = createInfo(context, name, name, '', 'function', scope)
   context.set(info.name, info)
   func.params.forEach((p, index) => {
@@ -137,7 +158,7 @@ function processPattern(
     // если он используется внутри класса то он не является параметром функции
     // и используется с параметром this.<name>
     const parameters = extractName(node.parameter)
-    parameters.forEach(name => {
+    parameters.forEach((name) => {
       const param = createInfo(result, name, name, '', 'primitive', scope)
       func.properties.set(param.name, param)
       result.set(param.name, param)
@@ -145,7 +166,7 @@ function processPattern(
   } else if (t.isRestElement(node)) {
     // в этом случает параметр является массивом
     const parameters = extractName(node.argument)
-    parameters.forEach(name => {
+    parameters.forEach((name) => {
       const param = createInfo(result, name, name, '', 'array', scope)
       func.properties.set(param.name, param)
       result.set(param.name, param)
@@ -154,29 +175,64 @@ function processPattern(
     if (t.isObjectPattern(node)) {
       // в этом случает параметр является объектом
       const paramName = `param${index}`
-      const paramObj = createInfo(result, paramName, paramName, '', 'object', scope)
+      const paramObj = createInfo(
+        result,
+        paramName,
+        paramName,
+        '',
+        'object',
+        scope,
+      )
       func.properties.set(paramObj.name, paramObj)
-      node.properties.forEach(p => {
+      node.properties.forEach((p) => {
         const parameter = extractName(p)[0]
-        const param = createInfo(result, parameter, parameter, paramName, 'primitive', scope)
+        const param = createInfo(
+          result,
+          parameter,
+          parameter,
+          paramName,
+          'primitive',
+          scope,
+        )
         paramObj.properties.set(param.name, param)
         result.set(param.name, param)
       })
     } else if (t.isArrayPattern(node)) {
       // в этом случает параметр является массивом
       const paramName = `param${index}`
-      const paramObj = createInfo(result, paramName, paramName, '', 'object', scope)
+      const paramObj = createInfo(
+        result,
+        paramName,
+        paramName,
+        '',
+        'object',
+        scope,
+      )
       func.properties.set(paramObj.name, paramObj)
-      node.elements.forEach(p => {
+      node.elements.forEach((p) => {
         const parameter = extractName(p)[0]
-        const param = createInfo(result, parameter, parameter, paramName, 'primitive', scope)
+        const param = createInfo(
+          result,
+          parameter,
+          parameter,
+          paramName,
+          'primitive',
+          scope,
+        )
         paramObj.properties.set(param.name, param)
         result.set(param.name, param)
       })
     } else if (t.isAssignmentPattern(node)) {
       // в этом случает параметр является примитивом
       const parameter = extractName(node.left)[0]
-      const param = createInfo(result, parameter, parameter, parameter, 'primitive', scope)
+      const param = createInfo(
+        result,
+        parameter,
+        parameter,
+        parameter,
+        'primitive',
+        scope,
+      )
       func.properties.set(param.name, param)
       result.set(param.name, param)
     }

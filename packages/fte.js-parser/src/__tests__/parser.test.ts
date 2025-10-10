@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { Parser } from '../index'
 
 describe('FTE Parser Tests', () => {
@@ -67,7 +68,7 @@ describe('FTE Parser Tests', () => {
       // expect(result.main[0]).toMatchObject({
       //   type: 'code',
       //   content: ' if (true) { ',
-        end: '-%>'
+      end: '-%>'
       // })
       // expect(result.main[1].content).toBe('Next line')
     })
@@ -158,6 +159,38 @@ describe('FTE Parser Tests', () => {
       const template = '<%= { nested: { value: 123 } } %>'
       const result = Parser.parse(template)
       expect(result).toMatchSnapshot()
+    })
+
+    test('should parse ternary inside hash expression', () => {
+      const template = 'Status: #{condition ? "on" : "off"}'
+      const result = Parser.parse(template)
+      const expressionItem = result.main.find(
+        (item) => item.type === 'expression',
+      )
+      expect(expressionItem).toMatchObject({
+        content: 'condition ? "on" : "off"',
+        start: '#{',
+        end: '}',
+        type: 'expression',
+      })
+    })
+
+    const codeBlockCases = [
+      { label: '<# #>', start: '<#', end: '#>' },
+      { label: '<#- -#>', start: '<#-', end: '-#>' },
+    ]
+    codeBlockCases.forEach(({ label, start, end }) => {
+      test(`should parse ternary inside code block ${label}`, () => {
+        const template = `${start} const value = condition ? "yes" : "no"; ${end}`
+        const result = Parser.parse(template)
+        const codeItem = result.main.find((item) => item.type === 'code')
+        expect(codeItem).toMatchObject({
+          content: ' const value = condition ? "yes" : "no"; ',
+          start,
+          end,
+          type: 'code',
+        })
+      })
     })
 
     test('should handle empty template', () => {

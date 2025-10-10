@@ -1,13 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
+var express = require('express')
+var router = express.Router()
+var path = require('path')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Sample Header',
-    body: 'sample panel body content'
-  });
-});
+    body: 'sample panel body content',
+  })
+})
 
-module.exports = router;
+module.exports = router

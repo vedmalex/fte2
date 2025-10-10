@@ -156,3 +156,52 @@ pnpm ex:serve
   console.log(types.jsTypedef) // JSDoc typedef
   console.log(types.tsInterface) // TS interface
   ```
+
+## Release VSCode Extension Workflow
+
+To successfully run the `release-vscode.yml` workflow, follow these steps:
+
+1.  **Workflow Trigger**: The workflow is triggered on a `push` event to the `main` branch with a tag matching `vscode-ftejs-lang-v*` (e.g., `vscode-ftejs-lang-v1.2.3`).
+
+2.  **Prerequisites**:
+    *   **pnpm**: Ensure pnpm is installed and configured in your environment. The workflow uses `pnpm/action-setup@v2`.
+    *   **Node.js**: Node.js version 20 is required. The workflow uses `actions/setup-node@v4`.
+    *   **Dependencies**: All project dependencies must be installed. The workflow runs `pnpm install --frozen-lockfile=false`.
+
+3.  **Build Templates**: The `fte.js-templates` package needs to be built. The workflow executes `pnpm --filter fte.js-templates run build`.
+
+4.  **Package VSIX**: The `vscode-ftejs-lang` extension is packaged into a VSIX file using `npx vsce package --no-yarn`. This command should be run from within the `packages/vscode-ftejs-lang` directory.
+
+5.  **Publish to VS Code Marketplace**:
+    *   This step is conditional on the `VSCE_TOKEN` secret being available.
+    *   The `VSCE_PAT` environment variable must be set with your Personal Access Token for the VS Code Marketplace.
+    *   The command used is `npx vsce publish --no-yarn`, executed from `packages/vscode-ftejs-lang`.
+
+6.  **Publish to Open VSX**:
+    *   This step is conditional on the `OVSX_TOKEN` secret being available.
+    *   The `OVSX_PAT` environment variable must be set with your Personal Access Token for Open VSX.
+    *   The command used is `npx ovsx publish`, executed from `packages/vscode-ftejs-lang`.
+
+**Summary of manual steps for local testing (if applicable):**
+
+```bash
+# Navigate to the project root
+cd /Users/vedmalex/work/fte2
+
+# 1. Install dependencies
+pnpm install
+
+# 2. Build fte.js-templates
+pnpm --filter fte.js-templates run build
+
+# 3. Package the VSCode extension
+cd packages/vscode-ftejs-lang
+npx vsce package --no-yarn
+
+# To publish manually (requires tokens set as environment variables):
+# export VSCE_PAT="YOUR_VSCE_TOKEN"
+# npx vsce publish --no-yarn
+
+# export OVSX_PAT="YOUR_OVSX_TOKEN"
+# npx ovsx publish
+```

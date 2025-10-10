@@ -2,11 +2,15 @@
   "name": "ftejs-server",
   "private": true,
   "version": "0.0.1",
-  "main": "out/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "build": "tsc -b",
-    "watch": "tsc -w",
-    "test": "jest --config jest.config.js"
+    "clean": "git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist out",
+    "build": "tsc -b && bun build.ts",
+    "build:bundle": "bun build.ts",
+    "build:types": "tsc -b",
+    "watch": "bun --watch build.ts",
+    "watch:types": "tsc -w",
+    "test": "npm run build:types && vitest run"
   },
   "dependencies": {
     "fte.js-base": "workspace:*",
@@ -19,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.8",
-    "jest": "^29.7.0",
-    "typescript": "^5.5.4"
+    "vitest": "^3.2.4",
+    "typescript": "^5.9.2"
   }
 }

@@ -1,5 +1,5 @@
 <#@ noContent #>
-<#- if(context.body){#>
+<#- if(context.body){ -#>
 function json (){
   return #{context.body}
 }

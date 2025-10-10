@@ -1,16 +1,16 @@
 import {
-  CallExpression,
-  ClassDeclaration,
-  FunctionDeclaration,
-  Identifier,
-  KeyValueProperty,
-  MemberExpression,
-  Param,
-  TsType,
-  VariableDeclarator,
+  type ArrowFunctionExpression,
+  type CallExpression,
+  type ClassDeclaration,
+  type FunctionDeclaration,
+  type Identifier,
+  type KeyValueProperty,
+  type MemberExpression,
+  type ObjectExpression,
+  type Param,
   parseSync,
-  ArrowFunctionExpression,
-  ObjectExpression,
+  type TsType,
+  type VariableDeclarator,
 } from '@swc/core'
 import { Visitor } from '@swc/core/Visitor.js'
 
@@ -20,7 +20,7 @@ function register(identifier, array: Map<string, number>) {
       if (!array.has(identifier.value)) {
         return array.set(identifier.value, 1)
       } else {
-        let count = array.get(identifier.value)!
+        const count = array.get(identifier.value)!
         return array.set(identifier.value, count + 1)
       }
     case 'KeyValuePatternProperty':
@@ -31,13 +31,13 @@ function register(identifier, array: Map<string, number>) {
       if (!array.has(identifier.key.value)) {
         return array.set(identifier.key.value, 1)
       } else {
-        let count = array.get(identifier.key.value)!
+        const count = array.get(identifier.key.value)!
         return array.set(identifier.key.value, count + 1)
       }
     case 'ObjectPattern':
-      return identifier.properties.forEach(x => register(x, array))
+      return identifier.properties.forEach((x) => register(x, array))
     case 'ArrayPattern':
-      return identifier.elements.forEach(x => register(x, array))
+      return identifier.elements.forEach((x) => register(x, array))
   }
 }
 
@@ -54,7 +54,10 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
   const referencedVariables = new Map<string, number>()
   const globalVariables = new Map<string, number>()
   const declaredVariables = new Map<string, number>()
-  const knownGlobals = new Set<string>(['Object', ...(options?.knownGlobals ?? [])])
+  const knownGlobals = new Set<string>([
+    'Object',
+    ...(options?.knownGlobals ?? []),
+  ])
 
   function registerReference(path) {
     if (path) {
@@ -86,14 +89,17 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
 
     override visitFunctionDeclaration(decl: FunctionDeclaration) {
       registerDeclaration(decl.identifier)
-      decl.params.forEach(p => registerDeclaration(p.pat))
+      decl.params.forEach((p) => registerDeclaration(p.pat))
       return super.visitFunctionDeclaration(decl)
     }
 
     override visitClassDeclaration(decl: ClassDeclaration) {
       registerDeclaration(decl.identifier)
-      decl.body.forEach(member => {
-        if (member.type === 'ClassProperty' && member.key.type === 'Identifier') {
+      decl.body.forEach((member) => {
+        if (
+          member.type === 'ClassProperty' &&
+          member.key.type === 'Identifier'
+        ) {
           registerDeclaration(member.key)
         }
       })
@@ -106,7 +112,7 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
     }
 
     override visitArrowFunctionExpression(e: ArrowFunctionExpression) {
-      e.params.forEach(p => registerDeclaration(p))
+      e.params.forEach((p) => registerDeclaration(p))
       return super.visitArrowFunctionExpression(e)
     }
 
@@ -155,7 +161,7 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
       } else if (n.callee.type === 'MemberExpression') {
         this.visitMemberExpression(n.callee)
       }
-      n.arguments.forEach(arg => {
+      n.arguments.forEach((arg) => {
         if (arg.expression.type === 'Identifier') {
           registerReference(arg.expression)
         }
@@ -173,13 +179,19 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
 
     override visitMemberExpression(member: MemberExpression) {
       if (member.object.type === 'Identifier') {
-        if (member.object.value === 'global' || member.object.value === 'globalThis') {
+        if (
+          member.object.value === 'global' ||
+          member.object.value === 'globalThis'
+        ) {
           if (member.property.type === 'Identifier') {
             registerGlobal(member.property)
           }
         } else {
           registerReference(member.object)
-          if (!declaredVariables.has(member.object.value) && member.object.value !== 'Object') {
+          if (
+            !declaredVariables.has(member.object.value) &&
+            member.object.value !== 'Object'
+          ) {
             registerGlobal(member.object)
           }
         }
@@ -200,7 +212,7 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
     }
 
     override visitObjectExpression(n: ObjectExpression) {
-      n.properties.forEach(prop => {
+      n.properties.forEach((prop) => {
         if (prop.type === 'KeyValueProperty') {
           this.visitKeyValueProperty(prop)
         }
@@ -219,7 +231,7 @@ export function processUnusedAndGlobalVariables(code, options?: IdentOptions) {
           this.visitBlockStatement(n.value.body)
         }
       } else if (n.value.type === 'ObjectExpression') {
-        n.value.properties.forEach(prop => {
+        n.value.properties.forEach((prop) => {
           if (prop.type === 'KeyValueProperty') this.visitKeyValueProperty(prop)
         })
       }

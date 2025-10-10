@@ -1,322 +1,320 @@
 {
- "main": [
-  {
-   "content": "",
-   "pos": 0,
-   "line": 1,
-   "column": 1,
-   "type": "empty",
-   "eol": true
+  "main": [
+    {
+      "content": "",
+      "pos": 0,
+      "line": 1,
+      "column": 1,
+      "type": "empty",
+      "eol": true
+    },
+    {
+      "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
+      "pos": 73,
+      "line": 4,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 128,
+      "line": 5,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 129,
+      "line": 6,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 129,
+      "line": 6,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 176,
+      "line": 6,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  import ",
+      "pos": 177,
+      "line": 7,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+      "pos": 186,
+      "line": 7,
+      "column": 10,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": " from '",
+      "pos": 228,
+      "line": 7,
+      "column": 52,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].path",
+      "pos": 235,
+      "line": 7,
+      "column": 59,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "'",
+      "pos": 251,
+      "line": 7,
+      "column": 75,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 253,
+      "line": 8,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 253,
+      "line": 8,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 260,
+      "line": 8,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 261,
+      "line": 9,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const templates = {",
+      "pos": 262,
+      "line": 10,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 282,
+      "line": 11,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " for (let i = 0; i < files.length; i+=1){ ",
+      "pos": 282,
+      "line": 11,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 329,
+      "line": 11,
+      "column": 48,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  '",
+      "pos": 330,
+      "line": 12,
+      "column": 1,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name",
+      "pos": 333,
+      "line": 12,
+      "column": 4,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": "': ",
+      "pos": 349,
+      "line": 12,
+      "column": 20,
+      "type": "text",
+      "eol": false
+    },
+    {
+      "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
+      "pos": 352,
+      "line": 12,
+      "column": 23,
+      "start": "#{",
+      "end": "}",
+      "type": "expression",
+      "eol": false
+    },
+    {
+      "content": ",",
+      "pos": 394,
+      "line": 12,
+      "column": 65,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 396,
+      "line": 13,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": " }",
+      "pos": 396,
+      "line": 13,
+      "column": 1,
+      "start": "<#-",
+      "end": "#>",
+      "type": "code",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 403,
+      "line": 13,
+      "column": 8,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 404,
+      "line": 14,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 406,
+      "line": 15,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "const F = new Factory(templates)",
+      "pos": 407,
+      "line": 16,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 440,
+      "line": 17,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "module.exports = (context, name) => {",
+      "pos": 441,
+      "line": 18,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "  return F.run( context, name )",
+      "pos": 479,
+      "line": 19,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "}",
+      "pos": 511,
+      "line": 20,
+      "column": 1,
+      "type": "text",
+      "eol": true
+    },
+    {
+      "content": "",
+      "pos": 513,
+      "line": 21,
+      "column": 1,
+      "type": "empty",
+      "eol": false
+    },
+    {
+      "content": "",
+      "pos": 513,
+      "line": 21,
+      "column": 1,
+      "type": "empty"
+    }
+  ],
+  "directives": {
+    "context": "files",
+    "content": false,
+    "slots": true,
+    "blocks": true,
+    "partial": true,
+    "options": true,
+    "requireAs": [],
+    "alias": ["standalone.es6.njs"]
   },
-  {
-   "content": "import { Factory } from 'fte.js/lib/standalone.fte.js'",
-   "pos": 73,
-   "line": 4,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 128,
-   "line": 5,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 129,
-   "line": 6,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 129,
-   "line": 6,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 176,
-   "line": 6,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  import ",
-   "pos": 177,
-   "line": 7,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 186,
-   "line": 7,
-   "column": 10,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": " from '",
-   "pos": 228,
-   "line": 7,
-   "column": 52,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].path",
-   "pos": 235,
-   "line": 7,
-   "column": 59,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "'",
-   "pos": 251,
-   "line": 7,
-   "column": 75,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 253,
-   "line": 8,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 253,
-   "line": 8,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 260,
-   "line": 8,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 261,
-   "line": 9,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "const templates = {",
-   "pos": 262,
-   "line": 10,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 282,
-   "line": 11,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " for (let i = 0; i < files.length; i+=1){ ",
-   "pos": 282,
-   "line": 11,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 329,
-   "line": 11,
-   "column": 48,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  '",
-   "pos": 330,
-   "line": 12,
-   "column": 1,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name",
-   "pos": 333,
-   "line": 12,
-   "column": 4,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": "': ",
-   "pos": 349,
-   "line": 12,
-   "column": 20,
-   "type": "text",
-   "eol": false
-  },
-  {
-   "content": "files[i].name.replaceAll(/[\\s\\.]/g,'_')",
-   "pos": 352,
-   "line": 12,
-   "column": 23,
-   "start": "#{",
-   "end": "}",
-   "type": "expression",
-   "eol": false
-  },
-  {
-   "content": ",",
-   "pos": 394,
-   "line": 12,
-   "column": 65,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 396,
-   "line": 13,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": " }",
-   "pos": 396,
-   "line": 13,
-   "column": 1,
-   "start": "<#-",
-   "end": "#>",
-   "type": "code",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 403,
-   "line": 13,
-   "column": 8,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 404,
-   "line": 14,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 406,
-   "line": 15,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "const F = new Factory(templates)",
-   "pos": 407,
-   "line": 16,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 440,
-   "line": 17,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "module.exports = (context, name) => {",
-   "pos": 441,
-   "line": 18,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "  return F.run( context, name )",
-   "pos": 479,
-   "line": 19,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "}",
-   "pos": 511,
-   "line": 20,
-   "column": 1,
-   "type": "text",
-   "eol": true
-  },
-  {
-   "content": "",
-   "pos": 513,
-   "line": 21,
-   "column": 1,
-   "type": "empty",
-   "eol": false
-  },
-  {
-   "content": "",
-   "pos": 513,
-   "line": 21,
-   "column": 1,
-   "type": "empty"
-  }
- ],
- "directives": {
-  "context": "files",
-  "content": false,
-  "slots": true,
-  "blocks": true,
-  "partial": true,
-  "options": true,
-  "requireAs": [],
-  "alias": [
-   "standalone.es6.njs"
-  ]
- },
- "documentation": [],
- "slots": {},
- "blocks": {}
+  "documentation": [],
+  "slots": {},
+  "blocks": {}
 }

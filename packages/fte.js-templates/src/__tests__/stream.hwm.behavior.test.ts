@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
 
 describe('highWaterMark soft backpressure (behavioral)', () => {
@@ -14,11 +15,19 @@ describe('highWaterMark soft backpressure (behavioral)', () => {
           }
           return 'a'.repeat(50)
         },
-        blocks: {}, slots: {}, compile() {}, dependency: {}
-      } as any
+        blocks: {},
+        slots: {},
+        compile() {},
+        dependency: {},
+      } as any,
     } as any)
     const seen: string[] = []
-    Local.options = { ...(Local.options as any), stream: true, highWaterMark: 5, onChunk: (c: string) => seen.push(c) } as any
+    Local.options = {
+      ...(Local.options as any),
+      stream: true,
+      highWaterMark: 5,
+      onChunk: (c: string) => seen.push(c),
+    } as any
     const it = (Local as any).runStream({}, 'x.njs') as AsyncIterable<string>
     const acc: string[] = []
     for await (const c of it) acc.push(c)

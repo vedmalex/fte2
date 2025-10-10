@@ -6,7 +6,7 @@ on:
       - 'vscode-ftejs-lang-v*'
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,20 +20,47 @@ jobs:
           cache: 'pnpm'
       - name: Install deps
         run: pnpm install --frozen-lockfile=false
-      - name: Build extension
-        run: pnpm --filter fte-js-template run compile
+      - name: Build templates
+        run: pnpm --filter fte.js-templates run build
       - name: Package VSIX
         working-directory: packages/vscode-ftejs-lang
         run: npx vsce package --no-yarn
+      - name: Upload VSIX Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: packages/vscode-ftejs-lang/*.vsix
+
+  publish-vsce:
+    needs: build
+    runs-on: ubuntu-latest
+    # biome-ignore lint/suspicious/noUndeclaredVariables: GitHub Actions secrets context is valid here
+    if: ${{ secrets.VSCE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+          path: packages/vscode-ftejs-lang
       - name: Publish to VS Code Marketplace
-        if: ${{ secrets.VSCE_TOKEN != '' }}
         working-directory: packages/vscode-ftejs-lang
         env:
           VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
-        run: npx vsce publish --no-yarn
+        run: npx vsce publish --no-yarn --packagePath ./*.vsix
+
+  publish-ovsx:
+    needs: build
+    runs-on: ubuntu-latest
+    # biome-ignore lint/suspicious/noUndeclaredVariables: GitHub Actions secrets context is valid here
+    if: ${{ secrets.OVSX_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+          path: packages/vscode-ftejs-lang
       - name: Publish to Open VSX
-        if: ${{ secrets.OVSX_TOKEN != '' }}
         working-directory: packages/vscode-ftejs-lang
         env:
           OVSX_PAT: ${{ secrets.OVSX_TOKEN }}
-        run: npx ovsx publish
+        run: npx ovsx publish --packagePath ./*.vsix

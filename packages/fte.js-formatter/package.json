@@ -2,38 +2,64 @@
   "name": "fte.js-formatter",
   "version": "0.1.0",
   "description": "Formatter & Linter for FTE templates",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "module": "./dist/index.esm.js",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "types": "./types/index.d.ts",
+      "bun": "./src/index.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
     },
     "./cli": {
-      "require": "./dist/cli.js",
-      "import": "./dist/cli.js"
+      "types": "./types/cli.d.ts",
+      "bun": "./src/cli.ts",
+      "import": "./dist/cli.esm.js",
+      "require": "./dist/cli.js"
     }
   },
   "bin": {
-    "fte-format": "dist/cli.js"
+    "fte-format": "./dist/cli.js"
   },
-  "prettier": "../../.prettierrc.js",
+  "files": [
+    "dist",
+    "types",
+    "src"
+  ],
   "scripts": {
-    "test": "jest --coverage --passWithNoTests",
-    "prepublish": "tsc -b",
-    "build": "tsc -b",
-    "watch": "tsc -w"
+    "prepublish": "npm run clean && npm run build",
+    "build": "npm run build:all",
+    "build:cjs": "FORMAT=cjs bun build.ts",
+    "build:esm": "FORMAT=esm bun build.ts",
+    "build:all": "npm run build:cjs && npm run build:esm && tsc -p tsconfig.build.json",
+    "watch": "tsc -w -p tsconfig.json",
+    "clean": "git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist",
+    "test": "vitest run",
+    "test:watch": "vitest run --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "bench:run": "vitest bench",
+    "dev": "bun run watch"
   },
-  "keywords": ["fte", "formatter", "linter", "templates"],
+  "keywords": [
+    "fte",
+    "formatter",
+    "linter",
+    "templates"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@babel/generator": "^7.28.3",
+    "@babel/parser": "^7.28.4",
     "fte.js-parser": "workspace:3.0.0-rc.12"
   },
   "devDependencies": {
-    "typescript": "next",
-    "jest": "^29.4.3",
-    "jest-config": "^29.4.3"
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "@types/node": "^20.12.8",
+    "esbuild": "^0.25.10"
   }
 }

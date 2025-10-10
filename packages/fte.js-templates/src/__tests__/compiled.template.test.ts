@@ -1,5 +1,6 @@
-import templates from '../index'
+import { describe, expect, test } from 'vitest'
 import { TemplateFactoryStandalone } from 'fte.js-standalone'
+import templates from '../index'
 
 function makeFactory() {
   const F = new TemplateFactoryStandalone(templates as any)
@@ -64,7 +65,13 @@ describe('compiled.njs', () => {
       blocks: {},
       slots: {},
       main: [
-        { type: 'text', content: 'A', eol: true, sourceFile: 't.njs', originalStart: { line: 1, column: 1 } },
+        {
+          type: 'text',
+          content: 'A',
+          eol: true,
+          sourceFile: 't.njs',
+          originalStart: { line: 1, column: 1 },
+        },
       ] as any,
     }
 

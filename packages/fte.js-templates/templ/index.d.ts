@@ -1,1 +1,1 @@
-declare const templates: {  };
+declare const templates: {}

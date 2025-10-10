@@ -1,0 +1,86 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
+  "files": {
+    "maxSize": 104857600,
+    "includes": [
+      "**/*.js",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.json",
+      "**/*.md",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/coverage",
+      "!**/benchmarks",
+      "!**/.git",
+      "!**/.github",
+      "!**/docker",
+      "!**/tmp",
+      "!**/templates",
+      "!**/*.log",
+      "!**/*.lock",
+      "!**/*.lockb",
+      "!**/bun.lock",
+      "!**/package-lock.json",
+      "!**/yarn.lock",
+      "!**/tsconfig.tsbuildinfo",
+      "!**/types",
+      "!**/*.bench.js",
+      "!**/*.bench.d.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "bracketSameLine": true,
+      "attributePosition": "multiline",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "quoteProperties": "asNeeded"
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "off"
+      },
+      "complexity": {
+        "useArrowFunction": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noDoubleEquals": "off",
+        "noPrototypeBuiltins": "off"
+      }
+    }
+  }
+}

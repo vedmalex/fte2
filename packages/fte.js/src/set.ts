@@ -5,7 +5,7 @@ export function set<T extends object>(data: T, path: string, value: any) {
       const curr = parts.shift() as string
       if (parts.length > 0) {
         if (!data![curr]) {
-          if (isNaN(parseInt(parts[0], 10))) {
+          if (isNaN(Number.parseInt(parts[0], 10))) {
             data[curr] = {}
           } else {
             data[curr] = []

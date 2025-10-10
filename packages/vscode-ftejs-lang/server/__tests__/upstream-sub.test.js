@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest'
+
 const { SUB } = require('../out/parser.js')
 
 describe('SUB Function Tests (upstream)', () => {

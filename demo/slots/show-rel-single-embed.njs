@@ -19,10 +19,10 @@
     f.name !== 'id' &&
     (reUI.edit[f.name] ||
     reUI.list[f.name] ||
-    reUI.show[f.name]) && 
+    reUI.show[f.name]) &&
     reUI.show[f.name] !== false)
   .forEach(f=>{-#>
-  <#{f.type=="Number" ? "Text" : f.type}Field 
+  <#{f.type=="Number" ? "Text" : f.type}Field
     label="resources.#{embededEntity}.fields.#{f.name}"
     source="#{f.name}"
   />

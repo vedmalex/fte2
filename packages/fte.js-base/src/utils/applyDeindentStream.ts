@@ -1,6 +1,6 @@
 export function applyDeindentStream(
   source: AsyncIterable<string>,
-  numChars?: number | string
+  numChars?: number | string,
 ): AsyncIterable<string> {
   const iterator = async function* (): AsyncIterable<string> {
     let buffer = ''

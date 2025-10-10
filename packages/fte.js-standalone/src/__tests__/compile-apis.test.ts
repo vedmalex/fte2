@@ -1,8 +1,9 @@
+import { describe, expect, test } from 'vitest'
 import { compileFull } from '../compileFull'
 import { compileLight } from '../compileLight'
 import { compileTs } from '../compileTs'
 
-const templateSrc = `Hello {{= name }}`
+const templateSrc = 'Hello {{= name }}'
 
 describe('Standalone compile APIs', () => {
   test('compileFull returns code string or {code,map}', () => {
