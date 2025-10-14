@@ -13,17 +13,17 @@
     "test": "npm run build:types && vitest run"
   },
   "dependencies": {
-    "fte.js-base": "catalog:",
-    "fte.js-parser": "catalog:",
-    "fte.js-formatter": "catalog:",
-    "fte.js-standalone": "catalog:",
-    "prettier": "catalog:development",
-    "vscode-languageserver": "catalog:",
-    "vscode-languageserver-textdocument": "catalog:"
+    "fte.js-base": "workspace:*",
+    "fte.js-parser": "workspace:*",
+    "fte.js-formatter": "workspace:*",
+    "fte.js-standalone": "workspace:*",
+    "prettier": "^3.6.2",
+    "vscode-languageserver": "catalog:dev",
+    "vscode-languageserver-textdocument": "catalog:dev"
   },
   "devDependencies": {
-    "@types/node": "catalog:build",
-    "vitest": "catalog:build",
-    "typescript": "catalog:build"
+    "@types/node": "latest",
+    "vitest": "^3.2.4",
+    "typescript": "next"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-canary.d23789d",
+  "version": "3.0.0-canary.3bd5a0b",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -53,17 +53,17 @@
     "@swc/helpers": "^0.5.17",
     "chokidar": "^4.0.3",
     "commander": "^10.0.1",
-    "fte.js-base": "workspace:*",
-    "fte.js-parser": "workspace:*",
-    "fte.js-standalone": "workspace:*",
-    "fte.js-templates": "workspace:*",
+    "fte.js-base": "^3.0.0-canary.3bd5a0b",
+    "fte.js-parser": "^3.0.0-canary.3bd5a0b",
+    "fte.js-standalone": "^3.0.0-canary.3bd5a0b",
+    "fte.js-templates": "^3.0.0-canary.3bd5a0b",
     "glob": "^10.4.5",
     "lodash": "^4.17.21",
     "mem-fs": "^4.1.2",
     "mem-fs-editor": "^11.1.4",
     "ts-morph": "^27.0.0"
   },
-  "gitHead": "d23789deaa7843031160382cf54a529a86b817cc",
+  "gitHead": "3bd5a0b5a496c9ff8101374028a582abfbd1c5b3",
   "devDependencies": {
     "@types/babel__core": "^7.20.5",
     "@types/babel__generator": "^7.27.0",
