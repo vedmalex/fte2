@@ -8,7 +8,7 @@
     "**/*.md"
   ],
   "npmClient": "bun",
-  "version": "3.0.0-canary.04f699a",
+  "version": "3.0.0-canary.527c03b",
   "registry": "https://registry.npmjs.org/",
   "publishConfig": {
     "access": "public"
