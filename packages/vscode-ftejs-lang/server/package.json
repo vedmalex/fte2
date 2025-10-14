@@ -13,10 +13,10 @@
     "test": "npm run build:types && vitest run"
   },
   "dependencies": {
-    "fte.js-base": "workspace:*",
-    "fte.js-parser": "workspace:*",
-    "fte.js-formatter": "workspace:*",
-    "fte.js-standalone": "workspace:*",
+    "fte.js-base": "3.0.0-canary.d23789d",
+    "fte.js-parser": "3.0.0-canary.d23789d",
+    "fte.js-formatter": "3.0.0-canary.d23789d",
+    "fte.js-standalone": "3.0.0-canary.d23789d",
     "prettier": "^3.6.2",
     "vscode-languageserver": "catalog:dev",
     "vscode-languageserver-textdocument": "catalog:dev"
