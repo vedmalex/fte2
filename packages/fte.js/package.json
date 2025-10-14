@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-rc.13",
+  "version": "3.0.0-rc.13-canary.cd48650",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -53,10 +53,10 @@
     "@swc/helpers": "catalog:runtime",
     "chokidar": "catalog:runtime",
     "commander": "catalog:runtime",
-    "fte.js-base": "^3.0.0-rc.13",
-    "fte.js-parser": "^3.0.0-rc.13",
-    "fte.js-standalone": "^3.0.0-rc.13",
-    "fte.js-templates": "^3.0.0-rc.13",
+    "fte.js-base": "^3.0.0-rc.13-canary.cd48650",
+    "fte.js-parser": "^3.0.0-rc.13-canary.cd48650",
+    "fte.js-standalone": "^3.0.0-rc.13-canary.cd48650",
+    "fte.js-templates": "^3.0.0-rc.13-canary.cd48650",
     "glob": "catalog:runtime",
     "lodash": "catalog:runtime",
     "mem-fs": "catalog:runtime",
