@@ -1,6 +1,6 @@
 {
   "name": "fte.js-standalone",
-  "version": "3.0.0-canary.527c03b",
+  "version": "3.0.0-canary.1912a68",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",

@@ -20,7 +20,7 @@
     "textmate",
     "vscode-extension"
   ],
-  "version": "3.0.0-canary.527c03b",
+  "version": "3.0.0-canary.1912a68",
   "workspaces": [
     "client",
     "server"

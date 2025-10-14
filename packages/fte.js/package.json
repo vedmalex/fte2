@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-canary.527c03b",
+  "version": "3.0.0-canary.1912a68",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -23,7 +23,7 @@
     "bin"
   ],
   "scripts": {
-    "prepublish": "npm run clean && npm run build",
+    "prepublish": "echo \"Running clean for fte.js...\" && npm run clean && echo \"Clean for fte.js completed, running build...\" && npm run build && echo \"Build for fte.js completed.\"",
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
