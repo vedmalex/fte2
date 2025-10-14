@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-canary.430e6b6",
+  "version": "3.0.0-canary.ade27ca",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -23,7 +23,7 @@
     "bin"
   ],
   "scripts": {
-    "prepublish": "echo \"Running clean for fte.js...\" && npm run clean && echo \"Clean for fte.js completed, running build...\" && npm run build && echo \"Build for fte.js completed.\"",
+    "prepublish": "echo 'Prepublish skipped for debugging'",
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
@@ -53,10 +53,10 @@
     "@swc/helpers": "^0.5.17",
     "chokidar": "^3.6.0",
     "commander": "^10.0.1",
-    "fte.js-base": "^3.0.0-canary.430e6b6",
-    "fte.js-parser": "^3.0.0-canary.430e6b6",
-    "fte.js-standalone": "^3.0.0-canary.430e6b6",
-    "fte.js-templates": "^3.0.0-canary.430e6b6",
+    "fte.js-base": "^3.0.0-canary.ade27ca",
+    "fte.js-parser": "^3.0.0-canary.ade27ca",
+    "fte.js-standalone": "^3.0.0-canary.ade27ca",
+    "fte.js-templates": "^3.0.0-canary.ade27ca",
     "glob": "^10.0.0",
     "lodash": "^4.17.21",
     "mem-fs": "^4.1.2",
