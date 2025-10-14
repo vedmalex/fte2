@@ -1,3 +1,16 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 3.0.0-rc.13 (2025-10-14)
+
+**Note:** Version bump only for package fte-js-template
+
+
+
+
+
 # Changelog
 
 All notable changes to this extension will be documented in this file.

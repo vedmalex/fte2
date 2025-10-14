@@ -1,6 +1,6 @@
 {
   "name": "fte.js-base",
-  "version": "3.0.0-rc.12",
+  "version": "3.0.0-rc.13",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -42,10 +42,10 @@
     "source-map": "catalog:runtime"
   },
   "devDependencies": {
-    "@types/source-map": "catalog:runtime",
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
     "@types/node": "^20.12.8",
-    "esbuild": "^0.25.10"
+    "@types/source-map": "catalog:runtime",
+    "esbuild": "^0.25.10",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }

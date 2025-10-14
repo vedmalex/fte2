@@ -1,6 +1,6 @@
 {
   "name": "fte.js-browser",
-  "version": "3.0.0-rc.12",
+  "version": "3.0.0-rc.13",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -38,13 +38,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-rc.12"
+    "fte.js-base": "^3.0.0-rc.13"
   },
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82",
   "devDependencies": {
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
     "@types/node": "^20.12.8",
-    "esbuild": "^0.25.10"
+    "esbuild": "^0.25.10",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }

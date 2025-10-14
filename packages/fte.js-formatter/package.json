@@ -1,6 +1,6 @@
 {
   "name": "fte.js-formatter",
-  "version": "0.1.0",
+  "version": "3.0.0-rc.13",
   "description": "Formatter & Linter for FTE templates",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -54,12 +54,12 @@
   "dependencies": {
     "@babel/generator": "^7.28.3",
     "@babel/parser": "^7.28.4",
-    "fte.js-parser": "workspace:3.0.0-rc.12"
+    "fte.js-parser": "^3.0.0-rc.13"
   },
   "devDependencies": {
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
     "@types/node": "^20.12.8",
-    "esbuild": "^0.25.10"
+    "esbuild": "^0.25.10",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }
