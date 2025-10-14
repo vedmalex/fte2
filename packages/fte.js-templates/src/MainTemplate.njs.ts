@@ -36,6 +36,10 @@ export default {
     }
     var out: Array<string> = []
     const { directives } = context
+    const SourceMapGeneratorCtor =
+      typeof TemplateSourceMapGenerator === 'function'
+        ? TemplateSourceMapGenerator
+        : null
 
     // Передаем опции source map в partial
     const partialOptions = {
@@ -440,7 +444,7 @@ export default {
     let result = out.join('')
 
     // Если у нас есть source map от основного контента, расширяем его до всего результата
-    if (mainMap) {
+    if (mainMap && SourceMapGeneratorCtor) {
       const startMarker = '/*__MAIN_START__*/\n'
       const endMarker = '/*__MAIN_END__*/'
       const startIdx = result.indexOf(startMarker)
@@ -453,7 +457,7 @@ export default {
       // Remove markers from code
       result = result.replace(startMarker, '').replace(endMarker, '')
 
-      const gen = new TemplateSourceMapGenerator({
+      const gen = new SourceMapGeneratorCtor({
         file: options.sourceFile,
         sourceRoot: options.sourceRoot,
       })
@@ -496,6 +500,12 @@ export default {
       return {
         code: result,
         map: gen.toJSON(),
+      }
+    }
+    if (mainMap && !SourceMapGeneratorCtor) {
+      return {
+        code: result,
+        map: mainMap,
       }
     }
 

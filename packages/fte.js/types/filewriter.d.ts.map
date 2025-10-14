@@ -1,1 +1,1 @@
-{"version":3,"file":"filewriter.d.ts","sourceRoot":"","sources":["../src/filewriter.ts"],"names":[],"mappings":"AA8BA,wBAAgB,SAAS,CAAC,EAAE,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,EAAE,MAAM,CAAC,EAAE,OAAO,QAsDnE;AAED,wBAAgB,QAAQ,CAAC,EAAE,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,QAEhD;AAED,wBAAgB,MAAM,QAErB"}
+{"version":3,"file":"filewriter.d.ts","sourceRoot":"","sources":["../src/filewriter.ts"],"names":[],"mappings":"AA8BA,wBAAgB,SAAS,CAAC,EAAE,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,EAAE,MAAM,CAAC,EAAE,OAAO,QAsDnE;AAED,wBAAgB,QAAQ,CAAC,EAAE,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,QAEhD;AAED,wBAAgB,MAAM,kBAErB"}

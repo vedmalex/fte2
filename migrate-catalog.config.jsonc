@@ -1,0 +1,200 @@
+{
+  // Workspace паттерны для поиска package.json файлов
+  "workspacePatterns": [
+    "packages/*/package.json",
+    "apps/*/package.json",
+    "tools/*/package.json"
+  ],
+  // Определение каталогов и их приоритетов
+  "catalogs": {
+    "runtime": {
+      "name": "catalog", // Имя каталога в package.json
+      "priority": 1 // Приоритет (меньше = выше)
+    },
+    "build": {
+      "name": "build",
+      "priority": 2
+    },
+    "testing": {
+      "name": "testing",
+      "priority": 3
+    },
+    "development": {
+      "name": "development",
+      "priority": 4
+    },
+    "docs": {
+      "name": "docs",
+      "priority": 5
+    }
+  },
+  // Правила категоризации зависимостей
+  "categorization": {
+    "rules": [
+      {
+        "category": "runtime",
+        "matchers": [
+          {
+            "type": "exact", // Точное совпадение имени
+            "values": [
+              "react",
+              "react-dom",
+              "vue",
+              "angular",
+              "svelte",
+              "preact"
+            ]
+          },
+          {
+            "type": "contains", // Содержит подстроку
+            "values": [
+              "lodash",
+              "axios",
+              "express",
+              "mongoose",
+              "redis",
+              "zod",
+              "yup",
+              "joi"
+            ]
+          },
+          {
+            "type": "pattern", // Регулярное выражение
+            "pattern": "^@types/",
+            "category": "build" // Переопределение категории
+          }
+        ]
+      },
+      {
+        "category": "build",
+        "matchers": [
+          {
+            "type": "contains",
+            "values": [
+              "typescript",
+              "vite",
+              "webpack",
+              "rollup",
+              "esbuild",
+              "babel",
+              "swc",
+              "postcss",
+              "tailwindcss",
+              "sass",
+              "less"
+            ]
+          },
+          {
+            "type": "startsWith", // Начинается с префикса
+            "values": [
+              "@babel/",
+              "@swc/",
+              "@rollup/",
+              "@vite/"
+            ]
+          },
+          {
+            "type": "pattern",
+            "pattern": "\\.config\\.",
+            "category": "build"
+          }
+        ]
+      },
+      {
+        "category": "testing",
+        "matchers": [
+          {
+            "type": "contains",
+            "values": [
+              "vitest",
+              "jest",
+              "testing-library",
+              "supertest",
+              "cypress",
+              "playwright",
+              "mocha",
+              "chai",
+              "ava"
+            ]
+          },
+          {
+            "type": "startsWith",
+            "values": [
+              "@vitest/",
+              "@jest/",
+              "@testing-library/",
+              "@cypress/"
+            ]
+          }
+        ]
+      },
+      {
+        "category": "development",
+        "matchers": [
+          {
+            "type": "contains",
+            "values": [
+              "eslint",
+              "prettier",
+              "husky",
+              "lint-staged",
+              "commitlint",
+              "nodemon",
+              "concurrently"
+            ]
+          },
+          {
+            "type": "startsWith",
+            "values": [
+              "@eslint/",
+              "@typescript-eslint/",
+              "@prettier/"
+            ]
+          }
+        ]
+      },
+      {
+        "category": "docs",
+        "matchers": [
+          {
+            "type": "contains",
+            "values": [
+              "typedoc",
+              "jsdoc",
+              "documentation",
+              "docsify",
+              "gitbook"
+            ]
+          },
+          {
+            "type": "startsWith",
+            "values": [
+              "@docusaurus/"
+            ]
+          }
+        ]
+      }
+    ],
+    "defaultCategory": "runtime" // Категория по умолчанию
+  },
+  // Стратегия разрешения конфликтов версий
+  "versionConflictResolution": {
+    "strategy": "semantic-latest", // semantic-latest, latest, first
+    "options": {
+      "preferStable": true, // Предпочитать стабильные версии
+      "allowPreReleases": false // Разрешать pre-release версии
+    }
+  },
+  // Какие типы зависимостей обрабатывать
+  "dependencyTypes": {
+    "include": [
+      "dependencies", // Основные зависимости
+      "devDependencies", // Dev зависимости
+      "peerDependencies" // Peer зависимости
+    ],
+    "exclude": [
+      "optionalDependencies", // Опциональные (не обрабатываем)
+      "bundledDependencies" // Бандлированные (не обрабатываем)
+    ]
+  }
+}

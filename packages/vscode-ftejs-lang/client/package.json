@@ -13,14 +13,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "fte.js-standalone": "3.0.0-canary.430e6b6",
-    "vscode-languageclient": "^9.0.1"
+    "fte.js-standalone": "catalog:",
+    "vscode-languageclient": "catalog:"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "@types/node": "^20.12.8",
-    "@types/vscode": "^1.96.0",
-    "prettier": "^3.6.2"
+    "typescript": "catalog:build",
+    "@types/node": "catalog:build",
+    "@types/vscode": "catalog:build",
+    "prettier": "catalog:development"
   },
   "contributes": {
     "configuration": {

@@ -1,12 +1,11 @@
 import { type FSWatcher } from 'chokidar';
 import { type DefaultFactoryOption, type SlotsHash, type TemplateBase, TemplateFactoryBase } from 'fte.js-base';
-import { Template } from './Template';
 export declare class TemplateFactory<OPTIONS extends DefaultFactoryOption> extends TemplateFactoryBase<OPTIONS> {
     watchList: Array<string>;
     watcher?: FSWatcher;
     load(fileName: string, absPath?: boolean): any;
     preload(): void;
-    standalone(source: string): Template<DefaultFactoryOption>;
+    standalone(source: string): any;
     create(source: string, name?: string): string;
     run<T>(context: T, name: string, absPath?: boolean): any;
     runPartial<T>({ context, name, absPath, options, slots, }: {

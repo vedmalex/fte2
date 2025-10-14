@@ -33,13 +33,18 @@ export default {
         'const __ind = (v,i) => __then(v, x => options.applyIndent(x, i))\n',
       )
     }
-    const sourceMapGenerator = options.sourceMap
-      ? new TemplateSourceMapGenerator({
-          file: options.sourceFile,
-          sourceRoot: options.sourceRoot,
-          inline: options.inline,
-        })
-      : null
+    const SourceMapGeneratorCtor =
+      typeof TemplateSourceMapGenerator === 'function'
+        ? TemplateSourceMapGenerator
+        : null
+    const sourceMapGenerator =
+      options.sourceMap && SourceMapGeneratorCtor
+        ? new SourceMapGeneratorCtor({
+            file: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline,
+          })
+        : null
 
     let generatedLine = 1
     let generatedColumn = 0

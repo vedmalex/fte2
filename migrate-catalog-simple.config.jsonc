@@ -1,0 +1,41 @@
+{
+  // Workspace паттерны для поиска package.json файлов
+  "workspacePatterns": [
+    "packages/*/package.json",
+    "apps/*/package.json"
+  ],
+  // Mapping типов зависимостей на категории каталогов
+  "dependencyTypeMapping": {
+    "dependencies": "catalog", // runtime зависимости
+    "devDependencies": "development", // dev зависимости
+    "peerDependencies": "catalog" // peer зависимости (тоже runtime)
+  },
+  // Переопределения для специфических пакетов
+  // Примеры:
+  // "typescript": "build",        // TypeScript в отдельную категорию
+  // "@types/node": "build",       // Type definitions в build
+  // "vitest": "testing",           // Тестовый фреймворк в testing
+  "overrides": {
+    // Добавьте сюда пакеты, которые нужно переопределить
+  },
+  // Стратегия разрешения конфликтов версий
+  "versionConflictResolution": {
+    "strategy": "semantic-latest", // semantic-latest, latest, first
+    "options": {
+      "preferStable": true, // Предпочитать стабильные версии
+      "allowPreReleases": false // Разрешать pre-release версии
+    }
+  },
+  // Какие типы зависимостей обрабатывать
+  "dependencyTypes": {
+    "include": [
+      "dependencies", // Основные зависимости
+      "devDependencies", // Dev зависимости
+      "peerDependencies" // Peer зависимости
+    ],
+    "exclude": [
+      "optionalDependencies", // Опциональные (не обрабатываем)
+      "bundledDependencies" // Бандлированные (не обрабатываем)
+    ]
+  }
+}

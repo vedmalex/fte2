@@ -9,6 +9,7 @@
         "@types/node": "^24.7.2",
         "@types/vscode": "^1.96.0",
         "esbuild": "^0.25.10",
+        "jsonc-parser": "^3.3.1",
         "lerna": "9.0.0",
         "typescript": "next",
         "vitest": "^3.2.4",
@@ -16,31 +17,31 @@
     },
     "packages/fte.js": {
       "name": "fte.js",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "bin": {
         "fte.js": "./bin/fte.js",
       },
       "dependencies": {
-        "@babel/core": "catalog:runtime",
-        "@babel/generator": "catalog:runtime",
-        "@babel/parser": "catalog:runtime",
-        "@babel/preset-env": "catalog:runtime",
-        "@babel/preset-typescript": "catalog:runtime",
-        "@babel/traverse": "catalog:runtime",
-        "@babel/types": "catalog:runtime",
-        "@swc/core": "catalog:runtime",
-        "@swc/helpers": "catalog:runtime",
-        "chokidar": "catalog:runtime",
-        "commander": "catalog:runtime",
-        "fte.js-base": "^3.0.0-rc.12",
-        "fte.js-parser": "^3.0.0-rc.12",
-        "fte.js-standalone": "^3.0.0-rc.12",
-        "fte.js-templates": "^3.0.0-rc.12",
-        "glob": "catalog:runtime",
-        "lodash": "catalog:runtime",
-        "mem-fs": "catalog:runtime",
-        "mem-fs-editor": "catalog:runtime",
-        "ts-morph": "catalog:runtime",
+        "@babel/core": "^7.28.4",
+        "@babel/generator": "^7.28.3",
+        "@babel/parser": "^7.28.4",
+        "@babel/preset-env": "^7.28.3",
+        "@babel/preset-typescript": "^7.27.1",
+        "@babel/traverse": "^7.28.4",
+        "@babel/types": "^7.28.4",
+        "@swc/core": "^1.13.5",
+        "@swc/helpers": "^0.5.17",
+        "chokidar": "^3.6.0",
+        "commander": "^10.0.1",
+        "fte.js-base": "^3.0.0-canary.569d190",
+        "fte.js-parser": "^3.0.0-canary.569d190",
+        "fte.js-standalone": "^3.0.0-canary.569d190",
+        "fte.js-templates": "^3.0.0-canary.569d190",
+        "glob": "^10.0.0",
+        "lodash": "^4.17.21",
+        "mem-fs": "^4.1.2",
+        "mem-fs-editor": "^11.1.4",
+        "ts-morph": "^27.0.0",
       },
       "devDependencies": {
         "@types/babel__core": "^7.20.5",
@@ -55,13 +56,13 @@
     },
     "packages/fte.js-base": {
       "name": "fte.js-base",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
-        "source-map": "catalog:runtime",
+        "source-map": "^0.7.4",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
-        "@types/source-map": "catalog:runtime",
+        "@types/source-map": "^0.5.7",
         "esbuild": "^0.25.10",
         "typescript": "^5.9.2",
         "vitest": "^3.2.4",
@@ -69,9 +70,9 @@
     },
     "packages/fte.js-browser": {
       "name": "fte.js-browser",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
-        "fte.js-base": "^3.0.0-rc.12",
+        "fte.js-base": "^3.0.0-canary.ade27ca",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
@@ -82,14 +83,14 @@
     },
     "packages/fte.js-formatter": {
       "name": "fte.js-formatter",
-      "version": "0.1.0",
+      "version": "3.0.0-canary.6026b60",
       "bin": {
         "fte-format": "./dist/cli.js",
       },
       "dependencies": {
         "@babel/generator": "^7.28.3",
         "@babel/parser": "^7.28.4",
-        "fte.js-parser": "workspace:3.0.0-rc.12",
+        "fte.js-parser": "^3.0.0-canary.ade27ca",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
@@ -100,10 +101,10 @@
     },
     "packages/fte.js-parser": {
       "name": "fte.js-parser",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
         "detect-indent": "^6.1.0",
-        "fte.js-base": "workspace:3.0.0-rc.12",
+        "fte.js-base": "^3.0.0-canary.ade27ca",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
@@ -114,11 +115,11 @@
     },
     "packages/fte.js-standalone": {
       "name": "fte.js-standalone",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
-        "fte.js-base": "^3.0.0-rc.12",
-        "fte.js-parser": "^3.0.0-rc.12",
-        "fte.js-templates": "^3.0.0-rc.12",
+        "fte.js-base": "^3.0.0-canary.ade27ca",
+        "fte.js-parser": "^3.0.0-canary.ade27ca",
+        "fte.js-templates": "^3.0.0-canary.ade27ca",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
@@ -129,21 +130,20 @@
     },
     "packages/fte.js-templates": {
       "name": "fte.js-templates",
-      "version": "3.0.0-rc.12",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
-        "fte.js-base": "workspace:3.0.0-rc.12",
+        "fte.js-base": "^3.0.0-canary.ade27ca",
       },
       "devDependencies": {
         "@types/node": "^20.12.8",
         "esbuild": "^0.25.10",
-        "fte.js-standalone": "workspace:3.0.0-rc.12",
         "typescript": "^5.9.2",
         "vitest": "^3.2.4",
       },
     },
     "packages/vscode-ftejs-lang": {
       "name": "fte-js-template",
-      "version": "1.2.0",
+      "version": "3.0.0-canary.6026b60",
       "dependencies": {
         "vscode-languageclient": "catalog:dev",
         "vscode-languageserver": "catalog:dev",
@@ -1259,7 +1259,7 @@
 
     "json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
 
-    "jsonc-parser": ["jsonc-parser@3.2.0", "", {}, "sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w=="],
+    "jsonc-parser": ["jsonc-parser@3.3.1", "", {}, "sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ=="],
 
     "jsonfile": ["jsonfile@6.2.0", "", { "dependencies": { "universalify": "^2.0.0" }, "optionalDependencies": { "graceful-fs": "^4.1.6" } }, "sha512-FGuPw30AdOIUTRMC2OMRtQV+jkVj2cfPqSeWXv1NEAJ1qZ5zb1X6z1mFhbfOB/iy3ssJCD+3KuZ8r8C3uVFlAg=="],
 
@@ -1879,21 +1879,35 @@
 
     "fte.js-browser/@types/node": ["@types/node@20.19.21", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA=="],
 
+    "fte.js-browser/fte.js-base": ["fte.js-base@3.0.0-rc.12", "", {}, "sha512-PsdH44DBJtC5y0BUyoeKhU8NKNLvgXDYVm6d05+sQiOZCH+bPpFi+58JLsDLMMJFgCsspUbFAaAU7U1DGU8UbA=="],
+
     "fte.js-browser/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "fte.js-formatter/@types/node": ["@types/node@20.19.21", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA=="],
+
+    "fte.js-formatter/fte.js-parser": ["fte.js-parser@3.0.0-rc.12", "", { "dependencies": { "detect-indent": "^6.1.0" } }, "sha512-hNn3f0dbLOlAR01LwUpQB1gdcw6s1bR0C+03rRAKpbp2fHIn3OIuuI5tHFoT6mtQh+F21MX+DAIxz2fdGKAbwA=="],
 
     "fte.js-formatter/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "fte.js-parser/@types/node": ["@types/node@20.19.21", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA=="],
 
+    "fte.js-parser/fte.js-base": ["fte.js-base@3.0.0-rc.12", "", {}, "sha512-PsdH44DBJtC5y0BUyoeKhU8NKNLvgXDYVm6d05+sQiOZCH+bPpFi+58JLsDLMMJFgCsspUbFAaAU7U1DGU8UbA=="],
+
     "fte.js-parser/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "fte.js-standalone/@types/node": ["@types/node@20.19.21", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA=="],
 
+    "fte.js-standalone/fte.js-base": ["fte.js-base@3.0.0-rc.12", "", {}, "sha512-PsdH44DBJtC5y0BUyoeKhU8NKNLvgXDYVm6d05+sQiOZCH+bPpFi+58JLsDLMMJFgCsspUbFAaAU7U1DGU8UbA=="],
+
+    "fte.js-standalone/fte.js-parser": ["fte.js-parser@3.0.0-rc.12", "", { "dependencies": { "detect-indent": "^6.1.0" } }, "sha512-hNn3f0dbLOlAR01LwUpQB1gdcw6s1bR0C+03rRAKpbp2fHIn3OIuuI5tHFoT6mtQh+F21MX+DAIxz2fdGKAbwA=="],
+
+    "fte.js-standalone/fte.js-templates": ["fte.js-templates@3.0.0-rc.12", "", { "dependencies": { "fte.js-base": "^3.0.0-rc.12" } }, "sha512-V3sG4FD8Bfr7QhyhXXTFwyC89zdEB8dIV45SYX5ScIhNMXIObvh8xouip548cj4wXBMLcvD7AlCU94eyBZWevg=="],
+
     "fte.js-standalone/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "fte.js-templates/@types/node": ["@types/node@20.19.21", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA=="],
+
+    "fte.js-templates/fte.js-base": ["fte.js-base@3.0.0-rc.12", "", {}, "sha512-PsdH44DBJtC5y0BUyoeKhU8NKNLvgXDYVm6d05+sQiOZCH+bPpFi+58JLsDLMMJFgCsspUbFAaAU7U1DGU8UbA=="],
 
     "fte.js-templates/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
@@ -1970,6 +1984,8 @@
     "npm-package-arg/hosted-git-info": ["hosted-git-info@9.0.2", "", { "dependencies": { "lru-cache": "^11.1.0" } }, "sha512-M422h7o/BR3rmCQ8UHi7cyyMqKltdP9Uo+J2fXK+RSAY+wTcKOIRyhTuKv4qn+DJf3g+PL890AzId5KZpX+CBg=="],
 
     "npm-pick-manifest/npm-package-arg": ["npm-package-arg@12.0.2", "", { "dependencies": { "hosted-git-info": "^8.0.0", "proc-log": "^5.0.0", "semver": "^7.3.5", "validate-npm-package-name": "^6.0.0" } }, "sha512-f1NpFjNI9O4VbKMOlA5QoBq/vSQPORHcTZ2feJpFkTHJ9eQkdlmZEKSjcAhxTGInC7RlEyScT9ui67NaOsjFWA=="],
+
+    "nx/jsonc-parser": ["jsonc-parser@3.2.0", "", {}, "sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w=="],
 
     "nx/minimatch": ["minimatch@9.0.3", "", { "dependencies": { "brace-expansion": "^2.0.1" } }, "sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg=="],
 

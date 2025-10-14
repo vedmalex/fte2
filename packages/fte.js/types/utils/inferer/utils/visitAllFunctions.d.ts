@@ -1,3 +1,5 @@
+import { type NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
-export declare function visitAllFunctions(ast: t.File): NodePath<any>[];
+import type { FunctionType } from '../types/FunctionType';
+export declare function visitAllFunctions(ast: t.File): NodePath<FunctionType>[];
 //# sourceMappingURL=visitAllFunctions.d.ts.map

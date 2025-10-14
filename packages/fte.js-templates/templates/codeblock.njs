@@ -9,7 +9,8 @@
 const { TemplateSourceMapGenerator } = require("fte.js-base")
 
 var textQuote = false
-const sourceMapGenerator = options.sourceMap ? new TemplateSourceMapGenerator({
+const TemplateSourceMapGeneratorCtor = typeof TemplateSourceMapGenerator === "function" ? TemplateSourceMapGenerator : null
+const sourceMapGenerator = options.sourceMap && TemplateSourceMapGeneratorCtor ? new TemplateSourceMapGeneratorCtor({
   file: options.sourceFile,
   sourceRoot: options.sourceRoot,
   inline: options.inline

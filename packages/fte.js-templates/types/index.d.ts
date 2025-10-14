@@ -20,43 +20,43 @@ declare const templates: {
         blocks: {
             info: (info: any, _content: any, partial: any, slot: any, options: any) => string;
         };
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.ts.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.index.ts.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.index.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.index.es6.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'standalone.es6.njs': {
         alias: string[];
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'singlefile.ts.njs': {
@@ -66,7 +66,7 @@ declare const templates: {
         };
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         blocks: {};
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.ts.njs': boolean;
             core: boolean;
@@ -79,7 +79,7 @@ declare const templates: {
         };
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
         blocks: {};
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.njs': boolean;
             core: boolean;
@@ -91,7 +91,7 @@ declare const templates: {
             core: string;
         };
         script: (files: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.njs': boolean;
             core: boolean;
@@ -103,7 +103,7 @@ declare const templates: {
             core: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.njs': boolean;
             core: boolean;
@@ -115,7 +115,7 @@ declare const templates: {
             core: string;
         };
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.ts.njs': boolean;
             core: boolean;
@@ -130,7 +130,7 @@ declare const templates: {
             code: string;
             map: any;
         };
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.njs': boolean;
             core: boolean;
@@ -145,7 +145,7 @@ declare const templates: {
             code: string;
             map: any;
         };
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'MainTemplate.njs': boolean;
             core: boolean;
@@ -154,13 +154,13 @@ declare const templates: {
     'compilationError.njs': {
         alias: string[];
         script: (context: any, _content: any, partial: any, slot: any, options: any) => string;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'codeblock.njs': {
         alias: string[];
         script: (blockList: any, _content: any, partial: any, slot: any, options: import("./codeblock.njs").CodeBlockOptions) => any;
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {};
     };
     'MainTemplate.ts.njs': {
@@ -174,7 +174,7 @@ declare const templates: {
             'chunks-start': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
             'chunks-finish': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
         };
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'codeblock.njs': boolean;
             codeblock: boolean;
@@ -191,7 +191,7 @@ declare const templates: {
             'chunks-start': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
             'chunks-finish': (directives: any, _content: any, partial: any, slot: any, options: any) => string;
         };
-        compile: (this: TemplateBase) => void;
+        compile: (this: import("fte.js-base").TemplateBase) => void;
         dependency: {
             'codeblock.njs': boolean;
             codeblock: boolean;

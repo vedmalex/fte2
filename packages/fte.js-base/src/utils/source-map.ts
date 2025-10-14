@@ -4,7 +4,6 @@ import {
   SourceMapGenerator,
 } from 'source-map'
 import {
-  SourceInfo,
   type SourceMapOptions,
   type TemplateSegment,
   type TemplateSourceMap,
