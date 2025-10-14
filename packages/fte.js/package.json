@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-canary.3f322b6",
+  "version": "3.0.0-canary.614bf63",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -53,10 +53,10 @@
     "@swc/helpers": "^0.5.17",
     "chokidar": "^3.6.0",
     "commander": "^10.0.1",
-    "fte.js-base": "^3.0.0-canary.3f322b6",
-    "fte.js-parser": "^3.0.0-canary.3f322b6",
-    "fte.js-standalone": "^3.0.0-canary.3f322b6",
-    "fte.js-templates": "^3.0.0-canary.3f322b6",
+    "fte.js-base": "^3.0.0-canary.614bf63",
+    "fte.js-parser": "^3.0.0-canary.614bf63",
+    "fte.js-standalone": "^3.0.0-canary.614bf63",
+    "fte.js-templates": "^3.0.0-canary.614bf63",
     "glob": "^10.0.0",
     "lodash": "^4.17.21",
     "mem-fs": "^4.1.2",

@@ -1,6 +1,6 @@
 {
   "name": "fte.js-templates",
-  "version": "3.0.0-canary.3f322b6",
+  "version": "3.0.0-canary.614bf63",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -40,7 +40,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-canary.3f322b6"
+    "fte.js-base": "^3.0.0-canary.ade27ca"
   },
   "gitHead": "d509dcd427f3354ee9715a1945f6e1ff9d797fc8",
   "devDependencies": {
