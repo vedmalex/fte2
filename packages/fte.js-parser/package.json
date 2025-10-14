@@ -1,6 +1,6 @@
 {
   "name": "fte.js-parser",
-  "version": "3.0.0-canary.75702da",
+  "version": "3.0.0-canary.430e6b6",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -19,7 +19,7 @@
     "src"
   ],
   "scripts": {
-    "prepublish": "npm run clean && npm run build",
+    "prepublish": "echo 'Skipping prepublish for debugging' && npm run build",
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
@@ -39,7 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "detect-indent": "^6.1.0",
-    "fte.js-base": "^3.0.0-rc.13"
+    "fte.js-base": "^3.0.0-canary.430e6b6"
   },
   "devDependencies": {
     "@types/node": "^20.12.8",

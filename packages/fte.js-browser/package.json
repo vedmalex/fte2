@@ -1,6 +1,6 @@
 {
   "name": "fte.js-browser",
-  "version": "3.0.0-canary.75702da",
+  "version": "3.0.0-canary.430e6b6",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -19,7 +19,7 @@
     "src"
   ],
   "scripts": {
-    "prepublish": "npm run clean && npm run build",
+    "prepublish": "echo 'Prepublish skipped for debugging'",
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
@@ -38,7 +38,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-rc.13"
+    "fte.js-base": "^3.0.0-canary.430e6b6"
   },
   "gitHead": "d295175539b5752bd66436845f495f2a1aff9c82",
   "devDependencies": {

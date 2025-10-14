@@ -1,6 +1,6 @@
 {
   "name": "fte.js-base",
-  "version": "3.0.0-canary.75702da",
+  "version": "3.0.0-canary.430e6b6",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -19,7 +19,7 @@
     "src"
   ],
   "scripts": {
-    "prepublish": "echo \"Running clean...\" && npm run clean && echo \"Clean completed, running build...\" && npm run build && echo \"Build completed.\"",
+    "prepublish": "echo 'Prepublish skipped for debugging'",
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
