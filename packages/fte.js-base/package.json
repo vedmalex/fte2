@@ -1,6 +1,6 @@
 {
   "name": "fte.js-base",
-  "version": "3.0.0-rc.13-canary.cd48650",
+  "version": "3.0.0-canary.04f699a",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
