@@ -17,8 +17,8 @@ export declare class TemplateSourceMapConsumer {
     private map;
     constructor(map: string | TemplateSourceMap);
     init(): Promise<void>;
-    originalPositionFor(line: number, column: number): import("source-map").NullableMappedPosition;
-    generatedPositionFor(source: string, line: number, column: number): import("source-map").NullablePosition;
+    originalPositionFor(line: number, column: number): any;
+    generatedPositionFor(source: string, line: number, column: number): any;
     sourceContentFor(source: string): string | null;
     sources(): string[];
     getTemplateSegments(): TemplateSegment[];

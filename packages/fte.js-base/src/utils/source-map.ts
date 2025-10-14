@@ -113,7 +113,7 @@ export class TemplateSourceMapConsumer {
   // Получить все исходные файлы
   sources(): string[] {
     if (!this.consumer) throw new Error('Consumer not initialized')
-    return this.map.sources || []
+    return (this.map as any).sources || []
   }
 
   // Получить специфичные для шаблона сегменты
