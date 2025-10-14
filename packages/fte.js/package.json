@@ -1,6 +1,6 @@
 {
   "name": "fte.js",
-  "version": "3.0.0-canary.1912a68",
+  "version": "3.0.0-canary.7bdad5c",
   "bin": {
     "fte.js": "./bin/fte.js"
   },
@@ -27,7 +27,7 @@
     "build": "npm run build:all",
     "build:cjs": "FORMAT=cjs bun build.ts",
     "build:esm": "FORMAT=esm bun build.ts",
-    "build:all": "npm run build:cjs && npm run build:esm && tsc -p tsconfig.build.json",
+    "build:all": "echo 'Building CJS...' && npm run build:cjs && echo 'Building ESM...' && npm run build:esm && echo 'Running TypeScript compiler...' && tsc -p tsconfig.build.json && echo 'Build completed.'",
     "watch": "tsc -w -p tsconfig.json",
     "clean": "git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist",
     "test": "vitest run",
