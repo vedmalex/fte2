@@ -1,6 +1,6 @@
 {
   "name": "fte.js-parser",
-  "version": "3.0.0-canary.cc3b592",
+  "version": "3.0.0-canary.f95337b",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -39,7 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "detect-indent": "^6.1.0",
-    "fte.js-base": "^3.0.0-canary.cc3b592"
+    "fte.js-base": "^3.0.0-canary.f95337b"
   },
   "devDependencies": {
     "@types/node": "^20.12.8",
