@@ -82,6 +82,10 @@ class LernaPublisher {
       }
     }
 
+    if (options.canary) {
+      options.forcePublish = true
+    }
+
     return options
   }
 
@@ -162,7 +166,12 @@ Note: This script automatically prepares dependencies for Lerna compatibility.
    */
   generateCanaryVersion() {
     try {
-      const currentVersion = this.getCurrentVersion()
+      let currentVersion = this.getCurrentVersion()
+      // Удаляем существующий prerelease или canary из текущей версии, если он есть
+      const prereleaseIndex = currentVersion.indexOf('-')
+      if (prereleaseIndex !== -1) {
+        currentVersion = currentVersion.substring(0, prereleaseIndex)
+      }
       const gitSha = execSync('git rev-parse --short HEAD', {
         encoding: 'utf8',
       }).trim()
@@ -177,8 +186,14 @@ Note: This script automatically prepares dependencies for Lerna compatibility.
    * Генерирует prerelease версию
    */
   generatePrereleaseVersion() {
-    const currentVersion = this.getCurrentVersion()
+    let currentVersion = this.getCurrentVersion()
     const preid = this.options.preid || 'alpha'
+
+    // Удаляем существующий prerelease из текущей версии, если он есть
+    const prereleaseIndex = currentVersion.indexOf('-')
+    if (prereleaseIndex !== -1) {
+      currentVersion = currentVersion.substring(0, prereleaseIndex)
+    }
 
     // Пытаемся получить следующий номер prerelease
     try {
@@ -307,7 +322,7 @@ Note: This script automatically prepares dependencies for Lerna compatibility.
     const command = ['publish']
 
     // Добавляем версию если указана
-    if (version && !this.options.canary && !this.options.preid) {
+    if (version) {
       command.push(version)
     }
 
@@ -407,15 +422,8 @@ Note: This script automatically prepares dependencies for Lerna compatibility.
         await this.createGitTag(version)
       }
 
-      // Восстанавливаем зависимости
-      await this.restoreDependencies()
-
-      console.log('✅ Enhanced Lerna publish completed successfully!')
-      console.log(`🎉 Published version: ${version}`)
-    } catch (error) {
-      console.error('❌ Enhanced Lerna publish failed:', error.message)
-
-      // Всегда пытаемся восстановить зависимости при ошибке
+    } finally {
+      // Всегда пытаемся восстановить зависимости
       try {
         await this.restoreDependencies()
       } catch (restoreError) {
@@ -424,8 +432,6 @@ Note: This script automatically prepares dependencies for Lerna compatibility.
           restoreError.message,
         )
       }
-
-      process.exit(1)
     }
   }
 }

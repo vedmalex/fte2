@@ -1,3 +1,2 @@
-import { TemplateFactoryStandalone } from 'fte.js-standalone';
-export declare const F: TemplateFactoryStandalone<import("fte.js-base").DefaultFactoryOption>;
+export declare const F: any;
 //# sourceMappingURL=compile.d.ts.map

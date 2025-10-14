@@ -1,2 +1,2 @@
-export declare function parseFile(content: Buffer | string): import("fte.js-parser").CodeBlock;
+export declare function parseFile(content: Buffer | string): any;
 //# sourceMappingURL=parseFile.d.ts.map

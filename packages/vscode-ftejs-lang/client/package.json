@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "fte.js-standalone": "workspace:*",
+    "fte.js-standalone": "3.0.0-canary.430e6b6",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
