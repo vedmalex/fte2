@@ -1,6 +1,6 @@
 {
   "name": "fte.js-browser",
-  "version": "3.0.0-canary.7bdad5c",
+  "version": "3.0.0-canary.75702da",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
