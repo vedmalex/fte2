@@ -1,6 +1,6 @@
 {
   "name": "fte.js-base",
-  "version": "3.0.0-canary.b79694f",
+  "version": "3.0.0-canary.6940d1c",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -37,7 +37,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "gitHead": "b79694f0cc280a99501369b002e5f9b08640ba26",
+  "gitHead": "6940d1cdac54ad32f279fa2a4df05140e4d2d57f",
   "dependencies": {
     "source-map": "^0.7.4"
   },

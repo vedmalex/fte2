@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-canary.6940d1c](https://github.com/vedmalex/fte2/compare/v3.0.0-canary.b79694f...v3.0.0-canary.6940d1c) (2025-10-15)
+
+**Note:** Version bump only for package fte.js-base
+
+
+
+
+
 # [3.0.0-canary.b79694f](https://github.com/vedmalex/fte2/compare/v3.0.0-canary.d5e9d40...v3.0.0-canary.b79694f) (2025-10-15)
 
 **Note:** Version bump only for package fte.js-base
