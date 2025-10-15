@@ -1,6 +1,6 @@
 {
   "name": "fte.js-browser",
-  "version": "3.0.0-canary.6940d1c",
+  "version": "3.0.0-canary.646d524",
   "description": "",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -38,9 +38,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fte.js-base": "^3.0.0-canary.6940d1c"
+    "fte.js-base": "^3.0.0-canary.646d524"
   },
-  "gitHead": "6940d1cdac54ad32f279fa2a4df05140e4d2d57f",
+  "gitHead": "646d524b42192033d398efdc3c864eed421e9c37",
   "devDependencies": {
     "@types/node": "latest",
     "esbuild": "^0.25.10",

@@ -1,6 +1,6 @@
 {
   "name": "fte.js-formatter",
-  "version": "3.0.0-canary.6940d1c",
+  "version": "3.0.0-canary.646d524",
   "description": "Formatter & Linter for FTE templates",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -54,7 +54,7 @@
   "dependencies": {
     "@babel/generator": "^7.28.3",
     "@babel/parser": "^7.28.4",
-    "fte.js-parser": "^3.0.0-canary.6940d1c"
+    "fte.js-parser": "^3.0.0-canary.646d524"
   },
   "devDependencies": {
     "@types/node": "latest",
@@ -62,5 +62,5 @@
     "typescript": "next",
     "vitest": "^3.2.4"
   },
-  "gitHead": "6940d1cdac54ad32f279fa2a4df05140e4d2d57f"
+  "gitHead": "646d524b42192033d398efdc3c864eed421e9c37"
 }

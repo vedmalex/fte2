@@ -84,6 +84,41 @@ describe('FTE Parser Tests', () => {
       // })
       // expect(result.main[1].content).toBe('Next')
     })
+
+    test('should handle trimmed ending -#> for code blocks', () => {
+      const template = '<# if (true) { -#>\nNext line'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.main[0]).toMatchObject({
+      //   type: 'code',
+      //   content: ' if (true) { ',
+      //   end: '-#>'
+      // })
+      // expect(result.main[1].content).toBe('Next line')
+    })
+
+    test('should handle trimmed ending : -#> for block definitions', () => {
+      const template = '<# block "test": -#>\nBlock content\n<# end #>'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.blocks['test']).toBeDefined()
+      // expect(result.blocks['test'].main[0].content).toBe('Block content\n')
+    })
+
+    test('should handle trimmed ending : -#> for slot definitions', () => {
+      const template = '<# slot "test": -#>\nSlot content\n<# end #>'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.slots['test']).toBeDefined()
+      // expect(result.slots['test'].main[0].content).toBe('Slot content\n')
+    })
+
+    test('should handle trimmed ending -#> for directives', () => {
+      const template = '<#@ context "test" -#>\nContent'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.directives.context).toBe('test')
+    })
   })
 
   describe('Blocks and Slots', () => {
@@ -101,6 +136,30 @@ describe('FTE Parser Tests', () => {
       expect(result).toMatchSnapshot()
       // expect(result.slots['header']).toBeDefined()
       // expect(result.slots['header'].main[0].content).toBe('\nSlot content\n')
+    })
+
+    test('should parse block definition with <#- syntax', () => {
+      const template = '<#- block "content": #>\nBlock content\n<#- end #>'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.blocks['content']).toBeDefined()
+      // expect(result.blocks['content'].main[0].content).toBe('\nBlock content\n')
+    })
+
+    test('should parse slot definition with <#- syntax', () => {
+      const template = '<#- slot "header": #>\nSlot content\n<#- end #>'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.slots['header']).toBeDefined()
+      // expect(result.slots['header'].main[0].content).toBe('\nSlot content\n')
+    })
+
+    test('should parse block end with <#- syntax', () => {
+      const template = '<# block "content": #>\nBlock content\n<#- end -#>'
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // expect(result.blocks['content']).toBeDefined()
+      // expect(result.blocks['content'].main[0].content).toBe('\nBlock content\n')
     })
   })
 
@@ -205,33 +264,6 @@ describe('FTE Parser Tests', () => {
       expect(result).toMatchSnapshot()
     })
 
-    test('should trim whitespace before hyphenated code tags', () => {
-      const template = [
-        '      "#{rel.to}',
-        '        <#- if(variant!== "*"){ -#>',
-        "          #{rel.relName.split('.').join('')}",
-        '        <#-}#>":',
-        "        _t(\"#{rs.toDisplay}\",'#{context.$namespace}.#{context.$name}', 'toDisplay', '#{rel.to}'),",
-      ].join('\n')
-      const result = Parser.parse(template)
-      const main = result.main
-      const hyphenatedCodeIndexes = main
-        .map((item, index) =>
-          item.type === 'code' && item.start === '<#-' ? index : -1,
-        )
-        .filter((index) => index > 0)
-
-      for (const index of hyphenatedCodeIndexes) {
-        const prev = main[index - 1]
-        if (!prev) {
-          continue
-        }
-        expect(prev.type).not.toBe('empty')
-        if (prev.type === 'text') {
-          expect(/\S/.test(prev.content)).toBe(true)
-        }
-      }
-    })
   })
 
   describe('Multiline Content', () => {

@@ -464,7 +464,7 @@
         let rs = getRS(rel);
       #>
       "#{rel.to}
-        <#- if(variant!== "*"){#>
+        <#- if(variant!== "*"){-#>
           #{rel.relName.split('.').join('')}
         <#-}#>":
         _t("#{rs.toDisplay}",'#{context.$namespace}.#{context.$name}', 'toDisplay', '#{rel.to}'),
