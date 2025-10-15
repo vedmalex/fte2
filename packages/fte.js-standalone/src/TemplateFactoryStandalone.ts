@@ -1,5 +1,6 @@
 import {
   type DefaultFactoryOption,
+  type PartialResult,
   type SlotsHash,
   type TemplateConfig,
   TemplateFactoryBase,
@@ -241,14 +242,34 @@ export class TemplateFactoryStandalone<
     absPath?: boolean
     options?: OPTIONS
     slots?: SlotsHash
-  }): string {
+  }): PartialResult {
     const templ = this.ensure(name)
     if (!templ.chunks) {
-      const bc = this.blockContent(templ, slots)
-      return bc.run(context, bc.content, bc.partial, bc.slot, {
+      const wantsSourceMap =
+        options && Object.prototype.hasOwnProperty.call(options, 'sourceMap')
+          ? Boolean(options.sourceMap)
+          : false
+      const invocationOptions = {
         ...this.options,
-        ...options,
-      }) as string
+        ...(options ?? {}),
+      } as OPTIONS
+      if (!wantsSourceMap) {
+        ;(invocationOptions as any).sourceMap = false
+      }
+      const bc = this.blockContent(templ, slots)
+      const result = bc.run(
+        context,
+        bc.content,
+        bc.partial,
+        bc.slot,
+        invocationOptions,
+      ) as PartialResult
+      if (!wantsSourceMap && result && typeof result === 'object') {
+        if ('code' in result) {
+          return (result as { code: string }).code
+        }
+      }
+      return result
     } else {
       throw new Error(`can't use chunked template as partial: ${name}`)
     }
@@ -265,20 +286,43 @@ export class TemplateFactoryStandalone<
     absPath?: boolean
     options?: OPTIONS
     slots?: SlotsHash
-  }): Promise<string> {
+  }): Promise<PartialResult> {
     const templ = this.ensure(name)
     if (!templ.chunks) {
-      const bc: any = this.blockContent(templ, slots)
-      if (typeof bc.runAsync === 'function') {
-        return (await bc.runAsync(context, bc.content, bc.partial, bc.slot, {
-          ...this.options,
-          ...options,
-        })) as string
-      }
-      return bc.run(context, bc.content, bc.partial, bc.slot, {
+      const wantsSourceMap =
+        options && Object.prototype.hasOwnProperty.call(options, 'sourceMap')
+          ? Boolean(options.sourceMap)
+          : false
+      const invocationOptions = {
         ...this.options,
-        ...options,
-      }) as string
+        ...(options ?? {}),
+      } as OPTIONS
+      if (!wantsSourceMap) {
+        ;(invocationOptions as any).sourceMap = false
+      }
+      const bc: any = this.blockContent(templ, slots)
+      const executeAsync = typeof bc.runAsync === 'function'
+      const result = executeAsync
+        ? await bc.runAsync(
+            context,
+            bc.content,
+            bc.partial,
+            bc.slot,
+            invocationOptions,
+          )
+        : bc.run(
+            context,
+            bc.content,
+            bc.partial,
+            bc.slot,
+            invocationOptions,
+          )
+      if (!wantsSourceMap && result && typeof result === 'object') {
+        if ('code' in result) {
+          return (result as { code: string }).code
+        }
+      }
+      return result as PartialResult
     } else {
       throw new Error(`can't use chunked template as partial: ${name}`)
     }

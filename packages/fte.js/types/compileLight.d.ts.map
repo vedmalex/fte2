@@ -1,1 +1,1 @@
-{"version":3,"file":"compileLight.d.ts","sourceRoot":"","sources":["../src/compileLight.ts"],"names":[],"mappings":"AAKA,wBAAgB,YAAY,CAC1B,OAAO,EAAE,MAAM,GAAG,MAAM,EACxB,QAAQ,EAAE,OAAO,EACjB,QAAQ,CAAC,EAAE,MAAM,EACjB,UAAU,CAAC,EAAE,MAAM,EACnB,SAAS,UAAO,EAChB,SAAS,UAAO,OA8BjB"}
+{"version":3,"file":"compileLight.d.ts","sourceRoot":"","sources":["../src/compileLight.ts"],"names":[],"mappings":"AAKA,wBAAgB,YAAY,CAC1B,OAAO,EAAE,MAAM,GAAG,MAAM,EACxB,QAAQ,EAAE,OAAO,EACjB,QAAQ,CAAC,EAAE,MAAM,EACjB,UAAU,CAAC,EAAE,MAAM,EACnB,SAAS,UAAO,EAChB,SAAS,UAAO,OAoBjB"}

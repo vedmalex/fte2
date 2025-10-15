@@ -6,7 +6,10 @@ import type { DefaultFactoryOption } from './types/DefaultFactoryOption'
 import { DefaultFactoryOptions } from './types/DefaultFactoryOptions'
 import type { FactoryConfig } from './types/FactoryConfig'
 import type { HashTypeGeneric } from './types/HashTypeGeneric'
-import type { PartialFunction } from './types/PartialFunction'
+import type {
+  PartialFunction,
+  PartialInvocationOptions,
+} from './types/PartialFunction'
 import type { RunPartialContext } from './types/RunPartialContext'
 import type { SlotFunction } from './types/SlotFunction'
 import type { SlotsHash } from './types/SlotsHash'
@@ -25,7 +28,7 @@ class TemplateExecutionError extends Error {
     this.name = 'TemplateExecutionError'
     this.templates = [...templates]
     this.original = original
-    ;(this as unknown as { cause: Error }).cause = original
+      ; (this as unknown as { cause: Error }).cause = original
     this.updateStack()
   }
 
@@ -160,23 +163,53 @@ export abstract class TemplateFactoryBase<
           }
         }
       },
-      partial<T>(obj: T, name: string): string {
-        if (tpl.aliases.hasOwnProperty(name)) {
-          return self.runPartial({
-            context: obj,
-            name: tpl.aliases[name],
-            absPath: true,
-            slots: this.slots,
-            options: this.options,
-          })
-        } else {
-          return self.runPartial({
-            context: obj,
-            name,
-            absPath: false,
-            slots: this.slots,
-            options: this.options,
-          })
+      partial<T>(
+        obj: T,
+        name: string,
+        partialOptions?: PartialInvocationOptions,
+      ) {
+        const wantsSourceMap =
+          partialOptions && Object.prototype.hasOwnProperty.call(partialOptions, 'sourceMap')
+            ? Boolean(partialOptions.sourceMap)
+            : false
+
+        const previousOptions = self.options
+        const mergedOptions = {
+          ...(this.options as OPTIONS),
+          ...(partialOptions ?? {}),
+        } as OPTIONS & SourceMapOptions
+
+        if (!wantsSourceMap) {
+          mergedOptions.sourceMap = false
+        }
+
+        self.options = mergedOptions
+
+        try {
+          const runAndNormalize = (resolvedName: string, absPath: boolean) => {
+            const result = self.runPartial({
+              context: obj,
+              name: resolvedName,
+              absPath,
+              slots: this.slots,
+              options: mergedOptions as OPTIONS,
+            })
+
+            if (!wantsSourceMap && result && typeof result === 'object') {
+              if ('code' in (result as Record<string, unknown>)) {
+                return (result as { code: string }).code
+              }
+            }
+            return result
+          }
+
+          if (tpl.aliases.hasOwnProperty(name)) {
+            return runAndNormalize(tpl.aliases[name], true)
+          }
+
+          return runAndNormalize(name, false)
+        } finally {
+          self.options = previousOptions
         }
       },
       content<T>(
@@ -221,7 +254,7 @@ export abstract class TemplateFactoryBase<
             try {
               return $this.script(context, content, partial, slot, self.options)
             } catch (e) {
-              throw wrapTemplateError($this.name, e)
+              throw wrapTemplateError($this.name!, e)
             }
           }
         }
@@ -255,7 +288,7 @@ export abstract class TemplateFactoryBase<
               )
               return await result
             } catch (e) {
-              throw wrapTemplateError($this.name, e)
+              throw wrapTemplateError($this.name!, e)
             }
           }
         }
@@ -266,9 +299,9 @@ export abstract class TemplateFactoryBase<
     bc.content = bc.content.bind(bc)
     bc.partial = bc.partial.bind(bc)
     bc.run = bc.run.bind(bc)
-    ;(bc as any).runAsync = (bc as any).runAsync
-      ? (bc as any).runAsync.bind(bc)
-      : (bc as any).runAsync
+      ; (bc as any).runAsync = (bc as any).runAsync
+        ? (bc as any).runAsync.bind(bc)
+        : (bc as any).runAsync
     bc.slot = bc.slot.bind(bc)
     return bc
   }

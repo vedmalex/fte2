@@ -1,4 +1,4 @@
-import { type DefaultFactoryOption, type SlotsHash, type TemplateConfig, TemplateFactoryBase } from 'fte.js-base';
+import { type DefaultFactoryOption, type PartialResult, type SlotsHash, type TemplateConfig, TemplateFactoryBase } from 'fte.js-base';
 import { StandaloneTemplate } from './StandaloneTemplate';
 export declare class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOption> extends TemplateFactoryBase<OPTIONS> {
     private templates;
@@ -27,13 +27,13 @@ export declare class TemplateFactoryStandalone<OPTIONS extends DefaultFactoryOpt
         absPath?: boolean;
         options?: OPTIONS;
         slots?: SlotsHash;
-    }): string;
+    }): PartialResult;
     runPartialAsync<T, OPTIONS extends DefaultFactoryOption>({ context, name, slots, options, }: {
         context: T;
         name: string;
         absPath?: boolean;
         options?: OPTIONS;
         slots?: SlotsHash;
-    }): Promise<string>;
+    }): Promise<PartialResult>;
 }
 //# sourceMappingURL=TemplateFactoryStandalone.d.ts.map

@@ -5,7 +5,16 @@ export default {
     core: 'MainTemplate.njs',
   },
   script: function (context, _content, partial, slot, options) {
-    const core: any = partial(context, 'core') as any
+    const coreOptions =
+      options && options.sourceMap
+        ? {
+            sourceMap: true,
+            sourceFile: options.sourceFile,
+            sourceRoot: options.sourceRoot,
+            inline: options.inline,
+          }
+        : undefined
+    const core: any = partial(context, 'core', coreOptions) as any
     if (typeof core === 'string') {
       return 'export default ' + core + ';'
     } else {

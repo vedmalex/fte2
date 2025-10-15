@@ -20,7 +20,7 @@
     "textmate",
     "vscode-extension"
   ],
-  "version": "3.0.0-canary.75a0c24",
+  "version": "3.0.0-canary.d5e9d40",
   "workspaces": [
     "client",
     "server"
@@ -309,5 +309,5 @@
     "vscode-languageserver": "catalog:dev",
     "vscode-languageserver-textdocument": "catalog:dev"
   },
-  "gitHead": "75a0c245e949010ddef97d670052f560e5b4f1ae"
+  "gitHead": "d5e9d406def1e0e1d9fbddad0587fd3d73ce4089"
 }

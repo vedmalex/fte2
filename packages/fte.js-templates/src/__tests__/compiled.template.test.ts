@@ -37,8 +37,8 @@ describe('compiled.njs', () => {
 
     // Now pass same ctx through compiled.njs which internally runs core
     const res: any = F.run(ctx, 'compiled.njs')
-    expect(typeof res).toBe('object')
-    expect(res.code).toContain('module.exports = ')
+    expect(typeof res).toBe('string')
+    expect(res).toContain('module.exports = ')
   })
 
   test('propagates map when inner returns {code,map}', () => {
