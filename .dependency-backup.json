@@ -1,0 +1,202 @@
+{
+  "timestamp": "2025-10-15T08:44:07.796Z",
+  "files": [
+    [
+      "./packages/fte.js/package.json",
+      "{\n  \"name\": \"fte.js\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"bin\": {\n    \"fte.js\": \"./bin/fte.js\"\n  },\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\",\n    \"bin\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"echo 'Building CJS...' && npm run build:cjs && echo 'Building ESM...' && npm run build:esm && echo 'Running TypeScript compiler...' && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues') && echo 'Build completed.'\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"@babel/core\": \"^7.28.4\",\n    \"@babel/generator\": \"^7.28.3\",\n    \"@babel/parser\": \"^7.28.4\",\n    \"@babel/preset-env\": \"^7.28.3\",\n    \"@babel/preset-typescript\": \"^7.27.1\",\n    \"@babel/traverse\": \"^7.28.4\",\n    \"@babel/types\": \"^7.28.4\",\n    \"@swc/core\": \"^1.13.5\",\n    \"@swc/helpers\": \"^0.5.17\",\n    \"chokidar\": \"^4.0.3\",\n    \"commander\": \"^10.0.1\",\n    \"fte.js-base\": \"^3.0.0-canary.5bdf8ff\",\n    \"fte.js-parser\": \"^3.0.0-canary.5bdf8ff\",\n    \"fte.js-standalone\": \"^3.0.0-canary.5bdf8ff\",\n    \"fte.js-templates\": \"^3.0.0-canary.5bdf8ff\",\n    \"glob\": \"^10.4.5\",\n    \"lodash\": \"^4.17.21\",\n    \"mem-fs\": \"^4.1.2\",\n    \"mem-fs-editor\": \"^11.1.4\",\n    \"ts-morph\": \"^27.0.0\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\",\n  \"devDependencies\": {\n    \"@types/babel__core\": \"^7.20.5\",\n    \"@types/babel__generator\": \"^7.27.0\",\n    \"@types/babel__preset-env\": \"^7.10.0\",\n    \"@types/babel__traverse\": \"^7.28.0\",\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  }\n}\n"
+    ],
+    [
+      "./packages/fte.js-standalone/package.json",
+      "{\n  \"name\": \"fte.js-standalone\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    },\n    \"./compile\": {\n      \"types\": \"./types/compile.d.ts\",\n      \"bun\": \"./src/compile.ts\",\n      \"import\": \"./dist/compile.esm.js\",\n      \"require\": \"./dist/compile.js\"\n    },\n    \"./compileFull\": {\n      \"types\": \"./types/compileFull.d.ts\",\n      \"bun\": \"./src/compileFull.ts\",\n      \"import\": \"./dist/compileFull.esm.js\",\n      \"require\": \"./dist/compileFull.js\"\n    },\n    \"./compileLight\": {\n      \"types\": \"./types/compileLight.d.ts\",\n      \"bun\": \"./src/compileLight.ts\",\n      \"import\": \"./dist/compileLight.esm.js\",\n      \"require\": \"./dist/compileLight.js\"\n    },\n    \"./compileTs\": {\n      \"types\": \"./types/compileTs.d.ts\",\n      \"bun\": \"./src/compileTs.ts\",\n      \"import\": \"./dist/compileTs.esm.js\",\n      \"require\": \"./dist/compileTs.js\"\n    },\n    \"./parseFile\": {\n      \"types\": \"./types/parseFile.d.ts\",\n      \"bun\": \"./src/parseFile.ts\",\n      \"import\": \"./dist/parseFile.esm.js\",\n      \"require\": \"./dist/parseFile.js\"\n    },\n    \"./run\": {\n      \"types\": \"./types/run.d.ts\",\n      \"bun\": \"./src/run.ts\",\n      \"import\": \"./dist/run.esm.js\",\n      \"require\": \"./dist/run.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"npm run build:cjs && npm run build:esm && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues')\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"fte.js-base\": \"^3.0.0-canary.5bdf8ff\",\n    \"fte.js-parser\": \"^3.0.0-canary.5bdf8ff\",\n    \"fte.js-templates\": \"^3.0.0-canary.5bdf8ff\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\",\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  }\n}\n"
+    ],
+    [
+      "./packages/fte.js-base/package.json",
+      "{\n  \"name\": \"fte.js-base\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"echo 'Building CJS...' && npm run build:cjs && echo 'Building ESM...' && npm run build:esm && echo 'Running TypeScript compiler...' && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues') && echo 'Build completed.'\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\",\n  \"dependencies\": {\n    \"source-map\": \"^0.7.4\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"@types/source-map\": \"^0.5.7\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  }\n}\n"
+    ],
+    [
+      "./packages/fte.js-browser/package.json",
+      "{\n  \"name\": \"fte.js-browser\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"npm run build:cjs && npm run build:esm && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues')\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"fte.js-base\": \"^3.0.0-canary.5bdf8ff\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\",\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  }\n}\n"
+    ],
+    [
+      "./packages/fte.js-parser/package.json",
+      "{\n  \"name\": \"fte.js-parser\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"npm run build:cjs && npm run build:esm && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues')\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"detect-indent\": \"^6.1.0\",\n    \"fte.js-base\": \"^3.0.0-canary.5bdf8ff\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\"\n}\n"
+    ],
+    [
+      "./packages/fte.js-templates/package.json",
+      "{\n  \"name\": \"fte.js-templates\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    }\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\",\n    \"templates\",\n    \"templ\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"npm run build:cjs && npm run build:esm && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues')\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"fte.js-base\": \"^3.0.0-canary.5bdf8ff\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\",\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  }\n}\n"
+    ],
+    [
+      "./packages/fte.js-formatter/package.json",
+      "{\n  \"name\": \"fte.js-formatter\",\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"description\": \"Formatter & Linter for FTE templates\",\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./types/index.d.ts\",\n  \"module\": \"./dist/index.esm.js\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./types/index.d.ts\",\n      \"bun\": \"./src/index.ts\",\n      \"import\": \"./dist/index.esm.js\",\n      \"require\": \"./dist/index.js\"\n    },\n    \"./cli\": {\n      \"types\": \"./types/cli.d.ts\",\n      \"bun\": \"./src/cli.ts\",\n      \"import\": \"./dist/cli.esm.js\",\n      \"require\": \"./dist/cli.js\"\n    }\n  },\n  \"bin\": {\n    \"fte-format\": \"./dist/cli.js\"\n  },\n  \"files\": [\n    \"dist\",\n    \"types\",\n    \"src\"\n  ],\n  \"scripts\": {\n    \"prepublish\": \"npm run clean && npm run build\",\n    \"build\": \"npm run build:all\",\n    \"build:cjs\": \"FORMAT=cjs bun build.ts\",\n    \"build:esm\": \"FORMAT=esm bun build.ts\",\n    \"build:all\": \"npm run build:cjs && npm run build:esm && (tsc -p tsconfig.build.json || echo 'TypeScript compilation skipped due to module resolution issues')\",\n    \"watch\": \"tsc -w -p tsconfig.json\",\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"test\": \"vitest run\",\n    \"test:watch\": \"vitest run --watch\",\n    \"test:ui\": \"vitest --ui\",\n    \"test:coverage\": \"vitest run --coverage\",\n    \"bench\": \"vitest bench\",\n    \"bench:run\": \"vitest bench\",\n    \"dev\": \"bun run watch\"\n  },\n  \"keywords\": [\n    \"fte\",\n    \"formatter\",\n    \"linter\",\n    \"templates\"\n  ],\n  \"author\": \"\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"@babel/generator\": \"^7.28.3\",\n    \"@babel/parser\": \"^7.28.4\",\n    \"fte.js-parser\": \"^3.0.0-canary.5bdf8ff\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"esbuild\": \"^0.25.10\",\n    \"typescript\": \"next\",\n    \"vitest\": \"^3.2.4\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\"\n}\n"
+    ],
+    [
+      "./packages/vscode-ftejs-lang/server/package.json",
+      "{\n  \"name\": \"ftejs-server\",\n  \"private\": true,\n  \"version\": \"0.0.1\",\n  \"main\": \"dist/server.js\",\n  \"scripts\": {\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist out\",\n    \"build\": \"tsc -b && bun build.ts\",\n    \"build:bundle\": \"bun build.ts\",\n    \"build:types\": \"tsc -b\",\n    \"watch\": \"bun --watch build.ts\",\n    \"watch:types\": \"tsc -w\",\n    \"test\": \"npm run build:types && vitest run\"\n  },\n  \"dependencies\": {\n    \"fte.js-base\": \"3.0.0-canary.d23789d\",\n    \"fte.js-parser\": \"3.0.0-canary.d23789d\",\n    \"fte.js-formatter\": \"3.0.0-canary.d23789d\",\n    \"fte.js-standalone\": \"3.0.0-canary.d23789d\",\n    \"prettier\": \"^3.6.2\",\n    \"vscode-languageserver\": \"catalog:dev\",\n    \"vscode-languageserver-textdocument\": \"catalog:dev\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"latest\",\n    \"vitest\": \"^3.2.4\",\n    \"typescript\": \"next\"\n  }\n}"
+    ],
+    [
+      "./packages/vscode-ftejs-lang/package.json",
+      "{\n  \"name\": \"fte-js-template\",\n  \"publisher\": \"alex-vedmedenko\",\n  \"displayName\": \"fte.js-template\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/vedmalex/vscode-ftejs-lang.git\"\n  },\n  \"description\": \"fte.js templates: syntax highlight + language server\",\n  \"license\": \"MIT\",\n  \"homepage\": \"https://github.com/vedmalex/vscode-ftejs-lang#readme\",\n  \"bugs\": {\n    \"url\": \"https://github.com/vedmalex/vscode-ftejs-lang/issues\"\n  },\n  \"keywords\": [\n    \"fte.js\",\n    \"template\",\n    \"syntax\",\n    \"highlighting\",\n    \"textmate\",\n    \"vscode-extension\"\n  ],\n  \"version\": \"3.0.0-canary.5bdf8ff\",\n  \"workspaces\": [\n    \"client\",\n    \"server\"\n  ],\n  \"engines\": {\n    \"vscode\": \"^1.96.4\"\n  },\n  \"scripts\": {\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist\",\n    \"vscode:prepublish\": \"npm run compile\",\n    \"compile\": \"npm --prefix server run build && npm --prefix client run build\",\n    \"watch\": \"npm --prefix server run watch & npm --prefix client run watch\",\n    \"docs:sync-usage\": \"node tools/sync-usage.js\",\n    \"test\": \"npm --prefix server run test\",\n    \"package\": \"vsce package --no-yarn\",\n    \"publish:vsce\": \"vsce publish\",\n    \"publish:openvsx\": \"ovsx publish\",\n    \"release:patch\": \"npm version patch && git push --follow-tags\",\n    \"release:minor\": \"npm version minor && git push --follow-tags\",\n    \"release:major\": \"npm version major && git push --follow-tags\"\n  },\n  \"main\": \"./client/dist/extension.js\",\n  \"activationEvents\": [\n    \"onLanguage:template-js\",\n    \"onLanguage:template-html\",\n    \"onLanguage:template-typescript\",\n    \"onLanguage:template-markdown\",\n    \"onCommand:ftejs.formatDocument\",\n    \"onCommand:ftejs.convertToTemplate\",\n    \"onCommand:ftejs.toggleTrimVisualizer\",\n    \"onCommand:ftejs.preview.dualExtraction\"\n  ],\n  \"categories\": [\n    \"Programming Languages\"\n  ],\n  \"contributes\": {\n    \"viewsContainers\": {\n      \"activitybar\": [\n        {\n          \"id\": \"ftejs\",\n          \"title\": \"fte.js\",\n          \"icon\": \"\"\n        }\n      ]\n    },\n    \"configuration\": {\n      \"title\": \"fte.js\",\n      \"properties\": {\n        \"ftejs.format.textFormatter\": {\n          \"type\": \"boolean\",\n          \"default\": true,\n          \"description\": \"Format non-template text segments using Prettier (html/markdown/js/ts)\"\n        },\n        \"ftejs.format.keepBlankLines\": {\n          \"type\": \"number\",\n          \"default\": 1,\n          \"description\": \"Maximum consecutive blank lines to keep in formatted output (use -1 to disable)\"\n        },\n        \"ftejs.format.codeFormatter\": {\n          \"type\": \"boolean\",\n          \"default\": true,\n          \"description\": \"Indent template code blocks and align control structures (does not change generated text)\"\n        },\n        \"ftejs.linter.external.enabled\": {\n          \"type\": \"boolean\",\n          \"default\": false,\n          \"description\": \"Enable built-in linter (fte.js-formatter) diagnostics for hygiene rules\"\n        },\n        \"ftejs.docs.usagePath\": {\n          \"type\": \"string\",\n          \"default\": \"\",\n          \"description\": \"Path to USAGE.md providing function/directive documentation for hovers\"\n        }\n      }\n    },\n    \"commands\": [\n      {\n        \"command\": \"ftejs.scaffold.block\",\n        \"title\": \"fte.js: Insert Block\"\n      },\n      {\n        \"command\": \"ftejs.scaffold.slot\",\n        \"title\": \"fte.js: Insert Slot\"\n      },\n      {\n        \"command\": \"ftejs.scaffold.chunkPair\",\n        \"title\": \"fte.js: Insert chunkStart/chunkEnd\"\n      },\n      {\n        \"command\": \"ftejs.scaffold.partial\",\n        \"title\": \"fte.js: Create Partial and Insert Call\"\n      },\n      {\n        \"command\": \"ftejs.debug.syntaxScopes\",\n        \"title\": \"fte.js: Debug Syntax Scopes (experimental)\"\n      },\n      {\n        \"command\": \"ftejs.generator.nhtmlPage\",\n        \"title\": \"fte.js: Generate .nhtml Page\"\n      },\n      {\n        \"command\": \"ftejs.generator.ntsClass\",\n        \"title\": \"fte.js: Generate .nts Class\"\n      },\n      {\n        \"command\": \"ftejs.preview.chunks\",\n        \"title\": \"fte.js: Preview Chunks (static)\"\n      },\n      {\n        \"command\": \"ftejs.preview.dualExtraction\",\n        \"title\": \"fte.js: Preview Dual Extraction (Code/Instruction)\"\n      },\n      {\n        \"command\": \"ftejs.convertToTemplate\",\n        \"title\": \"fte.js: Create template from this file\"\n      },\n      {\n        \"command\": \"ftejs.toggleTrimVisualizer\",\n        \"title\": \"fte.js: Toggle Trimmed Whitespace Visualizer\"\n      },\n      {\n        \"command\": \"ftejs.formatDocument\",\n        \"title\": \"fte.js: Format Document (bundled formatter)\"\n      }\n    ],\n    \"menus\": {\n      \"editor/context\": [\n        {\n          \"command\": \"ftejs.scaffold.block\",\n          \"group\": \"navigation@10\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.scaffold.slot\",\n          \"group\": \"navigation@11\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.scaffold.chunkPair\",\n          \"group\": \"navigation@12\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.scaffold.partial\",\n          \"group\": \"navigation@13\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.generator.nhtmlPage\",\n          \"group\": \"navigation@20\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.generator.ntsClass\",\n          \"group\": \"navigation@21\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.preview.chunks\",\n          \"group\": \"navigation@30\",\n          \"when\": \"editorLangId =~ /template-/\"\n        },\n        {\n          \"command\": \"ftejs.convertToTemplate\",\n          \"group\": \"3_modification@15\",\n          \"when\": \"editorLangId == markdown || editorLangId == html || editorLangId == typescript || editorLangId == javascript || editorLangId == typescriptreact || editorLangId == javascriptreact\"\n        }\n      ]\n    },\n    \"languages\": [\n      {\n        \"id\": \"template-js\",\n        \"extensions\": [\n          \".njs\"\n        ],\n        \"configuration\": \"./language-configuration.json\",\n        \"embeddedLanguages\": {\n          \"source.js\": \"javascript\",\n          \"text.template\": \"template\"\n        }\n      },\n      {\n        \"id\": \"template-html\",\n        \"extensions\": [\n          \".nhtml\"\n        ],\n        \"configuration\": \"./language-configuration.json\",\n        \"embeddedLanguages\": {\n          \"text.html.basic\": \"html\",\n          \"text.template\": \"template\"\n        }\n      },\n      {\n        \"id\": \"template-typescript\",\n        \"extensions\": [\n          \".nts\"\n        ],\n        \"configuration\": \"./language-configuration.json\",\n        \"embeddedLanguages\": {\n          \"source.ts\": \"typescript\",\n          \"text.template\": \"template\"\n        }\n      },\n      {\n        \"id\": \"template-markdown\",\n        \"extensions\": [\n          \".nmd\"\n        ],\n        \"configuration\": \"./language-configuration.json\",\n        \"embeddedLanguages\": {\n          \"text.html.markdown\": \"markdown\",\n          \"text.template\": \"template\"\n        }\n      }\n    ],\n    \"grammars\": [\n      {\n        \"language\": \"template-js\",\n        \"scopeName\": \"source.js.template\",\n        \"path\": \"./syntaxes/template-js.tmLanguage.json\",\n        \"embeddedLanguages\": {\n          \"meta.embedded.block.javascript\": \"javascript\"\n        }\n      },\n      {\n        \"language\": \"template-html\",\n        \"scopeName\": \"text.html.template\",\n        \"path\": \"./syntaxes/template-html.tmLanguage.json\",\n        \"embeddedLanguages\": {\n          \"meta.embedded.block.html\": \"html\",\n          \"meta.embedded.block.javascript\": \"javascript\"\n        }\n      },\n      {\n        \"language\": \"template-typescript\",\n        \"scopeName\": \"source.ts.template\",\n        \"path\": \"./syntaxes/template-typescript.tmLanguage.json\",\n        \"embeddedLanguages\": {\n          \"meta.embedded.block.typescript\": \"typescript\",\n          \"meta.embedded.block.javascript\": \"javascript\"\n        }\n      },\n      {\n        \"language\": \"template-markdown\",\n        \"scopeName\": \"text.html.markdown.template\",\n        \"path\": \"./syntaxes/template-markdown.tmLanguage.json\",\n        \"embeddedLanguages\": {\n          \"meta.embedded.block.markdown\": \"markdown\",\n          \"meta.embedded.block.javascript\": \"javascript\"\n        }\n      },\n      {\n        \"scopeName\": \"text.html.template.inline\",\n        \"path\": \"./syntaxes/template-inline.tmLanguage.json\",\n        \"injectTo\": [\n          \"source.js\",\n          \"source.ts\"\n        ],\n        \"embeddedLanguages\": {\n          \"meta.embedded.block.javascript\": \"javascript\"\n        }\n      },\n      {\n        \"scopeName\": \"fte.template.inject.html\",\n        \"path\": \"./syntaxes/template-inject-html.tmLanguage.json\",\n        \"injectTo\": [\n          \"text.html.basic\",\n          \"text.html.markdown\"\n        ]\n      },\n      {\n        \"scopeName\": \"fte.template.inject.generic\",\n        \"path\": \"./syntaxes/template-inject-generic.tmLanguage.json\",\n        \"injectTo\": [\n          \"source.python\",\n          \"source.swift\",\n          \"source.ruby\",\n          \"source.go\",\n          \"source.php\"\n        ]\n      }\n    ]\n  },\n  \"dependencies\": {\n    \"vscode-languageclient\": \"catalog:dev\",\n    \"vscode-languageserver\": \"catalog:dev\",\n    \"vscode-languageserver-textdocument\": \"catalog:dev\"\n  },\n  \"gitHead\": \"49d2007d982394a4aa9ae17f1893ef0194fbc5c5\"\n}\n"
+    ],
+    [
+      "./packages/vscode-ftejs-lang/client/package.json",
+      "{\n  \"name\": \"ftejs-client\",\n  \"private\": true,\n  \"version\": \"0.0.1\",\n  \"main\": \"dist/extension.js\",\n  \"scripts\": {\n    \"clean\": \"git clean -dfqX -- {dist,node_modules}/** && rm -rf tsconfig.tsbuildinfo dist out\",\n    \"build\": \"bun build.ts\",\n    \"build:bundle\": \"bun build.ts\",\n    \"build:types\": \"tsc -b\",\n    \"watch\": \"bun --watch build.ts\",\n    \"watch:types\": \"tsc -w\",\n    \"typecheck\": \"tsc --noEmit\"\n  },\n  \"dependencies\": {\n    \"fte.js-standalone\": \"3.0.0-canary.d23789d\",\n    \"vscode-languageclient\": \"catalog:dev\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"next\",\n    \"@types/node\": \"latest\",\n    \"@types/vscode\": \"^1.96.0\",\n    \"prettier\": \"^3.6.2\"\n  },\n  \"contributes\": {\n    \"configuration\": {\n      \"title\": \"fte.js\",\n      \"properties\": {\n        \"prettier.documentSelectors\": {\n          \"type\": \"array\",\n          \"default\": [\n            \"template-js\",\n            \"template-html\",\n            \"template-typescript\",\n            \"template-markdown\"\n          ],\n          \"description\": \"Languages to format with Prettier via fte.js (if Prettier is installed).\"\n        }\n      }\n    }\n  }\n}\n"
+    ]
+  ],
+  "catalogs": {
+    "catalog": {
+      "undici-types": "~6.21.0",
+      "@dprint/formatter": "^0.4.1",
+      "@esfx/canceltoken": "^1.0.0",
+      "@octokit/rest": "^21.1.1",
+      "azure-devops-node-api": "^14.1.0",
+      "c8": "^10.1.3",
+      "chokidar": "^4.0.3",
+      "diff": "^7.0.0",
+      "dprint": "^0.49.0",
+      "fast-xml-parser": "^4.5.2",
+      "glob": "^10.4.5",
+      "globals": "^15.15.0",
+      "hereby": "^1.10.0",
+      "jsonc-parser": "^3.3.1",
+      "knip": "^5.44.4",
+      "minimist": "^1.2.8",
+      "monocart-coverage-reports": "^2.12.1",
+      "ms": "^2.1.3",
+      "picocolors": "^1.1.1",
+      "source-map-support": "^0.5.21",
+      "tslib": "^2.8.1",
+      "which": "^3.0.1",
+      "commander": "^10.0.1",
+      "fte.js-base": "workspace:*",
+      "fte.js-parser": "workspace:*",
+      "fte.js-standalone": "workspace:*",
+      "fte.js-templates": "workspace:*",
+      "lodash": "^4.17.21",
+      "mem-fs": "^4.1.2",
+      "mem-fs-editor": "^11.1.4",
+      "ts-morph": "^27.0.0",
+      "detect-indent": "^6.1.0",
+      "del-cli": "^5.0.0",
+      "source-map": "^0.7.4",
+      "fte.js-formatter": "workspace:*",
+      "vscode-languageserver": "catalog:dev",
+      "vscode-languageserver-textdocument": "catalog:dev",
+      "vscode-languageclient": "catalog:dev"
+    },
+    "catalogs": {
+      "build": {
+        "@dprint/typescript": "0.93.4",
+        "@types/chai": "^4.3.20",
+        "@types/diff": "^7.0.1",
+        "@types/minimist": "^1.2.5",
+        "@types/mocha": "^10.0.10",
+        "@types/ms": "^0.7.34",
+        "@types/node": "latest",
+        "@types/source-map-support": "^0.5.10",
+        "@types/which": "^3.0.4",
+        "@typescript-eslint/rule-tester": "^8.24.1",
+        "@typescript-eslint/type-utils": "^8.24.1",
+        "@typescript-eslint/utils": "^8.24.1",
+        "esbuild": "^0.25.10",
+        "typescript": "next",
+        "typescript-eslint": "^8.24.1",
+        "@babel/core": "^7.28.4",
+        "@babel/generator": "^7.28.3",
+        "@babel/parser": "^7.28.4",
+        "@babel/preset-env": "^7.28.3",
+        "@babel/preset-typescript": "^7.27.1",
+        "@babel/traverse": "^7.28.4",
+        "@babel/types": "^7.28.4",
+        "@swc/core": "^1.13.5",
+        "@swc/helpers": "^0.5.17",
+        "@types/babel__core": "^7.20.5",
+        "@types/babel__generator": "^7.27.0",
+        "@types/babel__preset-env": "^7.10.0",
+        "@types/babel__traverse": "^7.28.0",
+        "vitest": "^3.2.4",
+        "@rollup/plugin-replace": "^5.0.2",
+        "@total-typescript/ts-reset": "^0.3.7",
+        "rollup": "^3.17.3",
+        "rollup-plugin-ts": "^3.2.0",
+        "rollup-plugin-tsconfig-paths": "^1.4.0",
+        "@types/source-map": "^0.5.7",
+        "@types/vscode": "^1.96.0"
+      },
+      "dev": {
+        "@types/bun": "^1.0.0",
+        "@types/glob": "^9.0.0",
+        "@types/jest": "^30.0.0",
+        "@types/lodash": "^4.17.20",
+        "@types/mem-fs": "^2.2.0",
+        "@types/mem-fs-editor": "^10.0.1",
+        "@typescript-eslint/eslint-plugin": "8.46.0",
+        "@typescript-eslint/parser": "8.46.0",
+        "eslint": "^9.37.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-unicorn": "^61.0.2",
+        "jest": "^30.2.0",
+        "jest-config": "^30.2.0",
+        "prettier": "^3.6.2",
+        "ts-jest": "^29.4.4",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.8.1",
+        "typescript": "next",
+        "lerna": "^9.0.0",
+        "nx": "^21.6.4",
+        "@types/babel__core": "^7.20.5",
+        "@types/babel__generator": "^7.27.0",
+        "@types/babel__preset-env": "^7.10.0",
+        "@types/babel__traverse": "^7.28.0",
+        "@types/node": "^20.12.8",
+        "@rollup/plugin-replace": "^5.0.2",
+        "@total-typescript/ts-reset": "^0.3.7",
+        "del-cli": "^5.0.0",
+        "rollup": "^3.17.3",
+        "rollup-plugin-ts": "^3.2.0",
+        "rollup-plugin-tsconfig-paths": "^1.4.0",
+        "vscode-languageserver": "^9.0.1",
+        "vscode-languageserver-textdocument": "^1.0.11",
+        "vscode-languageclient": "^9.0.1"
+      },
+      "testing": {
+        "chai": "^4.5.0",
+        "mocha": "^10.8.2",
+        "mocha-fivemat-progress-reporter": "^0.1.0",
+        "playwright": "^1.50.1",
+        "jest": "^29.4.3",
+        "jest-config": "^29.4.3"
+      },
+      "runtime": {
+        "@babel/core": "^7.28.4",
+        "@babel/generator": "^7.28.3",
+        "@babel/parser": "^7.28.4",
+        "@babel/preset-env": "^7.28.3",
+        "@babel/preset-typescript": "^7.27.1",
+        "@babel/traverse": "^7.28.4",
+        "@babel/types": "^7.28.4",
+        "@swc/core": "^1.13.5",
+        "@swc/helpers": "^0.5.17",
+        "@types/source-map": "^0.5.7",
+        "chokidar": "^3.6.0",
+        "commander": "^10.0.1",
+        "glob": "^10.0.0",
+        "lodash": "^4.17.21",
+        "mem-fs": "^4.1.2",
+        "mem-fs-editor": "^11.1.4",
+        "source-map": "^0.7.4",
+        "ts-morph": "^27.0.0"
+      },
+      "development": {
+        "@eslint/js": "^9.20.0",
+        "eslint": "^9.20.1",
+        "eslint-formatter-autolinkable-stylish": "^1.4.0",
+        "eslint-plugin-regexp": "^2.7.0",
+        "prettier": "^3.6.2"
+      },
+      "docs": {}
+    }
+  },
+  "lernaConfig": null
+}

@@ -5,12 +5,28 @@ export default {
     codeblock: 'codeblock.njs',
   },
   script: function (context, _content, partial, slot, options) {
+    const templateContext = (context ?? {}) as any
+    const directives = templateContext.directives ?? {}
+    const contextParam =
+      typeof directives.context === 'string' && directives.context.trim().length > 0
+        ? directives.context
+        : 'context'
+    const requireAsList = Array.isArray(directives.requireAs)
+      ? directives.requireAs
+      : []
+    const ensureRecord = (value: unknown): Record<string, any> =>
+      value && typeof value === 'object' ? (value as Record<string, any>) : {}
+    const ensureBlockList = (value: unknown): Array<any> =>
+      Array.isArray(value) ? value : []
+    const mainBlocks = ensureBlockList(templateContext.main)
+    const blocks = ensureRecord(templateContext.blocks)
+    const slots = ensureRecord(templateContext.slots)
+
     function content<T>(blockName: string, ctx: T) {
-      if (ctx === undefined || ctx === null) ctx = context
+      if (ctx === undefined || ctx === null) ctx = templateContext
       return _content(blockName, ctx, content, partial, slot)
     }
     var out: Array<string> = []
-    const { directives } = context
 
     // Pass sourcemap options to partial
     const partialOptions = {
@@ -22,7 +38,7 @@ export default {
     } as any
 
     // Unwrap partial result which can be string or {code,map}
-    const mainResult: any = partial(context.main, 'codeblock', partialOptions)
+    const mainResult: any = partial(mainBlocks, 'codeblock', partialOptions)
     const mainCode: string =
       typeof mainResult === 'string' ? mainResult : mainResult.code
     out.push('{')
@@ -34,12 +50,12 @@ export default {
       out.push('\n')
       out.push('alias: ' + JSON.stringify(directives.alias) + ',')
     }
-    if (directives.requireAs.length > 0) {
+    if (requireAsList.length > 0) {
       out.push('\n')
       out.push('aliases: {')
       var rq
-      for (var i = 0, len = directives.requireAs.length; i < len; i++) {
-        rq = directives.requireAs[i]
+      for (var i = 0, len = requireAsList.length; i < len; i++) {
+        rq = requireAsList[i]
         out.push('\n')
         out.push('    "' + rq.alias + '": "' + rq.name + '",')
       }
@@ -50,7 +66,7 @@ export default {
     out.push('\n')
     out.push(
       'script: function (' +
-        directives.context +
+        contextParam +
         ', _content, partial, slot, options){\n',
     )
     out.push(
@@ -112,29 +128,36 @@ export default {
     }
     out.push('\n')
     out.push('  },')
-    const blockNames = Object.keys(context.blocks)
+    const blockNames = Object.keys(blocks)
     if (blockNames.length > 0) {
       out.push('\n')
       out.push('  blocks : {')
       for (let i = 0; i < blockNames.length; i += 1) {
-        const block = context.blocks[blockNames[i]]
+        const block = blocks[blockNames[i]]
+        const blockDirectives = block?.directives ?? {}
+        const blockContextParam =
+          typeof blockDirectives.context === 'string' &&
+          blockDirectives.context.trim().length > 0
+            ? blockDirectives.context
+            : 'context'
+        const blockMain = ensureBlockList(block?.main)
         out.push('\n')
         out.push(
           '    "' +
             blockNames[i] +
             '": function(' +
-            block.directives.context +
+            blockContextParam +
             ',  _content, partial, slot, options) {\n',
         )
         out.push(
           options.applyIndent(
-            content('maincontent', block.directives),
+            content('maincontent', blockDirectives),
             '      ',
           ) + '\n',
         )
         out.push('      var out: Array<string> = []\n')
         const blockResult: any = partial(
-          block.main,
+          blockMain,
           'codeblock',
           partialOptions,
         )
@@ -197,28 +220,35 @@ export default {
       out.push('\n')
       out.push('  },')
     }
-    const slotNames = Object.keys(context.slots)
+    const slotNames = Object.keys(slots)
     if (slotNames.length > 0) {
       out.push('\n')
       out.push('  slots : {')
       for (let i = 0; i < slotNames.length; i += 1) {
-        const slot = context.blocks[slotNames[i]]
+        const slot = slots[slotNames[i]]
+        const slotDirectives = slot?.directives ?? {}
+        const slotContextParam =
+          typeof slotDirectives.context === 'string' &&
+          slotDirectives.context.trim().length > 0
+            ? slotDirectives.context
+            : 'context'
+        const slotMain = ensureBlockList(slot?.main)
         out.push('\n')
         out.push(
           '    "' +
             slotNames[i] +
             '": function(' +
-            slot.directives.context +
+            slotContextParam +
             ',  _content, partial, slot, options){\n',
         )
         out.push(
           options.applyIndent(
-            content('maincontent', slot.directives),
+            content('maincontent', slotDirectives),
             '      ',
           ) + '\n',
         )
         out.push('      var out: Array<string> = []\n')
-        const slotResult: any = partial(slot.main, 'codeblock', partialOptions)
+        const slotResult: any = partial(slotMain, 'codeblock', partialOptions)
         const slotCode: string =
           typeof slotResult === 'string' ? slotResult : slotResult.code
         if (typeof slotCode !== 'string') {
@@ -284,10 +314,10 @@ export default {
       out.push('\n')
       out.push('    this.chunks = ' + JSON.stringify(directives.chunks))
     }
-    if (directives.requireAs.length > 0) {
+    if (requireAsList.length > 0) {
       var rq
-      for (var i = 0, len = directives.requireAs.length; i < len; i++) {
-        rq = directives.requireAs[i]
+      for (var i = 0, len = requireAsList.length; i < len; i++) {
+        rq = requireAsList[i]
         out.push('\n')
         out.push('    this.factory.ensure("' + rq.name + '")')
       }
@@ -308,9 +338,9 @@ export default {
           ': true,',
       )
     }
-    if (directives.requireAs.length > 0) {
-      for (var i = 0, len = directives.requireAs.length; i < len; i++) {
-        rq = directives.requireAs[i]
+    if (requireAsList.length > 0) {
+      for (var i = 0, len = requireAsList.length; i < len; i++) {
+        rq = requireAsList[i]
         out.push('\n')
         out.push('    "' + rq.name + '": true,\n')
         out.push('    "' + rq.alias + '": true,')
