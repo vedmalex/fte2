@@ -1,4 +1,4 @@
-import { Parser } from './parser'
+import { Parser } from './parser.js'
 
 export const semanticTokenTypes = [
   'namespace',

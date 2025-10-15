@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         if (context && context.currentProfile && context.currentProfile.toolBarItem) {
             let toolbars = context.currentProfile.toolBarItem;
             let len = toolbars?.length ?? 0;

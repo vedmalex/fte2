@@ -1,8 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("  " + "\n");
-        out.push("  ");
         const makeRelVariants = context.makeRelVariants;
         const iterateRelGroups = context.iterateRelGroups;
         const rels = makeRelVariants(context.relations ?? []);

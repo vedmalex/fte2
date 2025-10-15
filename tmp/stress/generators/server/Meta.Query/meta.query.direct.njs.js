@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         const [namespace, name] = context.name.split('.');
         out.push("\n");
         out.push("Ext.directFn({\n");

@@ -265,9 +265,32 @@ export function build(
       }
     }
 
-    commit()
-      .then((_) => callback())
-      .catch((err) => callback(err))
+    const commitResult = commit()
+    if (commitResult && typeof (commitResult as PromiseLike<unknown>).then === 'function') {
+      ;(commitResult as PromiseLike<unknown>)
+        .then(() => callback())
+        .catch((err) => callback(err))
+    } else if (
+      commitResult &&
+      typeof (commitResult as NodeJS.EventEmitter).once === 'function' &&
+      typeof (commitResult as NodeJS.EventEmitter).on === 'function'
+    ) {
+      const stream = commitResult as NodeJS.ReadableStream
+      let settled = false
+      const done = (err?: unknown) => {
+        if (settled) return
+        settled = true
+        callback(err)
+      }
+      stream.once('error', (streamErr) => done(streamErr))
+      stream.once('finish', () => done())
+      stream.once('close', () => done())
+      if (typeof (stream as { resume?: () => void }).resume === 'function') {
+        stream.resume()
+      }
+    } else {
+      callback()
+    }
   } catch (err) {
     callback(err)
   }

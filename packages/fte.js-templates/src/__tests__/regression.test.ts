@@ -8,7 +8,7 @@ const execAsync = promisify(exec);
 
 describe('Template Generation Regression Test', () => {
   it('should successfully bundle the minimal reproduction template', async () => {
-    const packageRoot = process.cwd();
+    const packageRoot = path.resolve(__dirname, '..', '..');
     const projectRoot = path.resolve(packageRoot, '..', '..');
     const fteCliPath = path.join(projectRoot, 'packages', 'fte.js', 'bin', 'fte.js');
     const templatesPath = path.join(projectRoot, 'demo');

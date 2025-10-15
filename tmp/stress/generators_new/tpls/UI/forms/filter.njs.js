@@ -8,9 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("import React, { useContext } from \"react\";\n");
         out.push("import { withStyles } from '@material-ui/core/styles';\n");
         out.push("import styles from './styles';\n");

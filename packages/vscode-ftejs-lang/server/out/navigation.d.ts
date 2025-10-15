@@ -1,4 +1,4 @@
-import { Location, Position } from 'vscode-languageserver/node';
+import { Location, Position } from 'vscode-languageserver/node.js';
 export declare function getDefinition(docText: string, docUri: string, position: Position, deps: {
     parseContent: (text: string) => any;
     getExtendTargetFrom: (text: string, docUri?: string) => string | null;

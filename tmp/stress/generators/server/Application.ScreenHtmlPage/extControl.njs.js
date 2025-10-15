@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Ext.define(\n");
         out.push("  'Modeleditor.view." + (context.controller ? context.controller : "base") + "." + (context.name) + "',\n");
         out.push("  {\n");

@@ -8,10 +8,7 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push((partial(context, 'core')) + "");
+        out.push((partial(context, 'core')));
         return out.join('');
     },
     compile: function() {

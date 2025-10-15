@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildCodeActions = buildCodeActions;
-const node_1 = require("vscode-languageserver/node");
-const astUtils_1 = require("./astUtils");
-function buildCodeActions(params) {
+import { Position, Range, TextEdit, } from 'vscode-languageserver/node.js';
+import { computeOpenBlocksFromText } from './astUtils.js';
+export function buildCodeActions(params) {
     const { text, uri, range, diagnostics, doc, indentSize, parseContent } = params;
     const actions = [];
     const hasUnmatchedEnd = diagnostics.some((d) => /Unmatched end/.test(d.message));
@@ -11,7 +8,7 @@ function buildCodeActions(params) {
         actions.push({
             title: 'Remove unmatched end',
             kind: 'quickfix',
-            edit: { changes: { [uri]: [node_1.TextEdit.del(range)] } },
+            edit: { changes: { [uri]: [TextEdit.del(range)] } },
         });
     }
     for (const d of diagnostics) {
@@ -39,7 +36,7 @@ function buildCodeActions(params) {
                     diagnostics: [d],
                     edit: {
                         changes: {
-                            [uri]: [node_1.TextEdit.replace({ start: from, end: to }, sanitized)],
+                            [uri]: [TextEdit.replace({ start: from, end: to }, sanitized)],
                         },
                     },
                 });
@@ -52,7 +49,7 @@ function buildCodeActions(params) {
                 title: "Apply left trim '<#-'",
                 kind: 'quickfix',
                 diagnostics: [d],
-                edit: { changes: { [uri]: [node_1.TextEdit.replace(d.range, '<#-')] } },
+                edit: { changes: { [uri]: [TextEdit.replace(d.range, '<#-')] } },
             });
         }
         if (d.message.includes("Consider '-#>")) {
@@ -60,12 +57,12 @@ function buildCodeActions(params) {
                 title: "Apply right trim '-#>'",
                 kind: 'quickfix',
                 diagnostics: [d],
-                edit: { changes: { [uri]: [node_1.TextEdit.replace(d.range, '-#>')] } },
+                edit: { changes: { [uri]: [TextEdit.replace(d.range, '-#>')] } },
             });
         }
     }
     const offset = doc.offsetAt(range.end);
-    const stack = (0, astUtils_1.computeOpenBlocksFromText)(text, offset, parseContent);
+    const stack = computeOpenBlocksFromText(text, offset, parseContent);
     if (stack.length) {
         const indent = ' '.repeat(range.start.character);
         const tags = stack
@@ -75,7 +72,7 @@ function buildCodeActions(params) {
             title: 'Close open template blocks here',
             kind: 'quickfix',
             edit: {
-                changes: { [uri]: [node_1.TextEdit.insert(range.end, `\n${indent}${tags}`)] },
+                changes: { [uri]: [TextEdit.insert(range.end, `\n${indent}${tags}`)] },
             },
         });
     }
@@ -86,7 +83,7 @@ function buildCodeActions(params) {
             kind: 'refactor.rewrite',
             edit: {
                 changes: {
-                    [uri]: [node_1.TextEdit.replace(range, `<#- ${selectionText} -#>`)],
+                    [uri]: [TextEdit.replace(range, `<#- ${selectionText} -#>`)],
                 },
             },
         });
@@ -94,7 +91,7 @@ function buildCodeActions(params) {
             title: 'Wrap with <# ... #>',
             kind: 'refactor.rewrite',
             edit: {
-                changes: { [uri]: [node_1.TextEdit.replace(range, `<# ${selectionText} #>`)] },
+                changes: { [uri]: [TextEdit.replace(range, `<# ${selectionText} #>`)] },
             },
         });
         actions.push({
@@ -143,10 +140,10 @@ function buildCodeActions(params) {
                 idx += 1;
                 varName = `_expr${idx}`;
             }
-            const lineStart = node_1.Position.create(range.start.line, 0);
-            const insertDecl = node_1.TextEdit.insert(lineStart, `<# const ${varName} = ${exprText.trim()} #>\n`);
-            const replaceRange = node_1.Range.create(doc.positionAt(exprStart), doc.positionAt(exprEnd));
-            const replaceExpr = node_1.TextEdit.replace(replaceRange, ` ${varName} `);
+            const lineStart = Position.create(range.start.line, 0);
+            const insertDecl = TextEdit.insert(lineStart, `<# const ${varName} = ${exprText.trim()} #>\n`);
+            const replaceRange = Range.create(doc.positionAt(exprStart), doc.positionAt(exprEnd));
+            const replaceExpr = TextEdit.replace(replaceRange, ` ${varName} `);
             actions.push({
                 title: 'Extract expression to const and use in template',
                 kind: 'refactor.extract',
@@ -158,18 +155,18 @@ function buildCodeActions(params) {
         const m = d.message.match(/^Unknown block name: (.+)$/);
         if (m) {
             const name = m[1];
-            const insertAt = node_1.Position.create(0, 0);
+            const insertAt = Position.create(0, 0);
             const scaffold = `<# block '${name}' : #>\n<# end #>\n`;
             actions.push({
                 title: `Create block '${name}' at file start`,
                 kind: 'quickfix',
-                edit: { changes: { [uri]: [node_1.TextEdit.insert(insertAt, scaffold)] } },
+                edit: { changes: { [uri]: [TextEdit.insert(insertAt, scaffold)] } },
             });
             const curInsert = range.start;
             actions.push({
                 title: `Insert block '${name}' here`,
                 kind: 'quickfix',
-                edit: { changes: { [uri]: [node_1.TextEdit.insert(curInsert, scaffold)] } },
+                edit: { changes: { [uri]: [TextEdit.insert(curInsert, scaffold)] } },
             });
         }
     }

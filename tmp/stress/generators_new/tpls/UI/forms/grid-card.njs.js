@@ -8,9 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("import React, { useContext } from 'react'\n");
         out.push("import Card from '@material-ui/core/Card';\n");
         out.push("import CardActions from '@material-ui/core/CardActions';\n");

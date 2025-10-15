@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Ext.define('Modeleditor.controller." + (context.$namespace) + "." + (context.$name) + "', {\n");
         out.push("  serverModel: '" + (context.$namespace) + "." + (context.$name) + "',\n");
         out.push("  extend: 'Ext.app.Controller',\n");

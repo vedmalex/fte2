@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { source, entity, grid, embedded, sectionLabel, customizable } = context;
         out.push("\n");
         entity.props.forEach((f, index)=>{

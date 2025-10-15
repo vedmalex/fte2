@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         const _ = require('lodash');
         let clMeth = context.clientMethods ?? [];
         let localStateMachine = context.stateMachine;

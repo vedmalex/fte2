@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("const { Type, Query, Schema, Enum, Interface} = require('@grainjs/gql-schema-builder')\n");
         out.push("const gql = require('graphql-tag')\n");
         out.push("const {registerSchema} = require(USEGLOBAL('graphql/registerSchema'))\n");

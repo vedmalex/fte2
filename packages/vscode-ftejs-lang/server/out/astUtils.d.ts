@@ -1,4 +1,4 @@
-import { Position } from 'vscode-languageserver/node';
+import { Position } from 'vscode-languageserver/node.js';
 export type AstNode = {
     type: string;
     pos: number;

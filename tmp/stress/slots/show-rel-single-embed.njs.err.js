@@ -8,12 +8,10 @@ script: function (ctx, _content, partial, slot, options){
     }
     var out = []
     
-    out.push("\n");
-    out.push("\n");
     
       const {entity, f, current} = ctx;
     
-    out.push("");
+    
     //# sourceMappingURL=slots/show-rel-single-embed.njs.js.map
     
       return out.join('')

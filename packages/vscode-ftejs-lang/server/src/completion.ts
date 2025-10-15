@@ -7,7 +7,7 @@ import {
   Location,
   type Position,
   Range,
-} from 'vscode-languageserver/node'
+} from 'vscode-languageserver/node.js'
 
 export function getCompletions(
   docText: string,

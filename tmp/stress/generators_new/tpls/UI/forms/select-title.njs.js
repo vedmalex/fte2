@@ -8,9 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("import React from \"react\";\n");
         out.push("\n");
         out.push("export const inputText = record => record ? (\n");

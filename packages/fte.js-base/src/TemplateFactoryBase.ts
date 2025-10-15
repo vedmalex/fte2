@@ -16,6 +16,59 @@ import type { SourceMapOptions } from './types/source-map'
  * template factory -- it instantiate the templates
  */
 
+class TemplateExecutionError extends Error {
+  public readonly templates: Array<string>
+  public readonly original: Error
+
+  constructor(templates: Array<string>, original: Error) {
+    super(TemplateExecutionError.composeMessage(templates, original))
+    this.name = 'TemplateExecutionError'
+    this.templates = [...templates]
+    this.original = original
+    ;(this as unknown as { cause: Error }).cause = original
+    this.updateStack()
+  }
+
+  public prepend(template: string): void {
+    this.templates.unshift(template)
+    this.message = TemplateExecutionError.composeMessage(
+      this.templates,
+      this.original,
+    )
+    this.updateStack()
+  }
+
+  private static composeMessage(
+    templates: Array<string>,
+    original: Error,
+  ): string {
+    if (templates.length === 0) {
+      return original.message
+    }
+    const [root, ...rest] = templates
+    const via = rest.length > 0 ? ` (caused by ${rest.join(' -> ')})` : ''
+    return `template ${root} failed to execute with error: ${original.message}${via}`
+  }
+
+  private updateStack(): void {
+    const lines = [`${this.name}: ${this.message}`]
+    if (this.original.stack) {
+      lines.push('Caused by:', this.original.stack)
+    }
+    this.stack = lines.join('\n')
+  }
+}
+
+function wrapTemplateError(template: string, err: unknown): Error {
+  if (err instanceof TemplateExecutionError) {
+    err.prepend(template)
+    return err
+  }
+  const original =
+    err instanceof Error ? err : new Error(err === undefined ? '' : String(err))
+  return new TemplateExecutionError([template], original)
+}
+
 export abstract class TemplateFactoryBase<
   OPTIONS extends DefaultFactoryOption = DefaultFactoryOption,
 > {
@@ -168,11 +221,7 @@ export abstract class TemplateFactoryBase<
             try {
               return $this.script(context, content, partial, slot, self.options)
             } catch (e) {
-              throw new Error(
-                `template ${$this.name} failed to execute with error
-                  '${(e as Error).message}
-                  ${(e as Error).stack}'`,
-              )
+              throw wrapTemplateError($this.name, e)
             }
           }
         }
@@ -206,11 +255,7 @@ export abstract class TemplateFactoryBase<
               )
               return await result
             } catch (e) {
-              throw new Error(
-                `template ${$this.name} failed to execute with error
-                  '${(e as Error).message}
-                  ${(e as Error).stack}'`,
-              )
+              throw wrapTemplateError($this.name, e)
             }
           }
         }

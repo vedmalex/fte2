@@ -1,42 +1,6 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCompletions = getCompletions;
-const fs = __importStar(require("fs"));
-const node_1 = require("vscode-languageserver/node");
-function getCompletions(docText, docUri, position, deps) {
+import * as fs from 'fs';
+import { CompletionItemKind, InsertTextFormat, } from 'vscode-languageserver/node.js';
+export function getCompletions(docText, docUri, position, deps) {
     const text = docText;
     const offset = (() => {
         const lines = text.split(/\r?\n/);
@@ -53,37 +17,37 @@ function getCompletions(docText, docUri, position, deps) {
     if (/<#@\s+[\w-]*$/.test(prefix)) {
         items.push(...Object.keys(usageDocs.directives).map((d) => ({
             label: d,
-            kind: node_1.CompletionItemKind.Keyword,
+            kind: CompletionItemKind.Keyword,
             documentation: usageDocs.directives[d] || undefined,
         })));
     }
     if (/<#-?\s*(block|slot)\s+['"`][^'"`]*$/.test(prefix)) {
-        items.push({ label: 'end', kind: node_1.CompletionItemKind.Keyword });
+        items.push({ label: 'end', kind: CompletionItemKind.Keyword });
     }
     if (/<#-?\s*$/.test(prefix)) {
         const snippets = [
             {
                 label: 'block (with end)',
-                kind: node_1.CompletionItemKind.Snippet,
-                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                kind: CompletionItemKind.Snippet,
+                insertTextFormat: InsertTextFormat.Snippet,
                 insertText: "<# block '${1:name}' : #>\n\t$0\n<# end #>",
             },
             {
                 label: 'block trimmed (with end)',
-                kind: node_1.CompletionItemKind.Snippet,
-                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                kind: CompletionItemKind.Snippet,
+                insertTextFormat: InsertTextFormat.Snippet,
                 insertText: "<#- block '${1:name}' : -#>\n\t$0\n<#- end -#>",
             },
             {
                 label: 'slot (with end)',
-                kind: node_1.CompletionItemKind.Snippet,
-                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                kind: CompletionItemKind.Snippet,
+                insertTextFormat: InsertTextFormat.Snippet,
                 insertText: "<# slot '${1:name}' : #>\n\t$0\n<# end #>",
             },
             {
                 label: 'slot trimmed (with end)',
-                kind: node_1.CompletionItemKind.Snippet,
-                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                kind: CompletionItemKind.Snippet,
+                insertTextFormat: InsertTextFormat.Snippet,
                 insertText: "<#- slot '${1:name}' : -#>\n\t$0\n<#- end -#>",
             },
         ];
@@ -92,7 +56,7 @@ function getCompletions(docText, docUri, position, deps) {
     if (/#\{\s*[\w$]*$/.test(prefix)) {
         const f = (name) => ({
             label: name,
-            kind: node_1.CompletionItemKind.Function,
+            kind: CompletionItemKind.Function,
             documentation: usageDocs.functions[name] || undefined,
         });
         items.push(f('content'), f('partial'), f('slot'), f('chunkStart'), f('chunkEnd'));
@@ -116,7 +80,7 @@ function getCompletions(docText, docUri, position, deps) {
                     seen.add(k);
             }
             for (const name of seen) {
-                items.push({ label: name, kind: node_1.CompletionItemKind.Text });
+                items.push({ label: name, kind: CompletionItemKind.Text });
             }
         }
     }

@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         let properties = [
             ...context.gridviewProps
         ].sort((a, b)=>a.property.propertyName > b.property.propertyName ? 1 : -1);
@@ -290,8 +289,7 @@ module.exports = {
         out.push("      },\n");
         out.push("    },\n");
         out.push("  },\n");
-        out.push("})\n");
-        out.push("");
+        out.push("})");
         return out.join('');
     },
     compile: function() {},

@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const rels = entity.props.filter((f)=>f.ref).filter((r)=>!r.single && !r.ref.embedded);
         out.push("\n");
         out.push("\n");
@@ -32,10 +30,7 @@ module.exports = {
         out.push((content('actions')) + "\n");
         out.push("\n");
         out.push("// rel buttons\n");
-        out.push((content('add-buttons')) + "\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("");
+        out.push((content('add-buttons')));
         return out.join('');
     },
     blocks: {
@@ -45,7 +40,6 @@ module.exports = {
                 return _content(blockName, ctx, content, partial, slot);
             }
             var out = [];
-            out.push("\n");
             entity.actions.forEach((action)=>{
                 out.push("\n");
                 out.push("export const " + (action.actionName) + " = '" + (action.actionName) + "';\n");
@@ -98,8 +92,7 @@ module.exports = {
                 out.push("  },\n");
             });
             out.push("\n");
-            out.push("}\n");
-            out.push("");
+            out.push("}");
             return out.join('');
         },
         "add-buttons": function(entity, _content, partial, slot, options) {
@@ -108,8 +101,6 @@ module.exports = {
                 return _content(blockName, ctx, content, partial, slot);
             }
             var out = [];
-            out.push("\n");
-            out.push("\n");
             out.push("const Add" + (entity.name) + " = ({ record, target, label, children }) => {\n");
             out.push("  const location = useLocation()\n");
             out.push("  const uix = useContext(UIXContext);\n");

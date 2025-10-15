@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { entity, f, source, readonly } = ctx;
         out.push("\n");
         const type = `${(f.calculated || f.readonly || readonly) ? 'Readonly' + f.type : f.type}`;

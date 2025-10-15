@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const listActions = entity.actions.filter((a)=>a.actionType === 'listAction');
         out.push("\n");
         const itemActions = entity.actions.filter((a)=>a.actionType === 'itemAction');

@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Grainjs.RegisterProfile('" + (context.currentProfile.name) + "')\n");
         out.push("\n");
         out.push("let gl = require(global.global.USEGLOBAL('/app/server/direct/global.js'))\n");
@@ -15,8 +14,7 @@ module.exports = {
         out.push("      para.profileName = '" + (context.currentProfile.name) + "'\n");
         out.push("      gl.readAppNavigation(para, this)\n");
         out.push("    },\n");
-        out.push("  })\n");
-        out.push("  ");
+        out.push("  })");
         return out.join('');
     },
     compile: function() {},

@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { entity, f, source, grid, embedded, sectionLabel, customizable } = ctx;
         out.push("\n");
         const e = entity.model.entities.find((e)=>e.name === f.ref.entity);
@@ -30,8 +28,7 @@ module.exports = {
             out.push("<uix.HeaderLabel text=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\" />\n");
         }
         out.push("\n");
-        out.push((partial(context, 'display-show-entity')) + "\n");
-        out.push("");
+        out.push((partial(context, 'display-show-entity')));
         return out.join('');
     },
     compile: function() {

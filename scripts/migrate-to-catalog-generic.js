@@ -360,7 +360,7 @@ Configuration:
         // Поддержка как простых паттернов, так и сложных выражений
         if (pattern.includes('*')) {
           const files = execSync(
-            `find . -name "package.json" -path "./${pattern}" -type f`,
+            `find . -name "package.json" -path "./${pattern}" -not -path "*/node_modules/*" -type f`,
             {
               encoding: 'utf8',
               cwd: this.rootDir,

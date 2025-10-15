@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const rels = entity.props.filter((f)=>f.ref).filter((r)=>!r.single && !r.ref.embedded);
         out.push("\n");
         const btRels = entity.props.filter((f)=>f.ref).filter((r)=>r.verb === 'BelongsTo');
@@ -274,8 +272,6 @@ module.exports = {
                 return _content(blockName, ctx, content, partial, slot);
             }
             var out = [];
-            out.push("\n");
-            out.push("\n");
             if (btRels.length > 0) {
                 out.push("\n");
                 out.push("  let redirect = 'edit';\n");
@@ -283,7 +279,6 @@ module.exports = {
                 out.push("    redirect =  props.location.state.pathname;\n");
                 out.push("  }\n");
             }
-            out.push("");
             return out.join('');
         }
     },

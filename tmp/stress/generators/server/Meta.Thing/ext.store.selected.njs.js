@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         let $namespace = "";
         let nsa = [];
         for(let i = 0; i < context.normalizedName.length - 1; i++){

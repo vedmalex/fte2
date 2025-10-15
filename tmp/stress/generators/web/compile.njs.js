@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("var Factory = require(\"fte.js\").Factory;\n");
         out.push("global.fte = new Factory();\n");
         var item;

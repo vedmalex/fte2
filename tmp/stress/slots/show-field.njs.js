@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { entity, f } = ctx;
         out.push("\n");
         const type = (f.type == "Number" ? "Text" : f.type) + 'Field';

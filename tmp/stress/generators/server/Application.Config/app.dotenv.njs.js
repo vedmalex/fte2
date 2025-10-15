@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("DEBUG_STAGE_TIMEOUT=10000\n");
         out.push("DEBUG_APP=false\n");
         out.push("NO_CLIENT_CACHE=" + (context.noClientCache) + "\n");
@@ -48,7 +47,6 @@ module.exports = {
                 out.push((key) + "=" + (env[key]) + "\n");
             }
         }
-        out.push("");
         return out.join('');
     },
     compile: function() {},

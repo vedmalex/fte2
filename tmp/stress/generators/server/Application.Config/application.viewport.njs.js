@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Ext.define(\"Modeleditor.view." + (context.name) + (context.currentProfile.name) + ".Viewport\", {\n");
         out.push("  extend: \"Ext.panel.Panel\",\n");
         out.push("  require: [\n");

@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push((partial(model, 'ui-index')) + "\n");
         for (const entity of model.entities){
             out.push("\n");

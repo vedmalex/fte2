@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { entity, f, source, sectionLabel, readonly, grid, customizable } = ctx;
         out.push("\n");
         const e = entity.model.entities.find((e)=>e.name === f.ref.entity);

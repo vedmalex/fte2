@@ -44,7 +44,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
         const [ns, thingType] = context.thingType.split('.');
         out.push("\n");
         out.push("\n");
@@ -192,9 +191,6 @@ module.exports = {
         out.push("    Ext.define('things." + (ns) + ".app." + (thingType) + "',{});\n");
         out.push("})\n");
         chunkEnd();
-        out.push("\n");
-        out.push("\n");
-        out.push("");
         chunkEnd();
         out = Object.keys(result).filter((i)=>i !== '$$$main$$$').map((curr)=>({
                 name: curr,

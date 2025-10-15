@@ -8,9 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("import React, { useContext } from \"react\";\n");
         out.push("import { UIXContext } from '../contexts';\n");
         out.push("import { useTranslate } from 'react-admin';\n");

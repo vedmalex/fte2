@@ -101,8 +101,6 @@ module.exports = {
             out.push("\n");
             out.push("Ext.define('namespace." + (context.name) + "',{});\n");
         }
-        out.push("\n");
-        out.push("");
         return out.join('');
     },
     compile: function() {},

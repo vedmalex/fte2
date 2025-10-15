@@ -1,10 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.semanticTokenModifiers = exports.semanticTokenTypes = void 0;
-exports.buildSemanticTokensFromText = buildSemanticTokensFromText;
-exports.buildSemanticTokensFromAst = buildSemanticTokensFromAst;
-const parser_1 = require("./parser");
-exports.semanticTokenTypes = [
+import { Parser } from './parser.js';
+export const semanticTokenTypes = [
     'namespace',
     'type',
     'class',
@@ -28,7 +23,7 @@ exports.semanticTokenTypes = [
     'regexp',
     'operator',
 ];
-exports.semanticTokenModifiers = [
+export const semanticTokenModifiers = [
     'declaration',
     'definition',
     'readonly',
@@ -40,11 +35,11 @@ exports.semanticTokenModifiers = [
     'documentation',
     'defaultLibrary',
 ];
-function buildSemanticTokensFromText(text) {
-    const ast = parser_1.Parser.parse(text);
+export function buildSemanticTokensFromText(text) {
+    const ast = Parser.parse(text);
     return buildSemanticTokensFromAst(text, ast);
 }
-function buildSemanticTokensFromAst(text, ast) {
+export function buildSemanticTokensFromAst(text, ast) {
     if (!ast || !Array.isArray(ast.main))
         return [];
     const tokens = [];

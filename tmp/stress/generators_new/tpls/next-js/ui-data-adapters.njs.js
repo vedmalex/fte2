@@ -47,9 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart(`fragments.js`);
         out.push("\n");
         out.push("import gql from 'graphql-tag';\n");

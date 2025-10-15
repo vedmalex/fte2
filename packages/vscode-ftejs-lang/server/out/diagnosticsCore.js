@@ -1,43 +1,7 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeDiagnosticsFromText = computeDiagnosticsFromText;
-const fs = __importStar(require("fs"));
-const path = __importStar(require("path"));
-const astUtils_1 = require("./astUtils");
-function computeDiagnosticsFromText(text, workspaceRoots = []) {
+import * as fs from 'fs';
+import * as path from 'path';
+import { getTemplatePathVariants } from './astUtils.js';
+export function computeDiagnosticsFromText(text, workspaceRoots = []) {
     const diags = [];
     try {
         const openRe = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+?)\2\s*:\s*-?\s*#>/g;
@@ -105,7 +69,7 @@ function computeDiagnosticsFromText(text, workspaceRoots = []) {
             const exists = (rel) => {
                 for (const base of bases) {
                     const p = path.isAbsolute(rel) ? rel : path.join(base, rel);
-                    const variants = (0, astUtils_1.getTemplatePathVariants)(p);
+                    const variants = getTemplatePathVariants(p);
                     for (const v of variants) {
                         if (fs.existsSync(v))
                             return true;

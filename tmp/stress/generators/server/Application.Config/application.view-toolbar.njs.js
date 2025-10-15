@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         context.currentProfile.toolBarItem.sort(function(a, b) {
             if (a !== undefined && b !== undefined) return a.itemIndex - b.itemIndex;
             return 0;

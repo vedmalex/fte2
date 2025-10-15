@@ -44,10 +44,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart("dir.txt");
         out.push("\n");
         out.push((partial(null, 'file.njs')));

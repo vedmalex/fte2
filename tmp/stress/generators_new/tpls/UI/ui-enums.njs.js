@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart(`${_enum.name}/index.js`);
         out.push("\n");
         out.push("import React, { useContext } from 'react';\n");

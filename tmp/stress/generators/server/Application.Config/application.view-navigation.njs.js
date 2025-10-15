@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Ext.define('Modeleditor.view." + (context.name) + (context.currentProfile.name) + ".Navigation', {\n");
         out.push("extend: 'Ext.tab.Panel',\n");
         out.push("alias: 'widget." + (context.name.toLowerCase()) + (context.currentProfile.name.toLowerCase()) + "navigation',\n");

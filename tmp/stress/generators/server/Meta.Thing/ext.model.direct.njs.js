@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("let pipeline = require('pipeline.js');\n");
         out.push("let { deep_has_own, deep_rename_field } = require(\"@grainjs/loaders\")\n");
         out.push("let Context = require('pipeline.js').Context;\n");

@@ -6,8 +6,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const separatedItems = Object.keys(items.reduce((res, it)=>{
             it.split(',').map((i)=>i.trim()).filter((f)=>f).reduce((r, cur)=>{
                 r[cur] = 1;

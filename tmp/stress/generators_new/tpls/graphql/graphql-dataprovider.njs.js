@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         model.enums.forEach((item)=>{
             out.push("\n");
             chunkStart(`graphql/${item.name}/index.js`);
@@ -938,7 +934,6 @@ module.exports = {
             chunkEnd();
             out.push("\n");
         });
-        out.push("");
         chunkEnd();
         out = Object.keys(result).filter((i)=>i !== 'graphql-provider.js').map((curr)=>({
                 name: curr,

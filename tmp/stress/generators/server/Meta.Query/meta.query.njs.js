@@ -1,10 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("if (typeof(global.CustomQuery) == 'undefined') global.CustomQuery = {};\n");
         out.push("\n");
         out.push("let ComplexQuery  = require(\"@grainjs/loaders\").ComplexQuery;\n");

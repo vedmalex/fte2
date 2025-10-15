@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("#!upstart\n");
         out.push("description \"run app server for Modeleditor\"\n");
         out.push("author      \"grain.js-framework\"\n");

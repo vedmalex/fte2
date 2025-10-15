@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         out.push("import React, {Component} from \"react\";\n");
         out.push("import PropTypes from 'prop-types';\n");
         out.push("import { connect } from 'react-redux';\n");

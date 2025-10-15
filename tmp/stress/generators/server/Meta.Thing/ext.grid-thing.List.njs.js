@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         const getToolbar = context.getToolbar;
         let properties = context.gridviewProps;
         const config = context.getThingConfig(context);

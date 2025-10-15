@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("Ext.define('Modeleditor.view." + (context.$namespace) + ".Edit." + (context.$name) + "', {\n");
         out.push("  serverModel: '" + (context.$normalizedName) + "',\n");
         out.push("  // requires: [" + (context.requires) + "],\n");

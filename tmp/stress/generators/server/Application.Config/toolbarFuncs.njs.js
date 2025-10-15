@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         if (context && context.currentProfile && context.currentProfile.toolBarItem) {
             out.push("\n");
             out.push("/*START TOOLBAR FUNCTIONS*/\n");

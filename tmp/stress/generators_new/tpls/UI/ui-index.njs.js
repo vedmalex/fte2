@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart(`./resources.js`);
         out.push("\n");
         out.push("const embedded = {\n");

@@ -8,9 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("import React, { useContext } from 'react';\n");
         out.push("import useMediaQuery from '@material-ui/core/useMediaQuery';\n");
         out.push("import Title  from './title';\n");

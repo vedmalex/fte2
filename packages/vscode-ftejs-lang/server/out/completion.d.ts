@@ -1,4 +1,4 @@
-import { type CompletionItem, type Position } from 'vscode-languageserver/node';
+import { type CompletionItem, type Position } from 'vscode-languageserver/node.js';
 export declare function getCompletions(docText: string, docUri: string, position: Position, deps: {
     usageDocs: {
         functions: Record<string, string>;

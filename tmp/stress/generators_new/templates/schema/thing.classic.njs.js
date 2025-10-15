@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("var utils                = require('@grainjs/meta-codegen').utils;\n");
         out.push("var mongoose             = global.mongoose\n");
         out.push("var mongooseIncr         = require(\"@grainjs/mongoose-autoincr\");\n");

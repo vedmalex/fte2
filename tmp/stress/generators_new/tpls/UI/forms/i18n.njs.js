@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const rels = entity.props.filter((f)=>f.ref).filter((r)=>!r.single && !r.ref.embedded);
         out.push("\n");
         out.push("\n");

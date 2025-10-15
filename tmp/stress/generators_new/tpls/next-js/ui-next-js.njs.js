@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push((partial(model, 'ui-data-adapters')) + "\n");
         out.push((partial(model, 'ui-next-js-root')) + "\n");
         out.push((partial(model, 'ui-root')));

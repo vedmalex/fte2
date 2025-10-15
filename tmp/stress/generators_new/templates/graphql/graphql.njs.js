@@ -274,8 +274,6 @@ module.exports = {
     blocks: {
         "gqlprops": function(context, _content, partial, slot, options) {
             var out = [];
-            out.push("\n");
-            out.push("\n");
             const hasChilds = context.hasChilds(context.thingType);
             var getType = function(name) {
                 switch(name.toLowerCase()){
@@ -335,7 +333,6 @@ module.exports = {
                 out.push("    childRel:" + (context.GQLName(context.thingType)) + "Edges\n");
                 out.push("  ");
             }
-            out.push("");
             return out.join('');
         }
     },

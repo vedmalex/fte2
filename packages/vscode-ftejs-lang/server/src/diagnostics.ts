@@ -6,8 +6,8 @@ import {
   Position,
   Range,
   type TextDocument,
-} from 'vscode-languageserver/node'
-import { getTemplatePathVariants, resolveTemplateRel } from './astUtils'
+} from 'vscode-languageserver/node.js'
+import { getTemplatePathVariants, resolveTemplateRel } from './astUtils.js'
 
 export type FileIndexLite = {
   requireAs: Map<string, string>

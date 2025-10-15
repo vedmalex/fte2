@@ -22,20 +22,20 @@ import {
   TextDocumentSyncKind,
   TextDocuments,
   TextEdit,
-} from 'vscode-languageserver/node'
+} from 'vscode-languageserver/node.js'
 import { TextDocument } from 'vscode-languageserver-textdocument'
-import { getCompletions } from './completion'
-import { computeDiagnostics as computeDiagnosticsExternal } from './diagnostics'
+import { getCompletions } from './completion.js'
+import { computeDiagnostics as computeDiagnosticsExternal } from './diagnostics.js'
 import {
   extractInstructionCodeView,
   extractTemplateCodeView,
-} from './formatterCore'
-import { getDefinition, getHover, getReferences } from './navigation'
+} from './formatterCore.js'
+import { getDefinition, getHover, getReferences } from './navigation.js'
 import {
   buildSemanticTokensFromText,
   semanticTokenModifiers,
   semanticTokenTypes,
-} from './semanticTokens'
+} from './semanticTokens.js'
 
 // External formatter/linter adapters
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -50,8 +50,8 @@ import {
   extractBlockAndSlotSymbols,
   getExtendTargetFrom as getExtendTargetFromUtil,
   walkAstNodes,
-} from './astUtils'
-import { Parser as LocalParser } from './parser'
+} from './astUtils.js'
+import { Parser as LocalParser } from './parser.js'
 
 // Using embedded parser - no external dependencies (MUST_HAVE.md point 12)
 // Parser is directly embedded in the extension for maximum reliability

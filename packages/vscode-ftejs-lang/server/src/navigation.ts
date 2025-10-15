@@ -6,8 +6,8 @@ import {
   Location,
   Position,
   Range,
-} from 'vscode-languageserver/node'
-import { posFromOffset, resolveTemplateRel } from './astUtils'
+} from 'vscode-languageserver/node.js'
+import { posFromOffset, resolveTemplateRel } from './astUtils.js'
 
 function offsetFromPosition(text: string, position: Position): number {
   let off = 0

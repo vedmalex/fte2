@@ -47,9 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart(`index.js`);
         out.push("\n");
         out.push("\n");

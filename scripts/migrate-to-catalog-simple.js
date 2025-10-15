@@ -280,7 +280,7 @@ Migration Logic:
     for (const pattern of this.config.workspacePatterns) {
       try {
         const files = execSync(
-          `find . -name "package.json" -path "./${pattern}" -type f`,
+          `find . -name "package.json" -path "./${pattern}" -not -path "*/node_modules/*" -type f`,
           {
             encoding: 'utf8',
             cwd: this.rootDir,

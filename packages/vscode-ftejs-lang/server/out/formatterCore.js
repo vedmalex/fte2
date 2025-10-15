@@ -1,7 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractTemplateCodeView = extractTemplateCodeView;
-exports.extractInstructionCodeView = extractInstructionCodeView;
 function getHostAdapter(host) {
     const resolved = host || 'html';
     if (resolved === 'html' || resolved === 'markdown') {
@@ -17,7 +13,7 @@ function escapeForStringLiteral(text, quote) {
         .replace(/\r/g, '\\r')
         .replace(/\n/g, '\\n');
 }
-function extractTemplateCodeView(originalText, ast, options = {}) {
+export function extractTemplateCodeView(originalText, ast, options = {}) {
     const tokens = Array.isArray(ast?.tokens) ? ast.tokens : [];
     if (!tokens.length)
         return { code: originalText };
@@ -60,7 +56,7 @@ function extractTemplateCodeView(originalText, ast, options = {}) {
     }
     return { code: out.join('') };
 }
-function extractInstructionCodeView(originalText, ast, options = {}) {
+export function extractInstructionCodeView(originalText, ast, options = {}) {
     const tokens = Array.isArray(ast?.tokens) ? ast.tokens : [];
     if (!tokens.length)
         return { code: '' };

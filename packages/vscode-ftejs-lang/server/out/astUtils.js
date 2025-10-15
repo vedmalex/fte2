@@ -1,67 +1,8 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeOpenBlocksFromAst = computeOpenBlocksFromAst;
-exports.buildEndTagFor = buildEndTagFor;
-exports.computePairsFromAst = computePairsFromAst;
-exports.walkAstNodes = walkAstNodes;
-exports.getTemplatePathVariants = getTemplatePathVariants;
-exports.posFromOffset = posFromOffset;
-exports.getExtendTargetFrom = getExtendTargetFrom;
-exports.resolveTemplatePath = resolveTemplatePath;
-exports.resolveTemplateRel = resolveTemplateRel;
-exports.isTemplateTagLine = isTemplateTagLine;
-exports.stripStringsAndComments = stripStringsAndComments;
-exports.computeJsCodeDelta = computeJsCodeDelta;
-exports.collectAllASTSegments = collectAllASTSegments;
-exports.extractBlockAndSlotSymbols = extractBlockAndSlotSymbols;
-exports.computeOpenBlocksFromText = computeOpenBlocksFromText;
-exports.validateStructureAndCollectErrors = validateStructureAndCollectErrors;
-exports.collectUnknownContentRefs = collectUnknownContentRefs;
-exports.collectUnresolvedPartials = collectUnresolvedPartials;
-exports.collectDuplicateDeclarations = collectDuplicateDeclarations;
-exports.collectTrimWhitespaceHints = collectTrimWhitespaceHints;
-exports.validateDirectivesInText = validateDirectivesInText;
-exports.collectExtendParentIssues = collectExtendParentIssues;
-exports.collectUnknownContentAgainstParent = collectUnknownContentAgainstParent;
-exports.collectChildBlocksMissingInParent = collectChildBlocksMissingInParent;
-const fs = __importStar(require("fs"));
-const path = __importStar(require("path"));
-const url = __importStar(require("url"));
-const node_1 = require("vscode-languageserver/node");
-function computeOpenBlocksFromAst(nodes, upTo) {
+import * as fs from 'fs';
+import * as path from 'path';
+import * as url from 'url';
+import { Position } from 'vscode-languageserver/node.js';
+export function computeOpenBlocksFromAst(nodes, upTo) {
     const limit = typeof upTo === 'number' ? upTo : Number.POSITIVE_INFINITY;
     const stack = [];
     for (const node of nodes) {
@@ -83,12 +24,12 @@ function computeOpenBlocksFromAst(nodes, upTo) {
     }
     return stack;
 }
-function buildEndTagFor(item) {
+export function buildEndTagFor(item) {
     const openTrim = item.trimmedOpen ? '-' : '';
     const closeTrim = item.trimmedClose ? '-' : '';
     return `<#${openTrim} end ${closeTrim}#>`;
 }
-function computePairsFromAst(nodes) {
+export function computePairsFromAst(nodes) {
     const pairs = [];
     const stack = [];
     for (const n of nodes) {
@@ -107,7 +48,7 @@ function computePairsFromAst(nodes) {
     }
     return pairs;
 }
-function walkAstNodes(ast, callback) {
+export function walkAstNodes(ast, callback) {
     if (!ast || !Array.isArray(ast.main))
         return;
     for (const node of ast.main) {
@@ -116,7 +57,7 @@ function walkAstNodes(ast, callback) {
             break;
     }
 }
-function getTemplatePathVariants(basePath) {
+export function getTemplatePathVariants(basePath) {
     try {
         const shared = require('../../shared/template-extensions.js');
         const variants = shared.getTemplatePathVariants?.(basePath);
@@ -126,7 +67,7 @@ function getTemplatePathVariants(basePath) {
     catch { }
     return [basePath, basePath + '.njs', basePath + '.nhtml', basePath + '.nts'];
 }
-function posFromOffset(text, offset) {
+export function posFromOffset(text, offset) {
     let line = 0;
     let col = 0;
     for (let i = 0; i < offset && i < text.length; i++) {
@@ -139,9 +80,9 @@ function posFromOffset(text, offset) {
             col++;
         }
     }
-    return node_1.Position.create(line, col);
+    return Position.create(line, col);
 }
-function getExtendTargetFrom(text, docUri, parseContent) {
+export function getExtendTargetFrom(text, docUri, parseContent) {
     const ast = parseContent(text);
     if (ast && Array.isArray(ast.main)) {
         for (const node of ast.main) {
@@ -162,7 +103,7 @@ function getExtendTargetFrom(text, docUri, parseContent) {
         return null;
     return resolveTemplatePath(rel, docUri);
 }
-function resolveTemplatePath(rel, docUri) {
+export function resolveTemplatePath(rel, docUri) {
     try {
         const currentDir = docUri && docUri.startsWith('file:')
             ? path.dirname(url.fileURLToPath(docUri))
@@ -185,7 +126,7 @@ function resolveTemplatePath(rel, docUri) {
     catch { }
     return null;
 }
-function resolveTemplateRel(rel, docUri, workspaceRoots) {
+export function resolveTemplateRel(rel, docUri, workspaceRoots) {
     try {
         const currentDir = docUri && docUri.startsWith('file:')
             ? path.dirname(url.fileURLToPath(docUri))
@@ -207,17 +148,17 @@ function resolveTemplateRel(rel, docUri, workspaceRoots) {
     catch { }
     return null;
 }
-function isTemplateTagLine(line) {
+export function isTemplateTagLine(line) {
     return /<#|#>|#\{|!\{|<%|%>/.test(line);
 }
-function stripStringsAndComments(line) {
+export function stripStringsAndComments(line) {
     let res = line.replace(/\/\/.*$/, '');
     res = res.replace(/'(?:\\.|[^'\\])*'/g, "'");
     res = res.replace(/"(?:\\.|[^"\\])*"/g, '"');
     res = res.replace(/`(?:\\.|[^`\\])*`/g, '`');
     return res;
 }
-function computeJsCodeDelta(line) {
+export function computeJsCodeDelta(line) {
     const trimmed = line.trimStart();
     let dedentFirst = /^(}|\)|\]|case\b|default\b)/.test(trimmed) ? 1 : 0;
     if (/^default\b/.test(trimmed)) {
@@ -229,7 +170,7 @@ function computeJsCodeDelta(line) {
     const delta = opens - closes;
     return { dedentFirst, delta };
 }
-function collectAllASTSegments(ast) {
+export function collectAllASTSegments(ast) {
     if (!ast)
         return [];
     const allSegments = [];
@@ -316,7 +257,7 @@ function collectAllASTSegments(ast) {
     segmentsByPos.sort((a, b) => a.pos - b.pos);
     return segmentsByPos.map((item) => item.segment);
 }
-function extractBlockAndSlotSymbols(ast) {
+export function extractBlockAndSlotSymbols(ast) {
     const blocks = [];
     const slots = [];
     if (!ast)
@@ -345,7 +286,7 @@ function extractBlockAndSlotSymbols(ast) {
     }
     return { blocks, slots };
 }
-function computeOpenBlocksFromText(text, upTo, parseContent) {
+export function computeOpenBlocksFromText(text, upTo, parseContent) {
     const ast = parseContent(text);
     const limit = typeof upTo === 'number' ? upTo : text.length;
     if (ast && Array.isArray(ast.main)) {
@@ -353,7 +294,7 @@ function computeOpenBlocksFromText(text, upTo, parseContent) {
     }
     return [];
 }
-function validateStructureAndCollectErrors(text, parseContent) {
+export function validateStructureAndCollectErrors(text, parseContent) {
     const ast = parseContent(text);
     const unmatchedEnds = [];
     const unclosed = [];
@@ -386,7 +327,7 @@ function validateStructureAndCollectErrors(text, parseContent) {
     }
     return { unmatchedEnds, unclosed, parserErrors };
 }
-function collectUnknownContentRefs(text, docUri, parseContent, getExtendTargetFrom) {
+export function collectUnknownContentRefs(text, docUri, parseContent, getExtendTargetFrom) {
     const ast = parseContent(text);
     const result = [];
     const known = new Set(Object.keys(ast?.blocks || {}));
@@ -418,7 +359,7 @@ function collectUnknownContentRefs(text, docUri, parseContent, getExtendTargetFr
     }
     return result;
 }
-function collectUnresolvedPartials(text, docUri, parseContent, fileIndex, workspaceRoots) {
+export function collectUnresolvedPartials(text, docUri, parseContent, fileIndex, workspaceRoots) {
     const ast = parseContent(text);
     const res = [];
     const partialRe = /partial\(\s*[^,]+,\s*(["'`])([^"'`]+)\1/g;
@@ -459,7 +400,7 @@ function collectUnresolvedPartials(text, docUri, parseContent, fileIndex, worksp
     }
     return res;
 }
-function collectDuplicateDeclarations(text, parseContent) {
+export function collectDuplicateDeclarations(text, parseContent) {
     const ast = parseContent(text);
     const out = [];
     const seen = {};
@@ -480,7 +421,7 @@ function collectDuplicateDeclarations(text, parseContent) {
     }
     return out;
 }
-function collectTrimWhitespaceHints(text) {
+export function collectTrimWhitespaceHints(text) {
     const hints = [];
     try {
         const leftRx = /(\n?)([ \t]*)<#/g;
@@ -521,7 +462,7 @@ function collectTrimWhitespaceHints(text) {
     catch { }
     return hints;
 }
-function validateDirectivesInText(text) {
+export function validateDirectivesInText(text) {
     const issues = [];
     try {
         const DIRECTIVES = [
@@ -658,7 +599,7 @@ function validateDirectivesInText(text) {
     catch { }
     return issues;
 }
-function collectExtendParentIssues(text, docUri, parseContent, workspaceRoots) {
+export function collectExtendParentIssues(text, docUri, parseContent, workspaceRoots) {
     const issues = [];
     try {
         const ast = parseContent(text);
@@ -706,7 +647,7 @@ function collectExtendParentIssues(text, docUri, parseContent, workspaceRoots) {
     catch { }
     return issues;
 }
-function collectUnknownContentAgainstParent(text, docUri, parseContent, getExtendTargetFrom) {
+export function collectUnknownContentAgainstParent(text, docUri, parseContent, getExtendTargetFrom) {
     const out = [];
     try {
         const ast = parseContent(text);
@@ -734,7 +675,7 @@ function collectUnknownContentAgainstParent(text, docUri, parseContent, getExten
     catch { }
     return out;
 }
-function collectChildBlocksMissingInParent(text, docUri, parseContent, getExtendTargetFrom) {
+export function collectChildBlocksMissingInParent(text, docUri, parseContent, getExtendTargetFrom) {
     const res = [];
     try {
         const ast = parseContent(text);

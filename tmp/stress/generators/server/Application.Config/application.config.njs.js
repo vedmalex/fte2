@@ -1,7 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
         out.push("global.STARTTIME = new Date('" + ((new Date()).toGMTString()) + "');\n");
         out.push("\n");
         out.push("const debug = process.env.DEBUG_APP?.toLowerCase() == 'true'\n");

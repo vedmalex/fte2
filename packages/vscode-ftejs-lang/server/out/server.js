@@ -1,54 +1,19 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = __importStar(require("fs"));
-const path = __importStar(require("path"));
-const node_1 = require("vscode-languageserver/node");
-const vscode_languageserver_textdocument_1 = require("vscode-languageserver-textdocument");
-const completion_1 = require("./completion");
-const diagnostics_1 = require("./diagnostics");
-const formatterCore_1 = require("./formatterCore");
-const navigation_1 = require("./navigation");
-const semanticTokens_1 = require("./semanticTokens");
+import * as fs from 'fs';
+import * as path from 'path';
+import { createConnection, DiagnosticSeverity, DidChangeConfigurationNotification, Position, ProposedFeatures, Range, TextDocumentSyncKind, TextDocuments, TextEdit, } from 'vscode-languageserver/node.js';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import { getCompletions } from './completion.js';
+import { computeDiagnostics as computeDiagnosticsExternal } from './diagnostics.js';
+import { extractInstructionCodeView, extractTemplateCodeView, } from './formatterCore.js';
+import { getDefinition, getHover, getReferences } from './navigation.js';
+import { buildSemanticTokensFromText, semanticTokenModifiers, semanticTokenTypes, } from './semanticTokens.js';
 const { formatText } = require('./adapters/format.js');
 const { lintText } = require('./adapters/lint.js');
-const url = __importStar(require("url"));
-const astUtils_1 = require("./astUtils");
-const parser_1 = require("./parser");
-const connection = (0, node_1.createConnection)(node_1.ProposedFeatures.all);
-const documents = new node_1.TextDocuments(vscode_languageserver_textdocument_1.TextDocument);
+import * as url from 'url';
+import { buildEndTagFor, computeOpenBlocksFromText, extractBlockAndSlotSymbols, getExtendTargetFrom as getExtendTargetFromUtil, walkAstNodes, } from './astUtils.js';
+import { Parser as LocalParser } from './parser.js';
+const connection = createConnection(ProposedFeatures.all);
+const documents = new TextDocuments(TextDocument);
 let usageDocs = { functions: {}, directives: {} };
 let usageWatchers = [];
 let serverSettings = {
@@ -155,7 +120,7 @@ function indexText(uri, text, absPath) {
     const slots = new Map();
     const requireAs = new Map();
     const ast = parseContent(text);
-    (0, astUtils_1.walkAstNodes)(ast, (node) => {
+    walkAstNodes(ast, (node) => {
         if (node.type === 'blockStart') {
             const name = String(node.name || node.blockName || '');
             if (name) {
@@ -177,7 +142,7 @@ function indexText(uri, text, absPath) {
             }
         }
     });
-    (0, astUtils_1.walkAstNodes)(ast, (node) => {
+    walkAstNodes(ast, (node) => {
         if (node.type === 'directive' && node.content) {
             const content = String(node.content).trim();
             if (content.startsWith('requireAs')) {
@@ -341,7 +306,7 @@ connection.onInitialize((params) => {
     }
     return {
         capabilities: {
-            textDocumentSync: node_1.TextDocumentSyncKind.Incremental,
+            textDocumentSync: TextDocumentSyncKind.Incremental,
             completionProvider: {
                 resolveProvider: false,
                 triggerCharacters: ['{', '<', '@', "'", '"'],
@@ -359,8 +324,8 @@ connection.onInitialize((params) => {
             codeActionProvider: { resolveProvider: false },
             semanticTokensProvider: {
                 legend: {
-                    tokenTypes: Array.from(semanticTokens_1.semanticTokenTypes),
-                    tokenModifiers: Array.from(semanticTokens_1.semanticTokenModifiers),
+                    tokenTypes: Array.from(semanticTokenTypes),
+                    tokenModifiers: Array.from(semanticTokenModifiers),
                 },
                 range: false,
                 full: true,
@@ -370,7 +335,7 @@ connection.onInitialize((params) => {
 });
 connection.onInitialized(async () => {
     try {
-        await connection.client.register(node_1.DidChangeConfigurationNotification.type, undefined);
+        await connection.client.register(DidChangeConfigurationNotification.type, undefined);
     }
     catch { }
 });
@@ -397,10 +362,10 @@ connection.onRequest('ftejs/extractViews', (params) => {
                             ? 'typescript'
                             : 'javascript';
         }
-        const codeView = (0, formatterCore_1.extractTemplateCodeView)(text, ast, {
+        const codeView = extractTemplateCodeView(text, ast, {
             hostLanguage: host,
         });
-        const instrView = (0, formatterCore_1.extractInstructionCodeView)(text, ast, {
+        const instrView = extractInstructionCodeView(text, ast, {
             hostLanguage: host,
             instructionLanguage: host === 'typescript' ? 'typescript' : 'javascript',
         });
@@ -429,7 +394,7 @@ connection.onDidChangeConfiguration(async () => {
 });
 function parseContent(text) {
     try {
-        return parser_1.Parser.parse(text, { indent: 2 });
+        return LocalParser.parse(text, { indent: 2 });
     }
     catch (e) {
         logError(e, 'parseContent.embeddedParser', { textLength: text.length });
@@ -437,10 +402,10 @@ function parseContent(text) {
     }
 }
 function getExtendTargetFrom(text, docUri) {
-    return (0, astUtils_1.getExtendTargetFrom)(text, docUri, parseContent);
+    return getExtendTargetFromUtil(text, docUri, parseContent);
 }
 function computeDiagnostics(doc) {
-    return (0, diagnostics_1.computeDiagnostics)(doc, {
+    return computeDiagnosticsExternal(doc, {
         parseContent,
         getExtendTargetFrom,
         fileIndex,
@@ -449,13 +414,13 @@ function computeDiagnostics(doc) {
     });
 }
 function computeOpenBlocks(text, upTo) {
-    return (0, astUtils_1.computeOpenBlocksFromText)(text, upTo, parseContent);
+    return computeOpenBlocksFromText(text, upTo, parseContent);
 }
 connection.onCompletion(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
         return [];
-    return (0, completion_1.getCompletions)(doc.getText(), textDocument.uri, position, {
+    return getCompletions(doc.getText(), textDocument.uri, position, {
         usageDocs,
         parseContent,
         getExtendTargetFrom,
@@ -466,13 +431,13 @@ connection.onHover(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
         return null;
-    return (0, navigation_1.getHover)(doc.getText(), position, { usageDocs, parseContent });
+    return getHover(doc.getText(), position, { usageDocs, parseContent });
 });
 connection.onDefinition(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
         return null;
-    return (0, navigation_1.getDefinition)(doc.getText(), textDocument.uri, position, {
+    return getDefinition(doc.getText(), textDocument.uri, position, {
         parseContent,
         getExtendTargetFrom,
         fileIndex,
@@ -483,7 +448,7 @@ connection.onReferences(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
     if (!doc)
         return [];
-    return (0, navigation_1.getReferences)(doc.getText(), textDocument.uri, position, { fileIndex });
+    return getReferences(doc.getText(), textDocument.uri, position, { fileIndex });
 });
 connection.onSignatureHelp(({ textDocument, position }) => {
     const doc = documents.get(textDocument.uri);
@@ -528,7 +493,7 @@ connection.onDocumentFormatting(({ textDocument, options }) => {
         });
         const finalText = formatText(text, { indentSize });
         const original = doc.getText();
-        const fullRange = node_1.Range.create(node_1.Position.create(0, 0), doc.positionAt(original.length));
+        const fullRange = Range.create(Position.create(0, 0), doc.positionAt(original.length));
         const needsTerminalNewline = /\n$/.test(original);
         const replaced = needsTerminalNewline
             ? finalText.endsWith('\n')
@@ -546,7 +511,7 @@ connection.onDocumentFormatting(({ textDocument, options }) => {
                 current: textDocument.uri,
             });
         }
-        return [node_1.TextEdit.replace(fullRange, replaced)];
+        return [TextEdit.replace(fullRange, replaced)];
     }
     catch (err) {
         logError(err, 'onDocumentFormatting.general', {
@@ -571,21 +536,21 @@ connection.onDocumentOnTypeFormatting(({ ch, options, position, textDocument }) 
     const after = text.slice(offset);
     if (after.match(/^\s*<#-?\s*end\s*-?#>/))
         return [];
-    const endTag = (0, astUtils_1.buildEndTagFor)(last);
+    const endTag = buildEndTagFor(last);
     const currentLineStart = before.lastIndexOf('\n') + 1;
     const currentLineIndent = before.slice(currentLineStart).match(/^\s*/)?.[0]?.length ?? 0;
     const indent = ' '.repeat(Math.max(0, currentLineIndent));
     const nextIndent = ' '.repeat(Math.max(0, currentLineIndent + indentSize));
     const edits = [];
     if (ch === '>') {
-        edits.push(node_1.TextEdit.insert(position, `\n${nextIndent}`));
+        edits.push(TextEdit.insert(position, `\n${nextIndent}`));
         const insertPos = { line: position.line + 1, character: 0 };
-        edits.push(node_1.TextEdit.insert(insertPos, `${indent}${endTag}`));
+        edits.push(TextEdit.insert(insertPos, `${indent}${endTag}`));
     }
     else if (ch === '\n') {
-        edits.push(node_1.TextEdit.insert(position, `${nextIndent}`));
+        edits.push(TextEdit.insert(position, `${nextIndent}`));
         const insertPos = position;
-        edits.push(node_1.TextEdit.insert(insertPos, `\n${indent}${endTag}`));
+        edits.push(TextEdit.insert(insertPos, `\n${indent}${endTag}`));
     }
     return edits;
 });
@@ -616,10 +581,10 @@ documents.onDidChangeContent(({ document }) => {
                 const line = Math.max(0, (issue.line || 1) - 1);
                 const char = Math.max(0, (issue.column || 1) - 1);
                 const sev = issue.severity === 'error'
-                    ? node_1.DiagnosticSeverity.Error
+                    ? DiagnosticSeverity.Error
                     : issue.severity === 'warning'
-                        ? node_1.DiagnosticSeverity.Warning
-                        : node_1.DiagnosticSeverity.Information;
+                        ? DiagnosticSeverity.Warning
+                        : DiagnosticSeverity.Information;
                 diags.push({
                     severity: sev,
                     range: {
@@ -634,9 +599,9 @@ documents.onDidChangeContent(({ document }) => {
     }
     catch { }
     connection.sendDiagnostics({ uri: document.uri, diagnostics: diags });
-    const errors = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Error).length;
-    const warns = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Warning).length;
-    const hints = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Hint).length;
+    const errors = diags.filter((d) => d.severity === DiagnosticSeverity.Error).length;
+    const warns = diags.filter((d) => d.severity === DiagnosticSeverity.Warning).length;
+    const hints = diags.filter((d) => d.severity === DiagnosticSeverity.Hint).length;
     logInfo(`Diagnostics updated: ${errors} error(s), ${warns} warning(s), ${hints} hint(s)`, 'diagnostics', { uri: document.uri });
     try {
         indexText(document.uri, document.getText());
@@ -652,10 +617,10 @@ documents.onDidOpen(({ document }) => {
                 const line = Math.max(0, (issue.line || 1) - 1);
                 const char = Math.max(0, (issue.column || 1) - 1);
                 const sev = issue.severity === 'error'
-                    ? node_1.DiagnosticSeverity.Error
+                    ? DiagnosticSeverity.Error
                     : issue.severity === 'warning'
-                        ? node_1.DiagnosticSeverity.Warning
-                        : node_1.DiagnosticSeverity.Information;
+                        ? DiagnosticSeverity.Warning
+                        : DiagnosticSeverity.Information;
                 diags.push({
                     severity: sev,
                     range: {
@@ -670,9 +635,9 @@ documents.onDidOpen(({ document }) => {
     }
     catch { }
     connection.sendDiagnostics({ uri: document.uri, diagnostics: diags });
-    const errors = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Error).length;
-    const warns = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Warning).length;
-    const hints = diags.filter((d) => d.severity === node_1.DiagnosticSeverity.Hint).length;
+    const errors = diags.filter((d) => d.severity === DiagnosticSeverity.Error).length;
+    const warns = diags.filter((d) => d.severity === DiagnosticSeverity.Warning).length;
+    const hints = diags.filter((d) => d.severity === DiagnosticSeverity.Hint).length;
     logInfo(`Diagnostics on open: ${errors} error(s), ${warns} warning(s), ${hints} hint(s)`, 'diagnostics', { uri: document.uri });
     try {
         indexText(document.uri, document.getText());
@@ -686,7 +651,7 @@ connection.onDocumentSymbol(({ textDocument }) => {
     const ast = parseContent(doc.getText());
     if (!ast)
         return [];
-    const { blocks, slots } = (0, astUtils_1.extractBlockAndSlotSymbols)(ast);
+    const { blocks, slots } = extractBlockAndSlotSymbols(ast);
     const symbols = [];
     for (const b of blocks) {
         symbols.push({
@@ -724,9 +689,9 @@ connection.languages.semanticTokens.on((params) => {
         if (!doc)
             return { data: [] };
         const text = doc.getText();
-        const built = (0, semanticTokens_1.buildSemanticTokensFromText)(text);
-        const legendTypes = Array.from(semanticTokens_1.semanticTokenTypes);
-        const legendMods = Array.from(semanticTokens_1.semanticTokenModifiers);
+        const built = buildSemanticTokensFromText(text);
+        const legendTypes = Array.from(semanticTokenTypes);
+        const legendMods = Array.from(semanticTokenModifiers);
         const data = [];
         let prevLine = 0;
         let prevChar = 0;

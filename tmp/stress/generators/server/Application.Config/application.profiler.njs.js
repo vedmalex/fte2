@@ -1,12 +1,6 @@
 module.exports = {
     script: function(context, _content, partial, slot, options) {
         var out = [];
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         out.push("Ext.define('Modeleditor.controller.Profile', {\n");
         out.push("    extend: 'Ext.app.Controller',\n");
         out.push("    views: [\n");
@@ -189,8 +183,7 @@ module.exports = {
         out.push("          self.application.getController(moduleName);\n");
         out.push("        });\n");
         out.push("      }\n");
-        out.push("    });\n");
-        out.push("");
+        out.push("    });");
         return out.join('');
     },
     compile: function() {

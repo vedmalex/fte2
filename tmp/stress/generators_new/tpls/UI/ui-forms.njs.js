@@ -47,9 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         if (!entity.embedded) {
             out.push("\n");
             chunkStart(`${entity.name}/index.js`);

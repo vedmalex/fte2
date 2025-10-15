@@ -1,7 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = exports.CodeBlock = void 0;
-exports.SUB = SUB;
 const globalStates = {
     text: {
         states: [
@@ -68,7 +64,7 @@ const globalStates = {
         start: ['<# end #>', '<#- end #>', '<# end -#>', '<#- end -#>'],
     },
 };
-class CodeBlock {
+export class CodeBlock {
     name;
     main = [];
     slots = {};
@@ -101,7 +97,6 @@ class CodeBlock {
         return '';
     }
 }
-exports.CodeBlock = CodeBlock;
 function sub(buffer, str, pos = 0, size) {
     if (!size) {
         size = buffer.length;
@@ -118,10 +113,10 @@ function sub(buffer, str, pos = 0, size) {
     }
     return '';
 }
-function SUB(buffer, str, pos = 0, size) {
+export function SUB(buffer, str, pos = 0, size) {
     return sub(buffer, str, pos, size);
 }
-class Parser {
+export class Parser {
     buffer;
     size;
     static INITIAL_STATE = 'text';
@@ -417,5 +412,4 @@ class Parser {
         this.result.push(this.globalToken);
     }
 }
-exports.Parser = Parser;
 //# sourceMappingURL=parser.js.map

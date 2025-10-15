@@ -8,8 +8,6 @@ module.exports = {
             return _content(blockName, ctx, content, partial, slot);
         }
         var out = [];
-        out.push("\n");
-        out.push("\n");
         const { entity, f, source, grid, embedded } = ctx;
         out.push("\n");
         out.push("<uix.primitive." + (f.type) + ".Field \n");

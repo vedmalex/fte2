@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "ES2022",
+    "module": "esnext",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
@@ -29,7 +29,15 @@
     "importHelpers": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM", "DOM.Iterable"],
-    "types": ["@types/bun", "@types/node"]
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "@types/bun",
+      "@types/node"
+    ]
   }
 }

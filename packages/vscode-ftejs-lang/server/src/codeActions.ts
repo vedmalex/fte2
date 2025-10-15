@@ -3,9 +3,9 @@ import {
   Position,
   Range,
   TextEdit,
-} from 'vscode-languageserver/node'
+} from 'vscode-languageserver/node.js'
 import type { TextDocument } from 'vscode-languageserver-textdocument'
-import { buildEndTagFor, computeOpenBlocksFromText } from './astUtils'
+import { buildEndTagFor, computeOpenBlocksFromText } from './astUtils.js'
 
 export function buildCodeActions(params: {
   text: string

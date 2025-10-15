@@ -1,43 +1,7 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.computeDiagnostics = computeDiagnostics;
-const fs = __importStar(require("fs"));
-const node_1 = require("vscode-languageserver/node");
-const astUtils_1 = require("./astUtils");
-function computeDiagnostics(doc, deps) {
+import * as fs from 'fs';
+import { DiagnosticSeverity, Position, Range, } from 'vscode-languageserver/node.js';
+import { resolveTemplateRel } from './astUtils.js';
+export function computeDiagnostics(doc, deps) {
     const text = doc.getText();
     const diags = [];
     const { parseContent, getExtendTargetFrom, fileIndex, workspaceRoots } = deps;
@@ -45,8 +9,8 @@ function computeDiagnostics(doc, deps) {
     const ast = parseContent(text);
     if (!ast || !Array.isArray(ast.main)) {
         diags.push({
-            severity: node_1.DiagnosticSeverity.Error,
-            range: node_1.Range.create(node_1.Position.create(0, 0), node_1.Position.create(0, 1)),
+            severity: DiagnosticSeverity.Error,
+            range: Range.create(Position.create(0, 0), Position.create(0, 1)),
             message: 'Parse error',
             source: 'fte.js',
         });
@@ -62,7 +26,7 @@ function computeDiagnostics(doc, deps) {
                         const from = doc.positionAt(n.pos);
                         const to = doc.positionAt(n.pos + String(n.start || '').length);
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Error,
+                            severity: DiagnosticSeverity.Error,
                             range: { start: from, end: to },
                             message: `Invalid ${n.type === 'blockStart' ? 'block' : 'slot'} name: ${nm}`,
                             source: 'fte.js',
@@ -76,7 +40,7 @@ function computeDiagnostics(doc, deps) {
                         const start = doc.positionAt(n.pos);
                         const end = doc.positionAt(n.pos + len);
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Error,
+                            severity: DiagnosticSeverity.Error,
                             range: { start, end },
                             message: 'Unmatched end',
                             source: 'fte.js',
@@ -91,7 +55,7 @@ function computeDiagnostics(doc, deps) {
                 const start = doc.positionAt(it.pos);
                 const end = doc.positionAt(it.pos + 1);
                 diags.push({
-                    severity: node_1.DiagnosticSeverity.Error,
+                    severity: DiagnosticSeverity.Error,
                     range: { start, end },
                     message: `Unclosed ${it.name}`,
                     source: 'fte.js',
@@ -101,7 +65,7 @@ function computeDiagnostics(doc, deps) {
                 for (const e of ast.errors) {
                     const pos = doc.positionAt(e.pos || 0);
                     diags.push({
-                        severity: node_1.DiagnosticSeverity.Error,
+                        severity: DiagnosticSeverity.Error,
                         range: { start: pos, end: pos },
                         message: e.message,
                         source: 'fte.js',
@@ -151,7 +115,7 @@ function computeDiagnostics(doc, deps) {
                 const from = doc.positionAt(h.index);
                 const to = doc.positionAt(h.index + h.match[0].length);
                 diags.push({
-                    severity: node_1.DiagnosticSeverity.Warning,
+                    severity: DiagnosticSeverity.Warning,
                     range: { start: from, end: to },
                     message: `Unknown block name: ${name}`,
                     source: 'fte.js',
@@ -180,12 +144,12 @@ function computeDiagnostics(doc, deps) {
                     }
                 }
             }
-            const resolvedPartial = (0, astUtils_1.resolveTemplateRel)(target, doc.uri, workspaceRoots);
+            const resolvedPartial = resolveTemplateRel(target, doc.uri, workspaceRoots);
             if (!resolvedPartial) {
                 const from = doc.positionAt(ph.index);
                 const to = doc.positionAt(ph.index + ph.match[0].length);
                 diags.push({
-                    severity: node_1.DiagnosticSeverity.Warning,
+                    severity: DiagnosticSeverity.Warning,
                     range: { start: from, end: to },
                     message: `Unresolved partial: ${key}`,
                     source: 'fte.js',
@@ -208,7 +172,7 @@ function computeDiagnostics(doc, deps) {
                         const from = doc.positionAt(n.pos);
                         const to = doc.positionAt(n.pos + String(n.start || '').length || 1);
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range: { start: from, end: to },
                             message: `Duplicate ${n.type === 'blockStart' ? 'block' : 'slot'} declaration: ${name}`,
                             source: 'fte.js',
@@ -255,7 +219,7 @@ function computeDiagnostics(doc, deps) {
                 const start = doc.positionAt(ml.index);
                 const end = doc.positionAt(ml.index + 2);
                 diags.push({
-                    severity: node_1.DiagnosticSeverity.Warning,
+                    severity: DiagnosticSeverity.Warning,
                     range: { start, end },
                     message: "Consider '<#-' to trim leading whitespace",
                     source: 'fte.js',
@@ -280,7 +244,7 @@ function computeDiagnostics(doc, deps) {
             const start = doc.positionAt(mr.index);
             const end = doc.positionAt(mr.index + 2);
             diags.push({
-                severity: node_1.DiagnosticSeverity.Warning,
+                severity: DiagnosticSeverity.Warning,
                 range: { start, end },
                 message: "Consider '-#>' to trim trailing whitespace",
                 source: 'fte.js',
@@ -295,7 +259,7 @@ function computeDiagnostics(doc, deps) {
             const nameMatch = content.match(/^(\w+)/);
             if (!nameMatch) {
                 diags.push({
-                    severity: node_1.DiagnosticSeverity.Warning,
+                    severity: DiagnosticSeverity.Warning,
                     range: { start: startPos, end: endPos },
                     message: 'Empty directive',
                     source: 'fte.js',
@@ -336,7 +300,7 @@ function computeDiagnostics(doc, deps) {
                 case 'context':
                     if (params.length < 1) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: `Directive ${name} requires 1 parameter`,
                             source: 'fte.js',
@@ -346,7 +310,7 @@ function computeDiagnostics(doc, deps) {
                 case 'alias':
                     if (params.length < 1) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: 'Directive alias requires at least 1 parameter',
                             source: 'fte.js',
@@ -356,7 +320,7 @@ function computeDiagnostics(doc, deps) {
                 case 'requireAs':
                     if (params.length !== 2) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: 'Directive requireAs requires exactly 2 parameters',
                             source: 'fte.js',
@@ -366,7 +330,7 @@ function computeDiagnostics(doc, deps) {
                 case 'deindent':
                     if (params.length > 1) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: 'Directive deindent accepts at most 1 numeric parameter',
                             source: 'fte.js',
@@ -374,7 +338,7 @@ function computeDiagnostics(doc, deps) {
                     }
                     else if (params.length === 1 && Number.isNaN(Number(params[0]))) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: 'Directive deindent parameter must be a number',
                             source: 'fte.js',
@@ -384,7 +348,7 @@ function computeDiagnostics(doc, deps) {
                 case 'lang':
                     if (params.length < 1) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: 'Directive lang requires 1 parameter or assignment',
                             source: 'fte.js',
@@ -394,7 +358,7 @@ function computeDiagnostics(doc, deps) {
                 default:
                     if (!DIRECTIVES.includes(name)) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: `Unknown directive: ${name}`,
                             source: 'fte.js',
@@ -402,7 +366,7 @@ function computeDiagnostics(doc, deps) {
                     }
                     else if (requireNoParams.includes(name) && params.length > 0) {
                         diags.push({
-                            severity: node_1.DiagnosticSeverity.Warning,
+                            severity: DiagnosticSeverity.Warning,
                             range,
                             message: `Directive ${name} does not accept parameters`,
                             source: 'fte.js',
@@ -422,7 +386,7 @@ function computeDiagnostics(doc, deps) {
                         const match = content.match(/extend\s*(?:\(\s*(["'`])([^"'`]+)\1\s*\)|\s+(["'`])([^"'`]+)\3)/);
                         const rel = (match?.[2] || match?.[4])?.trim();
                         if (rel) {
-                            const resolved = (0, astUtils_1.resolveTemplateRel)(rel, doc.uri, workspaceRoots);
+                            const resolved = resolveTemplateRel(rel, doc.uri, workspaceRoots);
                             if (!resolved) {
                                 const start = doc.positionAt(node.pos);
                                 const end = doc.positionAt(node.pos +
@@ -430,7 +394,7 @@ function computeDiagnostics(doc, deps) {
                                         String(node.content || '').length +
                                         String(node.end || '').length));
                                 diags.push({
-                                    severity: node_1.DiagnosticSeverity.Error,
+                                    severity: DiagnosticSeverity.Error,
                                     range: { start, end },
                                     message: `Parent template not found: ${rel}`,
                                     source: 'fte.js',
@@ -447,7 +411,7 @@ function computeDiagnostics(doc, deps) {
                                             String(node.content || '').length +
                                             String(node.end || '').length));
                                     diags.push({
-                                        severity: node_1.DiagnosticSeverity.Error,
+                                        severity: DiagnosticSeverity.Error,
                                         range: { start, end },
                                         message: `Parent template is not accessible: ${resolved}`,
                                         source: 'fte.js',
@@ -487,7 +451,7 @@ function computeDiagnostics(doc, deps) {
                     const start = doc.positionAt(m.index);
                     const end = doc.positionAt(m.index + m[0].length);
                     diags.push({
-                        severity: node_1.DiagnosticSeverity.Error,
+                        severity: DiagnosticSeverity.Error,
                         range: { start, end },
                         message: `Block '${blockName}' is not defined in this template or parent template chain`,
                         source: 'fte.js',
@@ -502,7 +466,7 @@ function computeDiagnostics(doc, deps) {
                             const start = doc.positionAt(blockNode.declPos);
                             const end = doc.positionAt(blockNode.declPos + 10);
                             diags.push({
-                                severity: node_1.DiagnosticSeverity.Information,
+                                severity: DiagnosticSeverity.Information,
                                 range: { start, end },
                                 message: `Block '${blockName}' is declared in child template but does not exist in parent template. This creates a new block.`,
                                 source: 'fte.js',

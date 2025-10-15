@@ -47,9 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         const { model, nextApp } = context;
         out.push("\n");
         chunkStart(`${model.name}.js`);

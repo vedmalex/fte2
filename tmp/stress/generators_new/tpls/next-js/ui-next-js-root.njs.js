@@ -47,10 +47,6 @@ module.exports = {
             current = outStack.pop() || main;
         }
         chunkStart(main);
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
         chunkStart(`../../pages/${model.name}.js`);
         out.push("\n");
         out.push("import dynamic from 'next/dynamic';\n");

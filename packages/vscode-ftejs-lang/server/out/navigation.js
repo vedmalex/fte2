@@ -1,44 +1,6 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDefinition = getDefinition;
-exports.getReferences = getReferences;
-exports.getHover = getHover;
-const fs = __importStar(require("fs"));
-const node_1 = require("vscode-languageserver/node");
-const astUtils_1 = require("./astUtils");
+import * as fs from 'fs';
+import { Location, Position, Range, } from 'vscode-languageserver/node.js';
+import { posFromOffset, resolveTemplateRel } from './astUtils.js';
 function offsetFromPosition(text, position) {
     let off = 0;
     let line = 0;
@@ -51,7 +13,7 @@ function offsetFromPosition(text, position) {
     }
     return off + position.character;
 }
-function getDefinition(docText, docUri, position, deps) {
+export function getDefinition(docText, docUri, position, deps) {
     const { parseContent, getExtendTargetFrom, fileIndex, workspaceRoots } = deps;
     const text = docText;
     const offset = offsetFromPosition(text, position);
@@ -70,16 +32,16 @@ function getDefinition(docText, docUri, position, deps) {
             if (ast?.blocks?.[blockName]) {
                 const block = ast.blocks[blockName];
                 if (block.declPos !== undefined) {
-                    const declStart = (0, astUtils_1.posFromOffset)(text, block.declPos);
+                    const declStart = posFromOffset(text, block.declPos);
                     const declLength = (block.declStart || '').length +
                         (block.declContent || '').length +
                         (block.declEnd || '').length;
-                    const declEnd = (0, astUtils_1.posFromOffset)(text, block.declPos + declLength);
-                    return node_1.Location.create(docUri, node_1.Range.create(declStart, declEnd));
+                    const declEnd = posFromOffset(text, block.declPos + declLength);
+                    return Location.create(docUri, Range.create(declStart, declEnd));
                 }
                 const first = ast.blocks[blockName]?.main?.[0];
                 if (first) {
-                    return node_1.Location.create(docUri, node_1.Range.create((0, astUtils_1.posFromOffset)(text, first.pos), (0, astUtils_1.posFromOffset)(text, first.pos + (first.content?.length || 0))));
+                    return Location.create(docUri, Range.create(posFromOffset(text, first.pos), posFromOffset(text, first.pos + (first.content?.length || 0))));
                 }
             }
             const parentAbs = getExtendTargetFrom(text, docUri);
@@ -91,17 +53,17 @@ function getDefinition(docText, docUri, position, deps) {
                         const parentBlock = pAst.blocks[blockName];
                         if (parentBlock.declPos !== undefined) {
                             const uri = 'file://' + parentAbs;
-                            const declStart = (0, astUtils_1.posFromOffset)(src, parentBlock.declPos);
+                            const declStart = posFromOffset(src, parentBlock.declPos);
                             const declLength = (parentBlock.declStart || '').length +
                                 (parentBlock.declContent || '').length +
                                 (parentBlock.declEnd || '').length;
-                            const declEnd = (0, astUtils_1.posFromOffset)(src, parentBlock.declPos + declLength);
-                            return node_1.Location.create(uri, node_1.Range.create(declStart, declEnd));
+                            const declEnd = posFromOffset(src, parentBlock.declPos + declLength);
+                            return Location.create(uri, Range.create(declStart, declEnd));
                         }
                         const first = pAst.blocks[blockName]?.main?.[0];
                         if (first) {
                             const uri = 'file://' + parentAbs;
-                            return node_1.Location.create(uri, node_1.Range.create((0, astUtils_1.posFromOffset)(src, first.pos), (0, astUtils_1.posFromOffset)(src, first.pos + (first.content?.length || 0))));
+                            return Location.create(uri, Range.create(posFromOffset(src, first.pos), posFromOffset(src, first.pos + (first.content?.length || 0))));
                         }
                     }
                 }
@@ -133,10 +95,10 @@ function getDefinition(docText, docUri, position, deps) {
                 }
             }
         }
-        const resolved = (0, astUtils_1.resolveTemplateRel)(target, docUri, workspaceRoots);
+        const resolved = resolveTemplateRel(target, docUri, workspaceRoots);
         if (resolved) {
             const uri = 'file://' + resolved;
-            return node_1.Location.create(uri, node_1.Range.create(node_1.Position.create(0, 0), node_1.Position.create(0, 0)));
+            return Location.create(uri, Range.create(Position.create(0, 0), Position.create(0, 0)));
         }
     }
     const openRe = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+?)\2\s*:\s*-?\s*#>/g;
@@ -157,17 +119,17 @@ function getDefinition(docText, docUri, position, deps) {
                     const dm = declRe.exec(src);
                     if (dm) {
                         const uri = 'file://' + parentAbs;
-                        return node_1.Location.create(uri, node_1.Range.create((0, astUtils_1.posFromOffset)(src, dm.index), (0, astUtils_1.posFromOffset)(src, dm.index + dm[0].length)));
+                        return Location.create(uri, Range.create(posFromOffset(src, dm.index), posFromOffset(src, dm.index + dm[0].length)));
                     }
                 }
                 catch { }
             }
-            return node_1.Location.create(docUri, node_1.Range.create((0, astUtils_1.posFromOffset)(text, match.index), (0, astUtils_1.posFromOffset)(text, match.index + match[0].length)));
+            return Location.create(docUri, Range.create(posFromOffset(text, match.index), posFromOffset(text, match.index + match[0].length)));
         }
     }
     return null;
 }
-function getReferences(docText, docUri, position, deps) {
+export function getReferences(docText, docUri, position, deps) {
     const text = docText;
     const offset = offsetFromPosition(text, position);
     const openRe = /<#\s*-?\s*(block|slot)\s+(['"`])([^'"`]+?)\2\s*:\s*-?\s*#>/g;
@@ -185,16 +147,16 @@ function getReferences(docText, docUri, position, deps) {
         return [];
     const res = [];
     if (match) {
-        res.push(node_1.Location.create(docUri, node_1.Range.create((0, astUtils_1.posFromOffset)(text, match.index), (0, astUtils_1.posFromOffset)(text, match.index + match[0].length))));
+        res.push(Location.create(docUri, Range.create(posFromOffset(text, match.index), posFromOffset(text, match.index + match[0].length))));
     }
     const usageRe = new RegExp(String.raw `content\(\s*(["'\`])${selected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\1`, 'g');
     const slotRe = new RegExp(String.raw `slot\(\s*(["'\`])${selected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\1`, 'g');
     let u;
     while ((u = usageRe.exec(text))) {
-        res.push(node_1.Location.create(docUri, node_1.Range.create((0, astUtils_1.posFromOffset)(text, u.index), (0, astUtils_1.posFromOffset)(text, u.index + u[0].length))));
+        res.push(Location.create(docUri, Range.create(posFromOffset(text, u.index), posFromOffset(text, u.index + u[0].length))));
     }
     while ((u = slotRe.exec(text))) {
-        res.push(node_1.Location.create(docUri, node_1.Range.create((0, astUtils_1.posFromOffset)(text, u.index), (0, astUtils_1.posFromOffset)(text, u.index + u[0].length))));
+        res.push(Location.create(docUri, Range.create(posFromOffset(text, u.index), posFromOffset(text, u.index + u[0].length))));
     }
     for (const [uri, info] of deps.fileIndex) {
         if (uri === docUri)
@@ -205,16 +167,16 @@ function getReferences(docText, docUri, position, deps) {
         let mu;
         usageRe.lastIndex = 0;
         while ((mu = usageRe.exec(p))) {
-            res.push(node_1.Location.create(uri, node_1.Range.create((0, astUtils_1.posFromOffset)(p, mu.index), (0, astUtils_1.posFromOffset)(p, mu.index + mu[0].length))));
+            res.push(Location.create(uri, Range.create(posFromOffset(p, mu.index), posFromOffset(p, mu.index + mu[0].length))));
         }
         slotRe.lastIndex = 0;
         while ((mu = slotRe.exec(p))) {
-            res.push(node_1.Location.create(uri, node_1.Range.create((0, astUtils_1.posFromOffset)(p, mu.index), (0, astUtils_1.posFromOffset)(p, mu.index + mu[0].length))));
+            res.push(Location.create(uri, Range.create(posFromOffset(p, mu.index), posFromOffset(p, mu.index + mu[0].length))));
         }
     }
     return res;
 }
-function getHover(docText, position, deps) {
+export function getHover(docText, position, deps) {
     const { usageDocs, parseContent } = deps;
     const text = docText;
     const offset = offsetFromPosition(text, position);

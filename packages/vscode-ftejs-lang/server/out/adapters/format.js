@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatText = formatText;
-const fte_js_formatter_1 = require("fte.js-formatter");
-function formatText(input, opts) {
+import { format } from 'fte.js-formatter';
+export function formatText(input, opts) {
     const options = {
         indent: typeof opts?.indentSize === 'number'
             ? opts?.indentSize
@@ -12,6 +9,6 @@ function formatText(input, opts) {
         ensureFinalNewline: true,
         trimTrailingWhitespace: true,
     };
-    return (0, fte_js_formatter_1.format)(String(input ?? ''), options);
+    return format(String(input ?? ''), options);
 }
 //# sourceMappingURL=format.js.map

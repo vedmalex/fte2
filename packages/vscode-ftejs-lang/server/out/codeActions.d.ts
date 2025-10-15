@@ -1,4 +1,4 @@
-import { type Diagnostic, Range } from 'vscode-languageserver/node';
+import { type Diagnostic, Range } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 export declare function buildCodeActions(params: {
     text: string;

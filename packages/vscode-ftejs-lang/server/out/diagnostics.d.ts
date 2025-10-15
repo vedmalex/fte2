@@ -1,4 +1,4 @@
-import { type Diagnostic, type TextDocument } from 'vscode-languageserver/node';
+import { type Diagnostic, type TextDocument } from 'vscode-languageserver/node.js';
 export type FileIndexLite = {
     requireAs: Map<string, string>;
     path?: string;
