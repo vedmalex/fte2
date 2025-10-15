@@ -536,6 +536,37 @@ export class Parser {
         }
       }
 
+      const trimPrevWhitespace = () => {
+        for (let idx = curr.main.length - 1; idx >= 0; idx -= 1) {
+          const prev = curr.main[idx]
+          if (prev.type === 'text') {
+            if (!prev.content) {
+              curr.main.splice(idx, 1)
+              continue
+            }
+            if (/^\s+$/.test(prev.content)) {
+              curr.main.splice(idx, 1)
+              continue
+            }
+            const trimmed = prev.content.replace(/[ \t]+$/, '')
+            if (trimmed.length !== prev.content.length) {
+              if (trimmed) {
+                prev.content = trimmed
+              } else {
+                curr.main.splice(idx, 1)
+                continue
+              }
+            }
+            break
+          }
+          if (prev.type === 'empty') {
+            curr.main.splice(idx, 1)
+            continue
+          }
+          break
+        }
+      }
+
       switch (type) {
         case 'directive':
           trimStartLines()
@@ -543,18 +574,27 @@ export class Parser {
           curr.directives.push(r)
           break
         case 'blockStart':
+          if (start.startsWith('<#-')) {
+            trimPrevWhitespace()
+          }
           trimStartLines()
           trimEndLines()
           curr = new CodeBlock(r)
           content.addBlock(curr)
           break
         case 'slotStart':
+          if (start.startsWith('<#-')) {
+            trimPrevWhitespace()
+          }
           trimStartLines()
           trimEndLines()
           curr = new CodeBlock(r)
           content.addSlot(curr)
           break
         case 'blockEnd':
+          if (start.startsWith('<#-')) {
+            trimPrevWhitespace()
+          }
           trimStartLines()
           curr = content
           trimEndLines()
@@ -623,6 +663,9 @@ export class Parser {
           break
         }
         case 'code': {
+          if (start.startsWith('<#-')) {
+            trimPrevWhitespace()
+          }
           if (start === '<%_') {
             trimStartSpases()
           }

@@ -204,6 +204,34 @@ describe('FTE Parser Tests', () => {
       const result = Parser.parse(template)
       expect(result).toMatchSnapshot()
     })
+
+    test('should trim whitespace before hyphenated code tags', () => {
+      const template = [
+        '      "#{rel.to}',
+        '        <#- if(variant!== "*"){ -#>',
+        "          #{rel.relName.split('.').join('')}",
+        '        <#-}#>":',
+        "        _t(\"#{rs.toDisplay}\",'#{context.$namespace}.#{context.$name}', 'toDisplay', '#{rel.to}'),",
+      ].join('\n')
+      const result = Parser.parse(template)
+      const main = result.main
+      const hyphenatedCodeIndexes = main
+        .map((item, index) =>
+          item.type === 'code' && item.start === '<#-' ? index : -1,
+        )
+        .filter((index) => index > 0)
+
+      for (const index of hyphenatedCodeIndexes) {
+        const prev = main[index - 1]
+        if (!prev) {
+          continue
+        }
+        expect(prev.type).not.toBe('empty')
+        if (prev.type === 'text') {
+          expect(/\S/.test(prev.content)).toBe(true)
+        }
+      }
+    })
   })
 
   describe('Multiline Content', () => {
