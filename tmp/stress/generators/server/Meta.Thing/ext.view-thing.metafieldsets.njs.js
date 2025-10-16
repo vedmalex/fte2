@@ -8,8 +8,7 @@ module.exports = {
         out.push("Ext.define('Grainjs.metafieldsets." + (context.$namespace) + "." + (context.$name) + "', {\n");
         out.push("  override: 'Grainjs.metadata',\n");
         out.push("  statics:{\n");
-        out.push("    'metafieldsets." + (context.$namespace) + "." + (context.$name) + "':{\n");
-        out.push("      ");
+        out.push("    'metafieldsets." + (context.$namespace) + "." + (context.$name) + "':{");
         if (fieldsets) {
             for(let i = 0; i < fieldsets.length; i++){
                 let fs = fieldsets[i];

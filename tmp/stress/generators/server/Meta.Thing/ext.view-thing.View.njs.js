@@ -13,7 +13,7 @@ module.exports = {
         out.push("  // iconCls: _r('iconCls', '', '" + (context.$namespace) + "." + (context.$name) + "'),\n");
         out.push("  layout: 'column',\n");
         out.push("  border: false,\n");
-        out.push("  widget: '" + (context.$widgetName) + "',\n");
+        out.push("  widget: '" + (context.$widgetName) + "',");
         if (context.periodicalRel) {
             out.push("\n");
             out.push("  periodicalRel:{\n");
@@ -21,7 +21,7 @@ module.exports = {
             out.push("    to:'" + (context.periodicalRel.to) + "',\n");
             out.push("    fromKeyField:'" + (context.periodicalRel.fromKeyField) + "',\n");
             out.push("    toKeyField:'" + (context.periodicalRel.toKeyField) + "',\n");
-            out.push("  },\n");
+            out.push("  },");
         }
         out.push("\n");
         out.push("\n");
@@ -58,8 +58,7 @@ module.exports = {
                         const property = f.property;
                         if (f.generated) {
                             out.push("\n");
-                            out.push("                  Grainjs.metadata['viewfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`],\n");
-                            out.push("                ");
+                            out.push("                  Grainjs.metadata['viewfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`],");
                         }
                         break;
                     case 'fieldset':
@@ -83,8 +82,7 @@ module.exports = {
                         const property = f.property;
                         if (f.generated) {
                             out.push("\n");
-                            out.push("                  Grainjs.metadata['viewfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`],\n");
-                            out.push("                ");
+                            out.push("                  Grainjs.metadata['viewfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`],");
                         }
                         break;
                     case 'fieldset':

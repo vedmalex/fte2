@@ -236,17 +236,13 @@ module.exports = {
             out.push("    >\n");
             out.push("    ");
             if (f.ref.autocomplete) {
-                out.push("\n");
-                out.push("      <uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
+                out.push("<uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
                 out.push("    ");
             } else {
-                out.push("\n");
-                out.push("      <uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
+                out.push("<uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
                 out.push("    ");
             }
-            out.push("\n");
-            out.push("    </uix.ReferenceInput>\n");
-            out.push("\n");
+            out.push("</uix.ReferenceInput>" + "\n");
             out.push("    <uix.ReferenceInput\n");
             out.push("    className={classes.formControl}\n");
             out.push("      label={`");
@@ -263,17 +259,13 @@ module.exports = {
             out.push("    >\n");
             out.push("    ");
             if (f.ref.autocomplete) {
-                out.push("\n");
-                out.push("      <uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
+                out.push("<uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
                 out.push("    ");
             } else {
-                out.push("\n");
-                out.push("      <uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
+                out.push("<uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
                 out.push("    ");
             }
-            out.push("\n");
-            out.push("    </uix.ReferenceInput>\n");
-            out.push("\n");
+            out.push("</uix.ReferenceInput>" + "\n");
             out.push("    <uix.ReferenceInput\n");
             out.push("      className={classes.formControl}\n");
             out.push("      label={`");
@@ -290,17 +282,13 @@ module.exports = {
             out.push("    >\n");
             out.push("    ");
             if (f.ref.autocomplete) {
-                out.push("\n");
-                out.push("      <uix.AutocompleteArrayInput optionText={uix." + (f.ref.entity) + ".inputText } />\n");
+                out.push("<uix.AutocompleteArrayInput optionText={uix." + (f.ref.entity) + ".inputText } />\n");
                 out.push("    ");
             } else {
-                out.push("\n");
-                out.push("      <uix.SelectArrayInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
+                out.push("<uix.SelectArrayInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
                 out.push("    ");
             }
-            out.push("\n");
-            out.push("    </uix.ReferenceInput>\n");
-            out.push("    <uix.ReferenceInput\n");
+            out.push("</uix.ReferenceInput>" + "    <uix.ReferenceInput\n");
             out.push("    className={classes.formControl}\n");
             out.push("      label={`");
             if (label) {
@@ -316,16 +304,13 @@ module.exports = {
             out.push("    >\n");
             out.push("    ");
             if (f.ref.autocomplete) {
-                out.push("\n");
-                out.push("      <uix.AutocompleteArrayInput optionText={uix." + (f.ref.entity) + ".inputText } />\n");
+                out.push("<uix.AutocompleteArrayInput optionText={uix." + (f.ref.entity) + ".inputText } />\n");
                 out.push("    ");
             } else {
-                out.push("\n");
-                out.push("      <uix.SelectArrayInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
+                out.push("<uix.SelectArrayInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
                 out.push("    ");
             }
-            out.push("\n");
-            out.push("    </uix.ReferenceInput>\n");
+            out.push("</uix.ReferenceInput>");
         }
         return out.join('');
     },

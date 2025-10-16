@@ -48,47 +48,35 @@ module.exports = {
         }
         chunkStart(main);
         chunkStart(`./resources.js`);
-        out.push("\n");
-        out.push("const embedded = {\n");
+        out.push("const embedded = {");
         for (let entity of pack.entities.filter((e)=>e.embedded)){
-            out.push("\n");
-            out.push("  " + (entity.name) + ": {\n");
-            out.push("    uploadFields:[\n");
-            out.push("      ");
+            out.push((entity.name) + ": {\n");
+            out.push("    uploadFields:[");
             entity.uploadFields.forEach((f)=>{
                 out.push("\n");
-                out.push("      \"" + (f) + "\",\n");
-                out.push("      ");
+                out.push("      \"" + (f) + "\",");
             });
             out.push("\n");
             out.push("    ]\n");
             out.push("  },\n");
         }
-        out.push("\n");
-        out.push("}\n");
-        out.push("\n");
+        out.push("}" + "\n");
         out.push("export default [\n");
         for (let entity of pack.entities.filter((e)=>!e.embedded)){
-            out.push("\n");
-            out.push("  {\n");
-            out.push("    name: \"" + (entity.name) + "\",\n");
+            out.push("{" + "    name: \"" + (entity.name) + "\",\n");
             out.push("    resource: \"" + (entity.resourceName) + "\",\n");
             out.push("    path: \"" + (entity.collectionName) + "\",\n");
             out.push("    ");
             if (entity.filter) {
-                out.push("\n");
-                out.push("    filter: " + (entity.filter) + ",\n");
+                out.push("filter: " + (entity.filter) + ",\n");
                 out.push("    ");
             }
-            out.push("\n");
-            out.push("    isPublic: true,\n");
-            out.push("    saveFilter: {\n");
+            out.push("isPublic: true," + "    saveFilter: {\n");
             out.push("    ");
             entity.props.filter((p)=>(entity.embedded && p.name != 'id') || !entity.embedded).filter((p)=>!(p.ref && !p.single && !p.embedded) && !p.calculated).forEach((prop)=>{
                 const { ref, single, stored, embedded, verb } = prop;
                 const isSingle = !ref || single;
-                out.push("\n");
-                out.push("    '" + (prop.name) + "':'" + (prop.field) + "',\n");
+                out.push("'" + (prop.name) + "':'" + (prop.field) + "',\n");
                 out.push("    ");
             });
             out.push("\n");
@@ -98,8 +86,7 @@ module.exports = {
             entity.props.filter((p)=>(entity.embedded && p.name != 'id') || !entity.embedded).filter((p)=>!(p.ref && !p.single && !p.embedded) && !p.calculated).forEach((prop)=>{
                 const { ref, single, stored, embedded, verb } = prop;
                 const isSingle = !ref || single;
-                out.push("\n");
-                out.push("    '" + (prop.field) + "':'" + (prop.name) + "',\n");
+                out.push("'" + (prop.field) + "':'" + (prop.name) + "',\n");
                 out.push("    ");
             });
             out.push("\n");
@@ -108,22 +95,19 @@ module.exports = {
             out.push("      ");
             entity.uploadFields.forEach((f)=>{
                 out.push("\n");
-                out.push("      \"" + (f) + "\",\n");
-                out.push("      ");
+                out.push("      \"" + (f) + "\",");
             });
             out.push("\n");
             out.push("      ");
             entity.maps.forEach((f)=>{
                 out.push("\n");
-                out.push("        ...embedded." + (f.type) + ".uploadFields.map(f=>`" + (f.name) + ".${f}`),\n");
-                out.push("      ");
+                out.push("        ...embedded." + (f.type) + ".uploadFields.map(f=>`" + (f.name) + ".${f}`),");
             });
             out.push("\n");
             out.push("      ");
             entity.collections.forEach((f)=>{
                 out.push("\n");
-                out.push("        ...embedded." + (f.type) + ".uploadFields.map(f=>`" + (f.name) + ".${f}`),\n");
-                out.push("      ");
+                out.push("        ...embedded." + (f.type) + ".uploadFields.map(f=>`" + (f.name) + ".${f}`),");
             });
             out.push("\n");
             out.push("    ],\n");
@@ -137,8 +121,7 @@ module.exports = {
                 out.push("        type:\"" + (f.type) + "\",\n");
                 out.push("        isPublic: true,\n");
                 out.push("        ...embedded." + (f.type) + ",\n");
-                out.push("      },\n");
-                out.push("      ");
+                out.push("      },");
             });
             out.push("\n");
             out.push("    ],\n");
@@ -151,26 +134,19 @@ module.exports = {
                 out.push("        path:\"" + (f.storage) + "\",\n");
                 out.push("        type:\"" + (f.type) + "\",\n");
                 out.push("        ...embedded." + (f.type) + ",\n");
-                out.push("      },\n");
-                out.push("      ");
+                out.push("      },");
             });
             out.push("\n");
             out.push("    ]\n");
             out.push("  },\n");
         }
-        out.push("\n");
-        out.push("]\n");
-        out.push("\n");
+        out.push("]");
         chunkStart(`./index.js`);
-        out.push("\n");
-        out.push("import {Fragment} from 'react';\n");
+        out.push("import {Fragment} from 'react';");
         for (let entity of pack.entities.filter((e)=>!e.embedded)){
-            out.push("\n");
             out.push("import " + (entity.name) + "UIX from './" + (entity.name) + "';\n");
         }
-        out.push("\n");
         for (let en_ of pack.enums){
-            out.push("\n");
             out.push("import " + (en_.name) + " from './" + (en_.name) + "';\n");
         }
         out.push("\n");
@@ -342,8 +318,7 @@ module.exports = {
         out.push("  ...primitive,\n");
         out.push("  ...readonly,\n");
         for (let en_ of pack.enums){
-            out.push("\n");
-            out.push("    " + (en_.name) + ",\n");
+            out.push((en_.name) + ",\n");
         }
         out.push("\n");
         out.push("  },\n");
@@ -442,12 +417,9 @@ module.exports = {
         out.push("  Fragment,\n");
         out.push("  ...components,\n");
         for (let entity of pack.entities.filter((e)=>!e.embedded)){
-            out.push("\n");
-            out.push("  \"" + (entity.name) + "\": " + (entity.name) + "UIX,\n");
+            out.push("\"" + (entity.name) + "\": " + (entity.name) + "UIX,\n");
         }
-        out.push("\n");
-        out.push("};\n");
-        out.push("\n");
+        out.push("};" + "\n");
         out.push("export const prepareExcludeList = (name, excludeList) => {\n");
         out.push("  let result;\n");
         out.push("  if (Array.isArray(name)) {\n");
@@ -470,20 +442,13 @@ module.exports = {
         out.push("    }\n");
         out.push("  }\n");
         out.push("  return result;\n");
-        out.push("};\n");
-        out.push("\n");
+        out.push("};");
         chunkStart(`./i18n/index.js`);
-        out.push("\n");
-        out.push("import {merge} from 'lodash';\n");
-        out.push("\n");
+        out.push("import {merge} from 'lodash';" + "\n");
         for (let entity of pack.entities){
-            out.push("\n");
             out.push("import " + (entity.name) + "Translate from './" + (entity.name) + "';\n");
         }
-        out.push("\n");
-        out.push("\n");
         for (let en_ of pack.enums){
-            out.push("\n");
             out.push("import { translation as " + (en_.name) + " } from '../" + (en_.name) + "';\n");
         }
         out.push("\n");
@@ -516,33 +481,23 @@ module.exports = {
         out.push("  merge(\n");
         out.push("    messages,\n");
         for (let entity of pack.entities){
-            out.push("\n");
-            out.push("    " + (entity.name) + "Translate,\n");
+            out.push((entity.name) + "Translate,\n");
         }
-        out.push("\n");
         for (let en_ of pack.enums){
-            out.push("\n");
-            out.push("    " + (en_.name) + ",\n");
+            out.push((en_.name) + ",\n");
         }
         out.push("\n");
-        out.push("  )\n");
-        out.push("\n");
+        out.push("  )");
         chunkStart(`./resource-menu-items.js`);
-        out.push("\n");
-        out.push("import React from 'react';\n");
-        out.push("import ListIcon from '@material-ui/icons/view-list';\n");
+        out.push("import React from 'react';" + "import ListIcon from '@material-ui/icons/view-list';\n");
         out.push("import { translate } from 'react-admin';\n");
         out.push("\n");
         out.push("export default {\n");
         for (let entity of pack.entities.filter((e)=>!e.embedded && !e.abstract)){
-            out.push("\n");
-            out.push("  \"" + (entity.name) + "\": { icon: <ListIcon />, visible: true, name: translate('resources." + (entity.name) + ".name', { smart_count:2 }) },\n");
+            out.push("\"" + (entity.name) + "\": { icon: <ListIcon />, visible: true, name: translate('resources." + (entity.name) + ".name', { smart_count:2 }) },\n");
         }
-        out.push("\n");
-        out.push("};\n");
-        out.push("\n");
+        out.push("};");
         chunkStart(`./admin.js`);
-        out.push("\n");
         const language = pack.metadata?.UI?.locale || 'english';
         out.push("\n");
         out.push("import React from 'react';\n");
@@ -574,9 +529,7 @@ module.exports = {
         out.push("    >\n");
         out.push("    ");
         for (let entity of pack.entities.filter((e)=>!(e.embedded || e.abstract))){
-            out.push("\n");
-            out.push("        <Resource\n");
-            out.push("          key={\"" + (entity.name) + "\"}\n");
+            out.push("<Resource" + "          key={\"" + (entity.name) + "\"}\n");
             out.push("          show={(uix || getUIX)." + (entity.name) + ".Show}\n");
             out.push("          name={\"" + (entity.resourceName) + "\"}\n");
             out.push("          edit={(uix || getUIX)." + (entity.name) + ".Edit}\n");
@@ -586,15 +539,10 @@ module.exports = {
             out.push("        />\n");
             out.push("    ");
         }
-        out.push("\n");
-        out.push("    </Admin>\n");
-        out.push("  </UIXContext.Provider>\n");
-        out.push(");\n");
-        out.push("\n");
+        out.push("</Admin>" + "  </UIXContext.Provider>\n");
+        out.push(");");
         chunkStart(`./InputWithPreview.js`);
-        out.push("\n");
-        out.push("import React, { useContext, useState, Fragment } from 'react';\n");
-        out.push("import Drawer from '@material-ui/core/Drawer';\n");
+        out.push("import React, { useContext, useState, Fragment } from 'react';" + "import Drawer from '@material-ui/core/Drawer';\n");
         out.push("\n");
         out.push("import { Field } from 'react-final-form';\n");
         out.push("import IconImageEye from '@material-ui/icons/RemoveRedEye';\n");
@@ -683,12 +631,9 @@ module.exports = {
         out.push("  );\n");
         out.push("};\n");
         out.push("\n");
-        out.push("export default InputWithPreview;\n");
-        out.push("\n");
+        out.push("export default InputWithPreview;");
         chunkStart(`./quickCreate.js`);
-        out.push("\n");
-        out.push("import React, { useState, useContext, Fragment } from 'react';\n");
-        out.push("import { UIXContext } from './contexts';\n");
+        out.push("import React, { useState, useContext, Fragment } from 'react';" + "import { UIXContext } from './contexts';\n");
         out.push("import {\n");
         out.push("  Button,\n");
         out.push("  useTranslate,\n");
@@ -774,12 +719,9 @@ module.exports = {
         out.push("      </Dialog>\n");
         out.push("    </Fragment>\n");
         out.push("  );\n");
-        out.push("};\n");
-        out.push("\n");
+        out.push("};");
         chunkStart(`./contexts.js`);
-        out.push("\n");
-        out.push("import React from 'react';\n");
-        out.push("\n");
+        out.push("import React from 'react';" + "\n");
         out.push("export const UIXContext = React.createContext({});");
         chunkEnd();
         out = Object.keys(result).filter((i)=>i !== '$$$main$$$').map((curr)=>({

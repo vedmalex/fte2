@@ -43,7 +43,6 @@ module.exports = {
             const envList = Object.keys(env);
             for(let i = 0; i < envList.length; i++){
                 const key = envList[i];
-                out.push("\n");
                 out.push((key) + "=" + (env[key]) + "\n");
             }
         }

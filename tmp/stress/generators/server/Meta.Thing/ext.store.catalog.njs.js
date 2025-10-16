@@ -27,8 +27,7 @@ module.exports = {
             out.push("\n");
             out.push("  remoteFilter:false,\n");
             out.push("  remoteSort:false,\n");
-            out.push("  pageSize: -1,\n");
-            out.push("  ");
+            out.push("  pageSize: -1,");
         }
         out.push("extKeys:{},  ");
         if (context.sortProperty && context.sortProperty.length > 0) {
@@ -46,8 +45,7 @@ module.exports = {
                 out.push("  }");
             }
             out.push("\n");
-            out.push("  ]\n");
-            out.push("  ");
+            out.push("  ]");
         }
         out.push("\n");
         out.push("});");

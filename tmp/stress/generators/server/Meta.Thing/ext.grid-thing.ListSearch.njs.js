@@ -15,8 +15,7 @@ module.exports = {
         if (context.iconCls) {
             out.push("|| \"" + (context.iconCls) + "\"");
         }
-        out.push(" ,\n");
-        out.push("  ");
+        out.push(" ,");
         if (context.periodicalRel) {
             out.push("\n");
             out.push("  periodicalRel:{\n");
@@ -24,8 +23,7 @@ module.exports = {
             out.push("    to:'" + (context.periodicalRel.to) + "',\n");
             out.push("    fromKeyField:'" + (context.periodicalRel.fromKeyField) + "',\n");
             out.push("    toKeyField:'" + (context.periodicalRel.toKeyField) + "',\n");
-            out.push("  },\n");
-            out.push("  ");
+            out.push("  },");
         }
         out.push("\n");
         out.push("  border: true,\n");
@@ -34,8 +32,7 @@ module.exports = {
         out.push("  // tbar: " + (JSON.stringify(getToolbar(context.gridsettings))) + ",\n");
         out.push("  initComponent: function(){\n");
         out.push("    let me = this;\n");
-        out.push("    Ext.apply(this,{\n");
-        out.push("      ");
+        out.push("    Ext.apply(this,{");
         if (!(context.queryResult || context.legacySearch) && config.pageSizeSearch !== -1 && !context.staticStore) {
             out.push("\n");
             out.push("      bbar: {\n");
@@ -44,8 +41,7 @@ module.exports = {
             out.push("        displayInfo: true,\n");
             out.push("        displayMsg: 'Displaying topics {0} - {1} of {2}',\n");
             out.push("        emptyMsg: \"No data to display\"\n");
-            out.push("      },\n");
-            out.push("      ");
+            out.push("      },");
         }
         out.push("\n");
         out.push("      title: this.title || this.toDisplay || _t(\"" + (context.$name) + "\",'" + (context.$namespace) + "." + (context.$name) + "', 'titles','List'),\n");

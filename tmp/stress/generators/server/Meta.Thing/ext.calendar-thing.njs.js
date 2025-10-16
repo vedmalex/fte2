@@ -27,7 +27,7 @@ module.exports = {
         out.push("      view.readOnly =  " + (context.cal_mapping.readOnlyEmbedded) + ";\n");
         out.push("      view.showUnassignedPanel = " + (context.cal_mapping.showUnassignedPanelEmbedded) + ";\n");
         out.push("    } else {\n");
-        out.push("      view.sortPanels = [\n");
+        out.push("      view.sortPanels = [");
         let spAll = context.cal_mapping.cal_sortBy;
         if (spAll) {
             let sortPanels = spAll.filter(function(item) {
@@ -35,43 +35,25 @@ module.exports = {
             });
             for(let k = 0; k < sortPanels.length; k++){
                 out.push("\n");
-                out.push("        {\n");
-                out.push("\n");
-                out.push("        ");
+                out.push("        {");
                 if (sortPanels[k].fields) {
                     out.push("\n");
                     out.push("        fields: \"" + ([
                         sortPanels[k].fields.match(/[A-Za-z0-9]*[A-Za-z0-9]/g)
-                    ].join(',')) + "\",\n");
-                    out.push("        ");
+                    ].join(',')) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].filterDisplayField) {
                     out.push("\n");
-                    out.push("        filterDisplayField: \"" + (sortPanels[k].filterDisplayField) + "\",\n");
-                    out.push("        ");
+                    out.push("        filterDisplayField: \"" + (sortPanels[k].filterDisplayField) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].name) {
                     out.push("\n");
-                    out.push("        name: \"" + (sortPanels[k].name) + "\",\n");
-                    out.push("        ");
+                    out.push("        name: \"" + (sortPanels[k].name) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].sortBy) {
                     out.push("\n");
-                    out.push("        sortByQuery: \"" + (sortPanels[k].sortBy) + "\",\n");
-                    out.push("        ");
+                    out.push("        sortByQuery: \"" + (sortPanels[k].sortBy) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].sortByStore) {
                     out.push("\n");
                     out.push("        sortByStore: Ext.create('Modeleditor.store." + (sortPanels[k].sortByStore) + "', {\n");
@@ -87,17 +69,12 @@ module.exports = {
                     out.push("                      }\n");
                     out.push("                  },\n");
                     out.push("                  pageSize: -1\n");
-                    out.push("              }),\n");
-                    out.push("              ");
+                    out.push("              }),");
                 }
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].thingFilter) {
                     out.push("\n");
                     out.push("        thingFilter: \"" + (sortPanels[k].thingFilter) + "\",");
                 }
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].thingFilter) {
                     out.push("\n");
                     out.push("        filterStore: Ext.create('Modeleditor.store." + (sortPanels[k].thingFilter) + "', {\n");
@@ -113,49 +90,31 @@ module.exports = {
                     out.push("                      }\n");
                     out.push("                  },\n");
                     out.push("                  pageSize: -1\n");
-                    out.push("              }),\n");
-                    out.push("              ");
+                    out.push("              }),");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].key) {
                     out.push("\n");
-                    out.push("        key:\"" + (sortPanels[k].key) + "\",\n");
-                    out.push("        ");
+                    out.push("        key:\"" + (sortPanels[k].key) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].fromKey) {
                     out.push("\n");
-                    out.push("        fromKey:\"" + (sortPanels[k].fromKey) + "\",\n");
-                    out.push("        ");
+                    out.push("        fromKey:\"" + (sortPanels[k].fromKey) + "\",");
                 }
-                out.push("\n");
-                out.push("\n");
-                out.push("        ");
                 if (sortPanels[k].id) {
                     out.push("\n");
-                    out.push("        id:\"" + (sortPanels[k].id) + "\",\n");
-                    out.push("        ");
+                    out.push("        id:\"" + (sortPanels[k].id) + "\",");
                 }
                 out.push("\n");
                 out.push("\n");
                 out.push("        pUid:\"_" + ('PFCAL00' + k) + "\"\n");
-                out.push("      }\n");
-                out.push("          ");
+                out.push("      }");
                 if (k != sortPanels.length - 1) {
                     out.push("\n");
-                    out.push("          ,\n");
-                    out.push("          ");
+                    out.push("          ,");
                 }
-                out.push("\n");
-                out.push("        ");
             }
         }
-        out.push("];\n");
-        out.push("\n");
+        out.push("];" + "\n");
         out.push("      view.eventStore = Ext.create('Modeleditor.store." + (context.$namespace) + "." + (context.$name) + "', {\n");
         out.push("                extKeys: [],\n");
         out.push("                remoteFilter: false,\n");
@@ -176,18 +135,16 @@ module.exports = {
         out.push("      view.showUnassignedPanel = " + (context.cal_mapping.showUnassignedPanel) + ";\n");
         out.push("    }\n");
         out.push("\n");
-        out.push("    view.filterCfg = ");
+        out.push("    view.filterCfg =");
         if (context.cal_mapping.cal_filter) {
             out.push("\n");
             out.push("    {\n");
             out.push("      queryName:'" + (context.cal_mapping.cal_filter.queryRef) + "',\n");
             out.push("      props: function(){" + (context.cal_mapping.cal_filter.filterProps) + "}\n");
-            out.push("    }\n");
-            out.push("    ");
+            out.push("    }");
         } else {
             out.push("\n");
-            out.push("    false\n");
-            out.push("    ");
+            out.push("    false");
         }
         out.push("\n");
         out.push("    ;\n");
@@ -215,8 +172,7 @@ module.exports = {
         out.push("            contextMenuCfg: " + (JSON.stringify(context.cal_mapping.contextMenuCfg)) + "\n");
         out.push("        };\n");
         out.push("\n");
-        out.push("        view.colorSchemes = [\n");
-        out.push("        ");
+        out.push("        view.colorSchemes = [");
         let schemes = context.cal_mapping.cal_colorScheme;
         if (schemes) {
             for(let k = 0; k < schemes.length; k++){
@@ -227,15 +183,11 @@ module.exports = {
                     out.push("      func: function(record, callback){\n");
                     out.push("        " + (schemes[k].function) + "\n");
                     out.push("      }\n");
-                    out.push("    }\n");
-                    out.push("    ");
+                    out.push("    }");
                     if (k != schemes.length - 1) {
                         out.push("\n");
-                        out.push("    ,\n");
-                        out.push("    ");
+                        out.push("    ,");
                     }
-                    out.push("\n");
-                    out.push("    ");
                 }
             }
         }

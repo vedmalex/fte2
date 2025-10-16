@@ -10,8 +10,7 @@ module.exports = {
         out.push("  override: 'Grainjs.metadata',\n");
         out.push("  statics:{\n");
         out.push("    'gridcombo." + (context.$namespace) + "." + (context.$name) + "': {\n");
-        out.push("      comboOptions: {\n");
-        out.push("        ");
+        out.push("      comboOptions: {");
         for(let i = 0; i < properties.length; i++){
             let property = properties[i].property;
             const props = context.formPropsHash[property.propertyName].filter((f)=>f.generated);
@@ -23,23 +22,16 @@ module.exports = {
                 for(let j = 0; j < props.length; j++){
                     const f = props[j];
                     out.push("\n");
-                    out.push("          " + (JSON.stringify(property.propertyName)) + ": {\n");
-                    out.push("          ");
+                    out.push("          " + (JSON.stringify(property.propertyName)) + ": {");
                     if (f.comboData && f.comboData != "" && f.comboData != "{}") {
                         let cdata = JSON.parse(f.comboData);
-                        out.push("\n");
-                        out.push("            ");
                         if (cdata.store != undefined && cdata.displayField != undefined && cdata.valueField != undefined) {
-                            out.push("\n");
-                            out.push("                ");
                             if (cdata.tpl) {
                                 out.push("\n");
-                                out.push("                tpl: " + (JSON.stringify(cdata.tpl)) + ",\n");
-                                out.push("                ");
+                                out.push("                tpl: " + (JSON.stringify(cdata.tpl)) + ",");
                             }
                             out.push("\n");
-                            out.push("                store:\n");
-                            out.push("                ");
+                            out.push("                store:");
                             if (typeof (cdata.store) == "string") {
                                 out.push("\n");
                                 out.push("                  ()=>Ext.create('Modeleditor.store." + (cdata.store) + "', {\n");
@@ -47,14 +39,12 @@ module.exports = {
                                 out.push("                  remoteFilter: false,\n");
                                 out.push("                  remoteSort: false,\n");
                                 out.push("                  pageSize: -1\n");
-                                out.push("                }),\n");
-                                out.push("                ");
+                                out.push("                }),");
                             } else if (typeof (cdata.store) == "object") {
                                 out.push("\n");
                                 out.push("                  ()=>Ext.create(\"Ext.data.Store\", {\n");
                                 out.push("                    " + (JSON.stringify(cdata.store)) + "\n");
-                                out.push("                  }),\n");
-                                out.push("                ");
+                                out.push("                  }),");
                             }
                             out.push("\n");
                             out.push("                displayField: '" + (cdata.displayField) + "',\n");
@@ -95,53 +85,36 @@ module.exports = {
                             out.push("                      };\n");
                             out.push("                    }\n");
                             out.push("                  },\n");
-                            out.push("                },\n");
-                            out.push("              ");
+                            out.push("                },");
                         } else if (cdata.customStore != undefined && cdata.customStore === true) {
                             out.push("\n");
                             out.push("                store: ()=>Ext.create(\"Ext.data.Store\", {\n");
-                            out.push("                  autoSync:\n");
-                            out.push("                  ");
+                            out.push("                  autoSync:");
                             if (cdata.autoSync) {
                                 out.push("\n");
-                                out.push("                    " + (cdata.autoSync) + ",\n");
-                                out.push("                  ");
+                                out.push("                    " + (cdata.autoSync) + ",");
                             } else {
                                 out.push("\n");
-                                out.push("                    false,\n");
-                                out.push("                  ");
+                                out.push("                    false,");
                             }
-                            out.push("\n");
-                            out.push("                  ");
                             if (cdata.model) {
                                 out.push("\n");
-                                out.push("                  model: \"" + (cdata.model) + "\",\n");
-                                out.push("                  ");
+                                out.push("                  model: \"" + (cdata.model) + "\",");
                             } else {
                                 out.push("\n");
-                                out.push("                  fields:\n");
-                                out.push("                    ");
+                                out.push("                  fields:");
                                 if (cdata.fields) {
                                     out.push("\n");
-                                    out.push("                      " + (JSON.stringify(cdata.fields)) + ",\n");
-                                    out.push("                    ");
+                                    out.push("                      " + (JSON.stringify(cdata.fields)) + ",");
                                 } else {
                                     out.push("\n");
-                                    out.push("                    ['name', 'value'],\n");
-                                    out.push("                    ");
+                                    out.push("                    ['name', 'value'],");
                                 }
-                                out.push("\n");
-                                out.push("                  ");
                             }
-                            out.push("\n");
-                            out.push("                  ");
                             if (cdata.sorters) {
                                 out.push("\n");
-                                out.push("                  sorters: " + (JSON.stringify(cdata.sorters)) + ",\n");
-                                out.push("                  ");
+                                out.push("                  sorters: " + (JSON.stringify(cdata.sorters)) + ",");
                             }
-                            out.push("\n");
-                            out.push("                ");
                             if (cdata.apiRead) {
                                 out.push("\n");
                                 out.push("                  autoLoad: ");
@@ -152,47 +125,35 @@ module.exports = {
                                 }
                                 out.push(",\n");
                                 out.push("                  proxy: {\n");
-                                out.push("                    type:\n");
-                                out.push("                    ");
+                                out.push("                    type:");
                                 if (cdata.proxyType) {
                                     out.push("\n");
-                                    out.push("                      \"" + (cdata.proxyType) + "\",\n");
-                                    out.push("                    ");
+                                    out.push("                      \"" + (cdata.proxyType) + "\",");
                                 } else {
                                     out.push("\n");
-                                    out.push("                      \"direct\",\n");
-                                    out.push("                    ");
+                                    out.push("                      \"direct\",");
                                 }
                                 out.push("\n");
                                 out.push("                    api: {\n");
                                 out.push("                      read: " + (cdata.apiRead) + "\n");
-                                out.push("                    },\n");
-                                out.push("                    ");
+                                out.push("                    },");
                                 if (cdata.extraParams) {
                                     out.push("\n");
-                                    out.push("                    extraParams: " + (JSON.stringify(cdata.extraParams)) + ",\n");
-                                    out.push("                    ");
+                                    out.push("                    extraParams: " + (JSON.stringify(cdata.extraParams)) + ",");
                                 }
-                                out.push("\n");
-                                out.push("                    ");
                                 if (cdata.reader) {
                                     out.push("\n");
                                     out.push("                    reader: " + (JSON.stringify(cdata.reader)));
                                 }
-                                out.push("\n");
-                                out.push("                    ");
                                 if (cdata.writer) {
                                     out.push(",\n");
-                                    out.push("                    writer: " + (JSON.stringify(cdata.writer)) + "\n");
-                                    out.push("                    ");
+                                    out.push("                    writer: " + (JSON.stringify(cdata.writer)));
                                 }
                                 out.push("\n");
-                                out.push("                  },\n");
-                                out.push("                ");
+                                out.push("                  },");
                             } else {
                                 out.push(",\n");
-                                out.push("                  data: (" + (JSON.stringify(cdata.data)) + " || [])\n");
-                                out.push("                  ");
+                                out.push("                  data: (" + (JSON.stringify(cdata.data)) + " || [])");
                                 const displayField = cdata.displayField ? cdata.displayField : 'name';
                                 out.push("\n");
                                 out.push("                  .map(item=>({\n");
@@ -202,8 +163,7 @@ module.exports = {
                                 out.push("                      '" + (context.$namespace) + "." + (context.$name) + "',\n");
                                 out.push("                      'combobox',\n");
                                 out.push("                      '" + (property.propertyName) + "')\n");
-                                out.push("                    }))\n");
-                                out.push("                  ");
+                                out.push("                    }))");
                             }
                             out.push("\n");
                             out.push("                }),\n");
@@ -227,8 +187,7 @@ module.exports = {
                             } else {
                                 out.push("\"local\"");
                             }
-                            out.push(",\n");
-                            out.push("              ");
+                            out.push(",");
                         } else {
                             out.push("\n");
                             out.push("                store:()=> Ext.create('Ext.data.Store', {\n");
@@ -278,12 +237,9 @@ module.exports = {
                         }
                     }
                     out.push("\n");
-                    out.push("          },\n");
-                    out.push("        ");
+                    out.push("          },");
                 }
             }
-            out.push("\n");
-            out.push("        ");
         }
         out.push("\n");
         out.push("      },\n");

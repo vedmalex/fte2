@@ -7,12 +7,12 @@ module.exports = {
         out.push(" */\n");
         out.push("Ext.directFn({\n");
         out.push("  namespace: \"" + (context.namespace) + "\",\n");
-        out.push("  name: '" + (context.name) + "',\n");
+        out.push("  name: '" + (context.name) + "',");
         if (context.formHandler) {
             out.push("\n");
             out.push("  extension: {\n");
             out.push("    formHandler: true\n");
-            out.push("  },\n");
+            out.push("  },");
         }
         out.push("\n");
         out.push("  locationType: \"" + (context.locationType) + "\",\n");

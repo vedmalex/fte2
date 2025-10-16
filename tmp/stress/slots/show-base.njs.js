@@ -17,7 +17,7 @@ module.exports = {
         out.push((slot('import-from-ra-ui-components-show')) + "\n");
         out.push("const ShowRecordView = (props, context) => {\n");
         out.push("  const { uix } = context;\n");
-        out.push("  const { Title } = uix['" + (entity.role) + "/" + (entity.name) + "'];\n");
+        out.push("  const { Title } = uix['" + (entity.role) + "/" + (entity.name) + "'];");
         const manyRels = entity.relations.filter((f)=>!f.single);
         if (manyRels.length > 0) {
             out.push("\n");
@@ -27,10 +27,8 @@ module.exports = {
             }, {});
             Object.keys(uniqueEntities).forEach((key)=>{
                 let f = uniqueEntities[key];
-                out.push("\n");
-                out.push("  const " + (f.ref.entity) + " = uix['" + (entity.role) + "/" + (f.ref.entity) + "'];\n");
+                out.push("const " + (f.ref.entity) + " = uix['" + (entity.role) + "/" + (f.ref.entity) + "'];\n");
             });
-            out.push("\n");
         }
         out.push("\n");
         out.push("  return (");

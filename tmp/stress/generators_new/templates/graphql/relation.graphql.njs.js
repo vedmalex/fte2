@@ -63,10 +63,7 @@ module.exports = {
                 return thingType.replaceAll('.', '');
             }
         };
-        out.push("\n");
-        out.push("\n");
-        out.push("/**\n");
-        out.push("    1. сущность для ассоциации\n");
+        out.push("/**" + "    1. сущность для ассоциации\n");
         out.push("      1. проставляем для нее все необходимые полы\n");
         out.push("      3. сущность содержит такие же поля как и обычная\n");
         out.push("        properties\n");
@@ -104,8 +101,6 @@ module.exports = {
             out.push("types.push(relSchameEdges)\n");
             out.push("\n");
         }
-        out.push("\n");
-        out.push("\n");
         let r1 = extractRelationEndForRel(context, false);
         let r2 = extractRelationEndForRel(context, true);
         if (!r1.ref[parentSymbol].global) {
@@ -146,7 +141,6 @@ module.exports = {
             }
             for(var j = names.length - 1; j >= 0; j -= 1){
                 const currentThingType = names[j];
-                out.push("\n");
                 if (!rel.oppositeEmbedded) {
                     out.push("\n");
                     out.push("// !oppositeEmbedded\n");
@@ -371,11 +365,9 @@ module.exports = {
                         out.push("      resolver:{\n");
                         out.push("        " + (rel.propName.replaceAll('.', '')) + "Count: relate_count(build_relate_options('" + (rel.model.thingType) + "', '" + (rel.propName) + "'))\n");
                         out.push("      }\n");
-                        out.push("    }),\n");
+                        out.push("    }),");
                     } else {
-                        out.push("\n");
-                        out.push("// oppositeEmbedded & many\n");
-                        out.push("    new Type({\n");
+                        out.push("// oppositeEmbedded & many" + "    new Type({\n");
                         out.push("      // исправить: поставить правильную ссылку на модель\n");
                         out.push("      schema: gql`\n");
                         out.push("       type " + (GQLName(currentThingType)) + "Edges {\n");
@@ -408,11 +400,9 @@ module.exports = {
                         out.push("      resolver:{\n");
                         out.push("        " + (rel.propName.replaceAll('.', '')) + "Count: relate_count(build_relate_options('" + (rel.model.thingType) + "', '" + (rel.propName) + "'))\n");
                         out.push("      }\n");
-                        out.push("    }),\n");
+                        out.push("    }),");
                     }
-                    out.push("\n");
                 }
-                out.push("\n");
             }
             out.push("\n");
         }

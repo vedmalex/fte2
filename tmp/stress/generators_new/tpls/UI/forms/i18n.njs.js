@@ -20,50 +20,39 @@ module.exports = {
         out.push("\n");
         entity.props.forEach((f)=>{
             if (!f.ref && !f.inheritedFrom) {
-                out.push("\n");
-                out.push("        " + (f.name) + ": '" + (f.label) + "',\n");
+                out.push((f.name) + ": '" + (f.label) + "',\n");
             } else if (f.ref && !f.inheritedFrom) {
-                out.push("\n");
-                out.push("        " + (f.name) + ": '" + (f.label) + "',\n");
+                out.push((f.name) + ": '" + (f.label) + "',\n");
             }
         });
-        out.push("\n");
-        out.push("      },\n");
+        out.push("},");
         const hintList = entity.props.filter((f)=>f.hint);
         if (hintList.length > 0) {
-            out.push("\n");
-            out.push("      helpers:{\n");
+            out.push("helpers:{");
             entity.props.filter((f)=>f.hint).forEach((f)=>{
                 if (!f.ref && !f.inheritedFrom) {
-                    out.push("\n");
-                    out.push("        " + (f.name) + ": '" + (f.hint) + "',\n");
+                    out.push((f.name) + ": '" + (f.hint) + "',\n");
                 } else if (f.ref && !f.inheritedFrom) {
-                    out.push("\n");
-                    out.push("        " + (f.name) + ": '" + (f.hint) + "',\n");
+                    out.push((f.name) + ": '" + (f.hint) + "',\n");
                 }
             });
-            out.push("\n");
-            out.push("      },\n");
+            out.push("},");
         }
-        out.push("\n");
         if (entity.actions.length > 0 || rels.length > 0) {
-            out.push("\n");
-            out.push("      actions:{\n");
+            out.push("actions:{");
             entity.actions.forEach((action)=>{
                 out.push("\n");
-                out.push("        " + (action.name) + ": '" + (action.title) + "',\n");
+                out.push("        " + (action.name) + ": '" + (action.title) + "',");
             });
             out.push("\n");
             rels.forEach((rel)=>{
                 out.push("\n");
-                out.push("  " + (rel.name) + ": '" + (rel?.metadata?.UI?.actions?.add || rel.label) + "',\n");
+                out.push("  " + (rel.name) + ": '" + (rel?.metadata?.UI?.actions?.add || rel.label) + "',");
             });
             out.push("\n");
             out.push("      },\n");
         }
-        out.push("\n");
-        out.push("    }\n");
-        out.push("  },\n");
+        out.push("}" + "  },\n");
         out.push("}");
         return out.join('');
     },

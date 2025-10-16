@@ -9,7 +9,6 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, embedded, sectionLabel, grid, customizable } = ctx;
-        out.push("\n");
         if (sectionLabel && customizable) {
             out.push("\n");
             out.push("<>\n");

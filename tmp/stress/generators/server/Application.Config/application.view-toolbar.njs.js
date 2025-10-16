@@ -17,24 +17,19 @@ module.exports = {
         out.push("    DirectCacheLogger.userStories('Toolbar Init Component', { applicationName: '" + (context.name) + "', profileName: '" + (context.currentProfile.name) + "' });\n");
         out.push("\n");
         out.push("    Ext.apply(this, {\n");
-        out.push("      items:[\n");
-        out.push("    ");
+        out.push("      items:[");
         for(let i = 0; i < context.currentProfile?.toolBarItem?.length ?? -1; i++){
             let settings = JSON.parse(context.currentProfile.toolBarItem[i].settings);
             settings.itemId = context.currentProfile.toolBarItem[i].itemId;
             out.push("\n");
-            out.push("      " + (JSON.stringify(settings)) + ",\n");
-            out.push("    ");
+            out.push("      " + (JSON.stringify(settings)) + ",");
         }
         out.push("\n");
         out.push("\n");
         out.push("      /* DEFAULT ITEMS */\n");
-        out.push("      \"->\",\n");
-        out.push("      ");
+        out.push("      \"->\",");
         if (!context.noTranslationTools) {
-            out.push("\n");
-            out.push("      {\n");
-            out.push("        xtype: 'button',\n");
+            out.push("{" + "        xtype: 'button',\n");
             out.push("        iconCls: `gi-lang_${currentLocale.code}`,\n");
             out.push("        menu: {\n");
             out.push("          items: globalThis.AVAILABLE_LANGUAGES.filter(\n");

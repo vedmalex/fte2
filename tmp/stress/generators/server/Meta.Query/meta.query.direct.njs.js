@@ -10,28 +10,22 @@ module.exports = {
         out.push("  body: function(para) {\n");
         out.push("    let context = this;\n");
         out.push("    let prm = para.data.shift();\n");
-        out.push("    prm.context = context;\n");
-        out.push("    ");
+        out.push("    prm.context = context;");
         const hasCondition = context.queryRunCondition !== 'true' && context.queryRunCondition != true && context.queryRunCondition != '' && context.queryRunCondition !== null && context.queryRunCondition !== undefined;
-        out.push("\n");
-        out.push("    ");
         if (hasCondition) {
             out.push("\n");
-            out.push("    if(" + (context.queryRunCondition) + "){\n");
-            out.push("    ");
+            out.push("    if(" + (context.queryRunCondition) + "){");
         }
         out.push("\n");
         out.push("    CustomQuery['" + (name) + "'].call(this, this.db, prm, function(err, data) {\n");
         out.push("      if (!err) context.success(data);\n");
         out.push("      else context.failure(err);\n");
-        out.push("    })\n");
-        out.push("    ");
+        out.push("    })");
         if (hasCondition) {
             out.push("\n");
             out.push("    } else {\n");
             out.push("      context.success(" + (context.queryEmptyResult ? context.queryEmptyResult : context.queryIsListResult ? [] : 'null') + ")\n");
-            out.push("    }\n");
-            out.push("    ");
+            out.push("    }");
         }
         out.push("\n");
         out.push("  }\n");

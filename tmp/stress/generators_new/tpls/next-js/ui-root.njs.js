@@ -48,10 +48,7 @@ module.exports = {
         }
         chunkStart(main);
         chunkStart(`index.js`);
-        out.push("\n");
-        out.push("\n");
-        out.push("import React from 'react';\n");
-        out.push("import Admin from './ui/admin';\n");
+        out.push("import React from 'react';" + "import Admin from './ui/admin';\n");
         out.push("import dataProvider from './data-provider-fb-auth';\n");
         out.push("import authProvider from './auth-provider-fb';\n");
         out.push("\n");

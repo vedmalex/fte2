@@ -29,8 +29,6 @@ module.exports = {
             out.push("  stateMachineHash: Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].stateMachineHash,\n");
             out.push("  ");
         }
-        out.push("\n");
-        out.push("  ");
         if (context.queryResult || context.legacySearch) {
             out.push("\n");
             out.push("  customSearch: true,\n");
@@ -62,8 +60,7 @@ module.exports = {
                         const property = f.property;
                         if (!f.hiddenForSearch) {
                             out.push("\n");
-                            out.push("                Grainjs.metadata['searchfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`](me.customSearch),\n");
-                            out.push("              ");
+                            out.push("                Grainjs.metadata['searchfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`](me.customSearch),");
                         }
                         break;
                     case 'fieldset':

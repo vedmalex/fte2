@@ -9,11 +9,8 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, readonly } = ctx;
-        out.push("\n");
         const type = `${(f.calculated || f.readonly || readonly) ? 'Readonly' + f.type : f.type}`;
-        out.push("\n");
-        out.push("<uix.primitive." + (type) + ".Input\n");
-        out.push("  ");
+        out.push("<uix.primitive." + (type) + ".Input");
         if (f.defaultValue) {
             out.push("\n");
             out.push("  defaultValue={" + (f.defaultValue) + "}");
@@ -21,21 +18,17 @@ module.exports = {
         out.push("\n");
         out.push("  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
         if (f.hint) {
-            out.push("\n");
-            out.push("  helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
+            out.push("helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
         } else {
-            out.push("\n");
-            out.push("  helperText={false}\n");
+            out.push("helperText={false}");
         }
         out.push("\n");
         out.push("  source={`" + (source) + (f.name) + "`}\n");
         out.push("  ");
         if (!f.required) {
-            out.push("\n");
-            out.push("  allowEmpty");
+            out.push("allowEmpty");
         } else {
-            out.push("\n");
-            out.push("  validate={uix.required()}");
+            out.push("validate={uix.required()}");
         }
         out.push("\n");
         out.push("/>");

@@ -100,8 +100,7 @@ module.exports = {
         out.push("    'model." + (context.$namespace) + "." + (context.$name) + "': {\n");
         out.push("    widget: \"" + (context.$widgetName) + "\",\n");
         out.push("    queryResult: " + (context.queryResult) + ",\n");
-        out.push("    refreshMethod: " + (refreshMethod) + ",\n");
-        out.push("    ");
+        out.push("    refreshMethod: " + (refreshMethod) + ",");
         if (context.properties) {
             out.push("\n");
             out.push("    fields:()=> ([");
@@ -113,12 +112,10 @@ module.exports = {
                 }
                 out.push("\n");
                 out.push("      {\n");
-                out.push("        name: '" + (prop.propertyName) + "'\n");
-                out.push("        ");
+                out.push("        name: '" + (prop.propertyName) + "'");
                 if (prop.type) {
                     out.push(",\n");
-                    out.push("          type:'" + (prop.type) + "'\n");
-                    out.push("          ");
+                    out.push("          type:'" + (prop.type) + "'");
                     if (prop.type == "date") {
                         out.push(",\n");
                         out.push("          dateFormat: 'c'");
@@ -210,16 +207,12 @@ module.exports = {
             }
             out.push("\n");
             out.push("      {type: 'presence',  field: 'id'}\n");
-            out.push("    ]),\n");
-            out.push("  ");
+            out.push("    ]),");
         }
-        out.push("\n");
-        out.push("  ");
         if (calendar_mapping) {
             out.push("\n");
             out.push("    statics: {\n");
-            out.push("      calendarMapping: {\n");
-            out.push("        ");
+            out.push("      calendarMapping: {");
             if (calendar_mapping.cal_displayInfo && !calendar_mapping.cal_displayInfo.disable) {
                 out.push("DisplayInfo:{\n");
                 out.push("          name: '" + (calendar_mapping.cal_displayInfo.name) + "',\n");
@@ -228,9 +221,6 @@ module.exports = {
                 out.push("          }\n");
                 out.push("        },");
             }
-            out.push("\n");
-            out.push("\n");
-            out.push("        ");
             if (calendar_mapping.cal_toolTip && !calendar_mapping.cal_toolTip.disable) {
                 out.push("ToolTipInfo:{\n");
                 out.push("          name: '" + (calendar_mapping.cal_toolTip.name) + "',\n");
@@ -319,11 +309,8 @@ module.exports = {
             }
             out.push("\n");
             out.push("      }\n");
-            out.push("    },\n");
-            out.push("  ");
+            out.push("    },");
         }
-        out.push("\n");
-        out.push("\n");
         if (context.relations) {
             out.push("\n");
             out.push("  associations:()=>([\n");
@@ -352,8 +339,7 @@ module.exports = {
                 out.push("      variant: " + (JSON.stringify(variant)) + ",\n");
                 out.push("      relName: '" + (rel.relName) + "',\n");
                 out.push("      noScan: " + (rs?.noScan ?? false) + ",\n");
-                out.push("      requireValidOwner: " + (rs?.requireValidOwner ?? false) + ",\n");
-                out.push("  ");
+                out.push("      requireValidOwner: " + (rs?.requireValidOwner ?? false) + ",");
                 let serverSide = (rel.derived && rel.derivation && rel.derivation.mode == 'server') ? 'ServerDerived' : '';
                 if (!rel.derived || serverSide) {
                     out.push("\n");
@@ -370,20 +356,16 @@ module.exports = {
                     out.push("      primaryKey:'" + ($pk) + "',\n");
                     out.push("      foreignKey:'" + ($fk) + "',\n");
                     out.push("      embedded: " + (rel.embedded) + ",\n");
-                    out.push("      oppositeEmbedded: " + (rel.oppositeEmbedded) + "\n");
-                    out.push("    ");
+                    out.push("      oppositeEmbedded: " + (rel.oppositeEmbedded));
                     if (rel.single) {
                         out.push(",\n");
                         out.push("      getterName:\"get" + ($fk) + "\",\n");
-                        out.push("      setterName:\"set" + ($fk) + "\"\n");
-                        out.push("    ");
+                        out.push("      setterName:\"set" + ($fk) + "\"");
                     } else if (!rel.single) {
-                        out.push(",\n");
-                        out.push("      ");
+                        out.push(",");
                         out.push("\n");
                         out.push("      /*opposite key to store in relation*/\n");
-                        out.push("      oppositePk: \"" + ($oppositePk) + "\"\n");
-                        out.push("    ");
+                        out.push("      oppositePk: \"" + ($oppositePk) + "\"");
                     }
                 } else {
                     out.push("\n");
@@ -401,20 +383,15 @@ module.exports = {
                         out.push("      getterName:\"get" + ($fk) + "\",\n");
                         out.push("      setterName:\"set" + ($fk) + "\"");
                     }
-                    out.push(",\n");
-                    out.push("      ");
+                    out.push(",");
                     if (rel.derivation) {
                         out.push("\n");
                         out.push("      derivation: function(callback){\n");
                         out.push("        " + (rel.derivation.DerivationCode) + "\n");
                         out.push("      }");
                     }
-                    out.push("\n");
-                    out.push("\n");
-                    out.push("    ");
                 }
-                out.push("},\n");
-                out.push("  ");
+                out.push("},");
             });
             out.push("\n");
             out.push("  ]),\n");
@@ -467,8 +444,7 @@ module.exports = {
                 out.push("        \"oppositeSingle\"    : " + (JSON.stringify(rel.oppositeSingle)) + ",\n");
                 out.push("        \"noScan\"            : " + (rs?.noScan ?? false) + ",\n");
                 out.push("        \"requireValidOwner\": " + (rs?.requireValidOwner ?? false) + ",\n");
-                out.push("      },\n");
-                out.push("  ");
+                out.push("      },");
             });
             out.push("\n");
             out.push("  },\n");
@@ -497,9 +473,8 @@ module.exports = {
             out.push("      type: 'jsonmn',\n");
             out.push("      root: 'data'\n");
             out.push("    }\n");
-            out.push("  }),\n");
+            out.push("  }),");
         }
-        out.push("\n");
         if (context.collectionCount > 1) {
             out.push("\n");
             out.push("    inheritance: {\n");
@@ -517,14 +492,12 @@ module.exports = {
                     });
                 }
                 out.push("\n");
-                out.push("        " + (JSON.stringify(res)) + "\n");
-                out.push("      ");
+                out.push("        " + (JSON.stringify(res)));
             } else {
                 out.push("null");
             }
             out.push("\n");
-            out.push("    },\n");
-            out.push("  ");
+            out.push("    },");
         }
         out.push("\n");
         out.push("  ");
@@ -564,8 +537,7 @@ module.exports = {
             out.push("    /* stateMachineHash: Ext.create(\"DualSideHash\", " + (JSON.stringify(stateMachineHash)) + "), */\n");
             out.push("    stateMachineHash: Ext.create(\"DualSideHash\", {\n");
             out.push("      thing: \"" + (context.$namespace) + "." + (context.$name) + "\",\n");
-            out.push("      statuses: {\n");
-            out.push("      ");
+            out.push("      statuses: {");
             for (const name of Object.keys(stateMachineHash["statuses"])){
                 out.push("\n");
                 out.push("        [_t(\"" + (name) + "\",\"StateMachines\",\"" + (context.$namespace) + "." + (context.$name) + "\",\"state\")]: \"" + (stateMachineHash["statuses"][name]) + "\",\n");
@@ -573,12 +545,10 @@ module.exports = {
             }
             out.push("\n");
             out.push("      },\n");
-            out.push("      states: {\n");
-            out.push("      ");
+            out.push("      states: {");
             for (const name of Object.keys(stateMachineHash["states"])){
                 out.push("\n");
-                out.push("        " + (JSON.stringify(name)) + ": [\n");
-                out.push("        ");
+                out.push("        " + (JSON.stringify(name)) + ": [");
                 if (stateMachineHash["states"]?.[name] && Array.isArray(stateMachineHash["states"][name])) {
                     const statuses = stateMachineHash["states"]?.[name];
                     for (const status of statuses){
@@ -587,15 +557,11 @@ module.exports = {
                         out.push("        ");
                     }
                 }
-                out.push("\n");
-                out.push("        ],\n");
-                out.push("      ");
+                out.push("]," + "      ");
             }
             out.push("\n");
             out.push("      },\n");
-            out.push("    }),\n");
-            out.push("\n");
-            out.push("  ");
+            out.push("    }),");
         }
         out.push("\n");
         out.push("  groupedRels:()=> ({");
@@ -609,20 +575,15 @@ module.exports = {
                 iterateRelGroups(grRels, (variant, rel, relIndex, variantIndex)=>{
                     let rs = getRS(rel);
                     out.push("\n");
-                    out.push("      \"" + (rel.to) + "\n");
-                    out.push("        ");
+                    out.push("      \"" + (rel.to));
                     if (variant !== "*") {
-                        out.push("\n");
-                        out.push("          " + (rel.relName.split('.').join('')) + "\n");
-                        out.push("        ");
+                        out.push((rel.relName.split('.').join('')));
                     }
                     out.push("\":\n");
-                    out.push("        _t(\"" + (rs.toDisplay) + "\",'" + (context.$namespace) + "." + (context.$name) + "', 'toDisplay', '" + (rel.to) + "'),\n");
-                    out.push("      ");
+                    out.push("        _t(\"" + (rs.toDisplay) + "\",'" + (context.$namespace) + "." + (context.$name) + "', 'toDisplay', '" + (rel.to) + "'),");
                 });
                 out.push("\n");
-                out.push("    },\n");
-                out.push("    ");
+                out.push("    },");
             }
         }
         out.push("}),\n");
@@ -634,8 +595,7 @@ module.exports = {
         if (initConstructors.length > 0) {
             out.push("\n");
             out.push("      ensureDefaults: function(){\n");
-            out.push("        /*constructor init*/\n");
-            out.push("        ");
+            out.push("        /*constructor init*/");
             for(let i = initConstructors.length - 1; i >= 0; i--){
                 let clMethod = initConstructors[i];
                 if (!clMethod.disable) {
@@ -714,16 +674,11 @@ module.exports = {
                     return !(m.initListeners == '' || !m.initListeners) && !m.disable;
                 });
                 if (rxInit.length > 0) {
-                    out.push("\n");
-                    out.push("          ");
                     for(let i = rxInit.length - 1; i >= 0; i--){
                         out.push("\n");
                         out.push("      /*method >> " + (rxInit[i].name) + "*/\n");
-                        out.push("      " + (rxInit[i].initListeners) + "\n");
-                        out.push("          ");
+                        out.push("      " + (rxInit[i].initListeners));
                     }
-                    out.push("\n");
-                    out.push("      ");
                 }
             }
             out.push("\n");
@@ -732,12 +687,9 @@ module.exports = {
                 for(let i = methods.length - 1; i >= 0; i--){
                     let clMethod = methods[i];
                     if (!clMethod.disable) {
-                        out.push("\n");
-                        out.push("            ");
                         if (i == methods.length - 1) {
                             out.push("\n");
-                            out.push("              /*model methods*/\n");
-                            out.push("            ");
+                            out.push("              /*model methods*/");
                         }
                         if (clMethod.comment) {
                             out.push("/* " + (clMethod.comment) + " */");

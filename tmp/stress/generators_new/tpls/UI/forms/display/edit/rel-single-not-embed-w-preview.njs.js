@@ -9,60 +9,42 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, sectionLabel, readonly } = ctx;
-        out.push("\n");
-        out.push("<uix.InputWithPreview\n");
-        out.push("  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
+        out.push("<uix.InputWithPreview" + "  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
         out.push("  source={`" + (source) + (f.ref.backField) + "`}\n");
         out.push("  reference=\"" + (entity.model.entityPathMapper[f.ref.entity]) + "\"\n");
         out.push("  entity=\"" + (f.ref.entity) + "\"\n");
         out.push("  perPage={10000}\n");
         if (f.hint) {
-            out.push("\n");
-            out.push("  helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
+            out.push("helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
         } else {
-            out.push("\n");
-            out.push("  helperText={false}\n");
+            out.push("helperText={false}");
         }
         out.push("\n");
         const empty = '{}';
         out.push("\n");
         out.push("  filter={" + (f.ref.editFilter ? f.ref.editFilter : empty) + "}\n");
-        out.push("  Select={\n");
-        out.push("  ");
+        out.push("  Select={");
         if (f.ref.autocomplete) {
-            out.push("\n");
-            out.push("    uix.AutocompleteInput\n");
-            out.push("  ");
+            out.push("uix.AutocompleteInput" + "  ");
         } else {
-            out.push("\n");
-            out.push("    uix.SelectInput\n");
-            out.push("  ");
+            out.push("uix.SelectInput");
         }
-        out.push("\n");
-        out.push("  }\n");
-        out.push("  ");
+        out.push("}");
         if (!f.required) {
             out.push("\n");
             out.push("  allowEmpty");
         } else {
-            out.push("\n");
-            out.push("  validate={uix.required()}");
+            out.push("validate={uix.required()}");
         }
         out.push("\n");
-        out.push("  optionText={\n");
-        out.push("  ");
+        out.push("  optionText={");
         if (f.ref.autocomplete) {
-            out.push("\n");
-            out.push("    uix." + (f.ref.entity) + ".inputText\n");
+            out.push("uix." + (f.ref.entity) + ".inputText\n");
             out.push("  ");
         } else {
-            out.push("\n");
-            out.push("    <uix." + (f.ref.entity) + ".SelectTitle />\n");
-            out.push("  ");
+            out.push("<uix." + (f.ref.entity) + ".SelectTitle />");
         }
-        out.push("\n");
-        out.push("  }\n");
-        out.push("  >\n");
+        out.push("}" + "  >\n");
         out.push("    <uix.SimpleForm resource=\"" + (entity.model.entityPathMapper[entity.name]) + "\">\n");
         out.push("  ");
         const e = entity.model.entities.find((e)=>e.name === f.ref.entity);

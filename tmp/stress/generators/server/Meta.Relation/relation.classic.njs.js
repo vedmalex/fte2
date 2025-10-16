@@ -49,7 +49,7 @@ module.exports = {
         const indexConfig = getRelIndexConfig(context, true);
         const getChildren = (thingType)=>(global.ThingsAllChilds ? global.ThingsAllChilds[thingType] ? global.ThingsAllChilds[thingType] : false : false);
         out.push("\n");
-        out.push("/* " + (relKind) + " */\n");
+        out.push("/* " + (relKind) + " */");
         if (!notGenerateClass) {
             let sType = getType(global.ThingsProps[context.source.thingType.thingType][context.source.keyField].type);
             let dType = getType(global.ThingsProps[context.dest.thingType.thingType][context.dest.keyField].type);
@@ -86,11 +86,8 @@ module.exports = {
             out.push("  " + (resCollection) + " = alreadyOverriden ? mongoose.model('" + (context.name) + "') : mongoose.model('" + (context.name) + "', global.SchemaCache." + (context.name) + ");\n");
             out.push("});\n");
             out.push("\n");
-            out.push("global.EnsureIndex.toBeIndexed.push({location: '" + (context.locationType) + "', model:'" + (context.name) + "'});\n");
-            out.push("\n");
+            out.push("global.EnsureIndex.toBeIndexed.push({location: '" + (context.locationType) + "', model:'" + (context.name) + "'});");
         }
-        out.push("\n");
-        out.push("\n");
         let r1 = extractRelationEndForRel(context, true);
         let r2 = extractRelationEndForRel(context, false);
         if (!r1.ref[parentSymbol].global) {
@@ -122,17 +119,15 @@ module.exports = {
                 propName: rel.propName,
                 embedded: rel.oppositeEmbedded,
                 ref: rel.ref.thingType
-            })), null, 2)) + "`\n");
-        out.push("\n");
+            })), null, 2)) + "`");
         if (notGenerateClass) {
             out.push("\n");
-            out.push("var reqSuccess = false;\n");
+            out.push("var reqSuccess = false;");
             for(let i = 0; i < rels.length; i++){
                 let rel = rels[i];
                 const hasChildren = getChildren(rel.model.thingType);
                 const relDef = global.RelationCache.thing[rel.model.thingType][rel.propName];
                 const relIsArray = Array.isArray(relDef);
-                out.push("\n");
                 var many = !rel.single;
                 out.push("\n");
                 out.push("\n");

@@ -41,8 +41,7 @@ module.exports = {
         out.push("        <Card key={id} style={cardStyle}>\n");
         out.push("          <CardHeader title={<uix." + (entity.name) + ".SelectTitle record={data[id]} />} />\n");
         out.push("          <CardContent>\n");
-        out.push("            <div>\n");
-        out.push("        ");
+        out.push("            <div>");
         entity.props.filter((f)=>!f.ref && f.name !== "id").filter((f)=>entity.UI.list[f.name]).forEach((f)=>{
             out.push("\n");
             out.push("              {!excludedField.hasOwnProperty('" + (f.name) + "') && <div>\n");
@@ -50,11 +49,9 @@ module.exports = {
             out.push("                <uix.primitive." + (f.type) + ".Field record={data[id]} source=\"" + (f.name) + "\" />\n");
             out.push("              </div>}\n");
         });
-        out.push("\n");
         entity.props.filter((f)=>f.ref).filter((f)=>entity.UI.list[f.name]).forEach((f)=>{
             if (f.single && !f.ref.embedded) {
-                out.push("\n");
-                out.push("              {!excludedField.hasOwnProperty('" + (f.name) + "') && <div>\n");
+                out.push("{!excludedField.hasOwnProperty('" + (f.name) + "') && <div>\n");
                 out.push("                <Label label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\" />\n");
                 out.push("                <uix.ReferenceField basePath=\"/" + (entity.model.entityPathMapper[f.ref.entity]) + "\" record={data[id]} label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\" sortable={false} source=\"" + (f.name) + "\" reference=\"" + (entity.model.entityPathMapper[f.ref.entity]) + "\"");
                 if (!f.required) {
@@ -65,7 +62,6 @@ module.exports = {
                 out.push("                </uix.ReferenceField>\n");
                 out.push("              </div>}\n");
             }
-            out.push("\n");
         });
         out.push("\n");
         out.push("            </div>\n");

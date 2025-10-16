@@ -21,8 +21,7 @@ module.exports = {
         out.push("  autoSync:false,\n");
         out.push("  remoteFilter:true,\n");
         out.push("  remoteSort:true,\n");
-        out.push("  pageSize: " + (config.pageSizeSearch) + ",\n");
-        out.push("  ");
+        out.push("  pageSize: " + (config.pageSizeSearch) + ",");
         if (context.sortProperty && context.sortProperty.length > 0) {
             out.push("\n");
             out.push("  sorters: [");
@@ -38,8 +37,7 @@ module.exports = {
                 out.push("  },");
             }
             out.push("\n");
-            out.push("  ],\n");
-            out.push("  ");
+            out.push("  ],");
         }
         out.push("\n");
         out.push("  proxy: {\n");

@@ -16,10 +16,7 @@ module.exports = {
         out.push("import React, { useContext } from \"react\";\n");
         out.push("import { UIXContext } from '../contexts';\n");
         out.push("\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("  const CreateFormToolbar = (props) => {\n");
-        out.push("    const uix = useContext(UIXContext);\n");
+        out.push("const CreateFormToolbar = (props) => {" + "    const uix = useContext(UIXContext);\n");
         out.push("    return (\n");
         out.push("      <uix.Toolbar {...props}>\n");
         out.push("        <uix.SaveButton/>\n");
@@ -151,8 +148,7 @@ module.exports = {
             sectionLabel: false,
             grid: false
         }, 'display-edit-entity')) + "\n");
-        out.push("      </uix.FormTab>\n");
-        out.push("\n");
+        out.push("      </uix.FormTab>");
         entity.props.filter((f)=>f.ref).filter((f)=>(entity.UI.edit[f.name] || entity.UI.list[f.name] || entity.UI.show[f.name]) && entity.UI.edit[f.name] !== false).forEach((f)=>{
             const embedded = entity?.UI?.embedded?.hasOwnProperty(f.name);
             if (f.single && !embedded) {
@@ -169,7 +165,7 @@ module.exports = {
                 sectionLabel: false,
                 grid: false
             }, 'display-edit-entity')) + "\n");
-            out.push("      </uix.FormTab>\n");
+            out.push("      </uix.FormTab>");
         });
         out.push("\n");
         out.push("    </uix.TabbedForm>\n");
@@ -237,7 +233,7 @@ module.exports = {
             sectionLabel: false,
             grid: false
         }, 'display-show-entity')) + "\n");
-        out.push("        </uix.Tab>\n");
+        out.push("        </uix.Tab>");
         entity.props.filter((f)=>f.ref).filter((f)=>(entity.UI.edit[f.name] || entity.UI.list[f.name] || entity.UI.show[f.name]) && entity.UI.edit[f.name] !== false).forEach((f)=>{
             const embedded = entity?.UI?.embedded?.hasOwnProperty(f.name);
             if (f.single && !embedded) {
@@ -255,8 +251,7 @@ module.exports = {
                 sectionLabel: false,
                 grid: false
             }, 'display-show-entity')) + "\n");
-            out.push("        </uix.Tab>\n");
-            out.push("      ");
+            out.push("        </uix.Tab>");
         });
         out.push("\n");
         out.push("      </uix.TabbedShowLayout>\n");

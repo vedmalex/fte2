@@ -9,7 +9,6 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, grid, embedded } = ctx;
-        out.push("\n");
         out.push("<uix.primitive." + (f.type) + ".Field \n");
         out.push("  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\" \n");
         out.push("  source={`" + (source) + (f.name));

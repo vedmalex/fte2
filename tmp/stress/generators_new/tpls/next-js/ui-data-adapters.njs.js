@@ -61,24 +61,15 @@ module.exports = {
             item.props.forEach((prop)=>{
                 const { ref, embedded, stored, single } = prop;
                 if (item.embedded && prop.name === 'id') return;
-                out.push("\n");
-                out.push("      ");
                 if (ref && single && !embedded) {
-                    out.push("\n");
-                    out.push("      " + (prop.name) + ": " + (prop.name) + "Id\n");
-                    out.push("      ");
+                    out.push((prop.name) + ": " + (prop.name) + "Id");
                 } else if (ref && !single && !embedded) {
-                    out.push("\n");
-                    out.push("      " + (prop.name) + ": " + (prop.name) + "Ids\n");
-                    out.push("      ");
+                    out.push((prop.name) + ": " + (prop.name) + "Ids");
                 } else {
-                    out.push("\n");
-                    out.push("      " + (prop.name) + " ");
+                    out.push((prop.name) + " ");
                     if (ref) {
                         out.push(" { ...Query" + (prop.gqlType) + " } ");
                     }
-                    out.push("\n");
-                    out.push("      ");
                 }
                 out.push("\n");
                 out.push("      ");
@@ -88,8 +79,7 @@ module.exports = {
             out.push("      ");
             item.props.filter((f)=>f.ref && f.embedded).forEach((prop)=>{
                 const { ref } = prop;
-                out.push("\n");
-                out.push("      ${fragments." + (prop.ref.entity) + ".query(fragments)}\n");
+                out.push("${fragments." + (prop.ref.entity) + ".query(fragments)}\n");
                 out.push("      ");
             });
             out.push("\n");
@@ -97,8 +87,7 @@ module.exports = {
             out.push("  },\n");
         });
         out.push("\n");
-        out.push("}\n");
-        out.push("\n");
+        out.push("}");
         chunkStart(`data-provider.js`);
         out.push("\n");
         out.push("\n");
@@ -119,8 +108,7 @@ module.exports = {
         out.push("  },\n");
         out.push("});\n");
         out.push("\n");
-        out.push("export default clientProvider(client, fragments, resources);\n");
-        out.push("\n");
+        out.push("export default clientProvider(client, fragments, resources);");
         chunkStart(`auth-provider.js`);
         out.push("\n");
         out.push("import ApolloClient from 'apollo-boost';\n");
@@ -138,8 +126,7 @@ module.exports = {
         out.push("});\n");
         out.push("\n");
         out.push("import authProvider from 'ra-gen-ui-lib/dist/client/authProviderRemote';\n");
-        out.push("export default authProvider(client);\n");
-        out.push("\n");
+        out.push("export default authProvider(client);");
         chunkStart(`auth-provider-fb.js`);
         out.push("\n");
         out.push("\n");
@@ -154,8 +141,7 @@ module.exports = {
         out.push("}\n");
         out.push("\n");
         out.push("import authProvider from 'ra-gen-ui-lib/dist/client/authProviderClient';\n");
-        out.push("export default authProvider(firebase.auth.Auth.Persistence.LOCAL);\n");
-        out.push("\n");
+        out.push("export default authProvider(firebase.auth.Auth.Persistence.LOCAL);");
         chunkStart(`data-provider-fb-auth.js`);
         out.push("\n");
         out.push("import clientProvider from 'ra-gen-ui-lib/dist/client/remoteProvider';\n");

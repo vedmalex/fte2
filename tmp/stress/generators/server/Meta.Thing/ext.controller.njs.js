@@ -4,8 +4,7 @@ module.exports = {
         out.push("Ext.define('Modeleditor.controller." + (context.$namespace) + "." + (context.$name) + "', {\n");
         out.push("  serverModel: '" + (context.$namespace) + "." + (context.$name) + "',\n");
         out.push("  extend: 'Ext.app.Controller',\n");
-        out.push("  req_controllers:[\n");
-        out.push("  ");
+        out.push("  req_controllers:[");
         let ctnrs = [];
         if (context.controllers) {
             let cname = context.namespace + '.' + context.name;
@@ -14,61 +13,39 @@ module.exports = {
             });
             for(let i = 0; i < ctnrs.length; i++){
                 out.push("\n");
-                out.push("      \"" + (ctnrs[i]) + "\"\n");
-                out.push("    ");
+                out.push("      \"" + (ctnrs[i]) + "\"");
                 if (i < ctnrs.length - 1) {
-                    out.push("\n");
-                    out.push("    ,\n");
-                    out.push("    ");
+                    out.push(",");
                 }
             }
         }
-        out.push("],\n");
-        out.push("  views:[\n");
-        out.push("  ");
+        out.push("]," + "  views:[");
         for(let i = 0; i < context.prop?.view?.length ?? 0; i++){
             out.push("\n");
-            out.push("    '" + (context.prop.view[i]) + "'\n");
-            out.push("    ");
+            out.push("    '" + (context.prop.view[i]) + "'");
             if (i != context.prop.view.length - 1) {
-                out.push("\n");
-                out.push("    ,\n");
-                out.push("    ");
+                out.push(",");
             }
-            out.push("\n");
-            out.push("  ");
         }
         out.push("\n");
         out.push("  ],\n");
-        out.push("  models: [\n");
-        out.push("  ");
+        out.push("  models: [");
         for(let i = 0; i < context.prop?.model?.length ?? 0; i++){
             out.push("\n");
-            out.push("    '" + (context.prop.model[i]) + "'\n");
-            out.push("    ");
+            out.push("    '" + (context.prop.model[i]) + "'");
             if (i != context.prop.model.length - 1) {
-                out.push("\n");
-                out.push("    ,\n");
-                out.push("    ");
+                out.push(",");
             }
-            out.push("\n");
-            out.push("  ");
         }
         out.push("\n");
         out.push("  ],\n");
-        out.push("  stores: [\n");
-        out.push("  ");
+        out.push("  stores: [");
         for(let i = 0; i < context.prop?.store?.length ?? 0; i++){
             out.push("\n");
-            out.push("    '" + (context.prop.store[i]) + "'\n");
-            out.push("    ");
+            out.push("    '" + (context.prop.store[i]) + "'");
             if (i != context.prop.store.length - 1) {
-                out.push("\n");
-                out.push("    ,\n");
-                out.push("    ");
+                out.push(",");
             }
-            out.push("\n");
-            out.push("  ");
         }
         out.push("\n");
         out.push("  ],\n");
@@ -78,8 +55,7 @@ module.exports = {
         out.push("    if(!this.initStarted){\n");
         out.push("      this.initStarted = true;\n");
         out.push("      let me = this;\n");
-        out.push("      DirectCacheLogger.userStories('Controller Init', { controllerName: '" + (context.$namespace) + "." + (context.$name) + "' });\n");
-        out.push("      ");
+        out.push("      DirectCacheLogger.userStories('Controller Init', { controllerName: '" + (context.$namespace) + "." + (context.$name) + "' });");
         if (context.requireNs && context.requireNs.length > 0) {
             out.push("\n");
             out.push("      Ext.require([");
@@ -97,11 +73,8 @@ module.exports = {
                 out.push("        me.application.getController(\"" + (contr) + "\");");
             });
             out.push("\n");
-            out.push("      });\n");
-            out.push("      ");
+            out.push("      });");
         } else {
-            out.push("\n");
-            out.push("      ");
             if (context.controllers) {
                 ctnrs.forEach(function(contr) {
                     out.push("\n");
@@ -142,20 +115,16 @@ module.exports = {
                 out.push("            '" + (selector) + "':{");
                 for(let i = 0; i < hashSelector[selector].length; i++){
                     out.push("\n");
-                    out.push("                " + (hashSelector[selector][i]) + ",\n");
-                    out.push("              ");
+                    out.push("                " + (hashSelector[selector][i]) + ",");
                 }
                 out.push("\n");
-                out.push("            },\n");
-                out.push("          ");
+                out.push("            },");
             }
         }
         out.push("\n");
         out.push("      });\n");
         out.push("    }\n");
-        out.push("  },\n");
-        out.push("\n");
-        out.push("  ");
+        out.push("  },");
         if (context.clientMethods) {
             let methods = context.clientMethods.filter(function(m) {
                 return m.type != 'model' && m.type != 'constructor';
@@ -164,14 +133,9 @@ module.exports = {
                 let clMethod = methods[i];
                 if (!clMethod.disable) {
                     out.push("\n");
-                    out.push("  " + (clMethod.name) + ": Grainjs.metadata['metaclientmethods." + (context.$namespace) + "." + (context.$name) + "'].methods['" + (clMethod.name) + "'],\n");
-                    out.push("      ");
+                    out.push("  " + (clMethod.name) + ": Grainjs.metadata['metaclientmethods." + (context.$namespace) + "." + (context.$name) + "'].methods['" + (clMethod.name) + "'],");
                 }
-                out.push("\n");
-                out.push("    ");
             }
-            out.push("\n");
-            out.push("  ");
         }
         out.push("\n");
         out.push("\n");
@@ -287,12 +251,9 @@ module.exports = {
                 if (i != 0) {
                     out.push(", ");
                 }
-                out.push("\n");
-                out.push("    ");
             }
             out.push("\n");
-            out.push("  /*end state machine definition*/\n");
-            out.push("  ");
+            out.push("  /*end state machine definition*/");
         }
         out.push("\n");
         out.push("});");

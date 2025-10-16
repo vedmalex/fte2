@@ -37,8 +37,7 @@ module.exports = {
                 out.push("  }");
             }
             out.push("\n");
-            out.push("  ]\n");
-            out.push("  ");
+            out.push("  ]");
         }
         out.push("\n");
         out.push("});");

@@ -18,15 +18,13 @@ module.exports = {
         out.push("        dockedItems: [{\n");
         out.push("          xtype: \"" + (context.name.toLowerCase()) + (context.currentProfile.name.toLowerCase()) + "toolbar\"\n");
         out.push("        }]\n");
-        out.push("      },\n");
-        out.push("      ");
+        out.push("      },");
         if (context.currentProfile?.navItem?.length > 0) {
             out.push("\n");
             out.push("      {\n");
             out.push("        xtype: \"" + (context.name.toLowerCase()) + (context.currentProfile.name.toLowerCase()) + "navigation\",\n");
             out.push("        region: \"west\"\n");
-            out.push("      },\n");
-            out.push("      ");
+            out.push("      },");
         }
         out.push("\n");
         out.push("      {\n");
@@ -34,8 +32,7 @@ module.exports = {
         out.push("        itemId: \"mainContainer\",\n");
         out.push("        region:\"center\",\n");
         out.push("        margin: 2\n");
-        out.push("      },\n");
-        out.push("      ");
+        out.push("      },");
         if (!context.noHealthCheck) {
             out.push("\n");
             out.push("      {\n");
@@ -50,9 +47,7 @@ module.exports = {
             out.push("      },\n");
             out.push("      ");
         }
-        out.push("\n");
-        out.push("      ]\n");
-        out.push("    });\n");
+        out.push("]" + "    });\n");
         out.push("\n");
         out.push("    this.callParent(arguments);\n");
         out.push("  }\n");

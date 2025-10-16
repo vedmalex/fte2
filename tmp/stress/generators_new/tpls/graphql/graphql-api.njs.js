@@ -48,7 +48,6 @@ module.exports = {
         }
         chunkStart(main);
         const { model, nextApp } = context;
-        out.push("\n");
         chunkStart(`${model.name}.js`);
         out.push("\n");
         out.push("import { ApolloServer, gql, AuthenticationError } from 'apollo-server-micro'\n");
@@ -80,7 +79,6 @@ module.exports = {
         out.push("\n");
         out.push("\n");
         gqlItems.forEach((i)=>{
-            out.push("\n");
             out.push("import " + (i) + " from '" + (nextApp ? '../../' : './') + "graphql/" + (i) + "';\n");
         });
         out.push("\n");
@@ -129,13 +127,9 @@ module.exports = {
         out.push("  items:[\n");
         out.push("  ");
         gqlItems.forEach((i)=>{
-            out.push("\n");
-            out.push("  " + (i) + ",\n");
-            out.push("  ");
+            out.push((i) + ",");
         });
-        out.push("\n");
-        out.push("    FirebaseAdmin,\n");
-        out.push("    LodashSchema,\n");
+        out.push("FirebaseAdmin," + "    LodashSchema,\n");
         out.push("  ]\n");
         out.push("})\n");
         out.push("\n");

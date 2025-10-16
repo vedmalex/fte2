@@ -5,7 +5,7 @@ module.exports = {
             out.push("\n");
             out.push("function " + (context.name ?? 'func') + "(" + (context.params ? context.params : '') + "){\n");
             out.push("  " + (context.body) + "\n");
-            out.push("}\n");
+            out.push("}");
         }
         return out.join('');
     },

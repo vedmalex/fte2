@@ -3,10 +3,9 @@ module.exports = {
         var out = [];
         out.push("Ext.define('Modeleditor.controller.Profile', {\n");
         out.push("    extend: 'Ext.app.Controller',\n");
-        out.push("    views: [\n");
+        out.push("    views: [");
         if (!context.noHealthCheck) {
-            out.push("\n");
-            out.push("      //'Admin.SpeedTestToolbar',\n");
+            out.push("//'Admin.SpeedTestToolbar',");
         }
         out.push("\n");
         out.push("      '" + (context.name) + (context.currentProfile.name) + ".Viewport',\n");
@@ -71,7 +70,7 @@ module.exports = {
         out.push("\n");
         out.push("    /*LOAD VIEWPORT*/\n");
         out.push("    this.mainController.getMainViewport().add(Ext.widget('" + (context.name.toLowerCase() + context.currentProfile.name.toLowerCase()) + "viewport'));\n");
-        out.push("    /*LOAD SCREENS*/\n");
+        out.push("    /*LOAD SCREENS*/");
         if (context.SCREENS > 2) {
             out.push("\n");
             out.push("    Ext.MessageBox.show({\n");
@@ -82,7 +81,7 @@ module.exports = {
             out.push("        progress: true,\n");
             out.push("        closable: false\n");
             out.push("      });\n");
-            out.push("      self.SCREEN_LENGTH = self.screens?.length ?? 0;\n");
+            out.push("      self.SCREEN_LENGTH = self.screens?.length ?? 0;");
         }
         out.push("\n");
         out.push("      if (self.screens) {\n");

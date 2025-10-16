@@ -13,17 +13,13 @@ module.exports = {
             }, res);
             return res;
         }, {}));
-        out.push("\n");
         if (separatedItems.length > 0) {
-            out.push("\n");
-            out.push("import { components } from 'oda-ra-ui';\n");
-            out.push("const {\n");
+            out.push("import { components } from 'oda-ra-ui';" + "const {");
             separatedItems.forEach((item)=>{
                 out.push("\n");
                 out.push("  " + (item.trim()) + ",\n");
             });
-            out.push("\n");
-            out.push("} = components;\n");
+            out.push("} = components;");
         }
         return out.join('');
     },

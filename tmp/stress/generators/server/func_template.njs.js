@@ -3,7 +3,7 @@ module.exports = {
         var out = [];
         if (context.body) {
             out.push("\n");
-            out.push("(" + (context.params ? context.params : '') + ") =>`" + (context.body) + "`\n");
+            out.push("(" + (context.params ? context.params : '') + ") =>`" + (context.body) + "`");
         }
         return out.join('');
     },

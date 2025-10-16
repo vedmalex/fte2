@@ -15,8 +15,7 @@ module.exports = {
         out.push("  serverModel: '" + (context.$normalizedName) + "',\n");
         out.push("  requires:['Modeleditor.model." + ($namespace) + "." + (name) + "'],\n");
         out.push("  extend: 'Ext.data.LoggedStore',\n");
-        out.push("  model: 'Modeleditor.model." + ($namespace) + "." + (name) + "',\n");
-        out.push("  ");
+        out.push("  model: 'Modeleditor.model." + ($namespace) + "." + (name) + "',");
         if (context.extension) {
             out.push((context.extension) + ",");
         }
@@ -33,8 +32,7 @@ module.exports = {
             out.push("\n");
             out.push("  remoteFilter:false,\n");
             out.push("  remoteSort:false,\n");
-            out.push("  pageSize: -1,\n");
-            out.push("  ");
+            out.push("  pageSize: -1,");
         }
         if (context.sortProperty && context.sortProperty.length > 0) {
             out.push("\n");
@@ -51,8 +49,7 @@ module.exports = {
                 out.push("  }");
             }
             out.push("\n");
-            out.push("  ]\n");
-            out.push("  ");
+            out.push("  ]");
         }
         out.push("\n");
         out.push("});");

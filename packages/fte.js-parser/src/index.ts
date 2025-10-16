@@ -521,8 +521,34 @@ export class Parser {
         data = data.replace(/\s+$/, '')
       }
 
-      const trimStartLines = () => {
-        data = data.replace(/^[\r\n]+/, '')
+      const trimStartLines = (lines?: number) => {
+        let newLine = false
+        do {
+          if (curr.main.length > 0) {
+            const prev = curr.main[curr.main.length - 1]
+            if (prev?.type == 'text' || (prev?.type == 'empty' && type === 'code')) {
+              prev.content = prev.content.trimEnd()
+              if (!prev.content) {
+                if (prev.eol) newLine = true
+                curr.main.pop()
+                if (lines) {
+                  lines -= 1
+                  if (!lines) {
+                    break
+                  }
+                }
+              } else {
+                prev.eol = false
+                break
+              }
+            } else {
+              if (newLine && prev.type === 'code') prev.eol = true
+              break
+            }
+          } else {
+            break
+          }
+        } while (true)
       }
 
       const trimEndLines = (count = 0) => {
@@ -534,6 +560,35 @@ export class Parser {
         } else {
           data = data.replace(/[\r\n]+$/, '')
         }
+      }
+
+      const trimNextLines = (lines?: number) => {
+        let nextline = 0
+        do {
+          nextline += 1
+          if (i + nextline < resultSize) {
+            const next = this.result[i + nextline]
+            if (next.type == 'text') {
+              next.data = next.data.trimStart()
+              if (!next.data) {
+                next.type = 'skip'
+                if (lines) {
+                  lines -= 1
+                  if (!lines) {
+                    break
+                  }
+                }
+              } else {
+                next.eol = false
+                break
+              }
+            } else {
+              break
+            }
+          } else {
+            break
+          }
+        } while (true)
       }
 
       switch (type) {
@@ -558,6 +613,7 @@ export class Parser {
           trimStartLines()
           curr = content
           trimEndLines()
+          trimNextLines()
           break
         case 'unknown': {
           let actual_type: ResultTypes = 'unknown'
@@ -623,6 +679,9 @@ export class Parser {
           break
         }
         case 'code': {
+          if (start === '<#-') {
+            trimStartLines()
+          }
           if (start === '<%_') {
             trimStartSpases()
           }
@@ -630,7 +689,7 @@ export class Parser {
             trimEndSpaces()
           }
           if (end === '-#>') {
-            trimEndLines()
+            trimNextLines()
           }
           const codeItem: Items = {
             content: data,

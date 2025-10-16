@@ -4,18 +4,14 @@ module.exports = {
         out.push("let pipeline = require('pipeline.js');\n");
         out.push("let { deep_has_own, deep_rename_field } = require(\"@grainjs/loaders\")\n");
         out.push("let Context = require('pipeline.js').Context;\n");
-        out.push("let _ = require('lodash')\n");
-        out.push("\n");
+        out.push("let _ = require('lodash')");
         const makeRelVariants = context.makeRelVariants;
         const iterateRelGroups = context.iterateRelGroups;
         const allRels = makeRelVariants(context.relations);
         const allNonEmbedded = makeRelVariants(context.relations);
         const allSearchable = makeRelVariants(context.relations);
         const anyRel = Object.keys(allNonEmbedded).length > 0;
-        out.push("\n");
-        out.push("\n");
-        out.push("// Default Query\n");
-        out.push("if (typeof(global.CustomQuery) == 'undefined') global.CustomQuery = {};\n");
+        out.push("// Default Query" + "if (typeof(global.CustomQuery) == 'undefined') global.CustomQuery = {};\n");
         out.push("\n");
         out.push("let ComplexQuery  = require(\"@grainjs/loaders\").ComplexQuery;\n");
         out.push("\n");
@@ -92,24 +88,20 @@ module.exports = {
         out.push("  })\n");
         out.push("};\n");
         out.push("\n");
-        out.push("const childRel = [\n");
-        out.push("  ");
+        out.push("const childRel = [");
         iterateRelGroups(allNonEmbedded, (variant, rel, relIndex, variantIndex)=>{
             out.push("\n");
             out.push("  {\n");
-            out.push("    opposite: \"" + (rel.to) + "\",\n");
-            out.push("    ");
+            out.push("    opposite: \"" + (rel.to) + "\",");
             if (variant !== '*') {
                 out.push("\n");
                 out.push("    relName: \"" + (rel.relName) + "\",\n");
-                out.push("    propName:\"" + (rel.to) + (rel.relName.split('.').join('')) + "\",\n");
-                out.push("    ");
+                out.push("    propName:\"" + (rel.to) + (rel.relName.split('.').join('')) + "\",");
             }
             out.push("\n");
             out.push("    model: \"" + (rel.ref.thingType) + "\",\n");
             out.push("    onlyIds: true,\n");
-            out.push("  },\n");
-            out.push("  ");
+            out.push("  },");
         });
         out.push("\n");
         out.push("]\n");
@@ -137,19 +129,16 @@ module.exports = {
         out.push("    query.fields = prm.fields\n");
         out.push("  }\n");
         out.push("\n");
-        out.push("  const cr = []\n");
-        out.push("  ");
+        out.push("  const cr = []");
         iterateRelGroups(allSearchable, (variant, rel, relIndex, variantIndex)=>{
             out.push("\n");
             out.push("  if(params.root_" + (rel.to) + "){\n");
             out.push("    cr.push({\n");
-            out.push("      opposite: \"" + (rel.to) + "\",\n");
-            out.push("      ");
+            out.push("      opposite: \"" + (rel.to) + "\",");
             if (variant !== '*') {
                 out.push("\n");
                 out.push("      relName: \"" + (rel.relName) + "\",\n");
-                out.push("      propName:\"" + (rel.to) + (rel.relName.split('.').join('')) + "\",\n");
-                out.push("      ");
+                out.push("      propName:\"" + (rel.to) + (rel.relName.split('.').join('')) + "\",");
             }
             out.push("\n");
             out.push("      model: \"" + (rel.ref.thingType) + "\",\n");
@@ -158,8 +147,7 @@ module.exports = {
             out.push("      ensure: !params.root_" + (rel.to) + "?.absent && params.root_" + (rel.to) + " ? true : false,\n");
             out.push("      absent: !params.root_" + (rel.to) + "?.ensure && params.root_" + (rel.to) + "?.absent,\n");
             out.push("    })\n");
-            out.push("  }\n");
-            out.push("  ");
+            out.push("  }");
         });
         out.push("\n");
         out.push("\n");
@@ -214,12 +202,10 @@ module.exports = {
         out.push("    let context = this;\n");
         out.push("    let prm = para.data.shift();\n");
         out.push("    let cond = {};\n");
-        out.push("    let qOptions = {\n");
-        out.push("    ");
+        out.push("    let qOptions = {");
         if (!(context.derivedProperties && context.derivedProperties.length > 0)) {
             out.push("\n");
-            out.push("      //lean:true disabled for future only when we change the code generation engine\n");
-            out.push("    ");
+            out.push("      //lean:true disabled for future only when we change the code generation engine");
         }
         out.push("\n");
         out.push("    };\n");
@@ -232,16 +218,14 @@ module.exports = {
         out.push("    if (skip && limit) qOptions.skip = skip;\n");
         out.push("    if (typeof(sort) ==='object' && Object.keys(sort).length > 0) qOptions.sort = sort;\n");
         out.push("    let loadRecord = prm.full ? true : false;\n");
-        out.push("    let relHash = {\n");
-        out.push("      ");
+        out.push("    let relHash = {");
         iterateRelGroups(allRels, (variant, rel, relIndex, variantIndex)=>{
             out.push("\n");
             out.push("        \"" + (rel.to));
             if (variant !== '*') {
                 out.push((rel.relName.split('.').join('')));
             }
-            out.push("\":\"" + (rel.relName) + "\",\n");
-            out.push("      ");
+            out.push("\":\"" + (rel.relName) + "\",");
         });
         out.push("\n");
         out.push("    };\n");
@@ -291,13 +275,10 @@ module.exports = {
         out.push("        filters[fp] = serverFilters[fp];\n");
         out.push("      }\n");
         out.push("\n");
-        out.push("      let qry;\n");
-        out.push("\n");
-        out.push("      ");
+        out.push("      let qry;");
         if (anyRel > 0) {
             out.push("\n");
-            out.push("        let filter;\n");
-            out.push("        ");
+            out.push("        let filter;");
             iterateRelGroups(allNonEmbedded, (variant, rel, relIndex, variantIndex)=>{
                 if (relIndex > 0 || variantIndex > 0) {
                     out.push(" else ");
@@ -329,12 +310,9 @@ module.exports = {
                 out.push("\n");
                 out.push("          if(extKeys) qry.extKeys = extKeys;\n");
                 out.push("          queryLoadRelated(context.dbPool, qry, callback);\n");
-                out.push("        }\n");
-                out.push("      ");
+                out.push("        }");
             });
-            out.push("\n");
-            out.push("      else {\n");
-            out.push("    ");
+            out.push("else {");
         }
         out.push("\n");
         out.push("      let filterKeys = (filters && typeof(filters) ==='object') ? Object.keys(filters) : [];\n");
@@ -371,12 +349,10 @@ module.exports = {
         out.push("      // load Full Record Only(!!!) when id is present.\n");
         out.push("      cond.query = loadRecord ? queryForDetail : queryForList;\n");
         out.push("\n");
-        out.push("      global.CustomQuery['query" + (context.$fullName) + "'](context.dbPool, cond, callback);\n");
-        out.push("    ");
+        out.push("      global.CustomQuery['query" + (context.$fullName) + "'](context.dbPool, cond, callback);");
         if (anyRel > 0) {
             out.push("\n");
-            out.push("      }\n");
-            out.push("    ");
+            out.push("      }");
         }
         out.push("\n");
         out.push("    } else {\n");

@@ -10,8 +10,7 @@ module.exports = {
         out.push("    override: 'Grainjs.metadata',\n");
         out.push("    statics:{\n");
         out.push("      'gridfields." + (context.$namespace) + "." + (context.$name) + "': {\n");
-        out.push("        fields: {\n");
-        out.push("        ");
+        out.push("        fields: {");
         for(let i = 0; i < properties.length; i++){
             let property = properties[i].property;
             let g = properties[i];
@@ -40,8 +39,6 @@ module.exports = {
                 out.push("            filter:\n");
                 out.push("            ");
                 if (g.enforceFilter === 'none' || !g.enforceFilter) {
-                    out.push("\n");
-                    out.push("            ");
                     if (!property.isVirtual) {
                         if (f.fieldtype === "combobox" && g.filterable) {
                             out.push("{\n");
@@ -59,16 +56,13 @@ module.exports = {
                             out.push("\n");
                             out.push("              displayField:  Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions[" + (JSON.stringify(property.propertyName)) + "].displayField,\n");
                             out.push("              valueField:  Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions[" + (JSON.stringify(property.propertyName)) + "].valueField\n");
-                            out.push("            }\n");
-                            out.push("            ");
+                            out.push("            }");
                         } else if (!(g.filter || g.filterable) && property.relation) {
                             out.push("\n");
-                            out.push("              \"key\"\n");
-                            out.push("            ");
+                            out.push("              \"key\"");
                         } else if (g.filter || g.filterable) {
                             out.push("\n");
-                            out.push("              " + ((g.filter || g.filterable)) + "\n");
-                            out.push("            ");
+                            out.push("              " + ((g.filter || g.filterable)));
                         }
                     } else {
                         out.push("false");
@@ -77,8 +71,7 @@ module.exports = {
                     out.push("            ");
                 } else if (g.enforceFilter === 'key') {
                     out.push("\n");
-                    out.push("            \"key\"\n");
-                    out.push("            ");
+                    out.push("            \"key\"");
                 } else if (g.enforceFilter === 'filter') {
                     out.push("\n");
                     out.push("            true\n");
@@ -133,8 +126,7 @@ module.exports = {
                 out.push(",\n");
                 out.push("              renderer: function(value) {\n");
                 out.push("                return Ext.String.format('<div style=\"text-align: right;\">{0}</div>', Ext.util.Format.number(value, " + (getFormat(g)) + "));\n");
-                out.push("              }\n");
-                out.push("            ");
+                out.push("              }");
             } else if (g.columnRenderer) {
                 out.push(",\n");
                 out.push("            renderer:  function(value){\n");
@@ -180,8 +172,7 @@ module.exports = {
                 out.push("                } else {\n");
                 out.push("                  return val;\n");
                 out.push("                }\n");
-                out.push("              }\n");
-                out.push("            ");
+                out.push("              }");
             }
             out.push("\n");
             out.push("          ");
@@ -189,8 +180,7 @@ module.exports = {
                 out.push(",..." + (g.extraOptions) + ",");
             }
             out.push("\n");
-            out.push("          }),\n");
-            out.push("              ");
+            out.push("          }),");
         }
         out.push("\n");
         out.push("      }\n");

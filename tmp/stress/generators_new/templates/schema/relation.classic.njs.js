@@ -52,11 +52,7 @@ module.exports = {
                 }
                 break;
         }
-        out.push("\n");
-        out.push("\n");
         if (!notGenerateClass) {
-            out.push("\n");
-            out.push("\n");
             out.push("var $" + (schemaName) + " = {\n");
             out.push(" '" + (context.source.name) + "':{type:" + (sType) + ", required:true, " + (srcIndexKind) + ":true, sparse:true, ref:'" + (src) + "'},\n");
             out.push(" '" + (context.dest.name) + "':{type:" + (dType) + ", required:true, " + (dstIndexKind) + ":true,sparse:true, ref:'" + (dst) + "'}\n");
@@ -97,12 +93,11 @@ module.exports = {
             out.push("          global.EnsureIndex.go($collection,'" + (context.name) + "', next)(null);\n");
             out.push("        }\n");
             out.push("      } else next(err);\n");
-            out.push("    });\n");
-            out.push("\n");
+            out.push("    });");
         }
         out.push("\n");
         out.push("/*\n");
-        out.push("var reqSuccess = false;\n");
+        out.push("var reqSuccess = false;");
         var manySrc = context.source.cardinality != '1';
         out.push("\n");
         out.push("reqSuccess = global.RESOLVESCHEMA('" + (dst) + "', __dirname);\n");
@@ -119,7 +114,7 @@ module.exports = {
         }
         out.push("\n");
         out.push("  });\n");
-        out.push("}\n");
+        out.push("}");
         var sci, child;
         var len = context.dest?.childs?.length ?? 0;
         for(sci = 0; sci < len; sci++){
@@ -139,10 +134,8 @@ module.exports = {
             }
             out.push("\n");
             out.push("  });\n");
-            out.push("}\n");
+            out.push("}");
         }
-        out.push("\n");
-        out.push("\n");
         var manyDst = context.dest.cardinality != '1';
         out.push("\n");
         out.push("reqSuccess = global.RESOLVESCHEMA('" + (src) + "', __dirname);\n");
@@ -159,7 +152,7 @@ module.exports = {
         }
         out.push("\n");
         out.push("  });\n");
-        out.push("}\n");
+        out.push("}");
         var sci, child;
         var len = context.dest?.childs?.length ?? 0;
         for(sci = 0; sci < len; sci++){
@@ -179,9 +172,8 @@ module.exports = {
             }
             out.push("\n");
             out.push("  });\n");
-            out.push("}\n");
+            out.push("}");
         }
-        out.push("\n");
         out.push("*/");
         return out.join('');
     },

@@ -19,10 +19,7 @@ module.exports = {
         out.push("const { toGlobalId } = require('@grainjs/id-generator')\n");
         out.push("\n");
         out.push("// TODO: проверить как можно добавлять условия в запросы\n");
-        out.push("// условия, такие же как на запросной части приложения\n");
-        out.push("\n");
-        out.push("\n");
-        out.push("\n");
+        out.push("// условия, такие же как на запросной части приложения");
         const hasChilds = context.hasChilds(context.thingType);
         let allRels = context.relations;
         context.GQLName = function GQLName(thingType) {
@@ -37,12 +34,10 @@ module.exports = {
             out.push("    schema:gql`\n");
             out.push("    # " + (context.$namespace) + (context.$name) + " of the " + (context.$namespace) + "\n");
             out.push("    union " + (context.$namespace) + (context.$name) + "Union =\n");
-            out.push("        " + (context.$namespace) + (context.$name) + "\n");
-            out.push("        ");
+            out.push("        " + (context.$namespace) + (context.$name));
             context.allChilds.forEach((item)=>{
                 out.push("\n");
-                out.push("        | " + (item.replaceAll('.', '')) + "\n");
-                out.push("        ");
+                out.push("        | " + (item.replaceAll('.', '')));
             });
             out.push("\n");
             out.push("    `,\n");
@@ -50,12 +45,10 @@ module.exports = {
             out.push("})\n");
             out.push("\n");
             out.push("const tEnum = new Enum({schema:gql`\n");
-            out.push("      enum " + (context.$namespace) + (context.$name) + "Childs {\n");
-            out.push("        ");
+            out.push("      enum " + (context.$namespace) + (context.$name) + "Childs {");
             context.allChilds.forEach((item)=>{
                 out.push("\n");
-                out.push("        " + (item.replaceAll('.', '')) + "\n");
-                out.push("        ");
+                out.push("        " + (item.replaceAll('.', '')));
             });
             out.push("\n");
             out.push("      }\n");
@@ -81,22 +74,15 @@ module.exports = {
         out.push("  resolver: {\n");
         out.push("    id: root => root._id,\n");
         out.push("    _id: root => root._id,\n");
-        out.push("    _tid: root => root.__tid,\n");
-        out.push("    ");
+        out.push("    _tid: root => root.__tid,");
         if (allRels.length > 0) {
             out.push("\n");
             out.push("    childRel: (root, args, context, info) => {\n");
             out.push("      return root\n");
-            out.push("    },\n");
-            out.push("    ");
+            out.push("    },");
         }
-        out.push("\n");
         for(let i = 0, props = context.properties, proplen = props?.length ?? 0; i < proplen; i++){
-            out.push("\n");
-            out.push("  ");
             let pName = props[i].propertyName.replaceAll('.', '');
-            out.push("\n");
-            out.push("      ");
             if (props[i].type === 'date') {
                 out.push("\n");
                 out.push("      " + (pName) + ":(root, {format, zone, json}, context, info) => {\n");
@@ -115,11 +101,8 @@ module.exports = {
                 out.push("      ");
             } else if (pName !== props[i].propertyName) {
                 out.push("\n");
-                out.push("      " + (pName) + ":(root, args, context, info) => get(root,\"" + (props[i].propertyName) + "\"),\n");
-                out.push("      ");
+                out.push("      " + (pName) + ":(root, args, context, info) => get(root,\"" + (props[i].propertyName) + "\"),");
             }
-            out.push("\n");
-            out.push("    ");
         }
         out.push("\n");
         out.push("  }\n");
@@ -162,12 +145,10 @@ module.exports = {
             out.push("false");
         }
         out.push(",\n");
-        out.push("        allChildren:[\n");
-        out.push("          ");
+        out.push("        allChildren:[");
         context.allChilds?.forEach((item)=>{
             out.push("\n");
-            out.push("          \"" + (item) + "\",\n");
-            out.push("          ");
+            out.push("          \"" + (item) + "\",");
         });
         out.push("\n");
         out.push("        ]\n");
@@ -206,12 +187,10 @@ module.exports = {
             out.push("false");
         }
         out.push(",\n");
-        out.push("        allChildren:[\n");
-        out.push("          ");
+        out.push("        allChildren:[");
         context.allChilds?.forEach((item)=>{
             out.push("\n");
-            out.push("          \"" + (item) + "\",\n");
-            out.push("          ");
+            out.push("          \"" + (item) + "\",");
         });
         out.push("\n");
         out.push("        ]\n");
@@ -270,24 +249,17 @@ module.exports = {
             out.push("\n");
             out.push("      id: ID!\n");
             out.push("      _id: ID!\n");
-            out.push("      _tid: String\n");
+            out.push("      _tid: String");
             for(let i = 0, props = context.properties, proplen = props?.length ?? 0; i < proplen; i++){
                 let pName = props[i].propertyName.replaceAll('.', '');
-                out.push("\n");
-                out.push("    ");
                 if (props[i].type === 'date') {
                     out.push("\n");
-                    out.push("      " + (pName) + "(format:String, zone: Float, json: Boolean): " + (getType(props[i].type)) + "\n");
-                    out.push("    ");
+                    out.push("      " + (pName) + "(format:String, zone: Float, json: Boolean): " + (getType(props[i].type)));
                 } else {
                     out.push("\n");
-                    out.push("    " + (pName) + ": " + (getType(props[i].type)) + "\n");
-                    out.push("    ");
+                    out.push("    " + (pName) + ": " + (getType(props[i].type)));
                 }
-                out.push("\n");
             }
-            out.push("\n");
-            out.push("  ");
             if (context.hasRels > 0) {
                 out.push("\n");
                 out.push("    childRel:" + (context.GQLName(context.thingType)) + "Edges\n");

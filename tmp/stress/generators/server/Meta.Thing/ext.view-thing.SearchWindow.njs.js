@@ -12,8 +12,7 @@ module.exports = {
         if (context.iconCls) {
             out.push("|| \"" + (context.iconCls) + "\"");
         }
-        out.push(" ,\n");
-        out.push("  ");
+        out.push(" ,");
         if (context.queryResult || context.legacySearch) {
             out.push("\n");
             out.push("  customSearch: true,\n");
@@ -36,8 +35,7 @@ module.exports = {
         out.push("          },\n");
         out.push("          items:[\n");
         out.push("            {\n");
-        out.push("              xtype: \"" + (context.$widgetName) + "search\",\n");
-        out.push("              ");
+        out.push("              xtype: \"" + (context.$widgetName) + "search\",");
         if (context.queryResult || context.legacySearch) {
             out.push("\n");
             out.push("              customSearch: true,\n");

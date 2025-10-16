@@ -9,43 +9,34 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, sectionLabel, readonly } = ctx;
-        out.push("\n");
-        out.push("<uix.ReferenceInput\n");
-        out.push("  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
+        out.push("<uix.ReferenceInput" + "  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
         out.push("  source={`" + (source) + (f.ref.backField) + "`}\n");
         if (f.hint) {
-            out.push("\n");
-            out.push("  helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
+            out.push("helperText=\"resources." + (f.inheritedFrom || entity.name) + ".helpers." + (f.name) + "\"\n");
         } else {
-            out.push("\n");
-            out.push("  helperText={false}\n");
+            out.push("helperText={false}");
         }
         out.push("\n");
         const empty = '{}';
         out.push("\n");
         out.push("  filter={" + (f.ref.editFilter ? f.ref.editFilter : empty) + "}\n");
-        out.push("  reference=\"" + (entity.model.entityPathMapper[f.ref.entity]) + "\"\n");
-        out.push("  ");
+        out.push("  reference=\"" + (entity.model.entityPathMapper[f.ref.entity]) + "\"");
         if (!f.required) {
             out.push("\n");
             out.push("  allowEmpty");
         } else {
-            out.push("\n");
-            out.push("  validate={uix.required()}");
+            out.push("validate={uix.required()}");
         }
         out.push("\n");
         out.push(">\n");
         out.push("  ");
         if (f.ref.autocomplete) {
-            out.push("\n");
-            out.push("    <uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
+            out.push("<uix.AutocompleteInput optionText={uix." + (f.ref.entity) + ".inputText} />\n");
             out.push("  ");
         } else {
-            out.push("\n");
-            out.push("    <uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
+            out.push("<uix.SelectInput optionText={<uix." + (f.ref.entity) + ".SelectTitle />} />\n");
             out.push("  ");
         }
-        out.push("\n");
         out.push("</uix.ReferenceInput>");
         return out.join('');
     },

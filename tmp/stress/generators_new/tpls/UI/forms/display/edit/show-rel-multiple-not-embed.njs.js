@@ -9,9 +9,7 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, sectionLabel, readonly } = ctx;
-        out.push("\n");
-        out.push("<uix.FormDataConsumer>\n");
-        out.push("  {({ formData, ...rest }) => (\n");
+        out.push("<uix.FormDataConsumer>" + "  {({ formData, ...rest }) => (\n");
         out.push("  <uix.Fragment>\n");
         out.push("    ");
         if (sectionLabel) {

@@ -9,9 +9,7 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, sectionLabel, readonly } = ctx;
-        out.push("\n");
-        out.push("<uix.ArrayInput\n");
-        out.push("  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
+        out.push("<uix.ArrayInput" + "  label=\"resources." + (f.inheritedFrom || entity.name) + ".fields." + (f.name) + "\"\n");
         out.push("  source={`" + (source) + (f.ref.backField) + "`}\n");
         out.push("  allowEmpty\n");
         out.push(">\n");

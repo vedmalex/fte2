@@ -76,23 +76,17 @@ module.exports = {
                 out.push((JSON.stringify(clientMethodCur.name)));
             }
             out.push(",'" + (context.$namespace) + "." + (context.$name) + "','buttons',\"" + (clientMethodCur.name) + "\"),\n");
-            out.push("                textAlign: 'left',\n");
-            out.push("                ");
+            out.push("                textAlign: 'left',");
             if (clientMethodCur.type == 'toggle') {
-                out.push("\n");
-                out.push("                  ");
                 if (!clientMethodCur.currentSettings?.showInsideForm) {
                     out.push("\n");
-                    out.push("                toggleGroup: '" + (context.$widgetName) + "FormNavigation',\n");
-                    out.push("                  ");
+                    out.push("                toggleGroup: '" + (context.$widgetName) + "FormNavigation',");
                 }
                 out.push("\n");
-                out.push("                enableToggle: true,\n");
-                out.push("                ");
+                out.push("                enableToggle: true,");
             } else if (clientMethodCur.type == 'button') {
                 out.push("\n");
-                out.push("                enableToggle: false,\n");
-                out.push("                ");
+                out.push("                enableToggle: false,");
             }
             out.push("\n");
             out.push("              }),\n");
@@ -163,13 +157,9 @@ module.exports = {
             out.push("\n");
             out.push("        ");
         }
-        out.push("\n");
-        out.push("        ");
         const methods = clMeth.filter((m)=>m.type != 'model' && m.type != 'constructor' && !m.disabled);
         for(let i = 0; i < methods.length; i++){
             const clMethod = methods[i];
-            out.push("\n");
-            out.push("          ");
             if (clMethod.comment) {
                 out.push("/* " + (clMethod.comment) + " */");
             }
@@ -181,8 +171,7 @@ module.exports = {
             out.push("){\n");
             out.push("              DirectCacheLogger.userStories('Custom Method Execute', { serverModel: '" + (context.$namespace) + "." + (context.$name) + "', methodName: '" + (clMethod.name) + "', methodType: '" + (clMethod.type) + "' });\n");
             out.push("              " + (clMethod.body) + "\n");
-            out.push("            },\n");
-            out.push("        ");
+            out.push("            },");
         }
         out.push("\n");
         out.push("      }\n");

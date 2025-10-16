@@ -57,8 +57,7 @@ module.exports = {
             } else {
                 out.push("[]");
             }
-            out.push(",\n");
-            out.push("              ");
+            out.push(",");
             if (property.event) {
                 out.push("\n");
                 out.push("                listeners: {\n");
@@ -71,47 +70,32 @@ module.exports = {
                 });
                 out.push("\n");
                 out.push("                  }\n");
-                out.push("                },\n");
-                out.push("              ");
+                out.push("                },");
             }
-            out.push("\n");
-            out.push("              ");
             if (f.fieldtype == 'textfield' && (property.required || f.required)) {
                 out.push("\n");
-                out.push("                allowOnlyWhitespace: false,\n");
-                out.push("              ");
+                out.push("                allowOnlyWhitespace: false,");
             } else if (f.fieldtype == 'checkbox') {
                 out.push("\n");
                 out.push("                  margin: \"0 5 5\",\n");
                 out.push("                  inputValue:         1,\n");
-                out.push("                  uncheckedValue:     0,\n");
-                out.push("              ");
+                out.push("                  uncheckedValue:     0,");
             } else if (f.fieldtype == 'numberfield') {
                 out.push("\n");
                 out.push("                  step:" + (f.step) + ",\n");
-                out.push("                  fieldStyle:\"text-align: right;\",\n");
-                out.push("                  ");
+                out.push("                  fieldStyle:\"text-align: right;\",");
                 if (property.enableMin) {
                     out.push("\n");
-                    out.push("                      minValue:" + (property.min ? property.min : 0) + ",\n");
-                    out.push("                  ");
+                    out.push("                      minValue:" + (property.min ? property.min : 0) + ",");
                 }
-                out.push("\n");
-                out.push("                  ");
                 if (property.enableMax) {
                     out.push("\n");
-                    out.push("                      maxValue:" + (property.max ? property.max : 0) + ",\n");
-                    out.push("                  ");
+                    out.push("                      maxValue:" + (property.max ? property.max : 0) + ",");
                 }
-                out.push("\n");
-                out.push("                  ");
                 if (property.type.toLowerCase() == "integer") {
                     out.push("\n");
-                    out.push("                      allowDecimals:false,\n");
-                    out.push("                  ");
+                    out.push("                      allowDecimals:false,");
                 }
-                out.push("\n");
-                out.push("                ");
             } else if (f.fieldtype == 'combobox') {
                 if (f.comboData && f.comboData != "" && f.comboData != "{}") {
                     let cdata = JSON.parse(f.comboData);
@@ -171,12 +155,9 @@ module.exports = {
                         out.push("                      },\n");
                         out.push("                      ");
                     } else if (cdata.customStore != undefined && cdata.customStore === true) {
-                        out.push("\n");
-                        out.push("                      ");
                         if (cdata.tpl) {
                             out.push("\n");
-                            out.push("                        tpl: " + (JSON.stringify(cdata.tpl)) + ",\n");
-                            out.push("                      ");
+                            out.push("                        tpl: " + (JSON.stringify(cdata.tpl)) + ",");
                         }
                         out.push("\n");
                         out.push("                      store: Ext.create(\"Ext.data.Store\", {\n");
@@ -215,21 +196,18 @@ module.exports = {
                             }
                             out.push(",\n");
                             out.push("                        proxy: {\n");
-                            out.push("                          type: ");
+                            out.push("                          type:");
                             if (cdata.proxyType) {
                                 out.push("\n");
-                                out.push("                                  \"" + (cdata.proxyType) + "\",\n");
-                                out.push("                                ");
+                                out.push("                                  \"" + (cdata.proxyType) + "\",");
                             } else {
                                 out.push("\n");
-                                out.push("                                  \"direct\",\n");
-                                out.push("                                ");
+                                out.push("                                  \"direct\",");
                             }
                             out.push("\n");
                             out.push("                          api: {\n");
                             out.push("                            read: " + (cdata.apiRead) + "\n");
-                            out.push("                          }\n");
-                            out.push("                          ");
+                            out.push("                          }");
                             if (cdata.extraParams) {
                                 out.push(",\n");
                                 out.push("                          extraParams: " + (JSON.stringify(cdata.extraParams)));
@@ -260,8 +238,7 @@ module.exports = {
                             } else {
                                 out.push("'name'");
                             }
-                            out.push("],'" + (context.$namespace) + "." + (context.$name) + "', 'combobox', '" + (property.propertyName) + "')}))\n");
-                            out.push("                        ");
+                            out.push("],'" + (context.$namespace) + "." + (context.$name) + "', 'combobox', '" + (property.propertyName) + "')}))");
                         }
                         out.push("\n");
                         out.push("                      }),\n");
@@ -349,12 +326,10 @@ module.exports = {
             out.push("                dataType: '" + (property.type.toLowerCase()) + "',\n");
             out.push("                xtype: '" + (f.fieldtype) + "'\n");
             out.push("            }\n");
-            out.push("            res.allowBlank = " + (!(property.required || f.required || property.clientRequired)) + "\n");
-            out.push("            ");
+            out.push("            res.allowBlank = " + (!(property.required || f.required || property.clientRequired)));
             if (property.required || f.required || property.clientRequired) {
                 out.push("\n");
-                out.push("            res.afterLabelTextTpl = '<span style=\"color:red;\" data-qtip=\"Required\">*</span>'\n");
-                out.push("            ");
+                out.push("            res.afterLabelTextTpl = '<span style=\"color:red;\" data-qtip=\"Required\">*</span>'");
             }
             out.push("\n");
             out.push("            ");
@@ -371,8 +346,7 @@ module.exports = {
                 out.push("            ");
             }
             out.push("\n");
-            out.push("            },\n");
-            out.push("            ");
+            out.push("            },");
         }
         out.push("\n");
         out.push("    },\n");

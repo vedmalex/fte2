@@ -5,10 +5,10 @@ module.exports = {
             out.push("\n");
             out.push("function query(prm){\n");
             out.push("    return " + (context.queryText) + "\n");
-            out.push("}\n");
+            out.push("}");
         } else if ("function" === typeof context.queryText) {
             out.push("\n");
-            out.push("  " + (context.queryText) + "\n");
+            out.push("  " + (context.queryText));
         }
         return out.join('');
     },

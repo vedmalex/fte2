@@ -14,16 +14,11 @@ module.exports = {
         out.push("const SmallList = (props) => {\n");
         out.push("   const uix = useContext(UIXContext);\n");
         out.push("  return (\n");
-        out.push("  <uix.SimpleList {...props} primaryText={record => \n");
-        out.push("    ");
+        out.push("  <uix.SimpleList {...props} primaryText={record =>");
         entity.UI.listName.forEach((ln)=>{
-            out.push("\n");
-            out.push("      record." + (ln) + " ||\n");
-            out.push("    ");
+            out.push("record." + (ln) + " ||");
         });
-        out.push("\n");
-        out.push("    record.id } />\n");
-        out.push(");}\n");
+        out.push("record.id } />" + ");}\n");
         out.push("\n");
         out.push("export default SmallList;");
         return out.join('');

@@ -11,14 +11,12 @@ module.exports = {
         out.push("  alternateClassName:'Workspace.model." + (context.namespace) + "." + (context.$name) + "',\n");
         out.push("  widget: Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].widget,\n");
         out.push("  queryResult: Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].queryResult,\n");
-        out.push("  refreshMethod: Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].refreshMethod,\n");
-        out.push("  ");
+        out.push("  refreshMethod: Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].refreshMethod,");
         if (context.cal_mapping) {
             out.push("\n");
             out.push("  statics: {\n");
             out.push("    calendarMapping : Grainjs.metadata['model." + (context.$namespace) + "." + (context.$name) + "'].statics?.calendarMapping,\n");
-            out.push("  },\n");
-            out.push("  ");
+            out.push("  },");
         }
         out.push("\n");
         out.push("  serverModel:'" + (context.$normalizedName) + "',\n");

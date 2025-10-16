@@ -5,13 +5,13 @@ module.exports = {
             let toolbars = context.currentProfile.toolBarItem;
             let len = toolbars?.length ?? 0;
             out.push("\n");
-            out.push("me.control({\n");
+            out.push("me.control({");
             for(let i = 0; i < len; i++){
                 out.push("\n");
-                out.push("  \"button[itemId=" + (toolbars[i].itemId) + "]\": {click: this." + (toolbars[i].itemId) + "Func},\n");
+                out.push("  \"button[itemId=" + (toolbars[i].itemId) + "]\": {click: this." + (toolbars[i].itemId) + "Func},");
             }
             out.push("\n");
-            out.push("});\n");
+            out.push("});");
         }
         return out.join('');
     },

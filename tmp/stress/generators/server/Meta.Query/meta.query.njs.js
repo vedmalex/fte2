@@ -14,13 +14,13 @@ module.exports = {
         out.push("\n");
         out.push("let " + (name) + " = global.CustomQuery." + (name) + " = exports." + (name) + " = function (db, prm, callback) {\n");
         out.push("    ComplexQuery.execQuery(db, query(prm), function(err, data) {\n");
-        out.push("        if(err) return callback(err);\n");
+        out.push("        if(err) return callback(err);");
         if (context.extractor && context.extractor.length > 0) {
             out.push("\n");
-            out.push("        extractData.call(this, db, prm, data, callback);\n");
+            out.push("        extractData.call(this, db, prm, data, callback);");
         } else {
             out.push("\n");
-            out.push("        callback(err, data);\n");
+            out.push("        callback(err, data);");
         }
         out.push("\n");
         out.push("    });\n");

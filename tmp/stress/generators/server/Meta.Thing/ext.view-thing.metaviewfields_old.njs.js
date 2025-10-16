@@ -10,8 +10,7 @@ module.exports = {
         out.push("Ext.define('Grainjs.metaviewfields." + (context.$namespace) + "." + (context.$name) + "', {\n");
         out.push("  override: 'Grainjs.metadata',\n");
         out.push("  statics:{\n");
-        out.push("    'viewfields." + (context.$namespace) + "." + (context.$name) + "': {\n");
-        out.push("    ");
+        out.push("    'viewfields." + (context.$namespace) + "." + (context.$name) + "': {");
         for(let pName in properties){
             if (Object.prototype.hasOwnProperty.call(properties, pName)) {
                 let property = properties[pName][0];
@@ -68,8 +67,6 @@ module.exports = {
                         out.push("                xtype:         'displayfield',\n");
                         out.push("                ");
                     }
-                    out.push("\n");
-                    out.push("                ");
                     if (f.fieldtype === "combobox") {
                         out.push("\n");
                         out.push("                comboOptions:   Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions['" + (property.propertyName) + "'],\n");
@@ -83,8 +80,6 @@ module.exports = {
                             out.push("                // renderStore: Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions[" + (JSON.stringify(property.propertyName)) + "]?.store(),\n");
                             out.push("                ");
                         }
-                        out.push("\n");
-                        out.push("                ");
                     }
                     out.push("\n");
                     out.push("              },\n");

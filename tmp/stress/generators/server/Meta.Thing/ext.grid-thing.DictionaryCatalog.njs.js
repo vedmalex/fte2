@@ -4,7 +4,6 @@ module.exports = {
         let properties = context.gridviewProps;
         const config = context.getThingConfig(context);
         const hasDictionaryFields = properties.filter((p)=>p.forDictionary).length > 0;
-        out.push("\n");
         out.push("Ext.define('Modeleditor.view." + (context.namespace) + ".DictionaryCatalog." + (context.$name) + "',{\n");
         out.push("  serverModel: '" + (context.$namespace) + "." + (context.$name) + "',\n");
         out.push("  // requires: [" + (context.requires) + "],\n");
@@ -29,8 +28,7 @@ module.exports = {
         out.push("    const store = me.hasOwnProperty('catalogStore') ? me.catalogStore: Ext.create('Modeleditor.store." + (context.namespace) + ".Catalog." + (context.$name) + "')\n");
         out.push("\n");
         out.push("    Ext.apply(this,{\n");
-        out.push("      plugins: me.hasOwnProperty('catalogPlugins') ? me.catalogPlugins: [\n");
-        out.push("      ");
+        out.push("      plugins: me.hasOwnProperty('catalogPlugins') ? me.catalogPlugins: [");
         if (config.filterForDicCatalog && hasDictionaryFields) {
             out.push("\n");
             out.push("        {\n");
@@ -39,8 +37,7 @@ module.exports = {
             out.push("          renderHidden: false,\n");
             out.push("          showShowHideButton: true,\n");
             out.push("          showClearAllButton: true,\n");
-            out.push("        }\n");
-            out.push("      ");
+            out.push("        }");
         }
         out.push("\n");
         out.push("      ],\n");
@@ -52,8 +49,7 @@ module.exports = {
         out.push("      ] : undefined,\n");
         out.push("      selModel: Ext.create('Ext.selection.CheckboxModel', {pruneRemoved: false}),\n");
         out.push("      autoRender: true,\n");
-        out.push("      overflowY: 'auto',\n");
-        out.push("    ");
+        out.push("      overflowY: 'auto',");
         if (config.pageSizeEmbedded !== -1) {
             out.push("\n");
             out.push("      bbar: me.hasOwnProperty('catalogBbar') ? me.catalogBbar :\n");
@@ -63,8 +59,7 @@ module.exports = {
             out.push("        displayInfo: true,\n");
             out.push("        displayMsg: 'Displaying topics {0} - {1} of {2}',\n");
             out.push("        emptyMsg: \"No data to display\"\n");
-            out.push("      },\n");
-            out.push("    ");
+            out.push("      },");
         }
         out.push("\n");
         out.push("      listeners: {\n");
@@ -85,14 +80,13 @@ module.exports = {
         out.push("      columns: [{\n");
         out.push("          xtype: 'rownumberer',\n");
         out.push("          width:40\n");
-        out.push("        },\n");
+        out.push("        },");
         for(let i = 0; i < properties.length; i++){
             let property = properties[i].property;
             let g = properties[i];
             if (g.generated && ((hasDictionaryFields && g.forDictionary) || !hasDictionaryFields)) {
                 out.push("\n");
-                out.push("          Grainjs.metadata['gridfields." + (context.$namespace) + "." + (context.$name) + "'].fields[`" + (property.propertyName) + "::" + (g.columnText) + "`](),\n");
-                out.push("          ");
+                out.push("          Grainjs.metadata['gridfields." + (context.$namespace) + "." + (context.$name) + "'].fields[`" + (property.propertyName) + "::" + (g.columnText) + "`](),");
             }
         }
         out.push("\n");

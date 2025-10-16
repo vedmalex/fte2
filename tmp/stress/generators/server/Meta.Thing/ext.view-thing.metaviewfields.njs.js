@@ -60,8 +60,6 @@ module.exports = {
                 out.push("                xtype:         'displayfield',\n");
                 out.push("                ");
             }
-            out.push("\n");
-            out.push("                ");
             if (f.fieldtype === "combobox") {
                 out.push("\n");
                 out.push("                comboOptions:   Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions['" + (property.propertyName) + "'],\n");
@@ -75,8 +73,6 @@ module.exports = {
                     out.push("                // renderStore: Grainjs.metadata['gridcombo." + (context.$namespace) + "." + (context.$name) + "'].comboOptions[" + (JSON.stringify(property.propertyName)) + "]?.store(),\n");
                     out.push("                ");
                 }
-                out.push("\n");
-                out.push("                ");
             }
             out.push("\n");
             out.push("              },\n");

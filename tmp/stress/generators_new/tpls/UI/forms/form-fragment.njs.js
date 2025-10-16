@@ -165,8 +165,7 @@ module.exports = {
             out.push("  ");
             entity.actions.forEach((action)=>{
                 out.push("\n");
-                out.push("  " + (action.fullName) + ": " + (action.fullName) + "Button,\n");
-                out.push("  ");
+                out.push("  " + (action.fullName) + ": " + (action.fullName) + "Button,");
             });
             out.push("\n");
             out.push("}");

@@ -19,8 +19,7 @@ module.exports = {
         out.push("  const uix = useContext(UIXContext);\n");
         out.push("  const translate = useTranslate();\n");
         out.push("  return (\n");
-        out.push("  <uix.Filter {...props} >\n");
-        out.push("\n");
+        out.push("  <uix.Filter {...props} >");
         if (entity.UI.quickSearch) {
             out.push("\n");
             out.push("    <uix.TextInput label=\"uix.filter.search\" source=\"q\" allowEmpty alwaysOn />\n");

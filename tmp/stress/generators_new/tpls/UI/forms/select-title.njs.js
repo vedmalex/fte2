@@ -10,27 +10,17 @@ module.exports = {
         var out = [];
         out.push("import React from \"react\";\n");
         out.push("\n");
-        out.push("export const inputText = record => record ? (\n");
-        out.push("    ");
+        out.push("export const inputText = record => record ? (");
         entity.UI.listName.forEach((ln)=>{
-            out.push("\n");
-            out.push("      record." + (ln) + " ||\n");
-            out.push("    ");
+            out.push("record." + (ln) + " ||");
         });
-        out.push("\n");
-        out.push("    record.id ):'';\n");
-        out.push("\n");
+        out.push("record.id ):'';" + "\n");
         out.push("const Title = ({ record }) => (\n");
-        out.push("  <span>{record ? (\n");
-        out.push("    ");
+        out.push("  <span>{record ? (");
         entity.UI.listName.forEach((ln)=>{
-            out.push("\n");
-            out.push("      record." + (ln) + " ||\n");
-            out.push("    ");
+            out.push("record." + (ln) + " ||");
         });
-        out.push("\n");
-        out.push("    record.id ):''}</span>\n");
-        out.push(");\n");
+        out.push("record.id ):''}</span>" + ");\n");
         out.push("\n");
         out.push("export default Title;");
         return out.join('');

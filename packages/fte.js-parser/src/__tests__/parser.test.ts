@@ -211,6 +211,31 @@ describe('FTE Parser Tests', () => {
       // expect(blockContent.some(item => item.type === 'code')).toBeTruthy()
       // expect(blockContent.some(item => item.type === 'uexpression')).toBeTruthy()
     })
+
+    test('should handle complex expression with conditional <#- blocks', () => {
+      const template = `"#{rel.to}
+        <#- if(variant!== "*"){ -#>
+          #{rel.relName.split('.').join('')}
+        <#-}#>"`
+      const result = Parser.parse(template)
+      expect(result).toMatchSnapshot()
+      // Проверяем, что выражение распознано правильно
+      const expressionItems = result.main.filter(item => item.type === 'expression')
+      expect(expressionItems).toHaveLength(2)
+      expect(expressionItems[0].content.trim()).toBe('rel.to')
+      expect(expressionItems[1].content.trim()).toBe("rel.relName.split('.').join('')")
+
+      // Проверяем, что условный блок кода распознан
+      const codeItems = result.main.filter(item => item.type === 'code')
+      expect(codeItems).toHaveLength(2)
+      expect(codeItems[0].content.trim()).toBe('if(variant!== "*"){')
+      expect(codeItems[0].start).toBe('<#-')
+      expect(codeItems[0].end).toBe('-#>')
+      // Второй блок закрывается }#>, а не }-#>, из-за логики curly braces
+      expect(codeItems[1].content.trim()).toBe('}')
+      expect(codeItems[1].start).toBe('<#-')
+      expect(codeItems[1].end).toBe('#>')
+    })
   })
 
   describe('Edge Cases', () => {

@@ -48,16 +48,13 @@ module.exports = {
         }
         chunkStart(main);
         chunkStart(`${_enum.name}/index.js`);
-        out.push("\n");
-        out.push("import React, { useContext } from 'react';\n");
-        out.push("import { UIXContext } from '../contexts';\n");
+        out.push("import React, { useContext } from 'react';" + "import { UIXContext } from '../contexts';\n");
         out.push("\n");
         out.push("export const translation = {\n");
         out.push("  enums: {\n");
         out.push("    " + (_enum.name) + ": {\n");
         _enum.items.forEach((item)=>{
-            out.push("\n");
-            out.push("      " + (item.name) + ": '" + (item.metadata?.UI?.title || item.name) + "',\n");
+            out.push((item.name) + ": '" + (item.metadata?.UI?.title || item.name) + "',\n");
         });
         out.push("\n");
         out.push("    },\n");
@@ -66,8 +63,7 @@ module.exports = {
         out.push("\n");
         out.push("const choices = [\n");
         _enum.items.forEach((item)=>{
-            out.push("\n");
-            out.push("  { id: '" + (item.name) + "', name: 'enums." + (_enum.name) + "." + (item.name) + "' },\n");
+            out.push("{ id: '" + (item.name) + "', name: 'enums." + (_enum.name) + "." + (item.name) + "' },\n");
         });
         out.push("\n");
         out.push("];\n");

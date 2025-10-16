@@ -13,8 +13,7 @@ module.exports = {
             out.push("|| \"" + (context.iconCls) + "\"");
         }
         out.push(" ,\n");
-        out.push("  widget: '" + (context.$widgetName) + "',\n");
-        out.push("  ");
+        out.push("  widget: '" + (context.$widgetName) + "',");
         if (context.periodicalRel) {
             out.push("\n");
             out.push("    periodicalRel:{\n");
@@ -22,8 +21,7 @@ module.exports = {
             out.push("      to:'" + (context.periodicalRel.to) + "',\n");
             out.push("      fromKeyField:'" + (context.periodicalRel.fromKeyField) + "',\n");
             out.push("      toKeyField:'" + (context.periodicalRel.toKeyField) + "',\n");
-            out.push("    },\n");
-            out.push("  ");
+            out.push("    },");
         }
         out.push("\n");
         out.push("  embedKey: '" + (context.$namespace) + (context.$name) + "',\n");
@@ -59,8 +57,7 @@ module.exports = {
                         const property = f.property;
                         if (f.generated) {
                             out.push("\n");
-                            out.push("                  Grainjs.metadata['editfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`](),\n");
-                            out.push("                ");
+                            out.push("                  Grainjs.metadata['editfields." + (context.$namespace) + "." + (context.$name) + "'][`" + (property.propertyName) + "::" + (f.displayName) + "`](),");
                         }
                         break;
                     case 'method':

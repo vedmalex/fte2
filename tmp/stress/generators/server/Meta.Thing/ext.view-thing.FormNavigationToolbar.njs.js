@@ -116,8 +116,7 @@ module.exports = {
                     out.push("              }\n");
                     out.push("            }\n");
                     out.push("          }\n");
-                    out.push("        },\n");
-                    out.push("        ");
+                    out.push("        },");
                 }
             });
         }

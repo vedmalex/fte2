@@ -9,14 +9,12 @@ module.exports = {
         }
         var out = [];
         const { entity, f } = ctx;
-        out.push("\n");
         const type = (f.type == "Number" ? "Text" : f.type) + 'Field';
         if (f.type === 'JSON') {
             slot('import-from-ra-ui-components-show', `${type}`);
         } else {
             slot('import-from-react-admin-show', `${type}`);
         }
-        out.push("\n");
         out.push("<" + (type) + " \n");
         out.push("  label=\"resources." + (entity.name) + ".fields." + (f.name) + "\" \n");
         out.push("  source=\"" + (f.name) + "\"\n");

@@ -9,7 +9,6 @@ module.exports = {
         }
         var out = [];
         const { entity, f, source, sectionLabel, readonly, grid, customizable } = ctx;
-        out.push("\n");
         const e = entity.model.entities.find((e)=>e.name === f.ref.entity);
         const context = {
             entity: {
